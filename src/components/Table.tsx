@@ -9,6 +9,7 @@ import {
     useExpanded,
 } from 'react-table';
 import classNames from 'classnames';
+import { Link, useLocation } from 'react-router-dom';
 
 // components
 import Pagination from './Pagination';
@@ -78,6 +79,8 @@ type TableProps = {
     pagination?: boolean;
     isSelectable?: boolean;
     isExpandable?: boolean;
+    hasActions?: boolean;
+    hasLink?: boolean;
     sizePerPageList?: {
         text: string;
         value: number;
@@ -103,6 +106,8 @@ const Table = (props: TableProps) => {
     const isSelectable = props['isSelectable'] || false;
     const isExpandable = props['isExpandable'] || false;
     const sizePerPageList = props['sizePerPageList'] || [];
+    const hasActions = props['hasActions'] || false;
+    const hasLink = props['hasLink'] || false;
 
     let otherProps: any = {};
 
@@ -178,8 +183,7 @@ const Table = (props: TableProps) => {
                                             // of the row
                                             paddingLeft: `${row.depth * 2}rem`,
                                         },
-                                    })}
-                                >
+                                    })}>
                                     {row.isExpanded ? '-' : '+'}
                                 </span>
                             ) : null,
@@ -190,6 +194,7 @@ const Table = (props: TableProps) => {
     );
 
     let rows = pagination ? dataTable.page : dataTable.rows;
+    const location = useLocation();
 
     return (
         <>
@@ -205,8 +210,7 @@ const Table = (props: TableProps) => {
             <div className="table-responsive">
                 <table
                     {...dataTable.getTableProps()}
-                    className={classNames('table table-centered react-table', props['tableClass'])}
-                >
+                    className={classNames('table table-centered react-table', props['tableClass'])}>
                     <thead className={props['theadClass']}>
                         {(dataTable.headerGroups || []).map((headerGroup: any) => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -217,8 +221,7 @@ const Table = (props: TableProps) => {
                                             sorting_desc: column.isSortedDesc === true,
                                             sorting_asc: column.isSortedDesc === false,
                                             sortable: column.sort === true,
-                                        })}
-                                    >
+                                        })}>
                                         {column.render('Header')}
                                     </th>
                                 ))}
@@ -231,18 +234,35 @@ const Table = (props: TableProps) => {
                             return (
                                 <tr {...row.getRowProps()}>
                                     {(row.cells || []).map((cell: any) => {
-                                        return (
+                                        return hasLink ? (
                                             <td
                                                 {...cell.getCellProps([
                                                     {
                                                         className: cell.column.className,
                                                     },
-                                                ])}
-                                            >
+                                                ])}>
+                                                <Link
+                                                    to={`${location.pathname}/${row.values.id}`}
+                                                    className="text-secondary">
+                                                    {cell.render('Cell')}
+                                                </Link>
+                                            </td>
+                                        ) : (
+                                            <td
+                                                {...cell.getCellProps([
+                                                    {
+                                                        className: cell.column.className,
+                                                    },
+                                                ])}>
                                                 {cell.render('Cell')}
                                             </td>
                                         );
                                     })}
+                                    {hasActions && (
+                                        <td>
+                                            <i className="fe-trash-2 text-danger" />
+                                        </td>
+                                    )}
                                 </tr>
                             );
                         })}

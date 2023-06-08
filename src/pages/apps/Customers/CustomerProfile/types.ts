@@ -1,9 +1,8 @@
 export type Record = {
     id: number;
-    age: number;
     name: string;
     company: string;
+    email: string;
     phone: string;
-    designation: string;
     time: string;
 };

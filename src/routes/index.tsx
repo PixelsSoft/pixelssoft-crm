@@ -40,6 +40,9 @@ const Profile = React.lazy(() => import('../pages/apps/Contacts/Profile'));
 const Users = React.lazy(() => import('../pages/apps/Users/Users'));
 const Invoices = React.lazy(() => import('../pages/apps/Invoice/Invoices/Invoices'));
 const CreateInvoice = React.lazy(() => import('../pages/apps/Invoice/CreateInvoice/CreateInvoice'));
+const CustomersList = React.lazy(() => import('../pages/apps/Customers/List/Customers'));
+const CreateCustomer = React.lazy(() => import('../pages/apps/Customers/CreateCustomer/CreateCustomer'));
+const CustomerProfile = React.lazy(() => import('../pages/apps/Customers/CustomerProfile/CustomerProfile'));
 
 // extra pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -242,6 +245,18 @@ const AllRoutes = () => {
                         {
                             path: 'contacts/profile',
                             element: <LoadComponent component={Profile} />,
+                        },
+                        {
+                            path: 'customers',
+                            element: <LoadComponent component={CustomersList} />,
+                        },
+                        {
+                            path: 'customers/profile/new',
+                            element: <LoadComponent component={CreateCustomer} />,
+                        },
+                        {
+                            path: 'customers/:id',
+                            element: <LoadComponent component={CustomerProfile} />,
                         },
                     ],
                 },

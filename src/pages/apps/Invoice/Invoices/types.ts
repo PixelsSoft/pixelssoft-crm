@@ -5,4 +5,5 @@ export type Record = {
     dueDate: string;
     amount: number;
     pendingAmount: number;
+    category: string;
 };

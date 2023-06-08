@@ -1,8 +1,9 @@
 import { Card, Col, Row } from 'react-bootstrap';
-import { usePageTitle } from '../../../hooks';
-import Table from '../../../components/Table';
+import { usePageTitle } from '../../../../hooks';
+import Table from '../../../../components/Table';
 
 import { records as data } from './data';
+import { Link } from 'react-router-dom';
 
 const columns = [
     {
@@ -16,33 +17,18 @@ const columns = [
         sort: true,
     },
     {
+        Header: 'Email',
+        accessor: 'email',
+        sort: true,
+    },
+    {
         Header: 'Phone Number',
         accessor: 'phone',
         sort: false,
     },
     {
-        Header: 'Age',
-        accessor: 'age',
-        sort: true,
-    },
-    {
         Header: 'Company',
         accessor: 'company',
-        sort: false,
-    },
-    {
-        Header: 'Designation',
-        accessor: 'designation',
-        sort: false,
-    },
-    {
-        Header: 'Role',
-        accessor: 'role',
-        sort: false,
-    },
-    {
-        Header: 'Password',
-        accessor: 'password',
         sort: false,
     },
     {
@@ -71,17 +57,17 @@ const sizePerPageList = [
     },
 ];
 
-const Users = () => {
+const Customers = () => {
     usePageTitle({
-        title: 'Users',
+        title: 'Customers',
         breadCrumbItems: [
             {
-                path: '/apps/users',
+                path: '/apps/customers',
                 label: 'Apps',
             },
             {
-                path: '/apps/users',
-                label: 'Users',
+                path: '/apps/customers',
+                label: 'Customers',
                 active: true,
             },
         ],
@@ -92,9 +78,19 @@ const Users = () => {
                 <Col>
                     <Card>
                         <Card.Body>
-                            <h4 className="header-title mb-4">Users List</h4>
-                            {/* <p className="text-muted font-14 mb-4">Users List</p> */}
-
+                            <Row>
+                                <Col>
+                                    <h4 className="header-title mb-4">Customers List</h4>
+                                </Col>
+                                <Col sm={4} className="d-flex justify-content-end">
+                                    <Link
+                                        to="profile/new"
+                                        className="btn btn-purple rounded-pill w-md waves-effect waves-light mb-3">
+                                        <i className="mdi mdi-plus me-1"></i>
+                                        Create Customer
+                                    </Link>
+                                </Col>
+                            </Row>
                             <Table
                                 columns={columns}
                                 data={data}
@@ -104,6 +100,7 @@ const Users = () => {
                                 pagination={true}
                                 isSearchable={true}
                                 hasActions={true}
+                                hasLink={true}
                             />
                         </Card.Body>
                     </Card>
@@ -113,4 +110,4 @@ const Users = () => {
     );
 };
 
-export default Users;
+export default Customers;

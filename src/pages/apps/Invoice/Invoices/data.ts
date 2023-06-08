@@ -9,6 +9,7 @@ const records: Record[] = [
         dueDate: '2023-04-21',
         amount: 2000,
         pendingAmount: 1200,
+        category: 'Web Development',
     },
     {
         id: 2,
@@ -17,6 +18,7 @@ const records: Record[] = [
         dueDate: '2023-04-21',
         amount: 21230,
         pendingAmount: 12200,
+        category: 'Logo Design',
     },
     {
         id: 3,
@@ -25,6 +27,7 @@ const records: Record[] = [
         dueDate: '2023-04-21',
         amount: 2000,
         pendingAmount: 1200,
+        category: 'App Development',
     },
     {
         id: 4,
@@ -33,6 +36,7 @@ const records: Record[] = [
         dueDate: '2023-04-21',
         amount: 2000,
         pendingAmount: 1200,
+        category: 'Logo Design',
     },
 ];
 

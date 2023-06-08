@@ -35,6 +35,11 @@ const columns = [
         accessor: 'pendingAmount',
         sort: false,
     },
+    {
+        Header: 'Category',
+        accessor: 'category',
+        sort: false,
+    },
 ];
 
 const sizePerPageList = [
@@ -85,6 +90,7 @@ const Invoices = () => {
                                 isSortable={true}
                                 pagination={true}
                                 isSearchable={true}
+                                hasActions={true}
                             />
                         </Card.Body>
                     </Card>
