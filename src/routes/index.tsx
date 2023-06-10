@@ -43,6 +43,10 @@ const CreateInvoice = React.lazy(() => import('../pages/apps/Invoice/CreateInvoi
 const CustomersList = React.lazy(() => import('../pages/apps/Customers/List/Customers'));
 const CreateCustomer = React.lazy(() => import('../pages/apps/Customers/CreateCustomer/CreateCustomer'));
 const CustomerProfile = React.lazy(() => import('../pages/apps/Customers/CustomerProfile/CustomerProfile'));
+const Expenses = React.lazy(() => import('../pages/apps/Expense/List/Expenses'));
+const ExpenseDetails = React.lazy(() => import('../pages/apps/Expense/Details/ExpenseDetails'));
+const Attendance = React.lazy(() => import('../pages/apps/Attendance/Attendance'));
+const Sales = React.lazy(() => import('../pages/apps/Sales/Sales'));
 
 // extra pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -227,11 +231,11 @@ const AllRoutes = () => {
                             element: <LoadComponent component={Inbox} />,
                         },
                         {
-                            path: 'tasks/kanban',
+                            path: 'projects/kanban/:projectId',
                             element: <LoadComponent component={Kanban} />,
                         },
                         {
-                            path: 'tasks/details',
+                            path: 'projects/details/:projectId',
                             element: <LoadComponent component={TaskDetail} />,
                         },
                         {
@@ -257,6 +261,22 @@ const AllRoutes = () => {
                         {
                             path: 'customers/:id',
                             element: <LoadComponent component={CustomerProfile} />,
+                        },
+                        {
+                            path: 'expenses',
+                            element: <LoadComponent component={Expenses} />,
+                        },
+                        {
+                            path: 'expenses/:id',
+                            element: <LoadComponent component={ExpenseDetails} />,
+                        },
+                        {
+                            path: 'attendance',
+                            element: <LoadComponent component={Attendance} />,
+                        },
+                        {
+                            path: 'sales',
+                            element: <LoadComponent component={Sales} />,
                         },
                     ],
                 },

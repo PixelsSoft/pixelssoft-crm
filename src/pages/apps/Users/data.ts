@@ -1,51 +1,75 @@
 // types
-import { Record } from './types';
+import { Contact } from './types';
 
-const records: Record[] = [
+// images
+import avatar1 from '../../../assets/images/users/user-10.jpg';
+import avatar2 from '../../../assets/images/users/user-9.jpg';
+import avatar3 from '../../../assets/images/users/user-8.jpg';
+import avatar4 from '../../../assets/images/users/user-7.jpg';
+import avatar5 from '../../../assets/images/users/user-6.jpg';
+import avatar6 from '../../../assets/images/users/user-5.jpg';
+
+const contacts: Contact[] = [
     {
         id: 1,
-        age: 25,
-        name: 'Saad',
-        company: 'Pixels Soft',
-        phone: '+92 345 4818579',
-        designation: 'MERN Developer',
-        role: 'Developer',
-        password: 'pass123',
-        time: new Date().toDateString(),
+        avatar: avatar1,
+        shortDesc:
+            'Hi I am Johnathn Deo, has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type.',
+        name: 'Johnathan Deo',
+        mobile: '(123) 123 1234',
+        email: 'coderthemes@gmail.com',
+        location: 'USA',
     },
     {
         id: 2,
-        age: 23,
-        name: 'Huzaifa',
-        company: 'Pixels Soft',
-        phone: '+1 (813) 583-2089',
-        role: 'Developer',
-        password: 'pass123',
-        designation: 'Wordpress Developer',
-        time: new Date().toDateString(),
+        avatar: avatar2,
+        shortDesc:
+            'Hi I am Johnathn Deo, has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type.',
+        name: 'Johnathan Deo',
+        mobile: '(123) 123 1234',
+        email: 'coderthemes@gmail.com',
+        location: 'USA',
     },
     {
         id: 3,
-        age: 23,
-        name: 'Usama',
-        company: 'Pixels Soft',
-        phone: '+1 (813) 583-2089',
-        role: 'HR',
-        password: 'pass123',
-        designation: 'Human Resources',
-        time: new Date().toDateString(),
+        avatar: avatar3,
+        shortDesc:
+            'Hi I am Johnathn Deo, has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type.',
+        name: 'Johnathan Deo',
+        mobile: '(123) 123 1234',
+        email: 'coderthemes@gmail.com',
+        location: 'USA',
     },
     {
         id: 4,
-        age: 23,
-        name: 'Taimoor',
-        company: 'Pixels Soft',
-        phone: '+1 (813) 583-2089',
-        role: 'Director',
-        password: 'pass123',
-        designation: '-',
-        time: new Date().toDateString(),
+        avatar: avatar4,
+        shortDesc:
+            'Hi I am Johnathn Deo, has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type.',
+        name: 'Johnathan Deo',
+        mobile: '(123) 123 1234',
+        email: 'coderthemes@gmail.com',
+        location: 'USA',
+    },
+    {
+        id: 5,
+        avatar: avatar5,
+        shortDesc:
+            'Hi I am Johnathn Deo, has been the industrys standard dummy text ever since the5500s, when an unknown printer took a galley of type.',
+        name: 'Johnathan Deo',
+        mobile: '(123) 123 1234',
+        email: 'coderthemes@gmail.com',
+        location: 'USA',
+    },
+    {
+        id: 6,
+        avatar: avatar6,
+        shortDesc:
+            'Hi I am Johnathn Deo, has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type.',
+        name: 'Johnathan Deo',
+        mobile: '(123) 123 1234',
+        email: 'coderthemes@gmail.com',
+        location: 'USA',
     },
 ];
 
-export { records };
+export { contacts };

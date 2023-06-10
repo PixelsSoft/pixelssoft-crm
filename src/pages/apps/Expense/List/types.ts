@@ -1,9 +1,11 @@
 export type Record = {
     id: number;
+    title: string;
     status: string;
-    invoiceNumber: number;
-    dueDate: string;
+    type: string;
     amount: number;
     pending: number;
-    category: string;
+    date: string;
+    description: string;
+    proof?: string;
 };

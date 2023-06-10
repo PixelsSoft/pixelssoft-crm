@@ -4,6 +4,66 @@ import { Row, Col, Card } from 'react-bootstrap';
 import avatar2 from '../../../../assets/images/users/user-9.jpg';
 import StatisticsWidget1 from '../../../../components/StatisticsWidget1';
 
+import { records as data } from './data';
+import Table from '../../../../components/Table';
+
+const columns = [
+    {
+        Header: 'ID',
+        accessor: 'id',
+        sort: true,
+    },
+    {
+        Header: 'Status',
+        accessor: 'status',
+        sort: false,
+    },
+    {
+        Header: 'Invoice #',
+        accessor: 'invoiceNumber',
+        sort: false,
+    },
+    {
+        Header: 'Due Date',
+        accessor: 'dueDate',
+        sort: false,
+    },
+    {
+        Header: 'Amount',
+        accessor: 'amount',
+        sort: false,
+    },
+    {
+        Header: 'Pending Amount',
+        accessor: 'pending',
+        sort: false,
+    },
+    {
+        Header: 'Category',
+        accessor: 'category',
+        sort: false,
+    },
+];
+
+const sizePerPageList = [
+    {
+        text: '5',
+        value: 5,
+    },
+    {
+        text: '10',
+        value: 10,
+    },
+    {
+        text: '25',
+        value: 25,
+    },
+    {
+        text: 'All',
+        value: data.length,
+    },
+];
+
 const CustomerProfile = () => {
     usePageTitle({
         title: 'Customer Profile',
@@ -60,7 +120,16 @@ const CustomerProfile = () => {
                             </Row>
 
                             <Row>
-                                <h1>Purchase History</h1>
+                                <h1 className="my-3">Purchase History</h1>
+                                <Table
+                                    columns={columns}
+                                    data={data}
+                                    pageSize={5}
+                                    sizePerPageList={sizePerPageList}
+                                    isSortable={true}
+                                    pagination={true}
+                                    isSearchable={true}
+                                />
                             </Row>
                         </Card.Body>
                     </Card>

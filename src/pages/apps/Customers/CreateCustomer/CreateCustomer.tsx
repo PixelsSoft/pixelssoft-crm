@@ -58,13 +58,27 @@ const CreateCustomer = () => {
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Invoice Date</Form.Label>
-                                        <Form.Control type="date" />
+                                        <Form.Label>Platform</Form.Label>
+                                        <Form.Select>
+                                            <option>Choose...</option>
+                                            <option>Upwork</option>
+                                            <option>Fiverr</option>
+                                            <option>Freelancer</option>
+                                            <option>Social Media</option>
+                                            <option>None of above</option>
+                                        </Form.Select>
                                     </Form.Group>
 
-                                    <Form.Group as={Col} controlId="formGridZip">
-                                        <Form.Label>Due Date</Form.Label>
-                                        <Form.Control type="date" />
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Sale Person</Form.Label>
+                                        <Form.Select>
+                                            <option>Choose...</option>
+                                            <option>Daniyal</option>
+                                            <option>Saad</option>
+                                            <option>Taimoor</option>
+                                            <option>Usama</option>
+                                            <option>Huzaifa</option>
+                                        </Form.Select>
                                     </Form.Group>
                                 </Row>
 

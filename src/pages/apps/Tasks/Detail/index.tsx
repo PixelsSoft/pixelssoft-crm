@@ -97,8 +97,7 @@ const TaskDetail = () => {
                                 ]}
                                 defaultValue={{ value: 'amsterdam', label: 'Amsterdam' }}
                                 className="react-select react-select-container"
-                                classNamePrefix="react-select"
-                            ></Select>
+                                classNamePrefix="react-select"></Select>
                         </div>
 
                         <div className="assign-team mt-3">
@@ -184,7 +183,7 @@ const TaskDetail = () => {
                                         Save
                                     </Button>
                                     <Button variant="light" className="waves-effect">
-                                        Cancle
+                                        Cancel
                                     </Button>
                                 </div>
                             </Col>

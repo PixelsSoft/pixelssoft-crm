@@ -19,8 +19,7 @@ const TaskItem = (props: TaskItemProps) => {
                 className={classNames('badge', 'float-end', {
                     'bg-danger text-white': task.priority === 'Urgent',
                     'bg-warning text-white': task.priority === 'High',
-                })}
-            >
+                })}>
                 {task.priority}
             </span>
             <div className="d-flex align-items-center mb-1">
@@ -28,7 +27,7 @@ const TaskItem = (props: TaskItemProps) => {
                     <Form.Check.Input type="checkbox" name="taskCheck" id="TaskCheck" />
                 </Form.Check>
                 <h5 className="my-0">
-                    <Link to="/apps/tasks/details" className="text-dark ms-1">
+                    <Link to="/apps/projects/details/123" className="text-dark ms-1">
                         {task.title}
                     </Link>
                 </h5>

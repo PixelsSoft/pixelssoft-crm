@@ -168,8 +168,7 @@ const BasicInputElements = () => {
                                 register={register}
                                 key="select"
                                 errors={errors}
-                                control={control}
-                            >
+                                control={control}>
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -187,8 +186,7 @@ const BasicInputElements = () => {
                                 register={register}
                                 key="selectMulti"
                                 errors={errors}
-                                control={control}
-                            >
+                                control={control}>
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -403,7 +401,7 @@ const Switches = () => {
     );
 };
 
-const CustomCheckboxes = () => {
+export const CustomCheckboxes = () => {
     return (
         <>
             <Form.Check type="checkbox" id="default-checkbox1" label="Check this custom checkbox" />
@@ -412,7 +410,7 @@ const CustomCheckboxes = () => {
     );
 };
 
-const CustomRadios = () => {
+export const CustomRadios = () => {
     return (
         <>
             <Form.Check type="radio" id="default-radio1" name="customRadio" label="Toggle this custom radio" />
@@ -869,8 +867,7 @@ const CheckboxCircled = () => {
                     <Form.Check
                         key={index.toString()}
                         id={`circle-checkbox-${index}`}
-                        className={classNames('mb-2', 'form-check', 'form-check-' + item.variant)}
-                    >
+                        className={classNames('mb-2', 'form-check', 'form-check-' + item.variant)}>
                         <Form.Check.Input type="checkbox" className="rounded-circle" defaultChecked={index % 3 === 0} />
                         <Form.Check.Label>{item.name} </Form.Check.Label>
                     </Form.Check>

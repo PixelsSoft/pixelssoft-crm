@@ -150,6 +150,14 @@ const List = () => {
                         />
 
                         <FormInput
+                            label={'Role'}
+                            type="text"
+                            name="Role"
+                            placeholder="Enter Role"
+                            containerClass={'mb-3'}
+                        />
+
+                        <FormInput
                             label={'Salary'}
                             type="text"
                             name="salary"

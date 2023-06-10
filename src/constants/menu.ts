@@ -51,7 +51,13 @@ const MENU_ITEMS: MenuItemTypes[] = [
         icon: 'mdi mdi-account-group-outline',
         url: '/apps/customers',
     },
-
+    {
+        key: 'apps-projects',
+        label: 'Projects',
+        isTitle: false,
+        icon: 'mdi mdi-briefcase-variant-outline',
+        url: '/apps/projects',
+    },
     {
         key: 'sales',
         label: 'Sales',
@@ -75,15 +81,22 @@ const MENU_ITEMS: MenuItemTypes[] = [
         icon: 'far fa-file-alt',
         url: '/apps/reports',
     },
+    {
+        key: 'expenses',
+        label: 'Expenses',
+        isTitle: false,
+        icon: 'mdi mdi-view-dashboard-outline',
+        url: '/apps/expenses',
+    },
 
     // { key: 'apps', label: 'Apps', isTitle: true },
-    {
-        key: 'apps-calendar',
-        label: 'Calender',
-        isTitle: false,
-        icon: 'mdi mdi-calendar-blank-outline',
-        url: '/apps/calendar',
-    },
+    // {
+    //     key: 'apps-calendar',
+    //     label: 'Calender',
+    //     isTitle: false,
+    //     icon: 'mdi mdi-calendar-blank-outline',
+    //     url: '/apps/calendar',
+    // },
     {
         key: 'apps-chat',
         label: 'Chat',
@@ -98,27 +111,21 @@ const MENU_ITEMS: MenuItemTypes[] = [
         icon: 'far fa-map',
         url: '/apps/attendance',
     },
-    // {
-    //     key: 'apps-reports',
-    //     label: 'Reports',
-    //     isTitle: false,
-    //     icon: 'mdi mdi-forum-outline',
-    //     url: '/apps/chat',
-    // },
-    // {
-    //     key: 'apps-email',
-    //     label: 'Email',
-    //     isTitle: false,
-    //     icon: 'mdi mdi-email-outline',
-    //     children: [
-    //         {
-    //             key: 'email-inbox',
-    //             label: 'Inbox',
-    //             url: '/apps/email/inbox',
-    //             parentKey: 'apps-email',
-    //         },
-    //     ],
-    // },
+
+    {
+        key: 'apps-email',
+        label: 'Email',
+        isTitle: false,
+        icon: 'mdi mdi-email-outline',
+        children: [
+            {
+                key: 'email-inbox',
+                label: 'Inbox',
+                url: '/apps/email/inbox',
+                parentKey: 'apps-email',
+            },
+        ],
+    },
     // {
     //     key: 'apps-tasks',
     //     label: 'Tasks',
@@ -139,33 +146,27 @@ const MENU_ITEMS: MenuItemTypes[] = [
     //         },
     //     ],
     // },
-    {
-        key: 'apps-projects',
-        label: 'Projects',
-        isTitle: false,
-        icon: 'mdi mdi-briefcase-variant-outline',
-        url: '/apps/projects',
-    },
-    {
-        key: 'apps-contacts',
-        label: 'Contacts',
-        isTitle: false,
-        icon: 'mdi mdi-book-open-page-variant-outline',
-        children: [
-            {
-                key: 'contacts-list',
-                label: 'Users',
-                url: '/apps/contacts/list',
-                parentKey: 'apps-contacts',
-            },
-            {
-                key: 'contacts-profile',
-                label: 'Profile',
-                url: '/apps/contacts/profile',
-                parentKey: 'apps-contacts',
-            },
-        ],
-    },
+
+    // {
+    //     key: 'apps-contacts',
+    //     label: 'Contacts',
+    //     isTitle: false,
+    //     icon: 'mdi mdi-book-open-page-variant-outline',
+    //     children: [
+    //         {
+    //             key: 'contacts-list',
+    //             label: 'Users',
+    //             url: '/apps/contacts/list',
+    //             parentKey: 'apps-contacts',
+    //         },
+    //         {
+    //             key: 'contacts-profile',
+    //             label: 'Profile',
+    //             url: '/apps/contacts/profile',
+    //             parentKey: 'apps-contacts',
+    //         },
+    //     ],
+    // },
     { key: 'custom', label: 'Custom', isTitle: true },
     {
         key: 'extra-pages',

@@ -1,11 +1,9 @@
-export type Record = {
+export type Contact = {
     id: number;
-    age: number;
+    avatar: string;
+    shortDesc: string;
     name: string;
-    company: string;
-    phone: string;
-    role: string;
-    password: string;
-    designation: string;
-    time: string;
+    mobile: string;
+    email: string;
+    location: string;
 };

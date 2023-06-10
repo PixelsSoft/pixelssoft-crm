@@ -1,0 +1,133 @@
+// types
+import { Record } from './types';
+
+const recordsUpwork: Record[] = [
+    {
+        id: 1,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Upwork',
+        status: 'Paid',
+        salePerson: 'Daniyal',
+    },
+    {
+        id: 2,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Upwork',
+        status: 'Paid',
+        salePerson: 'Saad',
+    },
+    {
+        id: 3,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Upwork',
+        status: 'Paid',
+        salePerson: 'Taimoor',
+    },
+    {
+        id: 4,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Upwork',
+        status: 'Paid',
+        salePerson: 'Usama',
+    },
+];
+
+const recordsFreelancer: Record[] = [
+    {
+        id: 1,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Freelancer',
+        status: 'Paid',
+        salePerson: 'Daniyal',
+    },
+    {
+        id: 2,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Freelancer',
+        status: 'Paid',
+        salePerson: 'Daniyal',
+    },
+    {
+        id: 3,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Freelancer',
+        status: 'Paid',
+        salePerson: 'Daniyal',
+    },
+    {
+        id: 4,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Freelancer',
+        status: 'Paid',
+        salePerson: 'Daniyal',
+    },
+];
+
+const recordsBark: Record[] = [
+    {
+        id: 1,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Bark',
+        status: 'Paid',
+        salePerson: 'Daniyal',
+    },
+    {
+        id: 2,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Bark',
+        status: 'Paid',
+        salePerson: 'Daniyal',
+    },
+    {
+        id: 3,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Bark',
+        status: 'Paid',
+        salePerson: 'Daniyal',
+    },
+    {
+        id: 4,
+        name: 'Client Name A',
+        amount: 200,
+        pending: 0,
+        date: '2023-06-09',
+        platform: 'Bark',
+        status: 'Paid',
+        salePerson: 'Daniyal',
+    },
+];
+
+export { recordsUpwork, recordsFreelancer, recordsBark };

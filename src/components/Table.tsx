@@ -13,6 +13,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 // components
 import Pagination from './Pagination';
+import { Button } from 'react-bootstrap';
 
 type GlobalFilterProps = {
     preGlobalFilteredRows: any;
@@ -80,7 +81,9 @@ type TableProps = {
     isSelectable?: boolean;
     isExpandable?: boolean;
     hasActions?: boolean;
+    hasRecordPayment?: boolean;
     hasLink?: boolean;
+    toggler?: () => void;
     sizePerPageList?: {
         text: string;
         value: number;
@@ -108,6 +111,8 @@ const Table = (props: TableProps) => {
     const sizePerPageList = props['sizePerPageList'] || [];
     const hasActions = props['hasActions'] || false;
     const hasLink = props['hasLink'] || false;
+    const hasRecordPayment = props['hasRecordPayment'] || false;
+    const toggler = props['toggler'] || undefined;
 
     let otherProps: any = {};
 
@@ -258,8 +263,19 @@ const Table = (props: TableProps) => {
                                             </td>
                                         );
                                     })}
+
                                     {hasActions && (
                                         <td>
+                                            {hasRecordPayment && (
+                                                <Button
+                                                    type="button"
+                                                    className="waves-effect waves-light"
+                                                    style={{ marginRight: 8 }}
+                                                    onClick={toggler}
+                                                    variant="outline-primary">
+                                                    Record
+                                                </Button>
+                                            )}
                                             <i className="fe-trash-2 text-danger" />
                                         </td>
                                     )}
