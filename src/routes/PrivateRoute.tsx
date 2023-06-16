@@ -4,7 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { APICore } from '../helpers/api/apiCore';
 
 // hooks
-import { useUser } from '../hooks';
+// import { useUser } from '../hooks';
 
 type PrivateRouteProps = {
     component: React.ComponentType;

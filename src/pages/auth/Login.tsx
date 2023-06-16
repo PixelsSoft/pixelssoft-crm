@@ -3,7 +3,7 @@ import { Button, Alert, Row, Col } from 'react-bootstrap';
 import { Navigate, Link, useLocation } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useSSR, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 // hooks
 import { useRedux } from '../../hooks/';
