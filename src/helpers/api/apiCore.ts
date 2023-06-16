@@ -48,7 +48,7 @@ const AUTH_SESSION_KEY = 'adminto_user';
  * @param {*} token
  */
 const setAuthorization = (token: string | null) => {
-    if (token) axios.defaults.headers.common['Authorization'] = 'JWT ' + token;
+    if (token) axios.defaults.headers.common['Authorization'] = token;
     else delete axios.defaults.headers.common['Authorization'];
 };
 

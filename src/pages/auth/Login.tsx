@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Alert, Row, Col } from 'react-bootstrap';
 import { Navigate, Link, useLocation } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useTranslation } from 'react-i18next';
+import { useSSR, useTranslation } from 'react-i18next';
 
 // hooks
 import { useRedux } from '../../hooks/';
@@ -54,6 +54,9 @@ const Login = () => {
     const { t } = useTranslation();
     const { dispatch, appSelector } = useRedux();
 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     const { user, userLoggedIn, loading, error } = appSelector((state) => ({
         user: state.Auth.user,
         loading: state.Auth.loading,
@@ -79,7 +82,7 @@ const Login = () => {
     handle form submission
     */
     const onSubmit = (formData: UserData) => {
-        dispatch(loginUser(formData['email'], formData['password']));
+        dispatch(loginUser(email, password));
     };
 
     const location = useLocation();
@@ -106,25 +109,22 @@ const Login = () => {
                 )}
                 {loading && <Loader />}
 
-                <VerticalForm<UserData>
-                    onSubmit={onSubmit}
-                    resolver={schemaResolver}
-                    defaultValues={{ email: 'adminto@coderthemes.com', password: 'test' }}
-                >
+                <VerticalForm<UserData> onSubmit={onSubmit} resolver={schemaResolver}>
                     <FormInput
                         type="email"
                         name="email"
                         label={t('Email address')}
-                        placeholder={t('hello@coderthemes.com')}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder={'Email'}
                         containerClass={'mb-3'}
                     />
                     <FormInput
                         label={t('Password')}
                         type="password"
                         name="password"
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter your password"
-                        containerClass={'mb-3'}
-                    ></FormInput>
+                        containerClass={'mb-3'}></FormInput>
 
                     <FormInput
                         type="checkbox"

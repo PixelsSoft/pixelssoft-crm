@@ -2,13 +2,13 @@
 import Routes from './routes/Routes';
 
 // helpers
-import { configureFakeBackend } from './helpers';
+// import { configureFakeBackend } from './helpers';
 
 // For Default import Theme.scss
 import './assets/scss/Theme.scss';
 
 const App = () => {
-    configureFakeBackend();
+    // configureFakeBackend();
     return <Routes />;
 };
 

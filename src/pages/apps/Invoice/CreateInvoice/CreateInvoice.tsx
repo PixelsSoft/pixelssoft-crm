@@ -213,34 +213,34 @@ const CreateInvoice = () => {
                                         <Col>
                                             <div className="d-flex flex-column">
                                                 <span style={{ fontWeight: 'bold' }}>Bill To:</span>
-                                                <span>Diamond Hardy</span>
+                                                <span>Rashid Khan</span>
                                             </div>
                                             <div className="d-flex flex-column">
                                                 <span style={{ fontWeight: 'bold' }}>Email:</span>
-                                                <span>d.hardy1@yahoo.com</span>
+                                                <span>rashid.pixelssoft@gmail.com</span>
                                             </div>
                                             <div className="d-flex flex-column">
                                                 <span style={{ fontWeight: 'bold' }}>Phone Number:</span>
-                                                <span>+1 484-640-8904</span>
+                                                <span></span>
                                             </div>
                                         </Col>
 
                                         <Col>
                                             <div className="d-flex justify-content-end">
                                                 <strong>Invoice #:</strong>
-                                                <span style={{ marginLeft: 5 }}>0001</span>
+                                                <span style={{ marginLeft: 5 }}>0002</span>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <strong>Invoice Date:</strong>
-                                                <span style={{ marginLeft: 5 }}>2023-06-08</span>
+                                                <span style={{ marginLeft: 5 }}>2023-06-14</span>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <strong>Payment Due:</strong>
-                                                <span style={{ marginLeft: 5 }}>2023-06-08</span>
+                                                <span style={{ marginLeft: 5 }}>2023-06-14</span>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <strong>Amount Due (USD):</strong>
-                                                <span style={{ marginLeft: 5 }}>$35</span>
+                                                <span style={{ marginLeft: 5 }}>$1000</span>
                                             </div>
                                         </Col>
                                     </Row>
@@ -252,11 +252,11 @@ const CreateInvoice = () => {
                                             <div>
                                                 <div className="d-flex flex-column">
                                                     <strong>Item:</strong>
-                                                    <span>Logo Design</span>
+                                                    <span>Web Development</span>
                                                 </div>
                                                 <div className="d-flex flex-column">
                                                     <strong>Description:</strong>
-                                                    <p style={{ width: '50%' }}>Logo will be delivered in 2 days.</p>
+                                                    <p style={{ width: '50%' }}></p>
                                                 </div>
                                             </div>
                                             {/* <div className="d-flex mt-2 flex-column">
@@ -268,12 +268,12 @@ const CreateInvoice = () => {
                                                 <div className="d-flex flex-column align-items-end">
                                                     <div>
                                                         <strong>Total:</strong>
-                                                        <span style={{ marginLeft: 5 }}>$35</span>
+                                                        <span style={{ marginLeft: 5 }}>$1000</span>
                                                     </div>
 
                                                     <div>
                                                         <strong>Amount Due:</strong>
-                                                        <strong style={{ marginLeft: 5 }}>$35</strong>
+                                                        <strong style={{ marginLeft: 5 }}>$1000</strong>
                                                     </div>
                                                 </div>
                                             </Row>

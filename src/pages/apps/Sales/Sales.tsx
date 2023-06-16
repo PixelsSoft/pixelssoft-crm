@@ -4,7 +4,7 @@ import StatisticsWidget1 from '../../../components/StatisticsWidget1';
 import StatisticsWidget2 from '../../../components/StatisticsWidget2';
 import { FormInput } from '../../../components/form';
 import { Link } from 'react-router-dom';
-import { recordsBark, recordsFreelancer, recordsUpwork } from './data';
+import { recordsUpwork } from './data';
 import Table from '../../../components/Table';
 
 const columns = [
