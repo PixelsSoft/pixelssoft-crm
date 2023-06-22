@@ -1,7 +1,7 @@
-import ContactDetails from '../../../../components/ContactDetails';
+// import ContactDetails from '../../../../components/ContactDetails';
 import { usePageTitle } from '../../../../hooks';
 import { Row, Col, Card } from 'react-bootstrap';
-import avatar2 from '../../../../assets/images/users/user-9.jpg';
+// import avatar2 from '../../../../assets/images/users/user-9.jpg';
 import StatisticsWidget1 from '../../../../components/StatisticsWidget1';
 
 import { records as data } from './data';
