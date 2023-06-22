@@ -47,6 +47,7 @@ const Expenses = React.lazy(() => import('../pages/apps/Expense/List/Expenses'))
 const ExpenseDetails = React.lazy(() => import('../pages/apps/Expense/Details/ExpenseDetails'));
 const Attendance = React.lazy(() => import('../pages/apps/Attendance/Attendance'));
 const Sales = React.lazy(() => import('../pages/apps/Sales/Sales'));
+const Settings = React.lazy(() => import('../pages/apps/Settings/Settings'));
 
 // extra pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -277,6 +278,10 @@ const AllRoutes = () => {
                         {
                             path: 'sales',
                             element: <LoadComponent component={Sales} />,
+                        },
+                        {
+                            path: 'settings',
+                            element: <LoadComponent component={Settings} />,
                         },
                     ],
                 },

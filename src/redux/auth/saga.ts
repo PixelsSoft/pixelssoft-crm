@@ -17,6 +17,7 @@ import { authApiResponseSuccess, authApiResponseError } from './actions';
 
 // constants
 import { AuthActionTypes } from './constants';
+import { createUserApi, getUsersApi } from '../../helpers/api/auth';
 
 type UserData = {
     payload: {
@@ -24,6 +25,22 @@ type UserData = {
         password: string;
         fullname: string;
         email: string;
+    };
+    type: string;
+};
+
+type RegisterUserData = {
+    payload: {
+        fullName: string;
+        company: string;
+        email: string;
+        phoneNumber: string;
+        position: string;
+        role: string;
+        designation: string;
+        salary: number;
+        password: string;
+        profilePic?: File | null;
     };
     type: string;
 };
@@ -37,13 +54,13 @@ const api = new APICore();
 function* login({ payload: { email, password }, type }: UserData): SagaIterator {
     try {
         const response = yield call(loginApi, { email, password });
-        const user = response.data.data;
+
+        const data = response.data.data;
         // NOTE - You can change this according to response format from your api
-        api.setLoggedInUser(user);
-        setAuthorization(user['token']);
-        yield put(authApiResponseSuccess(AuthActionTypes.LOGIN_USER, user));
+        api.setLoggedInUser(data);
+        setAuthorization(data['token']);
+        yield put(authApiResponseSuccess(AuthActionTypes.LOGIN_USER, data));
     } catch (error: any) {
-        console.log(error.response);
         yield put(authApiResponseError(AuthActionTypes.LOGIN_USER, error.response?.data?.error || 'Error'));
         api.setLoggedInUser(null);
         setAuthorization(null);
@@ -86,6 +103,44 @@ function* forgotPassword({ payload: { email } }: UserData): SagaIterator {
         yield put(authApiResponseError(AuthActionTypes.FORGOT_PASSWORD, error));
     }
 }
+
+function* getAllUsersSaga(): SagaIterator {
+    try {
+        console.log('hello');
+        const response = yield call(getUsersApi);
+        const users = response.data.data;
+        console.log(users);
+        yield put(authApiResponseSuccess(AuthActionTypes.GET_ALL_USERS, users));
+    } catch (error: any) {
+        yield put(authApiResponseError(AuthActionTypes.GET_ALL_USERS, error || 'Error'));
+    }
+}
+
+function* createUserAccountSaga({ payload }: RegisterUserData): SagaIterator {
+    try {
+        const formData = new FormData();
+
+        formData.append('company', payload.company);
+        formData.append('email', payload.email);
+        formData.append('fullName', payload.fullName);
+        formData.append('designation', payload.designation);
+        formData.append('role', payload.role);
+        formData.append('phoneNumber', payload.phoneNumber);
+        formData.append('password', payload.password);
+        formData.append('salary', payload.salary.toString());
+        formData.append('position', payload.position);
+        if (payload.profilePic) {
+            formData.append('profilePic', payload.profilePic);
+        }
+
+        const response = yield call(createUserApi, formData);
+        const data = response.data;
+        yield put(authApiResponseSuccess(AuthActionTypes.CREATE_USER, data));
+    } catch (error: any) {
+        yield put(authApiResponseError(AuthActionTypes.CREATE_USER, error));
+    }
+}
+
 export function* watchLoginUser() {
     yield takeEvery(AuthActionTypes.LOGIN_USER, login);
 }
@@ -102,8 +157,23 @@ export function* watchForgotPassword(): any {
     yield takeEvery(AuthActionTypes.FORGOT_PASSWORD, forgotPassword);
 }
 
+export function* watchCreateUserAccountSaga(): any {
+    yield takeEvery(AuthActionTypes.CREATE_USER, createUserAccountSaga);
+}
+
+export function* watchGetUsersSaga(): any {
+    yield takeEvery(AuthActionTypes.GET_ALL_USERS, getAllUsersSaga);
+}
+
 function* authSaga() {
-    yield all([fork(watchLoginUser), fork(watchLogout), fork(watchSignup), fork(watchForgotPassword)]);
+    yield all([
+        fork(watchLoginUser),
+        fork(watchLogout),
+        fork(watchSignup),
+        fork(watchForgotPassword),
+        fork(watchCreateUserAccountSaga),
+        fork(watchGetUsersSaga),
+    ]);
 }
 
 export default authSaga;

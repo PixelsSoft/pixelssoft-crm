@@ -4,4 +4,7 @@ export enum CustomerActionTypes {
 
     CREATE_CUSTOMER = '@customers/CREATE_CUSTOMER',
     GET_CUSTOMERS = '@customers/GET_CUSTOMERS',
+    GET_CUSTOMER_PROFILE = '@customers/GET_CUSTOMER_PROFILE',
+    DELETE_CUSTOMER = '@customers/DELETE_CUSTOMER',
+    RESET_CUSTOMERS = '@customers/RESET_CUSTOMERS',
 }

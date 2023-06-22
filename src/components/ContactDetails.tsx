@@ -1,12 +1,30 @@
 import { Button, Card, Dropdown, Form, Modal, Row } from 'react-bootstrap';
 
 // types
-import { Contact } from '../pages/apps/Contacts/List/types';
+// import { Contact } from '../pages/apps/Contacts/List/types';
 import { useState } from 'react';
 import { FormInput } from './form';
 
+type User = {
+    _id: string;
+    fullName: string;
+    company: string;
+    email: string;
+    phoneNumber: string;
+    position: string;
+    profilePic: {
+        url: string;
+        path: string;
+    };
+    role: string;
+    designation: string;
+    salary: string;
+    _createdAt: string;
+    password: string;
+};
+
 type ContactDetailsProps = {
-    contact: Contact;
+    contact: User;
 };
 
 const ContactDetails = ({ contact }: ContactDetailsProps) => {
@@ -33,19 +51,22 @@ const ContactDetails = ({ contact }: ContactDetailsProps) => {
                     </Dropdown>
                     <div>
                         <img
-                            src={contact.avatar}
+                            src={
+                                contact.profilePic.url ||
+                                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'
+                            }
                             alt="profileImage"
                             className="rounded-circle avatar-xl img-thumbnail mb-2"
                         />
-                        <p className="text-muted font-13 mb-3">{contact.shortDesc}</p>
+                        {/* <p className="text-muted font-13 mb-3">{contact.shortDesc}</p> */}
                         <div className="text-start">
                             <p className="text-muted font-13">
-                                <strong>Full Name :</strong> <span className="ms-2">{contact.name}</span>
+                                <strong>Full Name :</strong> <span className="ms-2">{contact.fullName}</span>
                             </p>
 
                             <p className="text-muted font-13">
                                 <strong>Mobile :</strong>
-                                <span className="ms-2">{contact.mobile}</span>
+                                <span className="ms-2">{contact.phoneNumber}</span>
                             </p>
 
                             <p className="text-muted font-13">
@@ -53,7 +74,7 @@ const ContactDetails = ({ contact }: ContactDetailsProps) => {
                             </p>
 
                             <p className="text-muted font-13">
-                                <strong>Location :</strong> <span className="ms-2">{contact.location}</span>
+                                <strong>Designation :</strong> <span className="ms-2">{contact.designation}</span>
                             </p>
                         </div>
                         <Button className="rounded-pill waves-effect waves-light" onClick={toggle}>

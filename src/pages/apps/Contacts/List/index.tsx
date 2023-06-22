@@ -9,7 +9,7 @@ import { usePageTitle } from '../../../../hooks';
 // component
 import { VerticalForm, FormInput } from '../../../../components/form';
 
-import ContactDetails from '../../../../components/ContactDetails';
+// import ContactDetails from '../../../../components/ContactDetails';
 
 // data
 import { contacts } from './data';
@@ -98,7 +98,7 @@ const List = () => {
                 {(contacts || []).map((contact, index) => {
                     return (
                         <Col xl={4} md={6} key={index.toString()}>
-                            <ContactDetails contact={contact} />
+                            {/* <ContactDetails contact={contact} /> */}
                         </Col>
                     );
                 })}

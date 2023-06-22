@@ -22,14 +22,17 @@ type UserData = {
     token: string;
 };
 
-type AuthActionType = {
+type ActionType = {
     type:
         | AuthActionTypes.API_RESPONSE_SUCCESS
         | AuthActionTypes.API_RESPONSE_ERROR
         | AuthActionTypes.LOGIN_USER
         | AuthActionTypes.SIGNUP_USER
         | AuthActionTypes.LOGOUT_USER
-        | AuthActionTypes.RESET;
+        | AuthActionTypes.RESET
+        | AuthActionTypes.CREATE_USER
+        | AuthActionTypes.CREATE_USER_RESET
+        | AuthActionTypes.GET_ALL_USERS;
     payload: {
         actionType?: string;
         data?: UserData | {};
@@ -43,7 +46,7 @@ type State = {
     value?: boolean;
 };
 
-const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
+const Auth = (state: State = INIT_STATE, action: ActionType): any => {
     switch (action.type) {
         case AuthActionTypes.API_RESPONSE_SUCCESS:
             switch (action.payload.actionType) {
@@ -78,6 +81,26 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
                         passwordReset: true,
                     };
                 }
+
+                case AuthActionTypes.CREATE_USER: {
+                    return {
+                        ...state,
+                        createUserSuccess: true,
+                        loading: false,
+                        data: action.payload.data,
+                        error: null,
+                    };
+                }
+
+                case AuthActionTypes.GET_ALL_USERS: {
+                    return {
+                        ...state,
+                        users: action.payload.data,
+                        loading: false,
+                        error: null,
+                    };
+                }
+
                 default:
                     return { ...state };
             }
@@ -108,6 +131,26 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
                         passwordReset: false,
                     };
                 }
+
+                case AuthActionTypes.CREATE_USER: {
+                    return {
+                        ...state,
+                        createUserSuccess: false,
+                        error: action.payload.error,
+                        loading: false,
+                        data: null,
+                    };
+                }
+
+                case AuthActionTypes.GET_ALL_USERS: {
+                    return {
+                        ...state,
+                        users: null,
+                        loading: false,
+                        error: action.payload.error,
+                    };
+                }
+
                 default:
                     return { ...state };
             }
@@ -118,6 +161,21 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             return { ...state, loading: true, userSignUp: false };
         case AuthActionTypes.LOGOUT_USER:
             return { ...state, loading: true, userLogout: false };
+
+        case AuthActionTypes.CREATE_USER:
+            return { ...state, createUserSuccess: false };
+
+        case AuthActionTypes.GET_ALL_USERS:
+            return { ...state, loading: true, users: null };
+
+        case AuthActionTypes.CREATE_USER_RESET:
+            return {
+                ...state,
+                createUserSuccess: false,
+                data: null,
+                loading: false,
+                error: null,
+            };
         case AuthActionTypes.RESET:
             return {
                 ...state,
@@ -127,7 +185,10 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
                 userLoggedIn: false,
                 passwordReset: false,
                 passwordChange: false,
+                createUserSuccess: false,
+                data: null,
                 resetPasswordSuccess: null,
+                users: null,
             };
         default:
             return { ...state };

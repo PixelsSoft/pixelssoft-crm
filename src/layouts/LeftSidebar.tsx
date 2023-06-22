@@ -12,10 +12,17 @@ import Scrollbar from '../components/Scrollbar';
 import AppMenu from './Menu';
 
 // images
-import profileImg from '../assets/images/users/user-1.jpg';
+import { useRedux } from '../hooks';
 
 /* user box */
 const UserBox = () => {
+    const { appSelector } = useRedux();
+
+    const { user } = appSelector((state) => ({
+        user: state.Auth.user,
+    }));
+
+    console.log(appSelector((state) => state));
     // get the profilemenu
     const ProfileMenus = [
         {
@@ -51,16 +58,20 @@ const UserBox = () => {
 
     return (
         <div className="user-box text-center">
-            <img src={profileImg} alt="" title="Mat Helme" className="rounded-circle img-thumbnail avatar-md" />
+            <img
+                src={user.user.profilePic.url}
+                alt=""
+                title="Mat Helme"
+                className="rounded-circle img-thumbnail avatar-md"
+            />
             <Dropdown show={dropdownOpen} onToggle={toggleDropdown}>
                 <Dropdown.Toggle
                     id="dropdown-notification"
                     to="#"
                     as={Link}
                     onClick={toggleDropdown}
-                    className="user-name h5 mt-2 mb-1 d-block"
-                >
-                    Nowak Helme
+                    className="user-name h5 mt-2 mb-1 d-block">
+                    {user.user.fullName}
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="user-pro-dropdown">
                     <div onClick={toggleDropdown}>
@@ -69,8 +80,7 @@ const UserBox = () => {
                                 <Link
                                     to={item.redirectTo}
                                     className="dropdown-item notify-item"
-                                    key={index + '-profile-menu'}
-                                >
+                                    key={index + '-profile-menu'}>
                                     <i className={classNames(item.icon, 'me-1')}></i>
                                     <span>{item.label}</span>
                                 </Link>
@@ -79,7 +89,7 @@ const UserBox = () => {
                     </div>
                 </Dropdown.Menu>
             </Dropdown>
-            <p className="text-muted left-user-info">Admin Head</p>
+            <p className="text-muted left-user-info">{user.user.designation}</p>
 
             <ul className="list-inline">
                 <li className="list-inline-item">

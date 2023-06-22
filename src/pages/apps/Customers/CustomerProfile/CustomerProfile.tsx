@@ -88,7 +88,7 @@ const CustomerProfile = () => {
                         <Card.Body className="p-3">
                             <Row className="d-flex justify-content-center">
                                 <Col sm={6}>
-                                    <ContactDetails
+                                    {/* <ContactDetails
                                         contact={{
                                             id: 2,
                                             avatar: avatar2,
@@ -99,7 +99,7 @@ const CustomerProfile = () => {
                                             email: 'coderthemes@gmail.com',
                                             location: 'USA',
                                         }}
-                                    />
+                                    /> */}
                                 </Col>
                                 <Col sm={6}>
                                     <StatisticsWidget1

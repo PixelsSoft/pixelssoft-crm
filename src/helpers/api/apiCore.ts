@@ -13,6 +13,7 @@ axios.interceptors.response.use(
         return response;
     },
     (error) => {
+        console.log('ERRORRR: ', error.response.data.error);
         // Any status codes that falls outside the range of 2xx cause this function to trigger
         let message;
 
@@ -33,7 +34,7 @@ axios.interceptors.response.use(
                     break;
                 default: {
                     message =
-                        error.response && error.response.data ? error.response.data['message'] : error.message || error;
+                        error.response && error.response.data ? error.response.data['error'] : error.message || error;
                 }
             }
             return Promise.reject(message);

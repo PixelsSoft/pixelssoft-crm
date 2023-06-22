@@ -126,6 +126,13 @@ const MENU_ITEMS: MenuItemTypes[] = [
             },
         ],
     },
+    {
+        key: 'apps-settings',
+        label: 'Settings',
+        isTitle: false,
+        icon: 'mdi mdi-database-settings-outline',
+        url: '/apps/settings',
+    },
     // {
     //     key: 'apps-tasks',
     //     label: 'Tasks',

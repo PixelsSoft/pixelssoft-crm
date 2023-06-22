@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 // hooks
-import { useToggle } from '../../hooks/';
+import { useRedux, useToggle } from '../../hooks/';
 
 // types
 import { ProfileMenu } from '../../layouts/types';
@@ -17,6 +17,12 @@ type ProfileDropdownProps = {
 
 const ProfileDropdown = ({ userImage, username, menuItems }: ProfileDropdownProps) => {
     const [isOpen, show, hide] = useToggle();
+
+    const { appSelector } = useRedux();
+
+    const { user } = appSelector((state) => ({
+        user: state.Auth.user.user,
+    }));
 
     /*
      * toggle apps-dropdown
@@ -32,11 +38,10 @@ const ProfileDropdown = ({ userImage, username, menuItems }: ProfileDropdownProp
                 variant=""
                 className="nav-link nav-user me-0 waves-effect waves-light"
                 id="page-header-user-dropdown"
-                onClick={toggleDropdown}
-            >
-                <img src={userImage} alt="user" className="rounded-circle" />
+                onClick={toggleDropdown}>
+                <img src={user.profilePic.url} alt="user" className="rounded-circle" />
                 <span className="pro-user-name ms-1">
-                    {username} <i className="mdi mdi-chevron-down"></i>
+                    {user.fullName} <i className="mdi mdi-chevron-down"></i>
                 </span>
             </Dropdown.Toggle>
 
@@ -53,8 +58,7 @@ const ProfileDropdown = ({ userImage, username, menuItems }: ProfileDropdownProp
                                 <Link
                                     to={menu.redirectTo}
                                     className="dropdown-item notify-item"
-                                    key={i + '-profile-menu'}
-                                >
+                                    key={i + '-profile-menu'}>
                                     <i className={classNames(menu.icon, 'me-1')}></i>
                                     <span>{menu.label}</span>
                                 </Link>

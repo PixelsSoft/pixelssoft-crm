@@ -1,19 +1,21 @@
 import { Card, Col, Row } from 'react-bootstrap';
-import { usePageTitle } from '../../../../hooks';
+import { usePageTitle, useRedux } from '../../../../hooks';
 import Table from '../../../../components/Table';
 
 import { records as data } from './data';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { deleteCustomer, getCustomers } from '../../../../redux/customers/actions';
 
 const columns = [
     {
         Header: 'ID',
-        accessor: 'id',
+        accessor: '_id',
         sort: true,
     },
     {
         Header: 'Name',
-        accessor: 'name',
+        accessor: 'fullName',
         sort: true,
     },
     {
@@ -23,7 +25,7 @@ const columns = [
     },
     {
         Header: 'Phone Number',
-        accessor: 'phone',
+        accessor: 'phoneNumber',
         sort: false,
     },
     {
@@ -33,7 +35,7 @@ const columns = [
     },
     {
         Header: 'Time',
-        accessor: 'time',
+        accessor: '_createdAt',
         sort: false,
     },
 ];
@@ -58,6 +60,22 @@ const sizePerPageList = [
 ];
 
 const Customers = () => {
+    const { appSelector, dispatch } = useRedux();
+
+    // const [modal, setModal] = useState(false);
+
+    const { customers, loading, deleteCustomerSuccess } = appSelector((state) => ({
+        customers: state.Customer.customers,
+        loading: state.Customer.loading,
+        deleteCustomerSuccess: state.Customer.deleteCustomerSuccess,
+    }));
+
+    const handleDelete = (id: string) => {
+        dispatch(deleteCustomer(id));
+    };
+
+    // const toggle = () => setModal(!modal);
+
     usePageTitle({
         title: 'Customers',
         breadCrumbItems: [
@@ -72,7 +90,14 @@ const Customers = () => {
             },
         ],
     });
-    return (
+
+    useEffect(() => {
+        dispatch(getCustomers());
+    }, [dispatch, deleteCustomerSuccess]);
+
+    return loading ? (
+        <h4>Loading...</h4>
+    ) : (
         <>
             <Row>
                 <Col>
@@ -93,7 +118,7 @@ const Customers = () => {
                             </Row>
                             <Table
                                 columns={columns}
-                                data={data}
+                                data={customers ? customers : []}
                                 pageSize={5}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}
@@ -101,11 +126,25 @@ const Customers = () => {
                                 isSearchable={true}
                                 hasActions={true}
                                 hasLink={true}
+                                onDelete={handleDelete}
                             />
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
+
+            {/* <Modal show={modal} onHide={toggle}>
+                <Modal.Header onHide={toggle} closeButton>
+                    <h4 className="modal-title">Modal Heading</h4>
+                </Modal.Header>
+                <Modal.Body>
+                    <h5>Are you sure?</h5>
+                    <p>Do you want to delete this customer?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={toggle}>Confirm</Button>
+                </Modal.Footer>
+            </Modal> */}
         </>
     );
 };

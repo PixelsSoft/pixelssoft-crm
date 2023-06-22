@@ -8,5 +8,10 @@ export enum AuthActionTypes {
     FORGOT_PASSWORD = '@@auth/FORGOT_PASSWORD',
     FORGOT_PASSWORD_CHANGE = '@@auth/FORGOT_PASSWORD_CHANGE',
 
+    CREATE_USER = '@@auth/CREATE_USER',
+    CREATE_USER_RESET = '@@auth/CREATE_USER/RESET',
+
+    GET_ALL_USERS = '@@auth/GET_ALL_USERS',
+
     RESET = '@@auth/RESET',
 }

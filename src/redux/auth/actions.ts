@@ -10,19 +10,45 @@ export type AuthActionType = {
         | AuthActionTypes.LOGIN_USER
         | AuthActionTypes.LOGOUT_USER
         | AuthActionTypes.RESET
-        | AuthActionTypes.SIGNUP_USER;
+        | AuthActionTypes.SIGNUP_USER
+        | AuthActionTypes.CREATE_USER
+        | AuthActionTypes.CREATE_USER_RESET
+        | AuthActionTypes.GET_ALL_USERS;
     payload: {} | string;
 };
 
 type UserData = {
-    id: number;
-    email: string;
-    username: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    role: string;
+    user: {
+        _id: string;
+        fullName: string;
+        company: string;
+        email: string;
+        phoneNumber: string;
+        position: string;
+        profilePic: {
+            url: string;
+            path: string;
+        };
+        role: string;
+        designation: string;
+        salary: string;
+        _createdAt: string;
+        password: string;
+    };
     token: string;
+};
+
+type RegisterUserData = {
+    fullName: string;
+    company: string;
+    email: string;
+    phoneNumber: string;
+    position: string;
+    role: string;
+    designation: string;
+    salary: number;
+    password: string;
+    profilePic?: File | null;
 };
 
 // common success
@@ -58,5 +84,20 @@ export const forgotPassword = (email: string): AuthActionType => ({
 
 export const resetAuth = (): AuthActionType => ({
     type: AuthActionTypes.RESET,
+    payload: {},
+});
+
+export const createUser = (details: RegisterUserData): AuthActionType => ({
+    type: AuthActionTypes.CREATE_USER,
+    payload: details,
+});
+
+export const createUserReset = (): AuthActionType => ({
+    type: AuthActionTypes.CREATE_USER_RESET,
+    payload: {},
+});
+
+export const getAllUsers = (): AuthActionType => ({
+    type: AuthActionTypes.GET_ALL_USERS,
     payload: {},
 });

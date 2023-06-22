@@ -100,6 +100,7 @@ type TableProps = {
     searchBoxClass?: string;
     tableClass?: string;
     theadClass?: string;
+    onDelete?: (id: string) => void;
 };
 
 const Table = (props: TableProps) => {
@@ -113,6 +114,9 @@ const Table = (props: TableProps) => {
     const hasLink = props['hasLink'] || false;
     const hasRecordPayment = props['hasRecordPayment'] || false;
     const toggler = props['toggler'] || undefined;
+    const onDelete = props['onDelete'] || undefined;
+
+    console.log(onDelete);
 
     let otherProps: any = {};
 
@@ -247,7 +251,7 @@ const Table = (props: TableProps) => {
                                                     },
                                                 ])}>
                                                 <Link
-                                                    to={`${location.pathname}/${row.values.id}`}
+                                                    to={`${location.pathname}/${row.values._id}`}
                                                     className="text-secondary">
                                                     {cell.render('Cell')}
                                                 </Link>
@@ -276,7 +280,10 @@ const Table = (props: TableProps) => {
                                                     Record
                                                 </Button>
                                             )}
-                                            <i className="fe-trash-2 text-danger" />
+                                            <i
+                                                className="fe-trash-2 text-danger"
+                                                onClick={(e) => (onDelete ? onDelete(row.values._id) : null)}
+                                            />
                                         </td>
                                     )}
                                 </tr>

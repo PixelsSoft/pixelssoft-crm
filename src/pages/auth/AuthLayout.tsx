@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 
 // images
-import LogoDark from '../../assets/images/logo-dark.png';
-import LogoLight from '../../assets/images/logo-light.png';
+import Logo from '../../assets/images/pixelssoft-logo-transparent.png';
 
 type AccountLayoutProps = {
     hasLogo?: boolean;
@@ -14,7 +13,7 @@ type AccountLayoutProps = {
 };
 
 const AuthLayout = ({ hasLogo, bottomLinks, children }: AccountLayoutProps) => {
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
 
     useEffect(() => {
         if (document.body) {
@@ -34,20 +33,20 @@ const AuthLayout = ({ hasLogo, bottomLinks, children }: AccountLayoutProps) => {
                     <Col md={8} lg={6} xl={4}>
                         {hasLogo && (
                             <div className="text-center">
-                                <div className="auth-logo">
+                                <div className="auth-logo mb-4">
                                     <Link to="/" className="logo logo-dark text-center">
                                         <span className="logo-lg">
-                                            <img src={LogoDark} alt="" height="22" />
+                                            <img src={Logo} alt="" height="50" />
                                         </span>
                                     </Link>
 
                                     <Link to="/" className="logo logo-light text-center">
                                         <span className="logo-lg">
-                                            <img src={LogoLight} alt="" height="22" />
+                                            <img src={Logo} alt="" height="50" />
                                         </span>
                                     </Link>
                                 </div>
-                                <p className="text-muted mt-2 mb-4">{t('Responsive Admin Dashboard')}</p>
+                                {/* <p className="text-muted mt-2 mb-4">{t('Responsive Admin Dashboard')}</p> */}
                             </div>
                         )}
                         <Card>
