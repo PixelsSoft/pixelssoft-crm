@@ -47,6 +47,8 @@ const List = () => {
 
     const { dispatch, appSelector } = useRedux();
 
+    console.log(role);
+
     const { loading, createUserSuccess, error, data, users } = appSelector((state) => ({
         loading: state.Auth.loading,
         createUserSuccess: state.Auth.createUserSuccess,
