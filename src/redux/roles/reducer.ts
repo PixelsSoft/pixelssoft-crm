@@ -5,14 +5,22 @@ export type Role = {
     title: string;
     access: {
         all: boolean;
-        payout: boolean;
-        attendance: boolean;
-        expenses: boolean;
-        users: boolean;
-        projects: boolean;
-        invoices: boolean;
-        customers: boolean;
-        leads: boolean;
+        allowDashboard: boolean;
+        allowViewInvoices: boolean;
+        allowCreateInvoices: boolean;
+        allowViewCustomers: boolean;
+        allowCreateCustomers: boolean;
+        allowViewProjects: boolean;
+        allowCreateProjects: boolean;
+        allowSales: boolean;
+        allowViewUsers: boolean;
+        allowCreateUsers: boolean;
+        allowReports: boolean;
+        allowViewExpenses: boolean;
+        allowCreateExpenses: boolean;
+        allowPayouts: boolean;
+        allowAttendance: boolean;
+        allowLeads: boolean;
     };
 };
 

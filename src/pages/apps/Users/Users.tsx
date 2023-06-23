@@ -11,8 +11,33 @@ import ContactDetails from '../../../components/ContactDetails';
 // data
 // import { contacts } from './data';
 import { createUser, getAllUsers } from '../../../redux/actions';
+import { getAllRoles } from '../../../redux/roles/actions';
 
 // dummy data
+
+type Role = {
+    _id: string;
+    title: string;
+    access: {
+        all: boolean;
+        allowDashboard: boolean;
+        allowViewInvoices: boolean;
+        allowCreateInvoices: boolean;
+        allowViewCustomers: boolean;
+        allowCreateCustomers: boolean;
+        allowViewProjects: boolean;
+        allowCreateProjects: boolean;
+        allowSales: boolean;
+        allowViewUsers: boolean;
+        allowCreateUsers: boolean;
+        allowReports: boolean;
+        allowViewExpenses: boolean;
+        allowCreateExpenses: boolean;
+        allowPayouts: boolean;
+        allowAttendance: boolean;
+        allowLeads: boolean;
+    };
+};
 
 type User = {
     _id: string;
@@ -35,7 +60,6 @@ type User = {
 const List = () => {
     const [fullName, setFullName] = useState('');
     const [position, setPosition] = useState('');
-    const [company, setCompany] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
@@ -47,27 +71,27 @@ const List = () => {
 
     const { dispatch, appSelector } = useRedux();
 
-    console.log(role);
-
-    const { loading, createUserSuccess, error, data, users } = appSelector((state) => ({
+    const { loading, createUserSuccess, error, data, users, roles } = appSelector((state) => ({
         loading: state.Auth.loading,
         createUserSuccess: state.Auth.createUserSuccess,
         error: state.Auth.error,
         data: state.Auth.data,
         users: state.Auth.users,
+        roles: state.Roles.roles,
     }));
+
+    const getRole = (id: string): Role => roles.data.find((item: Role) => item._id === id);
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-
+        console.log(role);
         dispatch(
             createUser({
                 fullName,
                 position,
-                company,
                 email,
                 password,
-                role: '6488ba1cf8dbcb28943611d2',
+                role: getRole(role)._id,
                 designation,
                 salary,
                 phoneNumber,
@@ -115,7 +139,6 @@ const List = () => {
             setDesignation('');
             setPhoneNumber('');
             setPosition('');
-            setCompany('');
             setSalary(0);
             setProfilePic(null);
 
@@ -126,6 +149,7 @@ const List = () => {
 
     useEffect(() => {
         dispatch(getAllUsers());
+        dispatch(getAllRoles());
     }, [dispatch]);
 
     return loading ? (
@@ -217,16 +241,6 @@ const List = () => {
                         />
 
                         <FormInput
-                            label={'Company'}
-                            type="text"
-                            name="company"
-                            placeholder="Enter company"
-                            containerClass={'mb-3'}
-                            value={company}
-                            onChange={(e) => setCompany(e.target.value)}
-                        />
-
-                        <FormInput
                             label={'Email address'}
                             type="email"
                             name="email"
@@ -248,11 +262,16 @@ const List = () => {
 
                         <Form.Group className="mb-3" as={Col} controlId="formGridState">
                             <Form.Label>Select Role</Form.Label>
-                            <Form.Select defaultValue="Choose..." onChange={(e) => setRole(e.target.value)}>
-                                <option>Choose...</option>
-                                <option>Director</option>
-                                <option>HR</option>
-                                <option>Developer</option>
+                            <Form.Select
+                                defaultValue="Choose..."
+                                onChange={(e) => {
+                                    console.log(e.target.value);
+                                    setRole(e.target.value);
+                                }}>
+                                <option value={undefined}>Choose...</option>
+                                {roles.data?.map((item: Role) => (
+                                    <option value={item._id}>{item.title}</option>
+                                ))}
                             </Form.Select>
                         </Form.Group>
 

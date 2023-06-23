@@ -105,15 +105,15 @@ const CustomerProfile = () => {
                                     <StatisticsWidget1
                                         title="Total Revenue"
                                         color={'#f05050'}
-                                        data={50}
-                                        stats={256}
+                                        data={0}
+                                        stats={0}
                                         subTitle="Revenue today"
                                     />
                                     <StatisticsWidget1
                                         title="Total Revenue"
                                         color={'#f05050'}
-                                        data={50}
-                                        stats={256}
+                                        data={0}
+                                        stats={0}
                                         subTitle="Revenue today"
                                     />
                                 </Col>

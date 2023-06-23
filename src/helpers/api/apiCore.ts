@@ -5,7 +5,7 @@ import config from '../../config';
 
 // content type
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.baseURL = config.API_URL;
+axios.defaults.baseURL = config.LOCAL;
 
 // intercepting to capture errors
 axios.interceptors.response.use(
@@ -13,7 +13,6 @@ axios.interceptors.response.use(
         return response;
     },
     (error) => {
-        console.log('ERRORRR: ', error.response.data.error);
         // Any status codes that falls outside the range of 2xx cause this function to trigger
         let message;
 

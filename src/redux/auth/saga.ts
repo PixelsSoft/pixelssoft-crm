@@ -32,7 +32,6 @@ type UserData = {
 type RegisterUserData = {
     payload: {
         fullName: string;
-        company: string;
         email: string;
         phoneNumber: string;
         position: string;
@@ -120,7 +119,6 @@ function* createUserAccountSaga({ payload }: RegisterUserData): SagaIterator {
     try {
         const formData = new FormData();
 
-        formData.append('company', payload.company);
         formData.append('email', payload.email);
         formData.append('fullName', payload.fullName);
         formData.append('designation', payload.designation);

@@ -21,7 +21,6 @@ type UserData = {
     user: {
         _id: string;
         fullName: string;
-        company: string;
         email: string;
         phoneNumber: string;
         position: string;
@@ -40,7 +39,6 @@ type UserData = {
 
 type RegisterUserData = {
     fullName: string;
-    company: string;
     email: string;
     phoneNumber: string;
     position: string;
