@@ -372,7 +372,9 @@ const CreateInvoice = () => {
                                                 </div>
                                                 <div className="d-flex flex-column">
                                                     <strong>Description:</strong>
-                                                    <p style={{ width: '50%' }}>{description}</p>
+                                                    <p style={{ width: '50%', whiteSpace: 'pre-wrap' }}>
+                                                        {description}
+                                                    </p>
                                                 </div>
                                             </div>
                                             {/* <div className="d-flex mt-2 flex-column">
@@ -396,7 +398,7 @@ const CreateInvoice = () => {
                                             <Row className="mt-3 text-secondary p-1">
                                                 <div>
                                                     <span style={{ fontStyle: 'italic' }}>Notes:</span>
-                                                    <p>{memo}</p>
+                                                    <p style={{ whiteSpace: 'pre-wrap' }}>{memo}</p>
                                                 </div>
                                             </Row>
                                         </div>
