@@ -17,12 +17,32 @@ export type ActionType = {
     };
 };
 
+export type Invoice = {
+    _id: string;
+    invoiceNumber: string;
+    customerName: string;
+    customerEmail: string;
+    currency: string;
+    projectCategory: string;
+    address: string;
+    address2: string;
+    phoneNumber: string;
+    dateCreated: string;
+    dueDate: string;
+    memo: string;
+    total: number;
+    amountDue: number;
+    quantity: number;
+    description: string;
+    customer: string;
+};
+
 /* 
 Invoices type should be defined and assigned to invoices:
 */
 type State = {
     loading: boolean;
-    invoices: any[] | null;
+    invoices: Invoice[] | null;
 };
 const INIT_STATE: State = {
     loading: false,
