@@ -1,12 +1,31 @@
-import { usePageTitle } from '../../../../hooks';
+import { usePageTitle, useRedux } from '../../../../hooks';
 import { Row, Col, Card, Button, Form, Table, Modal } from 'react-bootstrap';
-import { useRef, useState } from 'react';
+import { ChangeEventHandler, FormEventHandler, useEffect, useRef, useState } from 'react';
 import PSLogo from '../../../../assets/images/pixelssoft-logo-transparent.png';
 import { FormInput } from '../../../../components/form';
 import { useReactToPrint } from 'react-to-print';
+import { getCustomers } from '../../../../redux/customers/actions';
 
 const CreateInvoice = () => {
     const [previewModal, setPreviewModal] = useState(false);
+    const [customer, setCustomer] = useState(undefined);
+
+    const [currency, setCurrency] = useState('');
+    const [email, setEmail] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [invoiceNumber, setInvoiceNumber] = useState(0);
+    const [projectCategory, setProjectCategory] = useState<string | undefined>(undefined);
+    const [address, setAddress] = useState('');
+    const [address2, setAddress2] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [invoiceDate, setInvoiceDate] = useState('');
+    const [dueDate, setDueDate] = useState('');
+
+    const [price, setPrice] = useState(0);
+    const [amount, setAmount] = useState(0);
+    const [quantity, setQuantity] = useState(1);
+    const [description, setDescription] = useState('');
+    const [memo, setMemo] = useState('');
 
     const toggle = () => setPreviewModal(!previewModal);
 
@@ -15,6 +34,12 @@ const CreateInvoice = () => {
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
+
+    const { dispatch, appSelector } = useRedux();
+
+    const { customers } = appSelector((state) => ({
+        customers: state.Customer.customers,
+    }));
 
     usePageTitle({
         title: 'Create Invoice',
@@ -31,13 +56,32 @@ const CreateInvoice = () => {
         ],
     });
 
+    const handleSelectCustomer: ChangeEventHandler<HTMLSelectElement> | undefined = (e) => {
+        let found = customers.find((cust: any) => cust._id === e.target.value);
+        setCustomer(found);
+        setEmail(found.email);
+        setFullName(found.fullName);
+        setPhoneNumber(found.phoneNumber);
+    };
+
+    const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+        console.log(customer);
+        console.log(currency);
+        console.log(amount);
+        console.log(setAmount);
+    };
+
+    useEffect(() => {
+        dispatch(getCustomers());
+    }, [dispatch]);
+
     return (
         <>
             <Row>
                 <Col>
                     <Card>
                         <Card.Body>
-                            <Form>
+                            <Form onSubmit={handleSubmit}>
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Language</Form.Label>
@@ -51,11 +95,14 @@ const CreateInvoice = () => {
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Currency</Form.Label>
-                                        <Form.Select defaultValue="Choose...">
-                                            <option>Choose...</option>
-                                            <option>PKR</option>
-                                            <option>USD</option>
-                                            <option>CAD</option>
+                                        <Form.Select
+                                            value={currency}
+                                            defaultValue="Choose..."
+                                            onChange={(e) => setCurrency(e.target.value)}>
+                                            <option value={undefined}>Choose...</option>
+                                            <option value="PKR">Pakistani Rupee (PKR)</option>
+                                            <option value="USD">US Dollars (USD)</option>
+                                            <option value="CAD">Canadian Dollars (CAD)</option>
                                         </Form.Select>
                                     </Form.Group>
                                 </Row>
@@ -65,11 +112,14 @@ const CreateInvoice = () => {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Select Customer (Auto Fill)</Form.Label>
-                                        <Form.Select defaultValue="Choose...">
-                                            <option>Choose...</option>
-                                            <option>Option 1</option>
-                                            <option>Option 2</option>
-                                            <option>Option 3</option>
+                                        <Form.Select defaultValue="Choose..." onChange={handleSelectCustomer}>
+                                            <option value={undefined}>Choose...</option>
+                                            {customers &&
+                                                customers.map((customer: any, idx: number) => (
+                                                    <option key={idx} value={customer._id}>
+                                                        {customer.fullName}
+                                                    </option>
+                                                ))}
                                         </Form.Select>
                                     </Form.Group>
                                 </Row>
@@ -77,49 +127,85 @@ const CreateInvoice = () => {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Email</Form.Label>
-                                        <Form.Control type="email" placeholder="Email" />
+                                        <Form.Control
+                                            type="email"
+                                            placeholder="Email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridPassword">
+                                        <Form.Label>Full Name</Form.Label>
+                                        <Form.Control value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                                    </Form.Group>
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formGridPassword">
                                         <Form.Label>Invoice #</Form.Label>
-                                        <Form.Control value={1224} disabled />
+                                        <Form.Control
+                                            value={invoiceNumber}
+                                            onChange={(e) => setInvoiceNumber(parseInt(e.target.value))}
+                                        />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Project Category</Form.Label>
-                                        <Form.Select defaultValue="Choose...">
-                                            <option>Choose...</option>
-                                            <option>Website Development</option>
-                                            <option>Logo Design</option>
-                                            <option>App Development</option>
+                                        <Form.Select
+                                            defaultValue="Choose..."
+                                            onChange={(e) => setProjectCategory(e.target.value)}>
+                                            <option value={undefined}>Choose...</option>
+                                            <option value="Website Development">Website Development</option>
+                                            <option value="Logo Design">Logo Design</option>
+                                            <option value="App Development">App Development</option>
                                         </Form.Select>
                                     </Form.Group>
                                 </Row>
 
                                 <Form.Group className="mb-3" controlId="formGridAddress1">
                                     <Form.Label>Address</Form.Label>
-                                    <Form.Control placeholder="1234 Main St" />
+                                    <Form.Control
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        placeholder="1234 Main St"
+                                    />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="formGridAddress2">
                                     <Form.Label>Address 2</Form.Label>
-                                    <Form.Control placeholder="Apartment, studio, or floor" />
+                                    <Form.Control
+                                        value={address2}
+                                        onChange={(e) => setAddress2(e.target.value)}
+                                        placeholder="Apartment, studio, or floor"
+                                    />
                                 </Form.Group>
 
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridCity">
                                         <Form.Label>Phone</Form.Label>
-                                        <Form.Control />
+                                        <Form.Control
+                                            value={phoneNumber}
+                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                        />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Invoice Date</Form.Label>
-                                        <Form.Control type="date" />
+                                        <Form.Control
+                                            type="date"
+                                            value={invoiceDate}
+                                            onChange={(e) => setInvoiceDate(e.target.value)}
+                                        />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridZip">
                                         <Form.Label>Due Date</Form.Label>
-                                        <Form.Control type="date" />
+                                        <Form.Control
+                                            type="date"
+                                            value={dueDate}
+                                            onChange={(e) => setDueDate(e.target.value)}
+                                        />
                                     </Form.Group>
                                 </Row>
 
@@ -136,7 +222,10 @@ const CreateInvoice = () => {
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <Form.Select defaultValue="Choose...">
+                                                    <Form.Select
+                                                        defaultValue="Choose..."
+                                                        disabled
+                                                        value={projectCategory}>
                                                         <option>Choose...</option>
                                                         <option>Website Development</option>
                                                         <option>Logo Design</option>
@@ -144,30 +233,57 @@ const CreateInvoice = () => {
                                                     </Form.Select>
                                                 </td>
                                                 <td>
-                                                    <Form.Control value={1} />
+                                                    <Form.Control
+                                                        type="number"
+                                                        value={quantity}
+                                                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                                    />
                                                 </td>
                                                 <td>
-                                                    <Form.Control value={'$' + 2000} />
+                                                    <Form.Control
+                                                        type="number"
+                                                        value={price}
+                                                        onChange={(e) => setPrice(parseInt(e.target.value))}
+                                                    />
                                                 </td>
-                                                <td>$2000</td>
+                                                <td>${price}</td>
                                             </tr>
                                         </tbody>
                                     </Table>
                                     <Row>
-                                        <FormInput
-                                            label="Memo / Notes"
-                                            type="textarea"
-                                            name="textarea"
-                                            rows={5}
-                                            containerClass={'mb-3'}
-                                            // register={register}
-                                            key="textarea"
-                                            // errors={errors}
-                                            // control={control}
-                                        />
+                                        <Col>
+                                            <FormInput
+                                                label="Description"
+                                                type="textarea"
+                                                name="textarea"
+                                                rows={5}
+                                                containerClass={'mb-3'}
+                                                // register={register}
+                                                key="textarea"
+                                                // errors={errors}
+                                                // control={control}
+                                                value={description}
+                                                onChange={(e) => setDescription(e.target.value)}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <FormInput
+                                                label="Memo / Notes"
+                                                type="textarea"
+                                                name="textarea"
+                                                rows={5}
+                                                containerClass={'mb-3'}
+                                                // register={register}
+                                                key="textarea"
+                                                value={memo}
+                                                onChange={(e) => setMemo(e.target.value)}
+                                                // errors={errors}
+                                                // control={control}
+                                            />
+                                        </Col>
                                     </Row>
                                 </div>
-                                <Row>
+                                <Row className="mt-3">
                                     <Col>
                                         <Button type="submit" className="waves-effect waves-light">
                                             Send Email
@@ -213,34 +329,34 @@ const CreateInvoice = () => {
                                         <Col>
                                             <div className="d-flex flex-column">
                                                 <span style={{ fontWeight: 'bold' }}>Bill To:</span>
-                                                <span>Rashid Khan</span>
+                                                <span>{fullName}</span>
                                             </div>
                                             <div className="d-flex flex-column">
                                                 <span style={{ fontWeight: 'bold' }}>Email:</span>
-                                                <span>rashid.pixelssoft@gmail.com</span>
+                                                <span>{email}</span>
                                             </div>
                                             <div className="d-flex flex-column">
                                                 <span style={{ fontWeight: 'bold' }}>Phone Number:</span>
-                                                <span></span>
+                                                <span>{phoneNumber}</span>
                                             </div>
                                         </Col>
 
                                         <Col>
                                             <div className="d-flex justify-content-end">
                                                 <strong>Invoice #:</strong>
-                                                <span style={{ marginLeft: 5 }}>0002</span>
+                                                <span style={{ marginLeft: 5 }}>{invoiceNumber}</span>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <strong>Invoice Date:</strong>
-                                                <span style={{ marginLeft: 5 }}>2023-06-14</span>
+                                                <span style={{ marginLeft: 5 }}>{invoiceDate}</span>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <strong>Payment Due:</strong>
-                                                <span style={{ marginLeft: 5 }}>2023-06-14</span>
+                                                <span style={{ marginLeft: 5 }}>{dueDate}</span>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <strong>Amount Due (USD):</strong>
-                                                <span style={{ marginLeft: 5 }}>$1000</span>
+                                                <span style={{ marginLeft: 5 }}>${price}</span>
                                             </div>
                                         </Col>
                                     </Row>
@@ -252,11 +368,11 @@ const CreateInvoice = () => {
                                             <div>
                                                 <div className="d-flex flex-column">
                                                     <strong>Item:</strong>
-                                                    <span>Web Development</span>
+                                                    <span>{projectCategory}</span>
                                                 </div>
                                                 <div className="d-flex flex-column">
                                                     <strong>Description:</strong>
-                                                    <p style={{ width: '50%' }}></p>
+                                                    <p style={{ width: '50%' }}>{description}</p>
                                                 </div>
                                             </div>
                                             {/* <div className="d-flex mt-2 flex-column">
@@ -268,19 +384,19 @@ const CreateInvoice = () => {
                                                 <div className="d-flex flex-column align-items-end">
                                                     <div>
                                                         <strong>Total:</strong>
-                                                        <span style={{ marginLeft: 5 }}>$1000</span>
+                                                        <span style={{ marginLeft: 5 }}>${price}</span>
                                                     </div>
 
                                                     <div>
                                                         <strong>Amount Due:</strong>
-                                                        <strong style={{ marginLeft: 5 }}>$1000</strong>
+                                                        <strong style={{ marginLeft: 5 }}>${price}</strong>
                                                     </div>
                                                 </div>
                                             </Row>
                                             <Row className="mt-3 text-secondary p-1">
                                                 <div>
                                                     <span style={{ fontStyle: 'italic' }}>Notes:</span>
-                                                    {/* <p>asidjsoajdosaijdoisajdiosajdiosa</p> */}
+                                                    <p>{memo}</p>
                                                 </div>
                                             </Row>
                                         </div>

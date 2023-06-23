@@ -116,8 +116,6 @@ const Table = (props: TableProps) => {
     const toggler = props['toggler'] || undefined;
     const onDelete = props['onDelete'] || undefined;
 
-    console.log(onDelete);
-
     let otherProps: any = {};
 
     if (isSearchable) {

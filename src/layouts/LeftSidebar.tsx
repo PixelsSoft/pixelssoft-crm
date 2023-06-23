@@ -22,7 +22,6 @@ const UserBox = () => {
         user: state.Auth.user,
     }));
 
-    console.log(appSelector((state) => state));
     // get the profilemenu
     const ProfileMenus = [
         {

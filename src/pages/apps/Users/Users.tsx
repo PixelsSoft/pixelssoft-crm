@@ -262,12 +262,7 @@ const List = () => {
 
                         <Form.Group className="mb-3" as={Col} controlId="formGridState">
                             <Form.Label>Select Role</Form.Label>
-                            <Form.Select
-                                defaultValue="Choose..."
-                                onChange={(e) => {
-                                    console.log(e.target.value);
-                                    setRole(e.target.value);
-                                }}>
+                            <Form.Select defaultValue="Choose..." onChange={(e) => setRole(e.target.value)}>
                                 <option value={undefined}>Choose...</option>
                                 {roles.data?.map((item: Role) => (
                                     <option value={item._id}>{item.title}</option>

@@ -350,6 +350,38 @@ const Settings = () => {
                             </div>
                         </Row>
 
+                        <Row className="my-2">
+                            <h4 className="header-title">Attendance</h4>
+                            <div className="mt-1">
+                                <Form.Check
+                                    type="checkbox"
+                                    id="default-checkbox1"
+                                    label="View Attendance"
+                                    checked={allowAttendance}
+                                    onChange={(e) => setAllowAttendance(!allowAttendance)}
+                                />
+                                <Form.Check
+                                    type="checkbox"
+                                    id="default-checkbox1"
+                                    label="View/Create Payouts"
+                                    checked={allowPayouts}
+                                    onChange={(e) => setAllowPayouts(!allowPayouts)}
+                                />
+                            </div>
+                        </Row>
+                        <Row className="my-2">
+                            <h4 className="header-title">Leads</h4>
+                            <div className="mt-1">
+                                <Form.Check
+                                    type="checkbox"
+                                    id="default-checkbox1"
+                                    label="View Leads"
+                                    checked={allowLeads}
+                                    onChange={(e) => setAllowLeads(!allowLeads)}
+                                />
+                            </div>
+                        </Row>
+
                         {data && (
                             <Alert variant="success" className="my-2">
                                 {data.message}
