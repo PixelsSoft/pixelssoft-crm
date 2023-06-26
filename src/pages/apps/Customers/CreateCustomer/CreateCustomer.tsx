@@ -57,7 +57,6 @@ const CreateCustomer = () => {
     }, [createCustomerSuccess]);
 
     useEffect(() => {
-        console.log('cleanup');
         return () => {
             dispatch(resetCustomers());
         };

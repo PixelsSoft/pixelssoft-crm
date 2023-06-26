@@ -113,13 +113,13 @@ const Login = () => {
                     <FormInput
                         type="email"
                         name="email"
-                        label={t('Email address')}
+                        label={'Email address'}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder={'Email'}
                         containerClass={'mb-3'}
                     />
                     <FormInput
-                        label={t('Password')}
+                        label={'Password'}
                         type="password"
                         name="password"
                         onChange={(e) => setPassword(e.target.value)}

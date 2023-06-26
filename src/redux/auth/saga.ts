@@ -60,7 +60,7 @@ function* login({ payload: { email, password }, type }: UserData): SagaIterator 
         setAuthorization(data['token']);
         yield put(authApiResponseSuccess(AuthActionTypes.LOGIN_USER, data));
     } catch (error: any) {
-        yield put(authApiResponseError(AuthActionTypes.LOGIN_USER, error.response?.data?.error || 'Error'));
+        yield put(authApiResponseError(AuthActionTypes.LOGIN_USER, error || 'Error'));
         api.setLoggedInUser(null);
         setAuthorization(null);
     }

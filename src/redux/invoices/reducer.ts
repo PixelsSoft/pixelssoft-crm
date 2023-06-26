@@ -46,9 +46,93 @@ type State = {
 };
 const INIT_STATE: State = {
     loading: false,
-    invoices: [],
+    invoices: null,
 };
 
-const Invoices = (state: State = INIT_STATE, action: ActionType) => {};
+const Invoices = (state: State = INIT_STATE, action: ActionType): any => {
+    switch (action.type) {
+        case InvoiceActionTypes.API_RESPONSE_SUCCESS:
+            switch (action.payload.actionType) {
+                case InvoiceActionTypes.CREATE_INVOICE: {
+                    return {
+                        ...state,
+                        loading: false,
+                        invoiceCreated: true,
+                    };
+                }
+
+                case InvoiceActionTypes.GET_ALL_INVOICES: {
+                    return {
+                        ...state,
+                        loading: false,
+                        invoices: action.payload.data,
+                    };
+                }
+
+                case InvoiceActionTypes.DELETE_INVOICE: {
+                    return {
+                        ...state,
+                        loading: false,
+                        invoiceDeleted: true,
+                    };
+                }
+
+                default: {
+                    return { ...state };
+                }
+            }
+
+        case InvoiceActionTypes.API_RESPONSE_ERROR:
+            switch (action.payload.actionType) {
+                case InvoiceActionTypes.CREATE_INVOICE: {
+                    return {
+                        ...state,
+                        loading: false,
+                        invoiceCreated: false,
+                        error: action.payload.error,
+                    };
+                }
+
+                case InvoiceActionTypes.GET_ALL_INVOICES: {
+                    return {
+                        ...state,
+                        invoices: null,
+                    };
+                }
+
+                case InvoiceActionTypes.DELETE_INVOICE: {
+                    return {
+                        ...state,
+                        loading: false,
+                        invoiceDeleted: false,
+                        error: action.payload.error,
+                    };
+                }
+
+                default: {
+                    return { ...state };
+                }
+            }
+
+        case InvoiceActionTypes.CREATE_INVOICE:
+            return { ...state, loading: true, invoiceCreated: false };
+
+        case InvoiceActionTypes.DELETE_INVOICE: {
+            return { ...state, loading: true, invoiceDeleted: false };
+        }
+
+        case InvoiceActionTypes.GET_ALL_INVOICES: {
+            return {
+                ...state,
+                loading: true,
+                invoices: null,
+            };
+        }
+
+        default: {
+            return { ...state };
+        }
+    }
+};
 
 export default Invoices;

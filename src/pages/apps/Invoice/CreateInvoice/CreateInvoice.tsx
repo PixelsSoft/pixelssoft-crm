@@ -5,16 +5,20 @@ import PSLogo from '../../../../assets/images/pixelssoft-logo-transparent.png';
 import { FormInput } from '../../../../components/form';
 import { useReactToPrint } from 'react-to-print';
 import { getCustomers } from '../../../../redux/customers/actions';
+import { createInvoice } from '../../../../redux/invoices/actions';
+import { getAllCategories } from '../../../../redux/projectCategories/actions';
 
 const CreateInvoice = () => {
     const [previewModal, setPreviewModal] = useState(false);
     const [customer, setCustomer] = useState(undefined);
+    const [customerId, setCustomerId] = useState('');
 
     const [currency, setCurrency] = useState('');
-    const [email, setEmail] = useState('');
-    const [fullName, setFullName] = useState('');
-    const [invoiceNumber, setInvoiceNumber] = useState(0);
+    const [customerEmail, setCustomerEmail] = useState('');
+    const [customerName, setCustomerName] = useState('');
+    const [invoiceNumber, setInvoiceNumber] = useState('');
     const [projectCategory, setProjectCategory] = useState<string | undefined>(undefined);
+    const [projectName, setProjectName] = useState('');
     const [address, setAddress] = useState('');
     const [address2, setAddress2] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -22,7 +26,7 @@ const CreateInvoice = () => {
     const [dueDate, setDueDate] = useState('');
 
     const [price, setPrice] = useState(0);
-    const [amount, setAmount] = useState(0);
+    // const [amount, setAmount] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [description, setDescription] = useState('');
     const [memo, setMemo] = useState('');
@@ -37,8 +41,9 @@ const CreateInvoice = () => {
 
     const { dispatch, appSelector } = useRedux();
 
-    const { customers } = appSelector((state) => ({
+    const { customers, categories } = appSelector((state) => ({
         customers: state.Customer.customers,
+        categories: state.ProjectCategories.categories,
     }));
 
     usePageTitle({
@@ -59,21 +64,48 @@ const CreateInvoice = () => {
     const handleSelectCustomer: ChangeEventHandler<HTMLSelectElement> | undefined = (e) => {
         let found = customers.find((cust: any) => cust._id === e.target.value);
         setCustomer(found);
-        setEmail(found.email);
-        setFullName(found.fullName);
+        setCustomerEmail(found.email);
+        setCustomerId(found._id);
+        setCustomerName(found.fullName);
         setPhoneNumber(found.phoneNumber);
     };
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-        console.log(customer);
-        console.log(currency);
-        console.log(amount);
-        console.log(setAmount);
+        e.preventDefault();
+        dispatch(
+            createInvoice({
+                customerEmail,
+                customerName,
+                address,
+                address2,
+                phoneNumber,
+                currency,
+                amountDue: price,
+                total: price,
+                customer: customerId,
+                quantity,
+                invoiceDate,
+                dueDate,
+                invoiceNumber,
+                memo,
+                description,
+                projectCategory,
+            })
+        );
+    };
+
+    const handleSelectProjectCategory: ChangeEventHandler<HTMLSelectElement> = (e) => {
+        let found = categories.data?.find((category: any) => category._id === e.target.value);
+        setProjectName(found.name);
+        setProjectCategory(found._id);
     };
 
     useEffect(() => {
         dispatch(getCustomers());
+        dispatch(getAllCategories());
     }, [dispatch]);
+
+    console.log(customer);
 
     return (
         <>
@@ -130,14 +162,17 @@ const CreateInvoice = () => {
                                         <Form.Control
                                             type="email"
                                             placeholder="Email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            value={customerEmail}
+                                            onChange={(e) => setCustomerEmail(e.target.value)}
                                         />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridPassword">
                                         <Form.Label>Full Name</Form.Label>
-                                        <Form.Control value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                                        <Form.Control
+                                            value={customerName}
+                                            onChange={(e) => setCustomerName(e.target.value)}
+                                        />
                                     </Form.Group>
                                 </Row>
 
@@ -146,19 +181,18 @@ const CreateInvoice = () => {
                                         <Form.Label>Invoice #</Form.Label>
                                         <Form.Control
                                             value={invoiceNumber}
-                                            onChange={(e) => setInvoiceNumber(parseInt(e.target.value))}
+                                            onChange={(e) => setInvoiceNumber(e.target.value)}
                                         />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Project Category</Form.Label>
-                                        <Form.Select
-                                            defaultValue="Choose..."
-                                            onChange={(e) => setProjectCategory(e.target.value)}>
+                                        <Form.Select defaultValue="Choose..." onChange={handleSelectProjectCategory}>
                                             <option value={undefined}>Choose...</option>
-                                            <option value="Website Development">Website Development</option>
-                                            <option value="Logo Design">Logo Design</option>
-                                            <option value="App Development">App Development</option>
+                                            {categories &&
+                                                categories.data?.map((category: { _id: string; name: string }) => (
+                                                    <option value={category._id}>{category.name}</option>
+                                                ))}
                                         </Form.Select>
                                     </Form.Group>
                                 </Row>
@@ -222,14 +256,8 @@ const CreateInvoice = () => {
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <Form.Select
-                                                        defaultValue="Choose..."
-                                                        disabled
-                                                        value={projectCategory}>
+                                                    <Form.Select disabled value={projectName}>
                                                         <option>Choose...</option>
-                                                        <option>Website Development</option>
-                                                        <option>Logo Design</option>
-                                                        <option>App Development</option>
                                                     </Form.Select>
                                                 </td>
                                                 <td>
@@ -329,11 +357,11 @@ const CreateInvoice = () => {
                                         <Col>
                                             <div className="d-flex flex-column">
                                                 <span style={{ fontWeight: 'bold' }}>Bill To:</span>
-                                                <span>{fullName}</span>
+                                                <span>{customerName}</span>
                                             </div>
                                             <div className="d-flex flex-column">
                                                 <span style={{ fontWeight: 'bold' }}>Email:</span>
-                                                <span>{email}</span>
+                                                <span>{customerEmail}</span>
                                             </div>
                                             <div className="d-flex flex-column">
                                                 <span style={{ fontWeight: 'bold' }}>Phone Number:</span>
@@ -368,7 +396,7 @@ const CreateInvoice = () => {
                                             <div>
                                                 <div className="d-flex flex-column">
                                                     <strong>Item:</strong>
-                                                    <span>{projectCategory}</span>
+                                                    <span>{projectName}</span>
                                                 </div>
                                                 <div className="d-flex flex-column">
                                                     <strong>Description:</strong>
