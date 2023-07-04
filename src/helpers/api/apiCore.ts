@@ -5,7 +5,7 @@ import config from '../../config';
 
 // content type
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.baseURL = config.LOCAL;
+axios.defaults.baseURL = config.API_URL;
 
 // intercepting to capture errors
 axios.interceptors.response.use(
@@ -90,22 +90,22 @@ class APICore {
         return response;
     };
 
-    getMultiple = (urls: string, params: any) => {
-        const reqs = [];
-        let queryString = '';
-        if (params) {
-            queryString = params
-                ? Object.keys(params)
-                      .map((key) => key + '=' + params[key])
-                      .join('&')
-                : '';
-        }
+    // getMultiple = (urls: string, params: any) => {
+    //     const reqs = [];
+    //     let queryString = '';
+    //     if (params) {
+    //         queryString = params
+    //             ? Object.keys(params)
+    //                   .map((key) => key + '=' + params[key])
+    //                   .join('&')
+    //             : '';
+    //     }
 
-        for (const url of urls) {
-            reqs.push(axios.get(`${url}?${queryString}`));
-        }
-        return axios.all(reqs);
-    };
+    //     for (const url of urls) {
+    //         reqs.push(axios.get(`${url}?${queryString}`));
+    //     }
+    //     return axios.all(reqs);
+    // };
 
     /**
      * post given data to url
