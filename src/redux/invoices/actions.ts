@@ -9,7 +9,9 @@ export type InvoiceActionType = {
         | InvoiceActionTypes.DELETE_INVOICE
         | InvoiceActionTypes.GET_ALL_INVOICES
         | InvoiceActionTypes.GET_SHARE_LINK
-        | InvoiceActionTypes.SEND_EMAIL;
+        | InvoiceActionTypes.SEND_EMAIL
+        | InvoiceActionTypes.GET_INVOICE_NUMBER
+        | InvoiceActionTypes.RESET_INVOICE;
 
     payload: {} | string;
 };
@@ -58,5 +60,15 @@ export const deleteInvoice = (id: string): InvoiceActionType => ({
 
 export const getAllInvoices = (): InvoiceActionType => ({
     type: InvoiceActionTypes.GET_ALL_INVOICES,
+    payload: {},
+});
+
+export const getInvoiceNumber = (): InvoiceActionType => ({
+    type: InvoiceActionTypes.GET_INVOICE_NUMBER,
+    payload: {},
+});
+
+export const resetInvoice = (): InvoiceActionType => ({
+    type: InvoiceActionTypes.RESET_INVOICE,
     payload: {},
 });

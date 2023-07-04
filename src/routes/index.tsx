@@ -15,6 +15,8 @@ import { LayoutTypes } from '../constants';
 
 // hooks
 import { useRedux } from '../hooks';
+import Checkout from '../pages/apps/Invoice/Checkout/Checkout';
+import SuccessPage from '../pages/apps/Invoice/Checkout/SuccessPage';
 
 // lazy load all the views
 // auth
@@ -47,6 +49,7 @@ const Expenses = React.lazy(() => import('../pages/apps/Expense/List/Expenses'))
 const ExpenseDetails = React.lazy(() => import('../pages/apps/Expense/Details/ExpenseDetails'));
 const Attendance = React.lazy(() => import('../pages/apps/Attendance/Attendance'));
 const Sales = React.lazy(() => import('../pages/apps/Sales/Sales'));
+const Leads = React.lazy(() => import('../pages/apps/Leads/Leads'));
 const Settings = React.lazy(() => import('../pages/apps/Settings/Settings'));
 
 // extra pages
@@ -157,6 +160,8 @@ const AllRoutes = () => {
 
     return useRoutes([
         { path: '/', element: <Root /> },
+        { path: 'checkout/:id', element: <Checkout /> },
+        { path: 'payment-success', element: <SuccessPage /> },
         {
             // public routes
             path: '/',
@@ -278,6 +283,10 @@ const AllRoutes = () => {
                         {
                             path: 'sales',
                             element: <LoadComponent component={Sales} />,
+                        },
+                        {
+                            path: 'leads',
+                            element: <LoadComponent component={Leads} />,
                         },
                         {
                             path: 'settings',

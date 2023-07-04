@@ -8,7 +8,9 @@ export type ActionType = {
         | InvoiceActionTypes.DELETE_INVOICE
         | InvoiceActionTypes.GET_ALL_INVOICES
         | InvoiceActionTypes.GET_SHARE_LINK
-        | InvoiceActionTypes.SEND_EMAIL;
+        | InvoiceActionTypes.SEND_EMAIL
+        | InvoiceActionTypes.GET_INVOICE_NUMBER
+        | InvoiceActionTypes.RESET_INVOICE;
 
     payload: {
         actionType?: string;
@@ -58,6 +60,8 @@ const Invoices = (state: State = INIT_STATE, action: ActionType): any => {
                         ...state,
                         loading: false,
                         invoiceCreated: true,
+                        data: action.payload.data,
+                        error: null,
                     };
                 }
 
@@ -77,6 +81,14 @@ const Invoices = (state: State = INIT_STATE, action: ActionType): any => {
                     };
                 }
 
+                case InvoiceActionTypes.GET_INVOICE_NUMBER: {
+                    return {
+                        ...state,
+                        loading: false,
+                        invoiceNumber: action.payload.data,
+                    };
+                }
+
                 default: {
                     return { ...state };
                 }
@@ -89,6 +101,7 @@ const Invoices = (state: State = INIT_STATE, action: ActionType): any => {
                         ...state,
                         loading: false,
                         invoiceCreated: false,
+                        data: null,
                         error: action.payload.error,
                     };
                 }
@@ -109,6 +122,15 @@ const Invoices = (state: State = INIT_STATE, action: ActionType): any => {
                     };
                 }
 
+                case InvoiceActionTypes.GET_INVOICE_NUMBER: {
+                    return {
+                        ...state,
+                        loading: false,
+                        invoiceNumber: null,
+                        error: action.payload.error,
+                    };
+                }
+
                 default: {
                     return { ...state };
                 }
@@ -121,11 +143,27 @@ const Invoices = (state: State = INIT_STATE, action: ActionType): any => {
             return { ...state, loading: true, invoiceDeleted: false };
         }
 
+        case InvoiceActionTypes.GET_INVOICE_NUMBER: {
+            return { ...state, loading: true, invoiceNumber: null };
+        }
+
         case InvoiceActionTypes.GET_ALL_INVOICES: {
             return {
                 ...state,
                 loading: true,
                 invoices: null,
+            };
+        }
+
+        case InvoiceActionTypes.RESET_INVOICE: {
+            return {
+                ...state,
+                loading: false,
+                invoices: null,
+                invoiceNumber: null,
+                invoiceDeleted: false,
+                error: null,
+                data: null,
             };
         }
 

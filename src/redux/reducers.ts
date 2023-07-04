@@ -7,12 +7,14 @@ import PageTitle from './pageTitle/reducers';
 import projectCategories from './projectCategories/reducer';
 
 import Roles from './roles/reducer';
+import Invoices from './invoices/reducer';
 
 export default combineReducers({
     Auth,
     Customer,
     Roles,
     ProjectCategories: projectCategories,
+    Invoices,
     Layout,
     PageTitle,
 });

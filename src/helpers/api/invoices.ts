@@ -26,4 +26,9 @@ function createInvoiceApi(params: InvoiceDetails) {
     return api.create(baseUrl, params);
 }
 
-export { createInvoiceApi };
+function getInvoiceNumberApi(params: {}) {
+    const baseUrl = '/invoices/generate-number';
+    return api.get(baseUrl, params);
+}
+
+export { createInvoiceApi, getInvoiceNumberApi };

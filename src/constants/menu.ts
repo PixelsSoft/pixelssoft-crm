@@ -111,7 +111,13 @@ const MENU_ITEMS: MenuItemTypes[] = [
         icon: 'far fa-map',
         url: '/apps/attendance',
     },
-
+    {
+        key: 'apps-leads',
+        label: 'Leads',
+        isTitle: false,
+        icon: 'far fa-map',
+        url: '/apps/leads',
+    },
     {
         key: 'apps-email',
         label: 'Email',

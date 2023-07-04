@@ -7,4 +7,6 @@ export enum InvoiceActionTypes {
     DELETE_INVOICE = '@invoice/DELETE_INVOICE',
     GET_SHARE_LINK = '@invoice/GET_SHARE_LINK',
     SEND_EMAIL = '@invoice/SEND_EMAIL',
+    GET_INVOICE_NUMBER = '@invoice/GET_INVOICE_NUMBER',
+    RESET_INVOICE = '@invoice/RESET_INVOICE',
 }
