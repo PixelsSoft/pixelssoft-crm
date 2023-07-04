@@ -112,7 +112,7 @@ const VerticalLayout = () => {
                     </div>
 
                     <Suspense fallback={loading()}>
-                        <Footer />
+
                     </Suspense>
                 </div>
             </div>
