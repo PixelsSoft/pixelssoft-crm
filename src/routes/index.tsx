@@ -233,7 +233,7 @@ const AllRoutes = () => {
                             element: <LoadComponent component={ChatApp} />,
                         },
                         {
-                            path: 'email/inbox',
+                            path: 'email',
                             element: <LoadComponent component={Inbox} />,
                         },
                         {

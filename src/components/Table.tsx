@@ -13,7 +13,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 // components
 import Pagination from './Pagination';
-import { Button } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
+import FormInput from './form/FormInput';
 
 type GlobalFilterProps = {
     preGlobalFilteredRows: any;
@@ -101,6 +102,11 @@ type TableProps = {
     tableClass?: string;
     theadClass?: string;
     onDelete?: (id: string) => void;
+    disabledUserSelect?: boolean;
+    hasComments?: boolean;
+    commentOnChange?: () => void;
+    hasStatus?: boolean;
+    statusOnChange?: () => void;
 };
 
 const Table = (props: TableProps) => {
@@ -115,6 +121,11 @@ const Table = (props: TableProps) => {
     const hasRecordPayment = props['hasRecordPayment'] || false;
     const toggler = props['toggler'] || undefined;
     const onDelete = props['onDelete'] || undefined;
+    const disableUserSelect = props['disabledUserSelect'] || false;
+    const hasComments = props['hasComments'] || false;
+    // const commentOnChange = props['commentOnChange'] || undefined;
+    const hasStatus = props['hasStatus'] || false;
+    const statusOnChange = props['statusOnChange'];
 
     let otherProps: any = {};
 
@@ -216,6 +227,7 @@ const Table = (props: TableProps) => {
 
             <div className="table-responsive">
                 <table
+                    style={{ userSelect: disableUserSelect ? 'none' : 'auto' }}
                     {...dataTable.getTableProps()}
                     className={classNames('table table-centered react-table', props['tableClass'])}>
                     <thead className={props['theadClass']}>
@@ -232,6 +244,9 @@ const Table = (props: TableProps) => {
                                         {column.render('Header')}
                                     </th>
                                 ))}
+                                {hasStatus && <th>Status</th>}
+                                {hasComments && <th>Comments</th>}
+                                {hasActions && <th>Actions</th>}
                             </tr>
                         ))}
                     </thead>
@@ -265,6 +280,25 @@ const Table = (props: TableProps) => {
                                             </td>
                                         );
                                     })}
+                                    {hasStatus && (
+                                        <td>
+                                            <Form.Select defaultValue="Status" onChange={statusOnChange}>
+                                                <option value={undefined}>Responded</option>
+                                                <option value={undefined}>Not Responsed</option>
+                                            </Form.Select>
+                                        </td>
+                                    )}
+                                    {hasComments && (
+                                        <td>
+                                            <FormInput
+                                                type="textarea"
+                                                name="textarea"
+                                                rows={2}
+                                                // register={register}
+                                                key="textarea"
+                                            />
+                                        </td>
+                                    )}
 
                                     {hasActions && (
                                         <td>

@@ -1,20 +1,20 @@
-import { Card, Col, Row } from 'react-bootstrap';
+import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
 import { usePageTitle } from '../../../hooks';
 import Table from '../../../components/Table';
 
-import { Link } from 'react-router-dom';
-
-const data = [];
+import { records as data } from './data';
+import FormInput from '../../../components/form/FormInput';
+import { useState } from 'react';
 
 const columns = [
     {
         Header: 'ID',
-        accessor: '_id',
+        accessor: 'id',
         sort: true,
     },
     {
         Header: 'Name',
-        accessor: 'fullName',
+        accessor: 'name',
         sort: true,
     },
     {
@@ -24,22 +24,12 @@ const columns = [
     },
     {
         Header: 'Phone Number',
-        accessor: 'phoneNumber',
+        accessor: 'phone',
         sort: false,
     },
     {
         Header: 'Company',
         accessor: 'company',
-        sort: false,
-    },
-    {
-        Header: 'Status',
-        accessor: 'status',
-        sort: false,
-    },
-    {
-        Header: 'Comments',
-        accessor: 'comments',
         sort: false,
     },
 ];
@@ -64,6 +54,8 @@ const sizePerPageList = [
 ];
 
 const Leads = () => {
+    const [modal, setModal] = useState(false);
+    const toggle = () => setModal(!modal);
     usePageTitle({
         title: 'Leads',
         breadCrumbItems: [
@@ -86,44 +78,74 @@ const Leads = () => {
                     <Card>
                         <Card.Body>
                             <Row>
-                                <Col>
+                                {/* <Col>
                                     <h4 className="header-title mb-4">Leads</h4>
-                                </Col>
-                                <Col sm={4} className="d-flex justify-content-end">
-                                    <Link
-                                        to="profile/new"
+                                </Col> */}
+                                <Col className="d-flex justify-content-end">
+                                    <Button
+                                        onClick={toggle}
                                         className="btn btn-purple rounded-pill w-md waves-effect waves-light mb-3">
                                         <i className="mdi mdi-plus me-1"></i>
                                         Create Lead
-                                    </Link>
+                                    </Button>
                                 </Col>
                             </Row>
                             <Table
                                 columns={columns}
-                                data={[]}
+                                data={data}
                                 pageSize={5}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}
                                 pagination={true}
                                 isSearchable={true}
+                                disabledUserSelect={true}
+                                hasComments
+                                hasStatus
                             />
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
-
-            {/* <Modal show={modal} onHide={toggle}>
-                <Modal.Header onHide={toggle} closeButton>
-                    <h4 className="modal-title">Modal Heading</h4>
+            <Modal show={modal} onHide={toggle} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title as="h4">New Lead</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h5>Are you sure?</h5>
-                    <p>Do you want to delete this customer?</p>
+                    <Form>
+                        <FormInput
+                            label={'Name'}
+                            type="text"
+                            name="name"
+                            placeholder="Enter name"
+                            containerClass={'mb-3'}
+                        />
+
+                        <FormInput
+                            label={'Email address'}
+                            type="email"
+                            name="email"
+                            placeholder="Enter email"
+                            containerClass={'mb-3'}
+                        />
+
+                        <FormInput
+                            label={'Phone #'}
+                            type="text"
+                            name="phone"
+                            placeholder="Enter Phone #"
+                            containerClass={'mb-3'}
+                        />
+
+                        <Button variant="light" className="waves-effect waves-light me-1" type="submit">
+                            Save
+                        </Button>
+
+                        <Button variant="danger" className="waves-effect waves-light" onClick={toggle}>
+                            Cancel
+                        </Button>
+                    </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={toggle}>Confirm</Button>
-                </Modal.Footer>
-            </Modal> */}
+            </Modal>
         </>
     );
 };

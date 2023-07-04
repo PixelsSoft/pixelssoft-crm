@@ -14,7 +14,7 @@ export type MenuItemTypes = {
 };
 
 const MENU_ITEMS: MenuItemTypes[] = [
-    { key: 'navigation', label: 'Navigation', isTitle: true },
+    // { key: 'navigation', label: 'Navigation', isTitle: true },
     {
         key: 'dashboard',
         label: 'Dashboard',
@@ -22,6 +22,13 @@ const MENU_ITEMS: MenuItemTypes[] = [
         icon: 'mdi mdi-view-dashboard-outline',
         badge: { variant: 'success', text: '9+' },
         url: '/dashboard',
+    },
+    {
+        key: 'sales',
+        label: 'Sales',
+        isTitle: false,
+        icon: 'fas fa-chart-bar',
+        url: '/apps/sales',
     },
     {
         key: 'invoice',
@@ -59,11 +66,40 @@ const MENU_ITEMS: MenuItemTypes[] = [
         url: '/apps/projects',
     },
     {
-        key: 'sales',
-        label: 'Sales',
+        key: 'hr',
+        label: 'Hr',
         isTitle: false,
-        icon: 'fas fa-chart-bar',
-        url: '/apps/sales',
+        icon: 'mdi mdi-account-supervisor-circle',
+        children: [
+            {
+                key: 'employee',
+                label: 'Employee',
+                url: '/apps/invoice/invoices',
+                icon: 'mdi mdi-account-group',
+                parentKey: 'hr',
+            },
+            {
+                key: 'attendance',
+                label: 'Attendance',
+                icon: 'mdi mdi-book-alert',
+                url: '/apps/attendance',
+                parentKey: 'hr',
+            },
+            {
+                key: 'payout',
+                label: 'Payout',
+                icon: 'mdi mdi-account-cash',
+                url: '/apps/attendance',
+                parentKey: 'hr',
+            },
+            {
+                key: 'manage-leaves',
+                label: 'Manage Leaves',
+                icon: 'mdi mdi-account-multiple-minus',
+                url: '/apps/attendance',
+                parentKey: 'hr',
+            },
+        ],
     },
 
     {
@@ -123,14 +159,15 @@ const MENU_ITEMS: MenuItemTypes[] = [
         label: 'Email',
         isTitle: false,
         icon: 'mdi mdi-email-outline',
-        children: [
-            {
-                key: 'email-inbox',
-                label: 'Inbox',
-                url: '/apps/email/inbox',
-                parentKey: 'apps-email',
-            },
-        ],
+        url: '/apps/email/',
+        // children: [
+        //     {
+        //         key: 'email-inbox',
+        //         label: 'Inbox',
+        //         url: '/apps/email/inbox',
+        //         parentKey: 'apps-email',
+        //     },
+        // ],
     },
     {
         key: 'apps-settings',
@@ -160,26 +197,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     //     ],
     // },
 
-    // {
-    //     key: 'apps-contacts',
-    //     label: 'Contacts',
-    //     isTitle: false,
-    //     icon: 'mdi mdi-book-open-page-variant-outline',
-    //     children: [
-    //         {
-    //             key: 'contacts-list',
-    //             label: 'Users',
-    //             url: '/apps/contacts/list',
-    //             parentKey: 'apps-contacts',
-    //         },
-    //         {
-    //             key: 'contacts-profile',
-    //             label: 'Profile',
-    //             url: '/apps/contacts/profile',
-    //             parentKey: 'apps-contacts',
-    //         },
-    //     ],
-    // },
+
     { key: 'custom', label: 'Custom', isTitle: true },
     {
         key: 'extra-pages',
