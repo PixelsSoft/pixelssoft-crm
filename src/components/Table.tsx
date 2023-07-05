@@ -13,8 +13,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 // components
 import Pagination from './Pagination';
-import { Button, Form } from 'react-bootstrap';
-import FormInput from './form/FormInput';
+import { Button, Dropdown, Form } from 'react-bootstrap';
 
 type GlobalFilterProps = {
     preGlobalFilteredRows: any;
@@ -107,6 +106,7 @@ type TableProps = {
     commentOnChange?: () => void;
     hasStatus?: boolean;
     statusOnChange?: () => void;
+    onEdit?: (id: string) => void;
 };
 
 const Table = (props: TableProps) => {
@@ -122,10 +122,9 @@ const Table = (props: TableProps) => {
     const toggler = props['toggler'] || undefined;
     const onDelete = props['onDelete'] || undefined;
     const disableUserSelect = props['disabledUserSelect'] || false;
-    const hasComments = props['hasComments'] || false;
-    // const commentOnChange = props['commentOnChange'] || undefined;
     const hasStatus = props['hasStatus'] || false;
     const statusOnChange = props['statusOnChange'];
+    const onEdit = props['onEdit'];
 
     let otherProps: any = {};
 
@@ -245,7 +244,6 @@ const Table = (props: TableProps) => {
                                     </th>
                                 ))}
                                 {hasStatus && <th>Status</th>}
-                                {hasComments && <th>Comments</th>}
                                 {hasActions && <th>Actions</th>}
                             </tr>
                         ))}
@@ -288,17 +286,6 @@ const Table = (props: TableProps) => {
                                             </Form.Select>
                                         </td>
                                     )}
-                                    {hasComments && (
-                                        <td>
-                                            <FormInput
-                                                type="textarea"
-                                                name="textarea"
-                                                rows={2}
-                                                // register={register}
-                                                key="textarea"
-                                            />
-                                        </td>
-                                    )}
 
                                     {hasActions && (
                                         <td>
@@ -312,10 +299,27 @@ const Table = (props: TableProps) => {
                                                     Record
                                                 </Button>
                                             )}
-                                            <i
+                                            {/* <i
                                                 className="fe-trash-2 text-danger"
                                                 onClick={(e) => (onDelete ? onDelete(row.values._id) : null)}
-                                            />
+                                            /> */}
+                                            <Dropdown className="float-end" align="end">
+                                                <Dropdown.Toggle as="a" className="cursor-pointer card-drop">
+                                                    <i className="mdi mdi-dots-vertical"></i>
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item
+                                                        onClick={() => (onEdit ? onEdit(row.values._id) : null)}>
+                                                        Edit
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        onClick={(e) => (onDelete ? onDelete(row.values._id) : null)}>
+                                                        Delete
+                                                    </Dropdown.Item>
+                                                    {/* <Dropdown.Item>Something Else</Dropdown.Item>
+                                                    <Dropdown.Item>Separated link</Dropdown.Item> */}
+                                                </Dropdown.Menu>
+                                            </Dropdown>
                                         </td>
                                     )}
                                 </tr>
