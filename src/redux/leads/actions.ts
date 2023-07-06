@@ -51,3 +51,8 @@ export const updateComment = (id: string, comment: string): LeadsActionType => (
     type: LeadsActionTypes.UPDATE_COMMENTS,
     payload: { id, comment },
 });
+
+export const updateStatus = (id: string, status: 'Responded' | 'Not Responded' | ''): LeadsActionType => ({
+    type: LeadsActionTypes.UPDATE_STATUS,
+    payload: { id, status },
+});

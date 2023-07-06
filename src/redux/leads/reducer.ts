@@ -73,6 +73,14 @@ const Leads = (state = INIT_STATE, action: ActionType): any => {
                     };
                 }
 
+                case LeadsActionTypes.UPDATE_STATUS: {
+                    return {
+                        ...state,
+                        statusUpdated: true,
+                        error: null,
+                    };
+                }
+
                 default:
                     return { ...state };
             }
@@ -115,6 +123,14 @@ const Leads = (state = INIT_STATE, action: ActionType): any => {
                     };
                 }
 
+                case LeadsActionTypes.UPDATE_STATUS: {
+                    return {
+                        ...state,
+                        statusUpdated: false,
+                        error: action.payload.error,
+                    };
+                }
+
                 default:
                     return { ...state };
             }
@@ -130,6 +146,20 @@ const Leads = (state = INIT_STATE, action: ActionType): any => {
                 ...state,
                 loading: false,
                 commentUpdated: false,
+            };
+
+        case LeadsActionTypes.DELETE_LEAD:
+            return {
+                ...state,
+                loading: false,
+                leadDeleteSuccess: false,
+            };
+
+        case LeadsActionTypes.UPDATE_STATUS:
+            return {
+                ...state,
+                loading: false,
+                statusUpdated: false,
             };
 
         default:

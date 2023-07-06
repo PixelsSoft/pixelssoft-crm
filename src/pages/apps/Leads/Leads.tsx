@@ -4,7 +4,7 @@ import Table from '../../../components/Table';
 
 import FormInput from '../../../components/form/FormInput';
 import { FormEventHandler, useEffect, useState } from 'react';
-import { createNewLead, getAllLeads, updateComment } from '../../../redux/leads/actions';
+import { createNewLead, deleteLead, getAllLeads, updateComment, updateStatus } from '../../../redux/leads/actions';
 
 type Lead = {
     _id: string;
@@ -13,6 +13,7 @@ type Lead = {
     phone: number;
     status: 'Responded' | 'Not Responded';
     comments: string;
+    createdBy: string;
 };
 
 const columns = [
@@ -41,6 +42,16 @@ const columns = [
         accessor: 'comments',
         sort: false,
     },
+    {
+        Header: 'Status',
+        accessor: 'status',
+        sort: false,
+    },
+    {
+        Header: 'Created By',
+        accessor: 'createdBy.fullName',
+        sort: false,
+    },
 ];
 
 const sizePerPageList = [
@@ -60,6 +71,10 @@ const sizePerPageList = [
 
 const Leads = () => {
     const [modal, setModal] = useState(false);
+    const [statusModal, setStatusModal] = useState(false);
+    const [statusId, setStatusId] = useState('');
+    const [status, setStatus] = useState<'Responded' | 'Not Responded' | ''>('');
+
     const [editModal, setEditModal] = useState(false);
     const [editId, setEditId] = useState('');
 
@@ -70,18 +85,26 @@ const Leads = () => {
 
     const { dispatch, appSelector } = useRedux();
 
-    const { leads, createLeadSuccess, data, error, commentUpdated } = appSelector((state) => ({
-        leads: state.Leads.leads,
-        createLeadSuccess: state.Leads.createLeadSuccess,
-        data: state.Leads.data,
-        error: state.Leads.error,
-        commentUpdated: state.Leads.commentUpdated,
-    }));
+    const { leads, createLeadSuccess, data, error, commentUpdated, leadDeleteSuccess, statusUpdated } = appSelector(
+        (state) => ({
+            leads: state.Leads.leads,
+            createLeadSuccess: state.Leads.createLeadSuccess,
+            data: state.Leads.data,
+            error: state.Leads.error,
+            commentUpdated: state.Leads.commentUpdated,
+            leadDeleteSuccess: state.Leads.leadDeleteSuccess,
+            statusUpdated: state.Leads.statusUpdated,
+        })
+    );
 
     const toggle = () => setModal(!modal);
     const editModalToggle = (id: string) => {
         setEditId(id);
         setEditModal(!editModal);
+    };
+    const toggleStatusModal = (id: string) => {
+        setStatusId(id);
+        setStatusModal(!statusModal);
     };
 
     usePageTitle({
@@ -106,8 +129,17 @@ const Leads = () => {
 
     const handleEdit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        console.log(editId, comment);
         dispatch(updateComment(editId, comment));
+    };
+
+    const handleStatusChange: FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault();
+
+        dispatch(updateStatus(statusId, status));
+    };
+
+    const handleDelete = (id: string) => {
+        dispatch(deleteLead(id));
     };
 
     useEffect(() => {
@@ -115,8 +147,9 @@ const Leads = () => {
             setName('');
             setEmail('');
             setPhone('');
+            dispatch(getAllLeads());
         }
-    }, [createLeadSuccess]);
+    }, [createLeadSuccess, dispatch]);
 
     useEffect(() => {
         dispatch(getAllLeads());
@@ -131,12 +164,35 @@ const Leads = () => {
     }, [editId, editModal, leads]);
 
     useEffect(() => {
+        if (statusModal) {
+            setStatus(leads.find((lead: Lead) => lead._id === statusId).status);
+        } else {
+            setStatus('');
+        }
+    }, [leads, statusId, statusModal]);
+
+    useEffect(() => {
         if (commentUpdated) {
             setComment('');
             setEditModal(false);
             dispatch(getAllLeads());
         }
     }, [commentUpdated, dispatch]);
+
+    useEffect(() => {
+        if (leadDeleteSuccess) {
+            dispatch(getAllLeads());
+        }
+    }, [leadDeleteSuccess, dispatch]);
+
+    useEffect(() => {
+        if (statusUpdated) {
+            setStatus('');
+            setStatusModal(false);
+            setStatusId('');
+            dispatch(getAllLeads());
+        }
+    }, [statusUpdated, dispatch]);
 
     return (
         <>
@@ -168,9 +224,10 @@ const Leads = () => {
                                 isSearchable={true}
                                 disabledUserSelect={true}
                                 hasComments
-                                hasStatus
                                 hasActions
                                 onEdit={editModalToggle}
+                                onDelete={handleDelete}
+                                onStatusChange={toggleStatusModal}
                             />
                         </Card.Body>
                     </Card>
@@ -254,17 +311,6 @@ const Leads = () => {
                             // control={control}
                         />
 
-                        {/* {error && (
-                            <Alert variant="danger" className="my-2">
-                                {error}
-                            </Alert>
-                        )}
-                        {data && (
-                            <Alert variant="success" className="my-2">
-                                {data?.message}
-                            </Alert>
-                        )} */}
-
                         <Button variant="light" className="waves-effect waves-light me-1" type="submit">
                             Save
                         </Button>
@@ -273,6 +319,34 @@ const Leads = () => {
                             variant="danger"
                             className="waves-effect waves-light"
                             onClick={() => setEditModal(false)}>
+                            Cancel
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={statusModal} onHide={() => setStatusModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title as="h4">Change Status</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleStatusChange}>
+                        <Form.Select
+                            value={status}
+                            className="mb-3"
+                            onChange={(e) => setStatus(e.target.value as 'Responded' | 'Not Responded')}>
+                            <option value="Responded">Responded</option>
+                            <option value="Not Responded">Not Responsed</option>
+                        </Form.Select>
+
+                        <Button variant="light" className="waves-effect waves-light me-1" type="submit">
+                            Save
+                        </Button>
+
+                        <Button
+                            variant="danger"
+                            className="waves-effect waves-light"
+                            onClick={() => setStatusModal(false)}>
                             Cancel
                         </Button>
                     </Form>

@@ -3,7 +3,13 @@ import { SagaIterator } from 'redux-saga';
 
 import { LeadsActionTypes } from './constants';
 import { LeadsApiResponseError, LeadsApiResponseSuccess } from './actions';
-import { createLeadApi, getAllLeadsApi, updateCommentApi } from '../../helpers/api/leads';
+import {
+    createLeadApi,
+    deleteLeadApi,
+    getAllLeadsApi,
+    updateCommentApi,
+    updateStatusApi,
+} from '../../helpers/api/leads';
 
 type Lead = {
     type: string;
@@ -55,6 +61,33 @@ function* updateComments({ payload }: UpdateComment): SagaIterator {
     }
 }
 
+function* deleteLeadSaga({ payload }: { type: string; payload: string }): SagaIterator {
+    try {
+        const response = yield call(deleteLeadApi, payload);
+        const data = response.data;
+        yield put(LeadsApiResponseSuccess(LeadsActionTypes.DELETE_LEAD, data));
+    } catch (err: any) {
+        yield put(LeadsApiResponseError(LeadsActionTypes.DELETE_LEAD, err || 'Error'));
+    }
+}
+
+function* updateStatusSaga({
+    payload,
+}: {
+    type: string;
+    payload: { id: string; status: 'Responded' | 'Not Responded' | '' };
+}): SagaIterator {
+    try {
+        console.log('saga payload: ', payload);
+        const response = yield call(updateStatusApi, payload);
+        const data = response.data;
+        console.log(data);
+        yield put(LeadsApiResponseSuccess(LeadsActionTypes.UPDATE_STATUS, data));
+    } catch (err: any) {
+        yield put(LeadsApiResponseError(LeadsActionTypes.UPDATE_STATUS, err || 'Error'));
+    }
+}
+
 export function* createLeadWatcher() {
     yield takeEvery(LeadsActionTypes.CREATE_NEW_LEAD, createLeadSaga);
 }
@@ -67,6 +100,20 @@ export function* updateCommentWatcher() {
     yield takeEvery(LeadsActionTypes.UPDATE_COMMENTS, updateComments);
 }
 
+export function* deleteleadWatcher() {
+    yield takeEvery(LeadsActionTypes.DELETE_LEAD, deleteLeadSaga);
+}
+
+export function* updateStatusWatcher() {
+    yield takeEvery(LeadsActionTypes.UPDATE_STATUS, updateStatusSaga);
+}
+
 export default function* leadsSaga() {
-    yield all([fork(createLeadWatcher), fork(getAllLeadsWatcher), fork(updateCommentWatcher)]);
+    yield all([
+        fork(createLeadWatcher),
+        fork(getAllLeadsWatcher),
+        fork(updateCommentWatcher),
+        fork(deleteleadWatcher),
+        fork(updateStatusWatcher),
+    ]);
 }

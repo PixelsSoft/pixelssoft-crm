@@ -13,7 +13,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 // components
 import Pagination from './Pagination';
-import { Button, Dropdown, Form } from 'react-bootstrap';
+import { Button, Dropdown } from 'react-bootstrap';
 
 type GlobalFilterProps = {
     preGlobalFilteredRows: any;
@@ -104,8 +104,7 @@ type TableProps = {
     disabledUserSelect?: boolean;
     hasComments?: boolean;
     commentOnChange?: () => void;
-    hasStatus?: boolean;
-    statusOnChange?: () => void;
+    onStatusChange?: (id: string) => void;
     onEdit?: (id: string) => void;
 };
 
@@ -122,8 +121,8 @@ const Table = (props: TableProps) => {
     const toggler = props['toggler'] || undefined;
     const onDelete = props['onDelete'] || undefined;
     const disableUserSelect = props['disabledUserSelect'] || false;
-    const hasStatus = props['hasStatus'] || false;
-    const statusOnChange = props['statusOnChange'];
+    const onStatusChange = props['onStatusChange'] || undefined;
+
     const onEdit = props['onEdit'];
 
     let otherProps: any = {};
@@ -243,7 +242,6 @@ const Table = (props: TableProps) => {
                                         {column.render('Header')}
                                     </th>
                                 ))}
-                                {hasStatus && <th>Status</th>}
                                 {hasActions && <th>Actions</th>}
                             </tr>
                         ))}
@@ -278,14 +276,6 @@ const Table = (props: TableProps) => {
                                             </td>
                                         );
                                     })}
-                                    {hasStatus && (
-                                        <td>
-                                            <Form.Select defaultValue="Status" onChange={statusOnChange}>
-                                                <option value={undefined}>Responded</option>
-                                                <option value={undefined}>Not Responsed</option>
-                                            </Form.Select>
-                                        </td>
-                                    )}
 
                                     {hasActions && (
                                         <td>
@@ -315,6 +305,12 @@ const Table = (props: TableProps) => {
                                                     <Dropdown.Item
                                                         onClick={(e) => (onDelete ? onDelete(row.values._id) : null)}>
                                                         Delete
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        onClick={(e) =>
+                                                            onStatusChange ? onStatusChange(row.values._id) : null
+                                                        }>
+                                                        Update Status
                                                     </Dropdown.Item>
                                                     {/* <Dropdown.Item>Something Else</Dropdown.Item>
                                                     <Dropdown.Item>Separated link</Dropdown.Item> */}
