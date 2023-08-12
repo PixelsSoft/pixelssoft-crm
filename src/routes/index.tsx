@@ -39,7 +39,8 @@ const TaskDetail = React.lazy(() => import('../pages/apps/Tasks/Detail'));
 const Projects = React.lazy(() => import('../pages/apps/Projects'));
 const List = React.lazy(() => import('../pages/apps/Contacts/List'));
 const Profile = React.lazy(() => import('../pages/apps/Contacts/Profile'));
-const Users = React.lazy(() => import('../pages/apps/Users/Users'));
+const Employees = React.lazy(() => import('../pages/apps/Employees/Employees'));
+const AddEmployees = React.lazy(() => import('../pages/apps/Employees/AddEmployee'));
 const Invoices = React.lazy(() => import('../pages/apps/Invoice/Invoices/Invoices'));
 const CreateInvoice = React.lazy(() => import('../pages/apps/Invoice/CreateInvoice/CreateInvoice'));
 const CustomersList = React.lazy(() => import('../pages/apps/Customers/List/Customers'));
@@ -213,8 +214,12 @@ const AllRoutes = () => {
                     path: 'apps',
                     children: [
                         {
-                            path: 'users',
-                            element: <LoadComponent component={Users} />,
+                            path: 'employees',
+                            element: <LoadComponent component={Employees} />,
+                        },
+                        {
+                            path: 'employees/AddEmployee',
+                            element: <LoadComponent component={AddEmployees} />,
                         },
                         {
                             path: 'invoice/invoices',

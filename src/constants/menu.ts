@@ -72,6 +72,18 @@ const MENU_ITEMS: MenuItemTypes[] = [
         icon: 'mdi mdi-account-supervisor-circle',
         children: [
             {
+                key: 'employees',
+                label: 'Employees',
+                icon: 'mdi mdi-account-supervisor-outline',
+                url: '/apps/employees',
+            },
+            {
+                key: 'add-employee',
+                label: 'Add Employee',
+                icon: 'mdi mdi-account-plus-outline',
+                url: '/apps/employees/AddEmployee',
+            },
+            {
                 key: 'employee',
                 label: 'Employee',
                 url: '/apps/invoice/invoices',
@@ -102,13 +114,13 @@ const MENU_ITEMS: MenuItemTypes[] = [
         ],
     },
 
-    {
-        key: 'users',
-        label: 'Users',
-        isTitle: false,
-        icon: 'far fa-user',
-        url: '/apps/users',
-    },
+    // {
+    //     key: 'users',
+    //     label: 'Users',
+    //     isTitle: false,
+    //     icon: 'far fa-user',
+    //     url: '/apps/users',
+    // },
 
     {
         key: 'reports',

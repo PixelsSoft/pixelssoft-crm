@@ -12,6 +12,7 @@ import ContactDetails from '../../../components/ContactDetails';
 // import { contacts } from './data';
 import { createUser, getAllUsers } from '../../../redux/actions';
 import { getAllRoles } from '../../../redux/roles/actions';
+import { useNavigate } from 'react-router-dom';
 
 // dummy data
 
@@ -58,6 +59,7 @@ type User = {
 };
 
 const List = () => {
+    const navigate = useNavigate()
     const [fullName, setFullName] = useState('');
     const [position, setPosition] = useState('');
     const [email, setEmail] = useState('');
@@ -165,9 +167,11 @@ const List = () => {
                             <Row className="justify-content-center">
                                 <Col md={4}>
                                     <div className="mt-3 mt-md-0">
-                                        <Button variant="success" className="waves-effect waves-light" onClick={toggle}>
+                                        <Button variant="success" className="waves-effect waves-light" onClick={() => {
+                                            navigate("/apps/employees/AddEmployee")
+                                        }}>
                                             <i className="mdi mdi-plus-circle me-1"></i>
-                                            Add User
+                                            Add Employee
                                         </Button>
                                     </div>
                                 </Col>
@@ -308,8 +312,8 @@ const List = () => {
                             // register={register}
                             key="file"
                             onChange={handleFileChange}
-                            // errors={errors}
-                            // control={control}
+                        // errors={errors}
+                        // control={control}
                         />
 
                         <Button
