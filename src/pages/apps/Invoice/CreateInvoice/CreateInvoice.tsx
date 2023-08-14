@@ -142,34 +142,9 @@ const CreateInvoice = () => {
                     <Card>
                         <Card.Body>
                             <Form onSubmit={handleSubmit}>
-                                <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Language</Form.Label>
-                                        <Form.Select defaultValue="Choose...">
-                                            <option>Choose...</option>
-                                            <option>Option 1</option>
-                                            <option>Option 2</option>
-                                            <option>Option 3</option>
-                                        </Form.Select>
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Currency</Form.Label>
-                                        <Form.Select
-                                            value={currency}
-                                            defaultValue="Choose..."
-                                            onChange={(e) => setCurrency(e.target.value)}>
-                                            <option value={undefined}>Choose...</option>
-                                            <option value="PKR">Pakistani Rupee (PKR)</option>
-                                            <option value="USD">US Dollars (USD)</option>
-                                            <option value="CAD">Canadian Dollars (CAD)</option>
-                                        </Form.Select>
-                                    </Form.Group>
-                                </Row>
                                 <Row>
                                     <h3 className="mb-3 mt-4">Customer Details</h3>
                                 </Row>
-
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Select Customer (Auto Fill)</Form.Label>
@@ -215,10 +190,26 @@ const CreateInvoice = () => {
                                         <Form.Label>Project Category</Form.Label>
                                         <Form.Select defaultValue="Choose..." onChange={handleSelectProjectCategory}>
                                             <option value={undefined}>Choose...</option>
-                                            {categories &&
-                                                categories.data?.map((category: { _id: string; name: string }) => (
-                                                    <option value={category._id}>{category.name}</option>
-                                                ))}
+                                            <option value={"SMM"}>SMM</option>
+                                            <option value={"SEO"}>SEO</option>
+                                            <option value={"Web design"}>Web Design and Development</option>
+                                            <option value={"Mobile app"}>Mobile App development</option>
+                                            <option value={"Logo Design"}>Logo Design</option>
+
+                                        </Form.Select>
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Currency</Form.Label>
+                                        <Form.Select
+                                            value={currency}
+                                            defaultValue="Choose..."
+                                            onChange={(e) => setCurrency(e.target.value)}>
+                                            <option value={undefined}>Choose...</option>
+                                            <option value="PKR">Pakistani Rupee (PKR)</option>
+                                            <option value="GBP">UK Pound (GBP)</option>
+                                            <option value="USD">US Dollars (USD)</option>
+                                            <option value="EUR">Europe EURO (EUR)</option>
+                                            <option value="CAD">Canadian Dollars (CAD)</option>
                                         </Form.Select>
                                     </Form.Group>
                                 </Row>
@@ -229,15 +220,6 @@ const CreateInvoice = () => {
                                         value={address}
                                         onChange={(e) => setAddress(e.target.value)}
                                         placeholder="1234 Main St"
-                                    />
-                                </Form.Group>
-
-                                <Form.Group className="mb-3" controlId="formGridAddress2">
-                                    <Form.Label>Address 2</Form.Label>
-                                    <Form.Control
-                                        value={address2}
-                                        onChange={(e) => setAddress2(e.target.value)}
-                                        placeholder="Apartment, studio, or floor"
                                     />
                                 </Form.Group>
 
@@ -282,9 +264,12 @@ const CreateInvoice = () => {
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <Form.Select disabled value={projectName}>
-                                                        <option>Choose...</option>
-                                                    </Form.Select>
+
+                                                    <Form.Control
+                                                        value={projectName}
+                                                        onChange={(e) => setProjectName(e.target.value)}
+                                                    />
+
                                                 </td>
                                                 <td>
                                                     <Form.Control
@@ -331,8 +316,8 @@ const CreateInvoice = () => {
                                                 key="textarea"
                                                 value={memo}
                                                 onChange={(e) => setMemo(e.target.value)}
-                                                // errors={errors}
-                                                // control={control}
+                                            // errors={errors}
+                                            // control={control}
                                             />
                                         </Col>
                                     </Row>
@@ -382,6 +367,7 @@ const CreateInvoice = () => {
                                     customerName,
                                     customerEmail,
                                     invoiceNumber,
+                                    projectName,
                                     invoiceDate,
                                     dueDate,
                                     price,

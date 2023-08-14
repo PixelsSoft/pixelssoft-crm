@@ -3,13 +3,13 @@ import { CustomerData } from './types';
 
 export type CustomerActionType = {
     type:
-        | CustomerActionTypes.API_RESPONSE_SUCCESS
-        | CustomerActionTypes.API_RESPONSE_ERROR
-        | CustomerActionTypes.CREATE_CUSTOMER
-        | CustomerActionTypes.GET_CUSTOMERS
-        | CustomerActionTypes.GET_CUSTOMER_PROFILE
-        | CustomerActionTypes.RESET_CUSTOMERS
-        | CustomerActionTypes.DELETE_CUSTOMER;
+    | CustomerActionTypes.API_RESPONSE_SUCCESS
+    | CustomerActionTypes.API_RESPONSE_ERROR
+    | CustomerActionTypes.CREATE_CUSTOMER
+    | CustomerActionTypes.GET_CUSTOMERS
+    | CustomerActionTypes.GET_CUSTOMER_PROFILE
+    | CustomerActionTypes.RESET_CUSTOMERS
+    | CustomerActionTypes.DELETE_CUSTOMER;
 
     payload: {} | string;
 };
@@ -20,7 +20,6 @@ type CustomerDetails = {
     phoneNumber: string;
     company: string;
     address: string;
-    address2: string;
     platform: string;
     salePerson: string;
 };

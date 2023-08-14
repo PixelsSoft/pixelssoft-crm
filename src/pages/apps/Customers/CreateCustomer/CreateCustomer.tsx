@@ -10,7 +10,6 @@ const CreateCustomer = () => {
     const [fullName, setFullName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
-    const [address2, setAddress2] = useState('');
     const [platform, setPlatform] = useState('');
     const [salePerson, setSalePerson] = useState('');
     const [company, setCompany] = useState('');
@@ -23,7 +22,7 @@ const CreateCustomer = () => {
 
     const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        dispatch(createCustomer({ email, fullName, phoneNumber, company, address, address2, platform, salePerson }));
+        dispatch(createCustomer({ email, fullName, phoneNumber, company, address, platform, salePerson }));
     };
 
     usePageTitle({
@@ -48,7 +47,6 @@ const CreateCustomer = () => {
                 setFullName('');
                 setPhoneNumber('');
                 setAddress('');
-                setAddress2('');
                 setCompany('');
             }
         };
@@ -112,14 +110,7 @@ const CreateCustomer = () => {
                                     />
                                 </Form.Group>
 
-                                <Form.Group className="mb-3" controlId="formGridAddress2">
-                                    <Form.Label>Address 2</Form.Label>
-                                    <Form.Control
-                                        placeholder="Apartment, studio, or floor"
-                                        value={address2}
-                                        onChange={(e) => setAddress2(e.target.value)}
-                                    />
-                                </Form.Group>
+
 
                                 <Form.Group className="mb-3" controlId="formGridAddress2">
                                     <Form.Label>Company</Form.Label>
@@ -139,6 +130,9 @@ const CreateCustomer = () => {
                                             <option>Fiverr</option>
                                             <option>Freelancer</option>
                                             <option>Social Media</option>
+                                            <option>Bark</option>
+                                            <option>Linkedin</option>
+                                            <option>Scrapped</option>
                                             <option>None of above</option>
                                         </Form.Select>
                                     </Form.Group>

@@ -12,6 +12,8 @@ import { FormInput } from '../../../components/form';
 // import { contacts } from './data';
 import { createUser } from '../../../redux/actions';
 import { useForm } from 'react-hook-form';
+import MaskedInput from 'react-text-mask';
+import { Typeahead } from 'react-bootstrap-typeahead';
 
 // dummy data
 
@@ -42,6 +44,8 @@ type Role = {
 
 
 const List = () => {
+    type Option = string | Record<string, any>;
+
     const [fullName, setFullName] = useState('');
     const [position, setPosition] = useState('');
     const [email, setEmail] = useState('');
@@ -51,6 +55,8 @@ const List = () => {
     const [salary, setSalary] = useState(0);
     const [phoneNumber, setPhoneNumber] = useState('');
     const [profilePic, setProfilePic] = useState<File | null>(null);
+    const [multipleRoleSelection, setMultipleRoleSelection] = useState<Option[]>([]);
+
 
     const { dispatch, appSelector } = useRedux();
 
@@ -105,7 +111,7 @@ const List = () => {
 
     // set pagetitle
     usePageTitle({
-        title: 'Add User',
+        title: 'Add Employee',
         breadCrumbItems: [
             {
                 path: '/apps/users/addUsers',
@@ -137,6 +143,10 @@ const List = () => {
     }, [createUserSuccess, dispatch]);
 
 
+    /////role selection/////
+    const onChangeRoleSelection = (selected: Option[]) => {
+        setMultipleRoleSelection(selected);
+    };
 
     return loading ? (
         <div>
@@ -197,28 +207,59 @@ const List = () => {
                                             errors={errors}
                                             control={control}
                                         />
-                                        <FormInput
-                                            label="Phone number "
-                                            type="number"
-                                            name="number"
-                                            placeholder="Phone Number"
-                                            containerClass={'mb-3'}
-                                            register={register}
-                                            key="Number"
-                                            errors={errors}
-                                            control={control}
-                                        />
-                                        <FormInput
-                                            label="Emergency Phone number 1 "
-                                            type="number"
-                                            name="number"
-                                            placeholder="Phone Number"
-                                            containerClass={'mb-3'}
-                                            register={register}
-                                            key="Number"
-                                            errors={errors}
-                                            control={control}
-                                        />
+                                        <div className="mb-3">
+                                            <label className="form-label">Phone Number with Area Code</label> <br />
+                                            <MaskedInput
+                                                mask={[
+                                                    '(',
+                                                    /[1-9]/,
+                                                    /\d/,
+                                                    ')',
+                                                    ' ',
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+
+                                                    '-',
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                ]}
+                                                placeholder="(__) ____-____"
+                                                className="form-control"
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label">Emergency Phone number with Area Code</label> <br />
+                                            <MaskedInput
+                                                mask={[
+                                                    '(',
+                                                    /[1-9]/,
+                                                    /\d/,
+                                                    ')',
+                                                    ' ',
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+
+                                                    '-',
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                ]}
+                                                placeholder="(__) ____-____"
+                                                className="form-control"
+                                            />
+                                        </div>
+
                                         <FormInput
                                             label="Joining Date"
                                             type="date"
@@ -296,17 +337,32 @@ const List = () => {
                                             errors={errors}
                                             control={control}
                                         />
-                                        <FormInput
-                                            label="CNIC "
-                                            type="number"
-                                            name="number"
-                                            placeholder="CNIC"
-                                            containerClass={'mb-3'}
-                                            register={register}
-                                            key="Number"
-                                            errors={errors}
-                                            control={control}
-                                        />
+                                        <div className="mb-3">
+                                            <label className="form-label">CNIC Number</label> <br />
+                                            <MaskedInput
+                                                mask={[
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    '-',
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    '-',
+                                                    /\d/,
+
+                                                ]}
+                                                placeholder="_____-_______-_"
+                                                className="form-control"
+                                            />
+                                        </div>
+
                                         <FormInput
                                             name="select"
                                             label="Select Department"
@@ -322,28 +378,57 @@ const List = () => {
                                             <option>Design & Development</option>
                                             <option>Sales</option>
                                         </FormInput>
-                                        <FormInput
-                                            label="Emergency Phone number 2 "
-                                            type="number"
-                                            name="number"
-                                            placeholder="Phone Number"
-                                            containerClass={'mb-3'}
-                                            register={register}
-                                            key="Number"
-                                            errors={errors}
-                                            control={control}
-                                        />
-                                        <FormInput
-                                            label="Role"
-                                            type="text"
-                                            name="Name"
-                                            placeholder="Role"
-                                            containerClass={'mb-3'}
-                                            register={register}
-                                            key="text"
-                                            errors={errors}
-                                            control={control}
-                                        />
+
+
+                                        <div className="mb-3">
+                                            <label className="form-label">Emergency Phone number 2 with Area Code</label> <br />
+                                            <MaskedInput
+                                                mask={[
+                                                    '(',
+                                                    /[1-9]/,
+                                                    /\d/,
+                                                    ')',
+                                                    ' ',
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+
+                                                    '-',
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                ]}
+                                                placeholder="(__) ____-____"
+                                                className="form-control"
+                                            />
+                                        </div>
+
+                                        <div className="mb-3">
+                                            <label className="form-label">Role</label> <br />
+                                            <Typeahead
+                                                id="select3"
+                                                labelKey="label"
+                                                multiple
+                                                onChange={onChangeRoleSelection}
+                                                options={[
+                                                    { id: 1, value: 'Admin', label: 'Admin' },
+                                                    { id: 2, value: 'Sales', label: 'Sales' },
+                                                    { id: 3, value: 'SalesLead', label: 'Sales Lead' },
+                                                    { id: 4, value: 'ProjectManager', label: 'Project manager' },
+                                                    { id: 5, value: 'DevelopmentLead', label: 'Development Lead' },
+                                                    { id: 6, value: 'Developer', label: 'Developer' },
+                                                    { id: 7, value: 'Hr', label: 'Hr' },
+                                                    { id: 8, value: 'Accountant', label: 'Accountant' },
+                                                ]}
+                                                placeholder="Choose a role"
+                                                selected={multipleRoleSelection}
+                                            />
+                                        </div>
+
                                         <FormInput
                                             label="Photo Upload"
                                             type="file"
@@ -471,28 +556,58 @@ const List = () => {
                                             errors={errors}
                                             control={control}
                                         />
-                                        <FormInput
-                                            label="Phone Number"
-                                            type="number"
-                                            name="number"
-                                            placeholder="Phone Number"
-                                            containerClass={'mb-3'}
-                                            register={register}
-                                            key="Number"
-                                            errors={errors}
-                                            control={control}
-                                        />
-                                        <FormInput
-                                            label="CNIC Number"
-                                            type="number"
-                                            name="number"
-                                            placeholder="CNIC Number"
-                                            containerClass={'mb-3'}
-                                            register={register}
-                                            key="Number"
-                                            errors={errors}
-                                            control={control}
-                                        />
+                                        <div className="mb-3">
+                                            <label className="form-label">Phone Number with Area Code</label> <br />
+                                            <MaskedInput
+                                                mask={[
+                                                    '(',
+                                                    /[1-9]/,
+                                                    /\d/,
+                                                    ')',
+                                                    ' ',
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+
+                                                    '-',
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                ]}
+                                                placeholder="(__) ____-____"
+                                                className="form-control"
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label">CNIC Number</label> <br />
+                                            <MaskedInput
+                                                mask={[
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    '-',
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    /\d/,
+                                                    '-',
+                                                    /\d/,
+
+                                                ]}
+                                                placeholder="_____-_______-_"
+                                                className="form-control"
+                                            />
+                                        </div>
+
                                     </Col>
                                     <Col lg={6}>
                                         <FormInput

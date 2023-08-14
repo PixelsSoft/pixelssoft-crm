@@ -38,17 +38,17 @@ const columns = [
         sort: false,
     },
     {
-        Header: 'Comments',
+        Header: 'Meeting Date',
         accessor: 'comments',
         sort: false,
     },
     {
-        Header: 'Status',
+        Header: 'Meeting Time',
         accessor: 'status',
         sort: false,
     },
     {
-        Header: 'Created By',
+        Header: 'Time Zone',
         accessor: 'createdBy.fullName',
         sort: false,
     },
@@ -69,15 +69,13 @@ const sizePerPageList = [
     },
 ];
 
-const Leads = () => {
+const FollowUpLeads = () => {
     const [modal, setModal] = useState(false);
     const [statusModal, setStatusModal] = useState(false);
     const [statusId, setStatusId] = useState('');
     const [status, setStatus] = useState<'Responded' | 'Not Responded' | ''>('');
-
     const [editModal, setEditModal] = useState(false);
     const [editId, setEditId] = useState('');
-
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -356,4 +354,4 @@ const Leads = () => {
     );
 };
 
-export default Leads;
+export default FollowUpLeads;

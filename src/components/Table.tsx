@@ -223,7 +223,7 @@ const Table = (props: TableProps) => {
                 />
             )}
 
-            <div className="table-responsive">
+            <div style={{ minHeight: "70vh" }} className="table-responsive">
                 <table
                     style={{ userSelect: disableUserSelect ? 'none' : 'auto' }}
                     {...dataTable.getTableProps()}

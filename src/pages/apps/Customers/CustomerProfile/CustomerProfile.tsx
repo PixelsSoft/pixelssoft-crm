@@ -6,6 +6,7 @@ import StatisticsWidget1 from '../../../../components/StatisticsWidget1';
 
 import { records as data } from './data';
 import Table from '../../../../components/Table';
+import CustomerDetailCard from '../../../../components/CustomerDetailCard';
 
 const columns = [
     {
@@ -88,33 +89,34 @@ const CustomerProfile = () => {
                         <Card.Body className="p-3">
                             <Row className="d-flex justify-content-center">
                                 <Col sm={6}>
-                                    {/* <ContactDetails
+                                    <CustomerDetailCard
                                         contact={{
-                                            id: 2,
-                                            avatar: avatar2,
-                                            shortDesc:
-                                                'Hi I am Johnathn Deo, has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type.',
-                                            name: 'Johnathan Deo',
-                                            mobile: '(123) 123 1234',
+
+                                            // avatar: avatar,
+                                            Detail: 'Hi I am Johnathn Deo, has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type.',
+                                            fullName: 'Johnathan Deo',
+                                            phoneNumber: '(123) 123 1234',
                                             email: 'coderthemes@gmail.com',
-                                            location: 'USA',
+                                            Address: 'USA',
+                                            company: "abc",
+                                            _createdAt: "12334"
                                         }}
-                                    /> */}
+                                    />
                                 </Col>
                                 <Col sm={6}>
                                     <StatisticsWidget1
-                                        title="Total Revenue"
-                                        color={'#f05050'}
-                                        data={0}
-                                        stats={0}
-                                        subTitle="Revenue today"
+                                        title="Total Paid Invoice"
+                                        color={'#10c469'}
+                                        data={100}
+                                        stats={10}
+                                        subTitle="Paid today"
                                     />
                                     <StatisticsWidget1
-                                        title="Total Revenue"
+                                        title="Total Upaid Invoice"
                                         color={'#f05050'}
                                         data={0}
                                         stats={0}
-                                        subTitle="Revenue today"
+                                        subTitle="Unpaid today"
                                     />
                                 </Col>
                             </Row>

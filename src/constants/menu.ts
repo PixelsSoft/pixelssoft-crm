@@ -59,6 +59,31 @@ const MENU_ITEMS: MenuItemTypes[] = [
         url: '/apps/customers',
     },
     {
+        key: 'lead',
+        label: 'Leads',
+        isTitle: false,
+        icon: 'mdi mdi-account-group-outline',
+        children: [
+            {
+                key: 'leads',
+                label: 'Leads',
+                icon: 'mdi mdi-account-supervisor-outline',
+                url: '/apps/leads',
+                parentKey: 'lead',
+
+            },
+            {
+                key: 'Follow-up-leads',
+                label: 'Follow Up',
+                icon: 'mdi mdi-account-plus-outline',
+                url: '/apps/leads/FollowUpLeads',
+                parentKey: 'lead',
+
+            },
+
+        ],
+    },
+    {
         key: 'apps-projects',
         label: 'Projects',
         isTitle: false,
@@ -76,20 +101,24 @@ const MENU_ITEMS: MenuItemTypes[] = [
                 label: 'Employees',
                 icon: 'mdi mdi-account-supervisor-outline',
                 url: '/apps/employees',
+                parentKey: 'hr',
+
             },
             {
                 key: 'add-employee',
                 label: 'Add Employee',
                 icon: 'mdi mdi-account-plus-outline',
                 url: '/apps/employees/AddEmployee',
-            },
-            {
-                key: 'employee',
-                label: 'Employee',
-                url: '/apps/invoice/invoices',
-                icon: 'mdi mdi-account-group',
                 parentKey: 'hr',
+
             },
+            // {
+            //     key: 'employee',
+            //     label: 'Employee',
+            //     url: '/apps/invoice/invoices',
+            //     icon: 'mdi mdi-account-group',
+            //     parentKey: 'hr',
+            // },
             {
                 key: 'attendance',
                 label: 'Attendance',
@@ -151,20 +180,6 @@ const MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: 'mdi mdi-forum-outline',
         url: '/apps/chat',
-    },
-    {
-        key: 'apps-attendance',
-        label: 'Attendance',
-        isTitle: false,
-        icon: 'far fa-map',
-        url: '/apps/attendance',
-    },
-    {
-        key: 'apps-leads',
-        label: 'Leads',
-        isTitle: false,
-        icon: 'far fa-map',
-        url: '/apps/leads',
     },
     {
         key: 'apps-email',

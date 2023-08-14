@@ -1,4 +1,4 @@
-import { Button, Card, Dropdown, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Col, Dropdown, Form, Modal, Row } from 'react-bootstrap';
 
 // types
 // import { Contact } from '../pages/apps/Contacts/List/types';
@@ -59,23 +59,58 @@ const ContactDetails = ({ contact }: ContactDetailsProps) => {
                             className="rounded-circle avatar-xl img-thumbnail mb-2"
                         />
                         {/* <p className="text-muted font-13 mb-3">{contact.shortDesc}</p> */}
+
                         <div className="text-start">
-                            <p className="text-muted font-13">
-                                <strong>Full Name :</strong> <span className="ms-2">{contact.fullName}</span>
-                            </p>
+                            <Row>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>Full Name :</strong> <span className="ms-2">{contact.fullName}</span>
+                                    </p>
+                                </Col>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>Email :</strong> <span className="ms-2">{contact.email}</span>
+                                    </p>
+                                </Col>
 
-                            <p className="text-muted font-13">
-                                <strong>Mobile :</strong>
-                                <span className="ms-2">{contact.phoneNumber}</span>
-                            </p>
 
-                            <p className="text-muted font-13">
-                                <strong>Email :</strong> <span className="ms-2">{contact.email}</span>
-                            </p>
-
-                            <p className="text-muted font-13">
-                                <strong>Designation :</strong> <span className="ms-2">{contact.designation}</span>
-                            </p>
+                            </Row>
+                            <Row>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>Company Provided email :</strong> <span className="ms-2">{"test@yopmail.com"}</span>
+                                    </p>
+                                </Col>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>Department :</strong> <span className="ms-2">{"hr"}</span>
+                                    </p>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>CNIC :</strong> <span className="ms-2">{"12345-12234-1212"}</span>
+                                    </p>
+                                </Col>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>Role :</strong> <span className="ms-2">{"hr"}</span>
+                                    </p>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>Mobile no :</strong> <span className="ms-2">{contact.phoneNumber}</span>
+                                    </p>
+                                </Col>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>Joining Date :</strong> <span className="ms-2">{"12-12-1212"}</span>
+                                    </p>
+                                </Col>
+                            </Row>
                         </div>
                         <Button className="rounded-pill waves-effect waves-light" onClick={toggle}>
                             Access Control
@@ -234,8 +269,8 @@ const ContactDetails = ({ contact }: ContactDetailsProps) => {
                         containerClass={'mb-3'}
                         // register={register}
                         key="file"
-                        // errors={errors}
-                        // control={control}
+                    // errors={errors}
+                    // control={control}
                     />
 
                     <Button variant="dark" className="waves-effect waves-light me-1" type="submit">

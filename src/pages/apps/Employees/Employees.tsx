@@ -201,11 +201,12 @@ const List = () => {
             <Row>
                 {(users || []).map((user: User, index: any) => {
                     return (
-                        <Col xl={4} md={6} key={index.toString()}>
+                        <Col xl={6} md={6} key={index.toString()}>
                             <ContactDetails contact={user} />
                         </Col>
                     );
                 })}
+
             </Row>
             <Modal show={modal} onHide={toggle} centered>
                 <Modal.Header closeButton>
