@@ -84,6 +84,13 @@ const MENU_ITEMS: MenuItemTypes[] = [
         ],
     },
     {
+        key: 'client-card',
+        label: 'Client Card',
+        isTitle: false,
+        icon: 'mdi mdi-briefcase-variant-outline',
+        url: '/apps/clientCard',
+    },
+    {
         key: 'apps-projects',
         label: 'Projects',
         isTitle: false,
@@ -203,27 +210,6 @@ const MENU_ITEMS: MenuItemTypes[] = [
         icon: 'mdi mdi-database-settings-outline',
         url: '/apps/settings',
     },
-    // {
-    //     key: 'apps-tasks',
-    //     label: 'Tasks',
-    //     isTitle: false,
-    //     icon: 'mdi mdi-clipboard-outline',
-    //     children: [
-    //         {
-    //             key: 'task-kanban',
-    //             label: 'Kanban Board',
-    //             url: '/apps/tasks/kanban',
-    //             parentKey: 'apps-tasks',
-    //         },
-    //         {
-    //             key: 'task-details',
-    //             label: 'Details',
-    //             url: '/apps/tasks/details',
-    //             parentKey: 'apps-tasks',
-    //         },
-    //     ],
-    // },
-
 
     { key: 'custom', label: 'Custom', isTitle: true },
     {

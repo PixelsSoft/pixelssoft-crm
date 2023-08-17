@@ -18,11 +18,9 @@ const CreateInvoice = () => {
     const [projectCategory, setProjectCategory] = useState<string | undefined>(undefined);
     const [projectName, setProjectName] = useState('');
     const [address, setAddress] = useState('');
-    const [address2, setAddress2] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [invoiceDate, setInvoiceDate] = useState('');
     const [dueDate, setDueDate] = useState('');
-
     const [price, setPrice] = useState(0);
     // const [amount, setAmount] = useState(0);
     const [quantity, setQuantity] = useState(1);
@@ -37,7 +35,7 @@ const CreateInvoice = () => {
         setCustomerName('');
         setProjectName('');
         setAddress('');
-        setAddress2('');
+
         setPhoneNumber('');
         setPrice(0);
         setQuantity(1);
@@ -91,7 +89,6 @@ const CreateInvoice = () => {
                 customerEmail,
                 customerName,
                 address,
-                address2,
                 phoneNumber,
                 currency,
                 amountDue: price,
@@ -103,6 +100,7 @@ const CreateInvoice = () => {
                 invoiceNumber: invoiceNumber.data,
                 memo,
                 description,
+                projectName,
                 projectCategory,
             })
         );
@@ -255,7 +253,7 @@ const CreateInvoice = () => {
                                     <Table className="mb-3">
                                         <thead>
                                             <tr>
-                                                <th>Item</th>
+                                                <th>Title</th>
                                                 <th>Quantity</th>
                                                 <th>Price</th>
                                                 <th>Amount</th>

@@ -37,6 +37,7 @@ const Inbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
 const Kanban = React.lazy(() => import('../pages/apps/Tasks/Board'));
 const TaskDetail = React.lazy(() => import('../pages/apps/Tasks/Detail'));
 const Projects = React.lazy(() => import('../pages/apps/Projects'));
+const ClientCard = React.lazy(() => import('../pages/apps/ClientCard/ClientCard'));
 const List = React.lazy(() => import('../pages/apps/Contacts/List'));
 const Profile = React.lazy(() => import('../pages/apps/Contacts/Profile'));
 const Employees = React.lazy(() => import('../pages/apps/Employees/Employees'));
@@ -52,6 +53,7 @@ const Attendance = React.lazy(() => import('../pages/apps/Attendance/Attendance'
 const Sales = React.lazy(() => import('../pages/apps/Sales/Sales'));
 const Leads = React.lazy(() => import('../pages/apps/Leads/Leads'));
 const FollowUpLeads = React.lazy(() => import('../pages/apps/Leads/FollowUpLeads'));
+const PaymentLink = React.lazy(() => import('../pages/apps/PaymentLink/PaymentLink'));
 
 
 const Settings = React.lazy(() => import('../pages/apps/Settings/Settings'));
@@ -63,10 +65,7 @@ const Timeline = React.lazy(() => import('../pages/other/Timeline'));
 const Invoice = React.lazy(() => import('../pages/other/Invoice'));
 const FAQ = React.lazy(() => import('../pages/other/FAQ'));
 const Gallery = React.lazy(() => import('../pages/other/Gallery'));
-const Error404 = React.lazy(() => import('../pages/other/Error404'));
-const Error500 = React.lazy(() => import('../pages/other/Error500'));
-const Maintenance = React.lazy(() => import('../pages/other/Maintenance'));
-const ComingSoon = React.lazy(() => import('../pages/other/ComingSoon'));
+
 
 // base ui
 const Buttons = React.lazy(() => import('../pages/uikit/Buttons'));
@@ -180,28 +179,17 @@ const AllRoutes = () => {
                         { path: 'forget-password', element: <LoadComponent component={ForgetPassword} /> },
                         { path: 'lock-screen', element: <LoadComponent component={LockScreen} /> },
                         { path: 'logout', element: <LoadComponent component={Logout} /> },
+
                     ],
                 },
                 {
-                    path: 'error-404',
-                    element: <LoadComponent component={Error404} />,
+                    path: 'PaymentLink',
+                    element: <LoadComponent component={PaymentLink} />,
                 },
-                {
-                    path: 'error-500',
-                    element: <LoadComponent component={Error500} />,
-                },
-                {
-                    path: 'maintenance',
-                    element: <LoadComponent component={Maintenance} />,
-                },
-                {
-                    path: 'coming-soon',
-                    element: <LoadComponent component={ComingSoon} />,
-                },
-                {
-                    path: 'landing',
-                    element: <LoadComponent component={Landing} />,
-                },
+
+
+
+
             ],
         },
         {
@@ -212,7 +200,9 @@ const AllRoutes = () => {
                 {
                     path: 'dashboard',
                     element: <LoadComponent component={DashBoard1} />,
+
                 },
+
                 {
                     path: 'apps',
                     children: [
@@ -228,6 +218,7 @@ const AllRoutes = () => {
                             path: 'invoice/invoices',
                             element: <LoadComponent component={Invoices} />,
                         },
+
                         {
                             path: 'invoice/create-invoice',
                             element: <LoadComponent component={CreateInvoice} />,
@@ -255,6 +246,10 @@ const AllRoutes = () => {
                         {
                             path: 'projects',
                             element: <LoadComponent component={Projects} />,
+                        },
+                        {
+                            path: 'clientCard',
+                            element: <LoadComponent component={ClientCard} />,
                         },
                         {
                             path: 'contacts/list',

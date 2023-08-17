@@ -3,15 +3,15 @@ import { Invoice } from './reducer';
 
 export type InvoiceActionType = {
     type:
-        | InvoiceActionTypes.API_RESPONSE_SUCCESS
-        | InvoiceActionTypes.API_RESPONSE_ERROR
-        | InvoiceActionTypes.CREATE_INVOICE
-        | InvoiceActionTypes.DELETE_INVOICE
-        | InvoiceActionTypes.GET_ALL_INVOICES
-        | InvoiceActionTypes.GET_SHARE_LINK
-        | InvoiceActionTypes.SEND_EMAIL
-        | InvoiceActionTypes.GET_INVOICE_NUMBER
-        | InvoiceActionTypes.RESET_INVOICE;
+    | InvoiceActionTypes.API_RESPONSE_SUCCESS
+    | InvoiceActionTypes.API_RESPONSE_ERROR
+    | InvoiceActionTypes.CREATE_INVOICE
+    | InvoiceActionTypes.DELETE_INVOICE
+    | InvoiceActionTypes.GET_ALL_INVOICES
+    | InvoiceActionTypes.GET_SHARE_LINK
+    | InvoiceActionTypes.SEND_EMAIL
+    | InvoiceActionTypes.GET_INVOICE_NUMBER
+    | InvoiceActionTypes.RESET_INVOICE;
 
     payload: {} | string;
 };
@@ -21,7 +21,6 @@ type InvoiceDetails = {
     invoiceNumber: string;
     projectCategory: string | undefined;
     address: string;
-    address2: string;
     phoneNumber: string;
     invoiceDate: string;
     dueDate: string;
@@ -30,6 +29,7 @@ type InvoiceDetails = {
     total: number;
     amountDue: number;
     quantity: number;
+    projectName: string | undefined;
     customer: string | undefined;
     customerName: string;
     customerEmail: string;
