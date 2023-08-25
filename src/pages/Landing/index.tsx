@@ -10,7 +10,6 @@ import Clients from './Clients';
 import Statistics from './Statistics';
 import Pricing from './Pricing';
 import Contact from './Contact';
-import Footer from './Footer';
 import Services from './Services';
 
 // dummy data
@@ -69,8 +68,7 @@ const Landing = () => {
             {/* contact */}
             <Contact />
 
-            {/* footer */}
-            <Footer />
+
 
             <Link to="#" onClick={() => topFunction()} className="back-to-top" id="back-to-top">
                 <i className="mdi mdi-chevron-up"></i>
