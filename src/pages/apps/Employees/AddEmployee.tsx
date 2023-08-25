@@ -47,15 +47,39 @@ const List = () => {
     type Option = string | Record<string, any>;
 
     const [fullName, setFullName] = useState('');
+    const [fatherName, setFatherName] = useState('');
     const [position, setPosition] = useState('');
     const [email, setEmail] = useState('');
+    const [companyProvideEmail, setCompanyProvideEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
-    const [designation, setDesignation] = useState('');
-    const [salary, setSalary] = useState(0);
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [DOB, setDOB] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState('');
+    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState('');
+    const [joiningDate, setJoiningDate] = useState('');
+    const [role, setRole] = useState('');
+    const [department, setDepartment] = useState('');
+    const [salary, setSalary] = useState(0);
     const [profilePic, setProfilePic] = useState<File | null>(null);
+    const [contract, setContract] = useState<File | null>(null);
+    const [CNIC, setCNIC] = useState<File | null>(null);
+    const [CnicNo, setCnicNo] = useState(0);
+    const [CV, setCV] = useState<File | null>(null);
     const [multipleRoleSelection, setMultipleRoleSelection] = useState<Option[]>([]);
+    const [accTitle, setAccTitle] = useState('');
+    const [branchCode, setBranchCode] = useState('');
+    const [bankAddress, setBankAddress] = useState('');
+    const [accNo, setAccNo] = useState('');
+    const [bankName, setBankName] = useState('');
+    const [refName, setRefName] = useState('');
+    const [refEmail, setRefEmail] = useState('');
+    const [refPhoneNo, setRefPhoneNo] = useState('');
+    const [refCnicNo, setRefCnicNo] = useState('');
+    const [refCnicPic, setRefCnicPic] = useState<File | null>(null);
+
+
+
 
 
     const { dispatch, appSelector } = useRedux();
@@ -75,8 +99,8 @@ const List = () => {
             color: '#35b8e0',
         },
     });
-    const {
 
+    const {
         register,
         control,
         formState: { errors },
@@ -90,25 +114,76 @@ const List = () => {
         dispatch(
             createUser({
                 fullName,
-                position,
                 email,
-                password,
-                role: getRole(role)._id,
-                designation,
-                salary,
                 phoneNumber,
+                joiningDate,
+                DOB,
+                position,
+                role: getRole(role)._id,
+                department,
+                salary,
+                password,
+                emergencyPhoneNumber,
+                emergencyPhoneNumber2,
                 profilePic,
+                CNIC,
+                CV,
+                fatherName,
+                companyProvideEmail,
+                confirmPassword,
+                CnicNo,
+                contract,
+                accTitle,
+                branchCode,
+                bankAddress,
+                accNo,
+                bankName,
+                refName,
+                refEmail,
+                refPhoneNo,
+                refCnicNo,
+                refCnicPic
+
             })
         );
     };
 
-    const handleFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    // Profile picture upload
+    const handleProfileFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
         if (event.target.files) {
             const file = event.target.files[0];
             setProfilePic(file);
         }
     };
 
+    // CNIC picture Upload
+    const handleCNICFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+        if (event.target.files) {
+            const file = event.target.files[0];
+            setCNIC(file);
+        }
+    };
+    // Reference CNIC picture Upload
+    const handleRefCNICFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+        if (event.target.files) {
+            const file = event.target.files[0];
+            setRefCnicPic(file);
+        }
+    };
+    // CV picture Upload
+    const handleCVFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+        if (event.target.files) {
+            const file = event.target.files[0];
+            setCV(file);
+        }
+    };
+    // Contract picture Upload
+    const handleContractFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+        if (event.target.files) {
+            const file = event.target.files[0];
+            setContract(file);
+        }
+    };
     // set pagetitle
     usePageTitle({
         title: 'Add Employee',
@@ -134,7 +209,7 @@ const List = () => {
             setEmail('');
             setPassword('');
             setRole('');
-            setDesignation('');
+            setDepartment('');
             setPhoneNumber('');
             setPosition('');
             setSalary(0);
@@ -159,8 +234,6 @@ const List = () => {
                     <Card>
                         <Card.Body>
                             <form onSubmit={submit}>
-
-
                                 <h1 className="header-title">Employee Details</h1>
                                 <Row>
                                     <Col lg={6}>
@@ -172,8 +245,13 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="text"
+                                            value={fullName}
+                                            onChange={(e) => {
+                                                setFullName(e.target.value)
+                                            }}
                                             errors={errors}
                                             control={control}
+
                                         />
                                         <FormInput
                                             label="Email"
@@ -183,8 +261,14 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="email"
+                                            value={email}
+                                            onChange={(e) => {
+                                                setEmail(e.target.value)
+                                            }}
                                             errors={errors}
                                             control={control}
+
+
                                         />
                                         <FormInput
                                             label="Password"
@@ -194,8 +278,13 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="password"
+                                            value={password}
+                                            onChange={(e) => {
+                                                setPassword(e.target.value)
+                                            }}
                                             errors={errors}
                                             control={control}
+
                                         />
                                         <FormInput
                                             label="Date of Birth"
@@ -204,6 +293,10 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="date"
+                                            value={DOB}
+                                            onChange={(e) => {
+                                                setDOB(e.target.value)
+                                            }}
                                             errors={errors}
                                             control={control}
                                         />
@@ -231,6 +324,10 @@ const List = () => {
                                                 ]}
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
+                                                value={phoneNumber}
+                                                onChange={(e) => {
+                                                    setPhoneNumber(e.target.value)
+                                                }}
                                             />
                                         </div>
                                         <div className="mb-3">
@@ -257,6 +354,10 @@ const List = () => {
                                                 ]}
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
+                                                value={emergencyPhoneNumber}
+                                                onChange={(e) => {
+                                                    setEmergencyPhoneNumber(e.target.value)
+                                                }}
                                             />
                                         </div>
 
@@ -267,16 +368,23 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="date"
+                                            value={joiningDate}
+                                            onChange={(e) => {
+                                                setJoiningDate(e.target.value)
+                                            }}
                                             errors={errors}
                                             control={control}
+
                                         />
                                         <FormInput
                                             label="Cnic Upload"
                                             type="file"
                                             name="file"
+                                            accept="image/png, image/jpeg"
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="file"
+                                            onChange={handleCNICFileChange}
                                             errors={errors}
                                             control={control}
                                         />
@@ -286,9 +394,11 @@ const List = () => {
                                             name="file"
                                             containerClass={'mb-3'}
                                             register={register}
+                                            onChange={handleCVFileChange}
                                             key="file"
                                             errors={errors}
                                             control={control}
+
                                         />
                                         <FormInput
                                             label="Salary "
@@ -298,8 +408,13 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="Number"
+                                            value={salary}
+                                            onChange={(e) => {
+                                                setSalary(e.target.valueAsNumber)
+                                            }}
                                             errors={errors}
                                             control={control}
+
                                         />
                                     </Col>
                                     <Col lg={6}>
@@ -312,8 +427,13 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="text"
+                                            value={fatherName}
+                                            onChange={(e) => {
+                                                setFatherName(e.target.value)
+                                            }}
                                             errors={errors}
                                             control={control}
+
                                         />
                                         <FormInput
                                             label="Company Provided Email"
@@ -323,8 +443,14 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="email"
+                                            value={companyProvideEmail}
+                                            onChange={(e) => {
+                                                setCompanyProvideEmail(e.target.value)
+                                            }}
+
                                             errors={errors}
                                             control={control}
+
                                         />
                                         <FormInput
                                             label="Confirm Password"
@@ -334,8 +460,13 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="password"
+                                            value={confirmPassword}
+                                            onChange={(e) => {
+                                                setConfirmPassword(e.target.value)
+                                            }}
                                             errors={errors}
                                             control={control}
+
                                         />
                                         <div className="mb-3">
                                             <label className="form-label">CNIC Number</label> <br />
@@ -360,19 +491,27 @@ const List = () => {
                                                 ]}
                                                 placeholder="_____-_______-_"
                                                 className="form-control"
+                                                value={CnicNo}
+                                                onChange={(e) => {
+                                                    setCnicNo(e.target.valueAsNumber)
+                                                }}
                                             />
+
                                         </div>
 
                                         <FormInput
-                                            name="select"
                                             label="Select Department"
+                                            name="select"
                                             type="select"
                                             containerClass="mb-3"
                                             className="form-select"
                                             register={register}
                                             key="select"
-                                            errors={errors}
-                                            control={control}>
+                                            value={department}
+                                            onChange={(e) => {
+                                                setDepartment(e.target.value)
+                                            }}
+                                        >
                                             <option>Hr</option>
                                             <option>Accounts</option>
                                             <option>Design & Development</option>
@@ -404,6 +543,10 @@ const List = () => {
                                                 ]}
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
+                                                value={emergencyPhoneNumber2}
+                                                onChange={(e) => {
+                                                    setEmergencyPhoneNumber2(e.target.value)
+                                                }}
                                             />
                                         </div>
 
@@ -436,8 +579,9 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="file"
+                                            accept="image/png, image/jpeg"
                                             errors={errors}
-                                            onChange={handleFileChange}
+                                            onChange={handleProfileFileChange}
                                             control={control}
                                         />
                                         <FormInput
@@ -448,13 +592,14 @@ const List = () => {
                                             register={register}
                                             key="file"
                                             errors={errors}
+                                            accept=".pdf"
+                                            onChange={handleContractFileChange}
                                             control={control}
                                         />
 
                                     </Col>
                                 </Row>
                                 <h4 className="header-title">Account Details</h4>
-
                                 <Row>
                                     <Col lg={6}>
                                         <FormInput
@@ -465,6 +610,10 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="text"
+                                            value={accTitle}
+                                            onChange={(e) => {
+                                                setAccTitle(e.target.value);
+                                            }}
                                             errors={errors}
                                             control={control}
                                         />
@@ -476,6 +625,10 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="Number"
+                                            value={branchCode}
+                                            onChange={(e) => {
+                                                setBranchCode(e.target.value);
+                                            }}
                                             errors={errors}
                                             control={control}
                                         />
@@ -489,6 +642,10 @@ const List = () => {
                                             key="text"
                                             errors={errors}
                                             control={control}
+                                            value={bankAddress}
+                                            onChange={(e) => {
+                                                setBankAddress(e.target.value);
+                                            }}
                                         />
 
                                     </Col>
@@ -503,17 +660,25 @@ const List = () => {
                                             key="Number"
                                             errors={errors}
                                             control={control}
+                                            value={accNo}
+                                            onChange={(e) => {
+                                                setAccNo(e.target.value);
+                                            }}
+
                                         />
                                         <FormInput
-                                            name="select"
                                             label="Select Bank"
+                                            name="select"
                                             type="select"
                                             containerClass="mb-3"
                                             className="form-select"
                                             register={register}
                                             key="select"
-                                            errors={errors}
-                                            control={control}>
+                                            value={bankName}
+                                            onChange={(e) => {
+                                                setBankName(e.target.value);
+                                            }}
+                                        >
                                             <option>Habib Bank Limited</option>
                                             <option>National Bank of Pakistan</option>
                                             <option>Allied Bank Limited</option>
@@ -546,15 +711,20 @@ const List = () => {
                                 <Row>
                                     <Col lg={6}>
                                         <FormInput
-                                            label="Account Title"
+                                            label="Name"
                                             type="text"
                                             name="Name"
-                                            placeholder="Account title"
+                                            placeholder="Name"
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="text"
                                             errors={errors}
                                             control={control}
+                                            value={refName}
+                                            onChange={(e) => {
+                                                setRefName(e.target.value);
+                                            }}
+
                                         />
                                         <div className="mb-3">
                                             <label className="form-label">Phone Number with Area Code</label> <br />
@@ -580,6 +750,11 @@ const List = () => {
                                                 ]}
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
+
+                                                value={refPhoneNo}
+                                                onChange={(e) => {
+                                                    setRefPhoneNo(e.target.value);
+                                                }}
                                             />
                                         </div>
                                         <div className="mb-3">
@@ -601,10 +776,13 @@ const List = () => {
                                                     /\d/,
                                                     '-',
                                                     /\d/,
-
                                                 ]}
                                                 placeholder="_____-_______-_"
                                                 className="form-control"
+                                                value={refCnicNo}
+                                                onChange={(e) => {
+                                                    setRefCnicNo(e.target.value);
+                                                }}
                                             />
                                         </div>
 
@@ -620,6 +798,11 @@ const List = () => {
                                             key="email"
                                             errors={errors}
                                             control={control}
+                                            value={refEmail}
+                                            onChange={(e) => {
+                                                setRefEmail(e.target.value);
+                                            }}
+
                                         />
                                         <FormInput
                                             label="Photo Upload"
@@ -628,8 +811,8 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             register={register}
                                             key="file"
-                                            errors={errors}
-                                            control={control}
+                                            onChange={handleRefCNICFileChange}
+
                                         />
                                     </Col>
                                 </Row>

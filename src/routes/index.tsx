@@ -53,10 +53,8 @@ const Attendance = React.lazy(() => import('../pages/apps/Attendance/Attendance'
 const Sales = React.lazy(() => import('../pages/apps/Sales/Sales'));
 const Leads = React.lazy(() => import('../pages/apps/Leads/Leads'));
 const FollowUpLeads = React.lazy(() => import('../pages/apps/Leads/FollowUpLeads'));
-const PaymentLink = React.lazy(() => import('../pages/apps/PaymentLink/PaymentLink'));
-
-
 const Settings = React.lazy(() => import('../pages/apps/Settings/Settings'));
+
 
 // extra pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -65,7 +63,6 @@ const Timeline = React.lazy(() => import('../pages/other/Timeline'));
 const Invoice = React.lazy(() => import('../pages/other/Invoice'));
 const FAQ = React.lazy(() => import('../pages/other/FAQ'));
 const Gallery = React.lazy(() => import('../pages/other/Gallery'));
-
 
 // base ui
 const Buttons = React.lazy(() => import('../pages/uikit/Buttons'));
@@ -125,7 +122,7 @@ const GoogleMaps = React.lazy(() => import('../pages/maps/GoogleMaps'));
 const VectorMaps = React.lazy(() => import('../pages/maps/VectorMaps'));
 
 // lamding
-const Landing = React.lazy(() => import('../pages/Landing'));
+// const Landing = React.lazy(() => import('../pages/Landing'));
 
 const loading = () => <div className=""></div>;
 
@@ -182,14 +179,6 @@ const AllRoutes = () => {
 
                     ],
                 },
-                {
-                    path: 'PaymentLink',
-                    element: <LoadComponent component={PaymentLink} />,
-                },
-
-
-
-
             ],
         },
         {

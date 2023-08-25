@@ -3,17 +3,17 @@ import { AuthActionTypes } from './constants';
 
 export type AuthActionType = {
     type:
-        | AuthActionTypes.API_RESPONSE_SUCCESS
-        | AuthActionTypes.API_RESPONSE_ERROR
-        | AuthActionTypes.FORGOT_PASSWORD
-        | AuthActionTypes.FORGOT_PASSWORD_CHANGE
-        | AuthActionTypes.LOGIN_USER
-        | AuthActionTypes.LOGOUT_USER
-        | AuthActionTypes.RESET
-        | AuthActionTypes.SIGNUP_USER
-        | AuthActionTypes.CREATE_USER
-        | AuthActionTypes.CREATE_USER_RESET
-        | AuthActionTypes.GET_ALL_USERS;
+    | AuthActionTypes.API_RESPONSE_SUCCESS
+    | AuthActionTypes.API_RESPONSE_ERROR
+    | AuthActionTypes.FORGOT_PASSWORD
+    | AuthActionTypes.FORGOT_PASSWORD_CHANGE
+    | AuthActionTypes.LOGIN_USER
+    | AuthActionTypes.LOGOUT_USER
+    | AuthActionTypes.RESET
+    | AuthActionTypes.SIGNUP_USER
+    | AuthActionTypes.CREATE_USER
+    | AuthActionTypes.CREATE_USER_RESET
+    | AuthActionTypes.GET_ALL_USERS;
     payload: {} | string;
 };
 
@@ -23,6 +23,7 @@ type UserData = {
         fullName: string;
         email: string;
         phoneNumber: string;
+        emergencyPhoneNumber: string
         position: string;
         profilePic: {
             url: string;
@@ -41,12 +42,33 @@ type RegisterUserData = {
     fullName: string;
     email: string;
     phoneNumber: string;
+    joiningDate: string;
+    DOB: string;
     position: string;
     role: string;
-    designation: string;
+    department: string;
     salary: number;
     password: string;
+    emergencyPhoneNumber: string;
+    emergencyPhoneNumber2: string;
     profilePic?: File | null;
+    CNIC?: File | null;
+    CV?: File | null;
+    fatherName?: string;
+    companyProvideEmail: string | null;
+    confirmPassword: string | null;
+    CnicNo: number,
+    contract: File | null;
+    accTitle: string | null;
+    branchCode: string | null;
+    bankAddress: string | null;
+    accNo: string | null;
+    bankName: string | null;
+    refName: string | null;
+    refEmail: string | null;
+    refPhoneNo: string | null;
+    refCnicNo: string | null;
+    refCnicPic: File | null
 };
 
 // common success
