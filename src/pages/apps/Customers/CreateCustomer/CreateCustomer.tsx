@@ -1,6 +1,6 @@
 import { usePageTitle, useRedux } from '../../../../hooks';
 import { Row, Col, Card, Button, Form, Alert } from 'react-bootstrap';
-import { createCustomer, resetCustomers } from '../../../../redux/customers/actions';
+// import { createCustomer, resetCustomers } from '../../../../redux/customers/actions';
 import { FormEventHandler, useEffect, useState } from 'react';
 
 const CreateCustomer = () => {
@@ -14,15 +14,11 @@ const CreateCustomer = () => {
     const [salePerson, setSalePerson] = useState('');
     const [company, setCompany] = useState('');
 
-    const { error, createCustomerSuccess, data } = appSelector((state) => ({
-        error: state.Customer.error,
-        createCustomerSuccess: state.Customer.createCustomerSuccess,
-        data: state.Customer.data,
-    }));
+
 
     const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        dispatch(createCustomer({ email, fullName, phoneNumber, company, address, platform, salePerson }));
+        // dispatch(createCustomer({ email, fullName, phoneNumber, company, address, platform, salePerson }));
     };
 
     usePageTitle({
@@ -40,23 +36,10 @@ const CreateCustomer = () => {
         ],
     });
 
-    useEffect(() => {
-        const reset = () => {
-            if (createCustomerSuccess) {
-                setEmail('');
-                setFullName('');
-                setPhoneNumber('');
-                setAddress('');
-                setCompany('');
-            }
-        };
-
-        reset();
-    }, [createCustomerSuccess]);
 
     useEffect(() => {
         return () => {
-            dispatch(resetCustomers());
+            // dispatch(resetCustomers());
         };
     }, [dispatch]);
     return (
@@ -66,7 +49,7 @@ const CreateCustomer = () => {
                     <Card>
                         <Card.Body>
                             <Form onSubmit={onSubmit}>
-                                {error && (
+                                {/* {error && (
                                     <Alert variant="danger" className="my-2">
                                         {error}
                                     </Alert>
@@ -75,7 +58,7 @@ const CreateCustomer = () => {
                                     <Alert variant="success" className="my-2">
                                         {data.message}
                                     </Alert>
-                                )}
+                                )} */}
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Email</Form.Label>
@@ -101,25 +84,31 @@ const CreateCustomer = () => {
                                     </Form.Group>
                                 </Row>
 
-                                <Form.Group className="mb-3" controlId="formGridAddress1">
-                                    <Form.Label>Address</Form.Label>
-                                    <Form.Control
-                                        placeholder="1234 Main St"
-                                        value={address}
-                                        onChange={(e) => setAddress(e.target.value)}
-                                    />
-                                </Form.Group>
 
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Project Title</Form.Label>
+                                        <Form.Control
+                                            value={phoneNumber}
+                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Paid Amount</Form.Label>
+                                        <Form.Control
+                                            value={phoneNumber}
+                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Total Amount</Form.Label>
+                                        <Form.Control
+                                            value={phoneNumber}
+                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                        />
+                                    </Form.Group>
 
-
-                                <Form.Group className="mb-3" controlId="formGridAddress2">
-                                    <Form.Label>Company</Form.Label>
-                                    <Form.Control
-                                        placeholder=""
-                                        value={company}
-                                        onChange={(e) => setCompany(e.target.value)}
-                                    />
-                                </Form.Group>
+                                </Row>
 
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
@@ -138,7 +127,31 @@ const CreateCustomer = () => {
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Bidder/Scraper</Form.Label>
+                                        <Form.Select onChange={(e) => setSalePerson(e.target.value)}>
+                                            <option>Choose...</option>
+                                            <option>Daniyal</option>
+                                            <option>Saad</option>
+                                            <option>Taimoor</option>
+                                            <option>Usama</option>
+                                            <option>Huzaifa</option>
+                                        </Form.Select>
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Sale Person</Form.Label>
+                                        <Form.Select onChange={(e) => setSalePerson(e.target.value)}>
+                                            <option>Choose...</option>
+                                            <option>Daniyal</option>
+                                            <option>Saad</option>
+                                            <option>Taimoor</option>
+                                            <option>Usama</option>
+                                            <option>Huzaifa</option>
+                                        </Form.Select>
+                                    </Form.Group>
+                                </Row>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Project Category</Form.Label>
                                         <Form.Select onChange={(e) => setSalePerson(e.target.value)}>
                                             <option>Choose...</option>
                                             <option>Daniyal</option>

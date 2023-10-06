@@ -13,37 +13,37 @@ const Statistics = () => {
                     data={58}
                     stats={256}
                     color={'#f05050'}
-                    subTitle="Revenue today"
+                    subTitle="Current Month"
                 />
             </Col>
             <Col xl={3} md={6}>
                 <StatisticsWidget2
                     variant="success"
-                    title="Sales Analytics"
+                    title="Total Sales"
                     trendValue="32%"
                     trendIcon="mdi mdi-trending-up"
                     stats={8451}
-                    subTitle="Revenue today"
+                    subTitle="Current Month"
                     progress={77}
                 />
             </Col>
             <Col xl={3} md={6}>
                 <StatisticsWidget1
-                    title="Statistics"
+                    title="Paid Amount"
                     color={'#ffbd4a'}
                     data={80}
                     stats={4569}
-                    subTitle="Revenue today"
+                    subTitle=" "
                 />
             </Col>
             <Col xl={3} md={6}>
                 <StatisticsWidget2
                     variant="pink"
-                    title="Daily Sales"
+                    title="Unpaid Amount"
                     trendValue="32%"
                     trendIcon="mdi mdi-trending-up"
                     stats={158}
-                    subTitle="Revenue today"
+                    subTitle="unPaid  "
                     progress={77}
                 />
             </Col>

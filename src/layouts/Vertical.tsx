@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 import { useRedux } from '../hooks/';
 
 // constants
-import { LayoutTypes, SideBarTypes } from '../constants';
+import { LayoutColor, LayoutTypes, LayoutWidth, MenuPositions, SideBarTheme, SideBarTypes } from '../constants';
 
 // utils
 import { changeBodyAttribute } from '../utils';
@@ -20,62 +20,70 @@ const RightSidebar = React.lazy(() => import('./RightSidebar'));
 const loading = () => <div className=""></div>;
 
 const VerticalLayout = () => {
-    const { appSelector } = useRedux();
+    // const { appSelector } = useRedux();
 
-    const {
-        layoutColor,
-        layoutWidth,
-        menuPosition,
-        leftSideBarTheme,
-        leftSideBarType,
-        showSidebarUserInfo,
-        topbarTheme,
-    } = appSelector((state) => ({
-        layoutColor: state.Layout.layoutColor,
-        layoutWidth: state.Layout.layoutWidth,
-        menuPosition: state.Layout.menuPosition,
-        leftSideBarTheme: state.Layout.leftSideBarTheme,
-        leftSideBarType: state.Layout.leftSideBarType,
-        showSidebarUserInfo: state.Layout.showSidebarUserInfo,
-        topbarTheme: state.Layout.topbarTheme,
-    }));
+    // const {
+    //     layoutColor,
+    //     layoutWidth,
+    //     menuPosition,
+    //     leftSideBarTheme,
+    //     leftSideBarType,
+    //     showSidebarUserInfo,
+    //     topbarTheme,
+    // } = appSelector((state) => ({
+    //     layoutColor: state.Layout.layoutColor,
+    //     layoutWidth: state.Layout.layoutWidth,
+    //     menuPosition: state.Layout.menuPosition,
+    //     leftSideBarTheme: state.Layout.leftSideBarTheme,
+    //     leftSideBarType: state.Layout.leftSideBarType,
+    //     showSidebarUserInfo: state.Layout.showSidebarUserInfo,
+    //     topbarTheme: state.Layout.topbarTheme,
+    // }));
 
     const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 
     /*
   layout defaults
   */
+    // useEffect(() => {
+    //     changeBodyAttribute('data-layout-mode', LayoutTypes.LAYOUT_VERTICAL);
+    // }, []);
+
+    // useEffect(() => {
+    //     changeBodyAttribute('data-layout-color', layoutColor);
+    // }, [layoutColor]);
+
+    // useEffect(() => {
+    //     changeBodyAttribute('data-layout-size', layoutWidth);
+    // }, [layoutWidth]);
+
+    // useEffect(() => {
+    //     changeBodyAttribute('data-leftbar-position', menuPosition);
+    // }, [menuPosition]);
+
+    // useEffect(() => {
+    //     changeBodyAttribute('data-leftbar-color', leftSideBarTheme);
+    // }, [leftSideBarTheme]);
+
+    // useEffect(() => {
+    //     changeBodyAttribute('data-leftbar-size', leftSideBarType);
+    // }, [leftSideBarType]);
+
+    // useEffect(() => {
+    //     changeBodyAttribute('data-topbar-color', topbarTheme);
+    // }, [topbarTheme]);
     useEffect(() => {
         changeBodyAttribute('data-layout-mode', LayoutTypes.LAYOUT_VERTICAL);
+        changeBodyAttribute('data-layout-color', LayoutColor.LAYOUT_COLOR_LIGHT);
+        changeBodyAttribute('data-layout-size', LayoutWidth.LAYOUT_WIDTH_FLUID);
+        changeBodyAttribute('data-leftbar-position', MenuPositions.MENU_POSITION_FIXED);
+        changeBodyAttribute('data-leftbar-color', SideBarTheme.LEFT_SIDEBAR_THEME_LIGHT);
+        changeBodyAttribute('data-topbar-color', SideBarTheme.LEFT_SIDEBAR_THEME_LIGHT);
+        changeBodyAttribute('data-leftbar-size', SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT);
+        changeBodyAttribute('data-sidebar-user', 'true');
     }, []);
 
-    useEffect(() => {
-        changeBodyAttribute('data-layout-color', layoutColor);
-    }, [layoutColor]);
 
-    useEffect(() => {
-        changeBodyAttribute('data-layout-size', layoutWidth);
-    }, [layoutWidth]);
-
-    useEffect(() => {
-        changeBodyAttribute('data-leftbar-position', menuPosition);
-    }, [menuPosition]);
-
-    useEffect(() => {
-        changeBodyAttribute('data-leftbar-color', leftSideBarTheme);
-    }, [leftSideBarTheme]);
-
-    useEffect(() => {
-        changeBodyAttribute('data-leftbar-size', leftSideBarType);
-    }, [leftSideBarType]);
-
-    useEffect(() => {
-        changeBodyAttribute('data-topbar-color', topbarTheme);
-    }, [topbarTheme]);
-
-    useEffect(() => {
-        changeBodyAttribute('data-sidebar-user', showSidebarUserInfo);
-    }, [showSidebarUserInfo]);
 
     /**
      * Open the menu when having mobile screen
@@ -92,7 +100,8 @@ const VerticalLayout = () => {
         }
     };
 
-    const isCondensed: boolean = leftSideBarType === SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED;
+    // const isCondensed: boolean = leftSideBarType === SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED;
+    // const isCondensed: boolean = true === SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED;
 
     return (
         <>
@@ -101,7 +110,9 @@ const VerticalLayout = () => {
                     <Topbar openLeftMenuCallBack={openMenu} />
                 </Suspense>
                 <Suspense fallback={loading()}>
-                    <LeftSidebar isCondensed={isCondensed} />
+                    <LeftSidebar
+                        isCondensed={false}
+                    />
                 </Suspense>
                 <div className="content-page">
                     <div className="content">

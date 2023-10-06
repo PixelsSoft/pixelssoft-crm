@@ -10,8 +10,8 @@ import ContactDetails from '../../../components/ContactDetails';
 
 // data
 // import { contacts } from './data';
-import { getAllUsers } from '../../../redux/actions';
-import { getAllRoles } from '../../../redux/roles/actions';
+// import { getAllUsers } from '../../../redux/actions';
+// import { getAllRoles } from '../../../redux/roles/actions';
 import { useNavigate } from 'react-router-dom';
 
 // dummy data
@@ -42,10 +42,10 @@ const List = () => {
 
     const { dispatch, appSelector } = useRedux();
 
-    const { loading, users } = appSelector((state) => ({
-        loading: state.Auth.loading,
-        users: state.Auth.users,
-    }));
+    // const { loading, users } = appSelector((state) => ({
+    //     loading: state.Auth.loading,
+    //     users: state.Auth.users,
+    // }));
 
     // set pagetitle
     usePageTitle({
@@ -69,10 +69,10 @@ const List = () => {
 
 
     useEffect(() => {
-        dispatch(getAllUsers());
-        dispatch(getAllRoles());
+        // dispatch(getAllUsers());
+        // dispatch(getAllRoles());
     }, [dispatch]);
-
+    const loading = false
     return loading ? (
         <div>
             <h2>Loading...</h2>
@@ -118,13 +118,13 @@ const List = () => {
                 </Col>
             </Row>
             <Row>
-                {(users || []).map((user: User, index: any) => {
+                {/* {(users || []).map((user: User, index: any) => {
                     return (
                         <Col xl={6} md={6} key={index.toString()}>
                             <ContactDetails contact={user} />
                         </Col>
                     );
-                })}
+                })} */}
 
             </Row>
 

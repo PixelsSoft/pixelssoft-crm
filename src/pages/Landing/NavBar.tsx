@@ -4,19 +4,19 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // store
-import { RootState } from '../../redux/store';
+// import { RootState } from '../../redux/store';
 
 // images
 import logo from '../../assets/images/logo-light.png';
 import logo1 from '../../assets/images/logo-dark.png';
 
 const NavBar = () => {
-    const { user, userLoggedIn } = useSelector((state: RootState) => ({
-        user: state.Auth.user,
-        loading: state.Auth.loading,
-        error: state.Auth.error,
-        userLoggedIn: state.Auth.userLoggedIn,
-    }));
+    // const { user, userLoggedIn } = useSelector((state: RootState) => ({
+    //     user: state.Auth.user,
+    //     loading: state.Auth.loading,
+    //     error: state.Auth.error,
+    //     userLoggedIn: state.Auth.userLoggedIn,
+    // }));
 
     // on scroll add navbar class
     useEffect(() => {
@@ -73,7 +73,7 @@ const NavBar = () => {
                         </Nav.Item>
                     </Nav>
 
-                    {userLoggedIn || user ? (
+                    {/* {userLoggedIn || user ? (
                         <Button href="/auth/logout" variant="outline-info" className="navbar-btn btn-sm px-3 ms-1">
                             Logout
                         </Button>
@@ -81,7 +81,7 @@ const NavBar = () => {
                         <Button href="/auth/login" variant="outline-info" className="navbar-btn btn-sm px-3 ms-1">
                             Login
                         </Button>
-                    )}
+                    )} */}
                 </Navbar.Collapse>
             </Container>
         </Navbar>

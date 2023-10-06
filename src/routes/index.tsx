@@ -4,7 +4,7 @@ import { useRoutes } from 'react-router-dom';
 // layouts
 import DefaultLayout from '../layouts/Default';
 import VerticalLayout from '../layouts/Vertical';
-import HorizontalLayout from '../layouts/Horizontal/';
+// import HorizontalLayout from '../layouts/Horizontal/';
 
 // components
 import PrivateRoute from './PrivateRoute';
@@ -139,21 +139,21 @@ const LoadComponent = ({ component: Component }: LoadComponentProps) => (
 const AllRoutes = () => {
     const { appSelector } = useRedux();
 
-    const { layout } = appSelector((state) => ({
-        layout: state.Layout,
-    }));
+    // const { layout } = appSelector((state) => ({
+    //     layout: state.Layout,
+    // }));
 
     const getLayout = () => {
         let layoutCls: React.ComponentType = VerticalLayout;
-
-        switch (layout.layoutType) {
-            case LayoutTypes.LAYOUT_HORIZONTAL:
-                layoutCls = HorizontalLayout;
-                break;
-            default:
-                layoutCls = VerticalLayout;
-                break;
-        }
+        layoutCls = VerticalLayout;
+        // switch (layout.layoutType) {
+        //     case LayoutTypes.LAYOUT_HORIZONTAL:
+        //         layoutCls = HorizontalLayout;
+        //         break;
+        //     default:
+        //         layoutCls = VerticalLayout;
+        //         break;
+        // }
         return layoutCls;
     };
     let Layout = getLayout();

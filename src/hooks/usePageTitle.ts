@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
 // actions
-import { changePageTitle } from '../redux/actions';
+// import { changePageTitle } from '../redux/actions';
+import { setPageTitle } from '../redux/Slices/PageTitle'
 
 // hooks
 import { useRedux } from '.';
@@ -20,6 +21,8 @@ export default function usePageTitle(value: {
 
     useEffect(() => {
         // set page title
-        dispatch(changePageTitle(pageTitle));
-    }, [dispatch, pageTitle]);
+        dispatch(setPageTitle(pageTitle));
+    }, [
+        dispatch,
+        pageTitle]);
 }

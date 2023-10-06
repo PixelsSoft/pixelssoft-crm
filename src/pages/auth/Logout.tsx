@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useRedux } from '../../hooks/';
 
 //actions
-import { logoutUser, resetAuth } from '../../redux/actions';
+// import { logoutUser, resetAuth } from '../../redux/actions';
 
 // components
 import AuthLayout from './AuthLayout';
@@ -64,11 +64,11 @@ const Logout = () => {
     const { dispatch } = useRedux();
 
     useEffect(() => {
-        dispatch(resetAuth());
+        // dispatch(resetAuth());
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(logoutUser());
+        // dispatch(logoutUser());
     }, [dispatch]);
 
     return (

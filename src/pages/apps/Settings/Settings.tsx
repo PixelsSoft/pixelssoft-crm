@@ -2,10 +2,10 @@ import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap';
 import { usePageTitle, useRedux } from '../../../hooks';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllRoles } from '../../../redux/roles/actions';
+// import { getAllRoles } from '../../../redux/roles/actions';
 import CreateRole from './CreateRole';
 import CreateCategory from './CreateCategory';
-import { getAllCategories } from '../../../redux/projectCategories/actions';
+// import { getAllCategories } from '../../../redux/projectCategories/actions';
 
 type Role = {
     title: string;
@@ -36,10 +36,10 @@ const Settings = () => {
 
     const { dispatch, appSelector } = useRedux();
 
-    const { roles, categories } = appSelector((state) => ({
-        roles: state.Roles.roles,
-        categories: state.ProjectCategories.categories,
-    }));
+    // const { roles, categories } = appSelector((state) => ({
+    //     roles: state.Roles.roles,
+    //     categories: state.ProjectCategories.categories,
+    // }));
 
     const toggle = () => setAccessControlModal(!accessControlModal);
     const toggleCategoryModal = () => setCreateCategoryModal(!createCategoryModal);
@@ -60,8 +60,8 @@ const Settings = () => {
     });
 
     useEffect(() => {
-        dispatch(getAllRoles());
-        dispatch(getAllCategories());
+        // dispatch(getAllRoles());
+        // dispatch(getAllCategories());
     }, [dispatch]);
 
     return (
@@ -81,15 +81,15 @@ const Settings = () => {
                             </Row>
 
                             <ul className="list-group mb-0 user-list">
-                                {(roles?.data || []).map((role: Role, index: number) => {
+                                {([]).map((role: Role, index: number) => {
                                     return (
                                         <li className="list-group-item" key={index.toString()}>
                                             <Link to="#" className="user-list-item d-flex justify-content-between">
                                                 <div className="user-desc overflow-hidden">
                                                     <h5 className="name mt-0 mb-1">{role.title}</h5>
-                                                    {/* <span className="desc text-muted font-12 text-truncate d-block">
+                                                    <span className="desc text-muted font-12 text-truncate d-block">
                                                         All access
-                                                    </span> */}
+                                                    </span>
                                                 </div>
                                                 <Dropdown className="float-end" align="end">
                                                     <Dropdown.Toggle as="a" className="cursor-pointer card-drop">
@@ -125,15 +125,15 @@ const Settings = () => {
                             </Row>
 
                             <ul className="list-group mb-0 user-list">
-                                {(categories?.data || []).map((category: any, index: number) => {
+                                {([]).map((category: any, index: number) => {
                                     return (
                                         <li className="list-group-item" key={index.toString()}>
                                             <Link to="#" className="user-list-item d-flex justify-content-between">
                                                 <div className="user-desc overflow-hidden">
                                                     <h5 className="name mt-0 mb-1">{category.name}</h5>
-                                                    {/* <span className="desc text-muted font-12 text-truncate d-block">
+                                                    <span className="desc text-muted font-12 text-truncate d-block">
                                                         All access
-                                                    </span> */}
+                                                    </span>
                                                 </div>
                                                 <Dropdown className="float-end" align="end">
                                                     <Dropdown.Toggle as="a" className="cursor-pointer card-drop">

@@ -43,17 +43,16 @@ const DashBoard1 = () => {
                     <RevenueChart />
                 </Col>
             </Row>
-
-            <Users />
-
-            <Row>
+            <Projects projectDetails={projectDetails} />
+            {/* <Users /> */}
+            {/* <Row>
                 <Col xl={4}>
                     <Inbox messages={messages} />
                 </Col>
                 <Col xl={8}>
                     <Projects projectDetails={projectDetails} />
                 </Col>
-            </Row>
+            </Row> */}
         </>
     );
 };

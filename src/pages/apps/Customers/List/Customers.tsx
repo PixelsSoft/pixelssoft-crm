@@ -5,7 +5,8 @@ import Table from '../../../../components/Table';
 import { records as data } from './data';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { deleteCustomer, getCustomers } from '../../../../redux/customers/actions';
+import { records } from '../List/data';
+// import { deleteCustomer, getCustomers } from '../../../../redux/customers/actions';
 
 const columns = [
     {
@@ -64,14 +65,14 @@ const Customers = () => {
 
     // const [modal, setModal] = useState(false);
 
-    const { customers, loading, deleteCustomerSuccess } = appSelector((state) => ({
-        customers: state.Customer.customers,
-        loading: state.Customer.loading,
-        deleteCustomerSuccess: state.Customer.deleteCustomerSuccess,
-    }));
+    // const { customers, loading, deleteCustomerSuccess } = appSelector((state) => ({
+    //     customers: state.Customer.customers,
+    //     loading: state.Customer.loading,
+    //     deleteCustomerSuccess: state.Customer.deleteCustomerSuccess,
+    // }));
 
     const handleDelete = (id: string) => {
-        dispatch(deleteCustomer(id));
+        // dispatch(deleteCustomer(id));
     };
 
     // const toggle = () => setModal(!modal);
@@ -91,9 +92,10 @@ const Customers = () => {
         ],
     });
 
-    useEffect(() => {
-        dispatch(getCustomers());
-    }, [dispatch, deleteCustomerSuccess]);
+    // useEffect(() => {
+    //     // dispatch(getCustomers());
+    // }, [dispatch, deleteCustomerSuccess]);
+    const loading = false
 
     return loading ? (
         <h4>Loading...</h4>
@@ -118,7 +120,7 @@ const Customers = () => {
                             </Row>
                             <Table
                                 columns={columns}
-                                data={customers ? customers : []}
+                                data={records}
                                 pageSize={5}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}

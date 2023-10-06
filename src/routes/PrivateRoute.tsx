@@ -24,7 +24,7 @@ const PrivateRoute = ({ component: RouteComponent, roles, ...rest }: PrivateRout
     /**
      * not logged in so redirect to login page with the return url
      */
-    if (api.isUserAuthenticated() === false) {
+    if (api.isUserAuthenticated() !== false) {
         return <Navigate to={'/auth/login'} state={{ from: location }} replace />;
     }
 

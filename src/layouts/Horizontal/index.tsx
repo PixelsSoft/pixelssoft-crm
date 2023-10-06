@@ -3,10 +3,10 @@ import { Breadcrumb, Col, Container, Row } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
 
 // actions
-import { changeTopbarTheme } from '../../redux/actions';
+// import { changeTopbarTheme } from '../../redux/actions';
 
 // constants
-import { LayoutTypes, TopbarTheme } from '../../constants/layout';
+// import { LayoutTypes, TopbarTheme } from '../../constants/layout';
 
 // hooks
 import { useRedux } from '../../hooks';
@@ -28,44 +28,45 @@ type HorizontalLayoutProps = {
 };
 
 const HorizontalLayout = ({ children }: HorizontalLayoutProps) => {
-    const { dispatch, appSelector } = useRedux();
+    const {
+        //  dispatch,
+        appSelector } = useRedux();
 
     const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 
-    const { layoutColor, layoutWidth, menuPosition, topbarTheme, isOpenRightSideBar, pageTitle } = appSelector(
-        (state) => ({
-            layoutColor: state.Layout.layoutColor,
-            layoutWidth: state.Layout.layoutWidth,
-            menuPosition: state.Layout.menuPosition,
-            topbarTheme: state.Layout.topbarTheme,
-            isOpenRightSideBar: state.Layout.isOpenRightSideBar,
-            pageTitle: state.PageTitle.pageTitle,
-        })
-    );
 
     /*
     layout defaults
     */
-    useEffect(() => {
-        changeBodyAttribute('data-layout-mode', LayoutTypes.LAYOUT_HORIZONTAL);
-        dispatch(changeTopbarTheme(TopbarTheme.TOPBAR_THEME_DARK));
-    }, [dispatch]);
+    // useEffect(() => {
+    //     changeBodyAttribute('data-layout-mode', LayoutTypes.LAYOUT_HORIZONTAL);
+    //     dispatch(changeTopbarTheme(TopbarTheme.TOPBAR_THEME_DARK));
+    // }, [dispatch]);
+
 
     useEffect(() => {
-        changeBodyAttribute('data-layout-color', layoutColor);
-    }, [layoutColor]);
+        changeBodyAttribute('data-layout-color', "light");
+        changeBodyAttribute('data-layout-size', "fluid");
+        changeBodyAttribute('data-leftbar-position', "fixed");
+        changeBodyAttribute('data-topbar-color', "light");
+    }, []);
 
-    useEffect(() => {
-        changeBodyAttribute('data-layout-size', layoutWidth);
-    }, [layoutWidth]);
 
-    useEffect(() => {
-        changeBodyAttribute('data-leftbar-position', menuPosition);
-    }, [menuPosition]);
+    // useEffect(() => {
+    //     changeBodyAttribute('data-layout-color', layoutColor);
+    // }, [layoutColor]);
 
-    useEffect(() => {
-        changeBodyAttribute('data-topbar-color', topbarTheme);
-    }, [topbarTheme]);
+    // useEffect(() => {
+    //     changeBodyAttribute('data-layout-size', layoutWidth);
+    // }, [layoutWidth]);
+
+    // useEffect(() => {
+    //     changeBodyAttribute('data-leftbar-position', menuPosition);
+    // }, [menuPosition]);
+
+    // useEffect(() => {
+    //     changeBodyAttribute('data-topbar-color', topbarTheme);
+    // }, [topbarTheme]);
 
     /**
      * Open the menu when having mobile screen
@@ -101,7 +102,7 @@ const HorizontalLayout = ({ children }: HorizontalLayoutProps) => {
                                             <Breadcrumb className="m-0">
                                                 <Breadcrumb.Item href="/">Adminto</Breadcrumb.Item>
 
-                                                {(pageTitle.breadCrumbItems || []).map(
+                                                {/* {(pageTitle.breadCrumbItems || []).map(
                                                     (
                                                         item: {
                                                             label: string;
@@ -120,10 +121,10 @@ const HorizontalLayout = ({ children }: HorizontalLayoutProps) => {
                                                             </Breadcrumb.Item>
                                                         );
                                                     }
-                                                )}
+                                                )} */}
                                             </Breadcrumb>
                                         </div>
-                                        <h4 className="page-title">{pageTitle.title}</h4>
+                                        {/* <h4 className="page-title">{pageTitle.title}</h4> */}
                                     </div>
                                 </Col>
                             </Row>
@@ -134,11 +135,11 @@ const HorizontalLayout = ({ children }: HorizontalLayoutProps) => {
 
 
 
-                    {isOpenRightSideBar && (
+                    {/* {isOpenRightSideBar && (
                         <Suspense fallback={loading()}>
                             <RightSidebar />
                         </Suspense>
-                    )}
+                    )} */}
                 </div>
             </div>
         </>

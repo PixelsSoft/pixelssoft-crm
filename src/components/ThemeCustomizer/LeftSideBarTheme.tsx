@@ -2,12 +2,14 @@ import { Form } from 'react-bootstrap';
 import * as layoutConstants from '../../constants/layout';
 
 type LeftSideBarThemeProps = {
-    changeLeftSidebarTheme: (value: string) => void;
+    // changeLeftSidebarTheme: (value: string) => void;
     leftSideBarTheme: string;
     layoutConstants: typeof layoutConstants.SideBarTheme;
 };
 
-const LeftSideBarTheme = ({ changeLeftSidebarTheme, leftSideBarTheme, layoutConstants }: LeftSideBarThemeProps) => {
+const LeftSideBarTheme = ({
+    //  changeLeftSidebarTheme, 
+    leftSideBarTheme, layoutConstants }: LeftSideBarThemeProps) => {
     return (
         <>
             <h6 className="fw-medium font-14 mt-4 mb-2 pb-1">Left Sidebar Color</h6>
@@ -18,7 +20,7 @@ const LeftSideBarTheme = ({ changeLeftSidebarTheme, leftSideBarTheme, layoutCons
                     name="theme"
                     id="light-check"
                     value={layoutConstants.LEFT_SIDEBAR_THEME_LIGHT}
-                    onChange={(e) => changeLeftSidebarTheme(e.target.value)}
+                    // onChange={(e) => changeLeftSidebarTheme(e.target.value)}
                     checked={leftSideBarTheme === layoutConstants.LEFT_SIDEBAR_THEME_LIGHT}
                 />
                 <Form.Check.Label htmlFor="light-check">Light</Form.Check.Label>
@@ -30,7 +32,7 @@ const LeftSideBarTheme = ({ changeLeftSidebarTheme, leftSideBarTheme, layoutCons
                     name="theme"
                     id="dark-check"
                     value={layoutConstants.LEFT_SIDEBAR_THEME_DARK}
-                    onChange={(e) => changeLeftSidebarTheme(e.target.value)}
+                    // onChange={(e) => changeLeftSidebarTheme(e.target.value)}
                     checked={leftSideBarTheme === layoutConstants.LEFT_SIDEBAR_THEME_DARK}
                 />
                 <Form.Check.Label htmlFor="dark-check">Dark</Form.Check.Label>
@@ -42,7 +44,7 @@ const LeftSideBarTheme = ({ changeLeftSidebarTheme, leftSideBarTheme, layoutCons
                     name="theme"
                     id="brand-check"
                     value={layoutConstants.LEFT_SIDEBAR_THEME_BRAND}
-                    onChange={(e) => changeLeftSidebarTheme(e.target.value)}
+                    // onChange={(e) => changeLeftSidebarTheme(e.target.value)}
                     checked={leftSideBarTheme === layoutConstants.LEFT_SIDEBAR_THEME_BRAND}
                 />
                 <Form.Check.Label htmlFor="brand-check">Brand</Form.Check.Label>
@@ -54,7 +56,7 @@ const LeftSideBarTheme = ({ changeLeftSidebarTheme, leftSideBarTheme, layoutCons
                     name="theme"
                     id="gradient-check"
                     value={layoutConstants.LEFT_SIDEBAR_THEME_GRADIENT}
-                    onChange={(e) => changeLeftSidebarTheme(e.target.value)}
+                    // onChange={(e) => changeLeftSidebarTheme(e.target.value)}
                     checked={leftSideBarTheme === layoutConstants.LEFT_SIDEBAR_THEME_GRADIENT}
                 />
                 <Form.Check.Label htmlFor="gradient-check">Gradient</Form.Check.Label>

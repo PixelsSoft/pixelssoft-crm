@@ -2,12 +2,14 @@ import { Form } from 'react-bootstrap';
 import * as layoutConstants from '../../constants/layout';
 
 type TopbarThemeProps = {
-    changeTopBarTheme: (value: string) => void;
+    // changeTopBarTheme: (value: string) => void;
     topbarTheme: string;
     layoutConstants: typeof layoutConstants.TopbarTheme;
 };
 
-const TopbarTheme = ({ changeTopBarTheme, topbarTheme, layoutConstants }: TopbarThemeProps) => {
+const TopbarTheme = ({
+    // changeTopBarTheme, 
+    topbarTheme, layoutConstants }: TopbarThemeProps) => {
     return (
         <>
             <h6 className="fw-medium font-14 mt-4 mb-2 pb-1">Topbar</h6>
@@ -18,7 +20,7 @@ const TopbarTheme = ({ changeTopBarTheme, topbarTheme, layoutConstants }: Topbar
                     name="topbar-color"
                     id="darktopbar-check"
                     value={layoutConstants.TOPBAR_THEME_DARK}
-                    onChange={(e) => changeTopBarTheme(e.target.value)}
+                    // onChange={(e) => changeTopBarTheme(e.target.value)}
                     checked={topbarTheme === layoutConstants.TOPBAR_THEME_DARK}
                 />
                 <Form.Check.Label htmlFor="darktopbar-check">Dark</Form.Check.Label>
@@ -30,7 +32,7 @@ const TopbarTheme = ({ changeTopBarTheme, topbarTheme, layoutConstants }: Topbar
                     name="topbar-color"
                     id="lighttopbar-check"
                     value={layoutConstants.TOPBAR_THEME_LIGHT}
-                    onChange={(e) => changeTopBarTheme(e.target.value)}
+                    // onChange={(e) => changeTopBarTheme(e.target.value)}
                     checked={topbarTheme === layoutConstants.TOPBAR_THEME_LIGHT}
                 />
                 <Form.Check.Label htmlFor="lighttopbar-check">Light</Form.Check.Label>

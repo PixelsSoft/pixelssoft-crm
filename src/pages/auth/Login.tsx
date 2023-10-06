@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useRedux } from '../../hooks/';
 
 // actions
-import { resetAuth, loginUser } from '../../redux/actions';
+// import { resetAuth, loginUser } from '../../redux/actions';
 
 // components
 import { VerticalForm, FormInput } from '../../components/form/';
@@ -57,15 +57,15 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { user, userLoggedIn, loading, error } = appSelector((state) => ({
-        user: state.Auth.user,
-        loading: state.Auth.loading,
-        error: state.Auth.error,
-        userLoggedIn: state.Auth.userLoggedIn,
-    }));
+    // const { user, userLoggedIn, loading, error } = appSelector((state) => ({
+    //     user: state.Auth.user,
+    //     loading: state.Auth.loading,
+    //     error: state.Auth.error,
+    //     userLoggedIn: state.Auth.userLoggedIn,
+    // }));
 
     useEffect(() => {
-        dispatch(resetAuth());
+        // dispatch(resetAuth());
     }, [dispatch]);
 
     /*
@@ -82,7 +82,7 @@ const Login = () => {
     handle form submission
     */
     const onSubmit = (formData: UserData) => {
-        dispatch(loginUser(email, password));
+        // dispatch(loginUser(email, password));
     };
 
     const location = useLocation();
@@ -95,19 +95,19 @@ const Login = () => {
 
     return (
         <>
-            {userLoggedIn && user && <Navigate to={redirectUrl} replace />}
+            {/* {userLoggedIn && user && <Navigate to={redirectUrl} replace />} */}
 
             <AuthLayout bottomLinks={<BottomLink />}>
                 <div className="text-center mb-4">
                     <h4 className="text-uppercase mt-0">{t('Sign In')}</h4>
                 </div>
 
-                {error && (
+                {/* {error && (
                     <Alert variant="danger" className="my-2">
                         {error}
                     </Alert>
                 )}
-                {loading && <Loader />}
+                {loading && <Loader />} */}
 
                 <VerticalForm<UserData> onSubmit={onSubmit} resolver={schemaResolver}>
                     <FormInput
@@ -135,7 +135,9 @@ const Login = () => {
                     />
 
                     <div className="text-center d-grid mb-3">
-                        <Button variant="primary" type="submit" disabled={loading}>
+                        <Button variant="primary" type="submit"
+                        // disabled={loading}
+                        >
                             {t('Log In')}
                         </Button>
                     </div>

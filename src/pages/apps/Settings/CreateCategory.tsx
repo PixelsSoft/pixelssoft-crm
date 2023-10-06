@@ -1,7 +1,7 @@
 import { FormEventHandler, MouseEventHandler, useEffect, useState } from 'react';
 import { Alert, Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { useRedux } from '../../../hooks';
-import { createCategory, getAllCategories, resetCreateCategory } from '../../../redux/projectCategories/actions';
+// import { createCategory, getAllCategories, resetCreateCategory } from '../../../redux/projectCategories/actions';
 
 export default function CreateCategory({
     createCategoryModal,
@@ -15,28 +15,28 @@ export default function CreateCategory({
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        dispatch(createCategory({ name }));
+        // dispatch(createCategory({ name }));
     };
 
-    const { error, categoryCreated, data } = appSelector((state) => ({
-        categoryCreated: state.ProjectCategories.categoryCreated,
-        error: state.ProjectCategories.error,
-        data: state.ProjectCategories.data,
-    }));
+    // const { error, categoryCreated, data } = appSelector((state) => ({
+    //     categoryCreated: state.ProjectCategories.categoryCreated,
+    //     error: state.ProjectCategories.error,
+    //     data: state.ProjectCategories.data,
+    // }));
 
     const cancel: MouseEventHandler<HTMLButtonElement> = (e) => {
         e.preventDefault();
         setName('');
         toggleCategorymodal();
-        dispatch(resetCreateCategory());
+        // dispatch(resetCreateCategory());
     };
 
-    useEffect(() => {
-        if (categoryCreated) {
-            setName('');
-            dispatch(getAllCategories());
-        }
-    }, [categoryCreated, dispatch]);
+    // useEffect(() => {
+    //     if (categoryCreated) {
+    //         setName('');
+    //         // dispatch(getAllCategories());
+    //     }
+    // }, [categoryCreated, dispatch]);
 
     return (
         <Modal show={createCategoryModal} onHide={toggleCategorymodal} centered>
@@ -51,7 +51,7 @@ export default function CreateCategory({
                             <Form.Control value={name} onChange={(e) => setName(e.target.value)} />
                         </Form.Group>
                     </Row>
-                    {error && (
+                    {/* {error && (
                         <Alert variant="danger" className="my-2">
                             {error}
                         </Alert>
@@ -61,7 +61,7 @@ export default function CreateCategory({
                         <Alert variant="success" className="my-2">
                             {data.message}
                         </Alert>
-                    )}
+                    )} */}
 
                     <div className="d-flex justify-content-end border-top border-gray pt-2">
                         <Button variant="light" className="waves-effect waves-light me-1" type="submit">

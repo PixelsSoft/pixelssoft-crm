@@ -2,9 +2,9 @@ import { usePageTitle, useRedux } from '../../../../hooks';
 import { Row, Col, Card, Button, Form, Table, Alert } from 'react-bootstrap';
 import { ChangeEventHandler, FormEventHandler, useEffect, useRef, useState } from 'react';
 import { FormInput } from '../../../../components/form';
-import { getCustomers } from '../../../../redux/customers/actions';
-import { createInvoice, getInvoiceNumber, resetInvoice } from '../../../../redux/invoices/actions';
-import { getAllCategories } from '../../../../redux/projectCategories/actions';
+// import { getCustomers } from '../../../../redux/customers/actions';
+// import { createInvoice, getInvoiceNumber, resetInvoice } from '../../../../redux/invoices/actions';
+// import { getAllCategories } from '../../../../redux/projectCategories/actions';
 import InvoicePreview from '../../../../components/InvoicePreview';
 
 const CreateInvoice = () => {
@@ -49,14 +49,14 @@ const CreateInvoice = () => {
 
     const { dispatch, appSelector } = useRedux();
 
-    const { customers, categories, invoiceNumber, invoiceCreated, data, error } = appSelector((state) => ({
-        customers: state.Customer.customers,
-        categories: state.ProjectCategories.categories,
-        invoiceNumber: state.Invoices.invoiceNumber,
-        invoiceCreated: state.Invoices.invoiceCreated,
-        data: state.Invoices.data,
-        error: state.Invoices.error,
-    }));
+    // const { customers, categories, invoiceNumber, invoiceCreated, data, error } = appSelector((state) => ({
+    //     customers: state.Customer.customers,
+    //     categories: state.ProjectCategories.categories,
+    //     invoiceNumber: state.Invoices.invoiceNumber,
+    //     invoiceCreated: state.Invoices.invoiceCreated,
+    //     data: state.Invoices.data,
+    //     error: state.Invoices.error,
+    // }));
 
     usePageTitle({
         title: 'Create Invoice',
@@ -73,61 +73,63 @@ const CreateInvoice = () => {
         ],
     });
 
-    const handleSelectCustomer: ChangeEventHandler<HTMLSelectElement> | undefined = (e) => {
-        let found = customers.find((cust: any) => cust._id === e.target.value);
-        setCustomer(found);
-        setCustomerEmail(found.email);
-        setCustomerId(found._id);
-        setCustomerName(found.fullName);
-        setPhoneNumber(found.phoneNumber);
-    };
+    // const handleSelectCustomer: ChangeEventHandler<HTMLSelectElement> | undefined = (e) => {
+    //     let found = customers.find((cust: any) => cust._id === e.target.value);
+    //     setCustomer(found);
+    //     setCustomerEmail(found.email);
+    //     setCustomerId(found._id);
+    //     setCustomerName(found.fullName);
+    //     setPhoneNumber(found.phoneNumber);
+    // };
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        dispatch(
-            createInvoice({
-                customerEmail,
-                customerName,
-                address,
-                phoneNumber,
-                currency,
-                amountDue: price,
-                total: price,
-                customer: customerId,
-                quantity,
-                invoiceDate,
-                dueDate,
-                invoiceNumber: invoiceNumber.data,
-                memo,
-                description,
-                projectName,
-                projectCategory,
-            })
-        );
+        // dispatch(
+        //     createInvoice({
+        //         customerEmail,
+        //         customerName,
+        //         address,
+        //         phoneNumber,
+        //         currency,
+        //         amountDue: price,
+        //         total: price,
+        //         customer: customerId,
+        //         quantity,
+        //         invoiceDate,
+        //         dueDate,
+        //         invoiceNumber: invoiceNumber.data,
+        //         memo,
+        //         description,
+        //         projectName,
+        //         projectCategory,
+        //     })
+        // );
     };
 
     const handleSelectProjectCategory: ChangeEventHandler<HTMLSelectElement> = (e) => {
-        let found = categories.data?.find((category: any) => category._id === e.target.value);
-        setProjectName(found.name);
-        setProjectCategory(found._id);
+        // let found = categories.data?.find((category: any) => category._id === e.target.value);
+        // setProjectName(found.name);
+        // setProjectCategory(found._id);
+        setProjectName(e.target.value);
+
     };
 
-    useEffect(() => {
-        if (invoiceCreated) {
-            reset();
-            dispatch(getInvoiceNumber());
-        }
-    }, [invoiceCreated, dispatch]);
+    // useEffect(() => {
+    //     if (invoiceCreated) {
+    //         reset();
+    //         // dispatch(getInvoiceNumber());
+    //     }
+    // }, [invoiceCreated, dispatch]);
 
     useEffect(() => {
-        dispatch(getCustomers());
-        dispatch(getAllCategories());
-        dispatch(getInvoiceNumber());
+        // dispatch(getCustomers());
+        // dispatch(getAllCategories());
+        // dispatch(getInvoiceNumber());
     }, [dispatch]);
 
     useEffect(() => {
         return () => {
-            dispatch(resetInvoice());
+            // dispatch(resetInvoice());
         };
     }, [dispatch]);
 
@@ -146,7 +148,7 @@ const CreateInvoice = () => {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Select Customer (Auto Fill)</Form.Label>
-                                        <Form.Select defaultValue="Choose..." onChange={handleSelectCustomer}>
+                                        {/* <Form.Select defaultValue="Choose..." onChange={handleSelectCustomer}>
                                             <option value={undefined}>Choose...</option>
                                             {customers &&
                                                 customers.map((customer: any, idx: number) => (
@@ -154,7 +156,7 @@ const CreateInvoice = () => {
                                                         {customer.fullName}
                                                     </option>
                                                 ))}
-                                        </Form.Select>
+                                        </Form.Select> */}
                                     </Form.Group>
                                 </Row>
 
@@ -181,7 +183,7 @@ const CreateInvoice = () => {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridPassword">
                                         <Form.Label>Invoice #</Form.Label>
-                                        <Form.Control value={invoiceNumber ? invoiceNumber.data : '0000'} disabled />
+                                        {/* <Form.Control value={invoiceNumber ? invoiceNumber.data : '0000'} disabled /> */}
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
@@ -320,7 +322,7 @@ const CreateInvoice = () => {
                                         </Col>
                                     </Row>
                                 </div>
-                                {data && (
+                                {/* {data && (
                                     <Alert variant="success" className="my-2">
                                         {data.message}
                                     </Alert>
@@ -336,7 +338,7 @@ const CreateInvoice = () => {
                                     <Alert variant="danger" className="my-2">
                                         {error}
                                     </Alert>
-                                )}
+                                )} */}
 
                                 <Row className="mt-3">
                                     <Col>
@@ -364,7 +366,7 @@ const CreateInvoice = () => {
                                 details={{
                                     customerName,
                                     customerEmail,
-                                    invoiceNumber,
+                                    // invoiceNumber,
                                     projectName,
                                     invoiceDate,
                                     dueDate,

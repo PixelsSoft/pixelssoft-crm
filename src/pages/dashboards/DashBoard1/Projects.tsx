@@ -32,8 +32,9 @@ const Projects = ({ projectDetails }: ProjectsProps) => {
                             <th>Project Name</th>
                             <th>Start Date</th>
                             <th>Due Date</th>
-                            <th>Status</th>
-                            <th>Assign</th>
+                            <th>Paid</th>
+                            <th>UnPaid</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,10 +45,12 @@ const Projects = ({ projectDetails }: ProjectsProps) => {
                                     <td>{projectDetail.name}</td>
                                     <td>{projectDetail.startDate}</td>
                                     <td>{projectDetail.dueDate}</td>
-                                    <td>
+                                    {/* <td>
                                         <Badge bg={projectDetail.variant}>{projectDetail.status}</Badge>
-                                    </td>
+                                    </td> */}
                                     <td>{projectDetail.clients}</td>
+                                    <td>{projectDetail.clients}</td>
+                                    <td>{projectDetail.dueDate}</td>
                                 </tr>
                             );
                         })}

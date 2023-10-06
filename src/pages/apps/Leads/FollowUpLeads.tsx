@@ -4,7 +4,7 @@ import Table from '../../../components/Table';
 
 import FormInput from '../../../components/form/FormInput';
 import { FormEventHandler, useEffect, useState } from 'react';
-import { createNewLead, deleteLead, getAllLeads, updateComment, updateStatus } from '../../../redux/leads/actions';
+// import { createNewLead, deleteLead, getAllLeads, updateComment, updateStatus } from '../../../redux/leads/actions';
 
 type Lead = {
     _id: string;
@@ -83,17 +83,17 @@ const FollowUpLeads = () => {
 
     const { dispatch, appSelector } = useRedux();
 
-    const { leads, createLeadSuccess, data, error, commentUpdated, leadDeleteSuccess, statusUpdated } = appSelector(
-        (state) => ({
-            leads: state.Leads.leads,
-            createLeadSuccess: state.Leads.createLeadSuccess,
-            data: state.Leads.data,
-            error: state.Leads.error,
-            commentUpdated: state.Leads.commentUpdated,
-            leadDeleteSuccess: state.Leads.leadDeleteSuccess,
-            statusUpdated: state.Leads.statusUpdated,
-        })
-    );
+    // const { leads, createLeadSuccess, data, error, commentUpdated, leadDeleteSuccess, statusUpdated } = appSelector(
+    //     (state) => ({
+    //         leads: state.Leads.leads,
+    //         createLeadSuccess: state.Leads.createLeadSuccess,
+    //         data: state.Leads.data,
+    //         error: state.Leads.error,
+    //         commentUpdated: state.Leads.commentUpdated,
+    //         leadDeleteSuccess: state.Leads.leadDeleteSuccess,
+    //         statusUpdated: state.Leads.statusUpdated,
+    //     })
+    // );
 
     const toggle = () => setModal(!modal);
     const editModalToggle = (id: string) => {
@@ -122,75 +122,75 @@ const FollowUpLeads = () => {
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        dispatch(createNewLead({ name, email, phone, status: 'Not Responded', comments: '' }));
+        // dispatch(createNewLead({ name, email, phone, status: 'Not Responded', comments: '' }));
     };
 
     const handleEdit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        dispatch(updateComment(editId, comment));
+        // dispatch(updateComment(editId, comment));
     };
 
     const handleStatusChange: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
 
-        dispatch(updateStatus(statusId, status));
+        // dispatch(updateStatus(statusId, status));
     };
 
     const handleDelete = (id: string) => {
-        dispatch(deleteLead(id));
+        // dispatch(deleteLead(id));
     };
 
-    useEffect(() => {
-        if (createLeadSuccess) {
-            setName('');
-            setEmail('');
-            setPhone('');
-            dispatch(getAllLeads());
-        }
-    }, [createLeadSuccess, dispatch]);
+    // useEffect(() => {
+    //     if (createLeadSuccess) {
+    //         setName('');
+    //         setEmail('');
+    //         setPhone('');
+    //         // dispatch(getAllLeads());
+    //     }
+    // }, [createLeadSuccess, dispatch]);
 
     useEffect(() => {
-        dispatch(getAllLeads());
+        // dispatch(getAllLeads());
     }, [dispatch]);
 
-    useEffect(() => {
-        if (editModal) {
-            setComment(leads.find((lead: Lead) => lead._id === editId).comments);
-        } else {
-            setComment('');
-        }
-    }, [editId, editModal, leads]);
+    // useEffect(() => {
+    //     if (editModal) {
+    //         setComment(leads.find((lead: Lead) => lead._id === editId).comments);
+    //     } else {
+    //         setComment('');
+    //     }
+    // }, [editId, editModal, leads]);
 
-    useEffect(() => {
-        if (statusModal) {
-            setStatus(leads.find((lead: Lead) => lead._id === statusId).status);
-        } else {
-            setStatus('');
-        }
-    }, [leads, statusId, statusModal]);
+    // useEffect(() => {
+    //     if (statusModal) {
+    //         setStatus(leads.find((lead: Lead) => lead._id === statusId).status);
+    //     } else {
+    //         setStatus('');
+    //     }
+    // }, [leads, statusId, statusModal]);
 
-    useEffect(() => {
-        if (commentUpdated) {
-            setComment('');
-            setEditModal(false);
-            dispatch(getAllLeads());
-        }
-    }, [commentUpdated, dispatch]);
+    // useEffect(() => {
+    //     if (commentUpdated) {
+    //         setComment('');
+    //         setEditModal(false);
+    //         // dispatch(getAllLeads());
+    //     }
+    // }, [commentUpdated, dispatch]);
 
-    useEffect(() => {
-        if (leadDeleteSuccess) {
-            dispatch(getAllLeads());
-        }
-    }, [leadDeleteSuccess, dispatch]);
+    // useEffect(() => {
+    //     if (leadDeleteSuccess) {
+    //         // dispatch(getAllLeads());
+    //     }
+    // }, [leadDeleteSuccess, dispatch]);
 
-    useEffect(() => {
-        if (statusUpdated) {
-            setStatus('');
-            setStatusModal(false);
-            setStatusId('');
-            dispatch(getAllLeads());
-        }
-    }, [statusUpdated, dispatch]);
+    // useEffect(() => {
+    //     if (statusUpdated) {
+    //         setStatus('');
+    //         setStatusModal(false);
+    //         setStatusId('');
+    //         // dispatch(getAllLeads());
+    //     }
+    // }, [statusUpdated, dispatch]);
 
     return (
         <>
@@ -214,7 +214,7 @@ const FollowUpLeads = () => {
                             </Row>
                             <Table
                                 columns={columns}
-                                data={leads || []}
+                                data={[]}
                                 pageSize={5}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}
@@ -267,7 +267,7 @@ const FollowUpLeads = () => {
                             onChange={(e) => setPhone(e.target.value)}
                         />
 
-                        {error && (
+                        {/* {error && (
                             <Alert variant="danger" className="my-2">
                                 {error}
                             </Alert>
@@ -276,7 +276,7 @@ const FollowUpLeads = () => {
                             <Alert variant="success" className="my-2">
                                 {data?.message}
                             </Alert>
-                        )}
+                        )} */}
 
                         <Button variant="light" className="waves-effect waves-light me-1" type="submit">
                             Save

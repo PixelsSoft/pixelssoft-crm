@@ -6,6 +6,8 @@ import { FormInput } from '../../../components/form';
 import { Link } from 'react-router-dom';
 import { recordsUpwork } from './data';
 import Table from '../../../components/Table';
+import TabsBordered from '../../uikit/TabsAccordions/TabsBordered';
+import { tabContents } from '../../uikit/TabsAccordions/data';
 
 const columns = [
     {
@@ -124,101 +126,10 @@ const Sales = () => {
                     </Card>
                 </Col>
             </Row>
+            <TabsBordered tabContents={tabContents} />
             <Row>
-                <Col>
-                    <Card>
-                        <Card.Body>
-                            <Row>
-                                <Col xl={3} md={6}>
-                                    <StatisticsWidget1
-                                        title="Total Revenue"
-                                        color={'#f05050'}
-                                        data={50}
-                                        stats={256}
-                                        subTitle="Revenue today"
-                                    />
-                                </Col>
-                                <Col xl={3} md={6}>
-                                    <StatisticsWidget1
-                                        title="Statistics"
-                                        color={'#ffbd4a'}
-                                        data={80}
-                                        stats={4569}
-                                        subTitle="Revenue today"
-                                    />
-                                </Col>
-                                <Col xl={3} md={6}>
-                                    <StatisticsWidget1
-                                        title="Total Revenue"
-                                        color={'#35b8e0'}
-                                        data={77}
-                                        stats={8545}
-                                        subTitle="Revenue today"
-                                    />
-                                </Col>
-                                <Col xl={3} md={6}>
-                                    <StatisticsWidget1
-                                        title="Statistics"
-                                        color={'#10c469'}
-                                        data={65}
-                                        stats={3562}
-                                        subTitle="Revenue today"
-                                    />
-                                </Col>
-                            </Row>
 
-                            <Row>
-                                <Col xl={3} md={6}>
-                                    <StatisticsWidget2
-                                        variant="pink"
-                                        title="Daily Sales"
-                                        trendValue="32%"
-                                        trendIcon="mdi mdi-trending-up"
-                                        stats={158}
-                                        subTitle="Revenue today"
-                                        progress={77}
-                                    />
-                                </Col>
-                                <Col xl={3} md={6}>
-                                    <StatisticsWidget2
-                                        variant="success"
-                                        title="Sales Analytics"
-                                        trendValue="32%"
-                                        trendIcon="mdi mdi-trending-up"
-                                        stats={8451}
-                                        subTitle="Revenue today"
-                                        progress={77}
-                                    />
-                                </Col>
-                                <Col xl={3} md={6}>
-                                    <StatisticsWidget2
-                                        variant="primary"
-                                        title="Sales Analytics"
-                                        trendValue="32%"
-                                        trendIcon="mdi mdi-trending-up"
-                                        stats={7540}
-                                        subTitle="Revenue today"
-                                        progress={77}
-                                    />
-                                </Col>
-                                <Col xl={3} md={6}>
-                                    <StatisticsWidget2
-                                        variant="warning"
-                                        title="Daily Sales"
-                                        trendValue="32%"
-                                        trendIcon="mdi mdi-trending-up"
-                                        stats={9841}
-                                        subTitle="Revenue today"
-                                        progress={77}
-                                    />
-                                </Col>
-                            </Row>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
 
-            <Row>
                 <Col xs={12}>
                     <Card>
                         <Card.Body>

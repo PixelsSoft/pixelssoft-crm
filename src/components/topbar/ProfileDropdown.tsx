@@ -20,9 +20,9 @@ const ProfileDropdown = ({ userImage, username, menuItems }: ProfileDropdownProp
 
     const { appSelector } = useRedux();
 
-    const { user } = appSelector((state) => ({
-        user: state.Auth.user.user,
-    }));
+    // const { user } = appSelector((state) => ({
+    //     user: state?.Auth?.user?.user,
+    // }));
 
     /*
      * toggle apps-dropdown
@@ -30,6 +30,12 @@ const ProfileDropdown = ({ userImage, username, menuItems }: ProfileDropdownProp
     const toggleDropdown = () => {
         isOpen ? hide() : show();
     };
+    const user = {
+        fullName: "taimmoor",
+        profilePic: {
+            url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5_FVz5EHkQtabX8CJJPiB6EIkfvKRL8JVew5LVlBkWlyEG9vIu6FgTZSE2qPa3_DLjiE&usqp=CAU"
+        }
+    }
 
     return (
         <Dropdown show={isOpen} onToggle={toggleDropdown}>
@@ -39,9 +45,9 @@ const ProfileDropdown = ({ userImage, username, menuItems }: ProfileDropdownProp
                 className="nav-link nav-user me-0 waves-effect waves-light"
                 id="page-header-user-dropdown"
                 onClick={toggleDropdown}>
-                <img src={user.profilePic.url} alt="user" className="rounded-circle" />
+                <img src={user?.profilePic.url} alt="user" className="rounded-circle" />
                 <span className="pro-user-name ms-1">
-                    {user.fullName} <i className="mdi mdi-chevron-down"></i>
+                    {user?.fullName} <i className="mdi mdi-chevron-down"></i>
                 </span>
             </Dropdown.Toggle>
 

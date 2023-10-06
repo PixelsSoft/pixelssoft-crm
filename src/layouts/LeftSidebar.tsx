@@ -18,9 +18,9 @@ import { useRedux } from '../hooks';
 const UserBox = () => {
     const { appSelector } = useRedux();
 
-    const { user } = appSelector((state) => ({
-        user: state.Auth.user,
-    }));
+    // const { user } = appSelector((state) => ({
+    //     user: state.Auth.user,
+    // }));
 
     // get the profilemenu
     const ProfileMenus = [
@@ -54,6 +54,16 @@ const UserBox = () => {
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
+    const user = {
+        user: {
+            profilePic: {
+                url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5_FVz5EHkQtabX8CJJPiB6EIkfvKRL8JVew5LVlBkWlyEG9vIu6FgTZSE2qPa3_DLjiE&usqp=CAU"
+            },
+            fullName: "taimoor khan",
+            designation: "CEO"
+        }
+    }
+
 
     return (
         <div className="user-box text-center">

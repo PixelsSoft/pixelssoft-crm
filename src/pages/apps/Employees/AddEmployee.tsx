@@ -10,7 +10,7 @@ import { FormInput } from '../../../components/form';
 
 // data
 // import { contacts } from './data';
-import { createUser } from '../../../redux/actions';
+// import { createUser } from '../../../redux/actions';
 import { useForm } from 'react-hook-form';
 import MaskedInput from 'react-text-mask';
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -84,14 +84,12 @@ const List = () => {
 
     const { dispatch, appSelector } = useRedux();
 
-    const { loading, createUserSuccess, roles } = appSelector((state) => ({
-        loading: state.Auth.loading,
-        createUserSuccess: state.Auth.createUserSuccess,
+    // const { loading, createUserSuccess, roles } = appSelector((state) => ({
+    //     loading: state.Auth.loading,
+    //     createUserSuccess: state.Auth.createUserSuccess,
+    //     roles: state.Roles.roles,
+    // }));
 
-
-
-        roles: state.Roles.roles,
-    }));
     const methods = useForm({
         defaultValues: {
             password: '12345',
@@ -106,46 +104,46 @@ const List = () => {
         formState: { errors },
     } = methods;
 
-    const getRole = (id: string): Role => roles.data.find((item: Role) => item._id === id);
+    // const getRole = (id: string): Role => roles.data.find((item: Role) => item._id === id);
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         console.log(role);
-        dispatch(
-            createUser({
-                fullName,
-                email,
-                phoneNumber,
-                joiningDate,
-                DOB,
-                position,
-                role: getRole(role)._id,
-                department,
-                salary,
-                password,
-                emergencyPhoneNumber,
-                emergencyPhoneNumber2,
-                profilePic,
-                CNIC,
-                CV,
-                fatherName,
-                companyProvideEmail,
-                confirmPassword,
-                CnicNo,
-                contract,
-                accTitle,
-                branchCode,
-                bankAddress,
-                accNo,
-                bankName,
-                refName,
-                refEmail,
-                refPhoneNo,
-                refCnicNo,
-                refCnicPic
+        // dispatch(
+        //     createUser({
+        //         fullName,
+        //         email,
+        //         phoneNumber,
+        //         joiningDate,
+        //         DOB,
+        //         position,
+        //         role: getRole(role)._id,
+        //         department,
+        //         salary,
+        //         password,
+        //         emergencyPhoneNumber,
+        //         emergencyPhoneNumber2,
+        //         profilePic,
+        //         CNIC,
+        //         CV,
+        //         fatherName,
+        //         companyProvideEmail,
+        //         confirmPassword,
+        //         CnicNo,
+        //         contract,
+        //         accTitle,
+        //         branchCode,
+        //         bankAddress,
+        //         accNo,
+        //         bankName,
+        //         refName,
+        //         refEmail,
+        //         refPhoneNo,
+        //         refCnicNo,
+        //         refCnicPic
 
-            })
-        );
+        //     })
+        // );
     };
 
     // Profile picture upload
@@ -203,26 +201,26 @@ const List = () => {
 
 
     // form validation schema
-    useEffect(() => {
-        if (createUserSuccess) {
-            setFullName('');
-            setEmail('');
-            setPassword('');
-            setRole('');
-            setDepartment('');
-            setPhoneNumber('');
-            setPosition('');
-            setSalary(0);
-            setProfilePic(null);
-        }
-    }, [createUserSuccess, dispatch]);
+    // useEffect(() => {
+    //     if (createUserSuccess) {
+    //         setFullName('');
+    //         setEmail('');
+    //         setPassword('');
+    //         setRole('');
+    //         setDepartment('');
+    //         setPhoneNumber('');
+    //         setPosition('');
+    //         setSalary(0);
+    //         setProfilePic(null);
+    //     }
+    // }, [createUserSuccess, dispatch]);
 
 
     /////role selection/////
     const onChangeRoleSelection = (selected: Option[]) => {
         setMultipleRoleSelection(selected);
     };
-
+    const loading = false
     return loading ? (
         <div>
             <h2>Loading...</h2>

@@ -2,12 +2,14 @@ import { Form } from 'react-bootstrap';
 import * as layoutConstants from '../../constants/layout';
 
 type LeftSideBarTypeProps = {
-    changeLeftSiderbarType: (value: string) => void;
+    // changeLeftSiderbarType: (value: string) => void;
     leftSideBarType: string;
     layoutConstants: typeof layoutConstants.SideBarTypes;
 };
 
-const LeftSideBarType = ({ changeLeftSiderbarType, leftSideBarType, layoutConstants }: LeftSideBarTypeProps) => {
+const LeftSideBarType = ({
+    //  changeLeftSiderbarType,
+    leftSideBarType, layoutConstants }: LeftSideBarTypeProps) => {
     return (
         <>
             <h6 className="fw-medium font-14 mt-4 mb-2 pb-1">Left Sidebar Size</h6>
@@ -18,7 +20,7 @@ const LeftSideBarType = ({ changeLeftSiderbarType, leftSideBarType, layoutConsta
                     name="leftsidebar-size"
                     id="default-check"
                     value={layoutConstants.LEFT_SIDEBAR_TYPE_DEFAULT}
-                    onChange={(e) => changeLeftSiderbarType(e.target.value)}
+                    // onChange={(e) => changeLeftSiderbarType(e.target.value)}
                     checked={leftSideBarType === layoutConstants.LEFT_SIDEBAR_TYPE_DEFAULT}
                 />
                 <Form.Check.Label htmlFor="default-check">Default</Form.Check.Label>
@@ -30,7 +32,7 @@ const LeftSideBarType = ({ changeLeftSiderbarType, leftSideBarType, layoutConsta
                     name="leftsidebar-size"
                     id="condensed-check"
                     value={layoutConstants.LEFT_SIDEBAR_TYPE_CONDENSED}
-                    onChange={(e) => changeLeftSiderbarType(e.target.value)}
+                    // onChange={(e) => changeLeftSiderbarType(e.target.value)}
                     checked={leftSideBarType === layoutConstants.LEFT_SIDEBAR_TYPE_CONDENSED}
                 />
                 <Form.Check.Label htmlFor="condensed-check">
@@ -44,7 +46,7 @@ const LeftSideBarType = ({ changeLeftSiderbarType, leftSideBarType, layoutConsta
                     name="leftsidebar-size"
                     id="compact-check"
                     value={layoutConstants.LEFT_SIDEBAR_TYPE_COMPACT}
-                    onChange={(e) => changeLeftSiderbarType(e.target.value)}
+                    // onChange={(e) => changeLeftSiderbarType(e.target.value)}
                     checked={leftSideBarType === layoutConstants.LEFT_SIDEBAR_TYPE_COMPACT}
                 />
                 <Form.Check.Label htmlFor="compact-check">

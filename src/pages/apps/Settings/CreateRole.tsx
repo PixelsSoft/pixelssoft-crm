@@ -2,7 +2,7 @@ import { Alert, Button, Col, Form, Modal, Row } from 'react-bootstrap';
 
 import { useRedux } from '../../../hooks';
 import { FormEventHandler, useEffect, useState } from 'react';
-import { createNewRole, getAllRoles, resetCreateRole } from '../../../redux/roles/actions';
+// import { createNewRole, getAllRoles, resetCreateRole } from '../../../redux/roles/actions';
 
 export default function CreateRole({
     accessControlModal,
@@ -42,7 +42,7 @@ export default function CreateRole({
 
     const onClose = () => {
         reset();
-        dispatch(resetCreateRole());
+        // dispatch(resetCreateRole());
         toggle();
     };
 
@@ -67,45 +67,45 @@ export default function CreateRole({
         setAllowViewUsers(false);
     };
 
-    const { createRoleSuccess, data } = appSelector((state) => ({
-        createRoleSuccess: state.Roles.createRoleSuccess,
-        data: state.Roles.data,
-        roles: state.Roles.roles,
-    }));
+    // const { createRoleSuccess, data } = appSelector((state) => ({
+    //     createRoleSuccess: state.Roles.createRoleSuccess,
+    //     data: state.Roles.data,
+    //     roles: state.Roles.roles,
+    // }));
 
-    useEffect(() => {
-        if (createRoleSuccess) {
-            reset();
-            dispatch(getAllRoles());
-        }
-    }, [createRoleSuccess, dispatch]);
+    // useEffect(() => {
+    //     if (createRoleSuccess) {
+    //         reset();
+    //         // dispatch(getAllRoles());
+    //     }
+    // }, [createRoleSuccess, dispatch]);
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        dispatch(
-            createNewRole({
-                title: roleTitle,
-                access: {
-                    all,
-                    allowDashboard,
-                    allowAttendance,
-                    allowCreateCustomers,
-                    allowCreateExpenses,
-                    allowCreateInvoices,
-                    allowCreateProjects,
-                    allowCreateUsers,
-                    allowLeads,
-                    allowPayouts,
-                    allowReports,
-                    allowSales,
-                    allowViewCustomers,
-                    allowViewExpenses,
-                    allowViewInvoices,
-                    allowViewProjects,
-                    allowViewUsers,
-                },
-            })
-        );
+        // dispatch(
+        //     createNewRole({
+        //         title: roleTitle,
+        //         access: {
+        //             all,
+        //             allowDashboard,
+        //             allowAttendance,
+        //             allowCreateCustomers,
+        //             allowCreateExpenses,
+        //             allowCreateInvoices,
+        //             allowCreateProjects,
+        //             allowCreateUsers,
+        //             allowLeads,
+        //             allowPayouts,
+        //             allowReports,
+        //             allowSales,
+        //             allowViewCustomers,
+        //             allowViewExpenses,
+        //             allowViewInvoices,
+        //             allowViewProjects,
+        //             allowViewUsers,
+        //         },
+        //     })
+        // );
     };
     return (
         <Modal show={accessControlModal} onHide={toggle} centered>
@@ -292,11 +292,11 @@ export default function CreateRole({
                         </div>
                     </Row>
 
-                    {data && (
+                    {/* {data && (
                         <Alert variant="success" className="my-2">
                             {data.message}
                         </Alert>
-                    )}
+                    )} */}
 
                     <div className="d-flex justify-content-end border-top border-gray pt-2">
                         <Button variant="light" className="waves-effect waves-light me-1" type="submit">
