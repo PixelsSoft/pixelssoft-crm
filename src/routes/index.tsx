@@ -45,7 +45,11 @@ const AddEmployees = React.lazy(() => import('../pages/apps/Employees/AddEmploye
 const Invoices = React.lazy(() => import('../pages/apps/Invoice/Invoices/Invoices'));
 const CreateInvoice = React.lazy(() => import('../pages/apps/Invoice/CreateInvoice/CreateInvoice'));
 const CustomersList = React.lazy(() => import('../pages/apps/Customers/List/Customers'));
+const PortalProjectsList = React.lazy(() => import('../pages/apps/PortalsProjects/List/Customers'));
+const LeadProjectList = React.lazy(() => import('../pages/apps/LeadProjects/List/Customers'));
 const CreateCustomer = React.lazy(() => import('../pages/apps/Customers/CreateCustomer/CreateCustomer'));
+const CreatePortalProject = React.lazy(() => import('../pages/apps/PortalsProjects/CreatePortalProject/CreatePortalProjects'));
+const CreateLeadProject = React.lazy(() => import('../pages/apps/LeadProjects/CreateLeadProject/CreateLeadProject'));
 const CustomerProfile = React.lazy(() => import('../pages/apps/Customers/CustomerProfile/CustomerProfile'));
 const Expenses = React.lazy(() => import('../pages/apps/Expense/List/Expenses'));
 const ExpenseDetails = React.lazy(() => import('../pages/apps/Expense/Details/ExpenseDetails'));
@@ -251,6 +255,22 @@ const AllRoutes = () => {
                         {
                             path: 'customers',
                             element: <LoadComponent component={CustomersList} />,
+                        },
+                        {
+                            path: 'portalProject',
+                            element: <LoadComponent component={PortalProjectsList} />,
+                        },
+                        {
+                            path: 'portalProject/profile/new',
+                            element: <LoadComponent component={CreatePortalProject} />,
+                        },
+                        {
+                            path: 'leadProject/profile/new',
+                            element: <LoadComponent component={CreateLeadProject} />,
+                        },
+                        {
+                            path: 'leadProject',
+                            element: <LoadComponent component={LeadProjectList} />,
                         },
                         {
                             path: 'customers/profile/new',

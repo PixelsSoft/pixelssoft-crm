@@ -59,6 +59,20 @@ const MENU_ITEMS: MenuItemTypes[] = [
         url: '/apps/customers',
     },
     {
+        key: 'portalProjects',
+        label: 'Portal Projects',
+        isTitle: false,
+        icon: 'mdi mdi-briefcase-variant-outline',
+        url: '/apps/portalProject',
+    },
+    {
+        key: 'leadProject',
+        label: 'Lead Projects',
+        isTitle: false,
+        icon: 'mdi mdi-briefcase-variant-outline',
+        url: '/apps/leadProject',
+    },
+    {
         key: 'lead',
         label: 'Leads',
         isTitle: false,
