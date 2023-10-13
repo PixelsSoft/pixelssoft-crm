@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Alert, Row, Col } from "react-bootstrap";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,15 +8,16 @@ import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 
 // actions
-import { resetAuth, loginUser } from "../../redux/Slices/auth/Auth";
+import { resetAuth, loginUser, login } from "../../redux/Slices/auth/Auth";
 
 // store
 import { RootState, AppDispatch } from "../../redux/store";
 
 // components
-import { VerticalForm, FormInput } from "../../components/";
+import { VerticalForm, FormInput } from "../../components";
 
 import AuthLayout from "./AuthLayout";
+import axios from "axios";
 
 interface UserData {
   username: string;
@@ -93,6 +94,9 @@ const SocialLinks = () => {
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
+  const [email, setEmail] = useState("info@admin.com")
+  const [password, setPassword] = useState("demo1234")
+
 
   const { user, userLoggedIn, loading, error } = useSelector(
     (state: RootState) => ({
@@ -120,10 +124,33 @@ const Login = () => {
   /*
   handle form submission
   */
-  const onSubmit = (formData: UserData) => {
+  const onSubmit = async () => {
+    const params = {
+      email: email,
+      password: password
+    }
+    await dispatch(login(email, password))
 
-    // dispatch(loginUser(formData["username"], formData["password"]));
   };
+  // const onSubmit = async (formData: UserData) => {
+  //   const params = {
+  //     email: email,
+  //     password: password
+  //   }
+  //   await dispatch(login(email, password))
+  //   // axios.post('https://crm.pixelssoft.com/api/user/login', {
+  //   //   params: {
+  //   //     params
+  //   //   }
+  //   // })
+  //   //   .then(async (response) => {
+  //   //     await console.log("response =====>", response?.data);
+  //   //   })
+  //   //   .catch(function (error) {
+  //   //     console.log(error);
+  //   //   });
+  //   // dispatch(loginUser(formData["username"], formData["password"]));
+  // };
 
   const location = useLocation();
   //
