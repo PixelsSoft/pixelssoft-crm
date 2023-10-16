@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 //actions
-import { logoutUser, resetAuth } from "../../redux/Slices/auth/Auth";
+import { logout } from "../../redux/Slices/auth/Auth";
 
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 
 // components
 import AuthLayout from "./AuthLayout";
@@ -39,13 +39,10 @@ const Logout = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    // dispatch(resetAuth());
-  }, [dispatch]);
 
   useEffect(() => {
-    // dispatch(logoutUser());
-  }, [dispatch]);
+    dispatch(logout());
+  }, []);
 
   return (
     <>

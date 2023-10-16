@@ -4,7 +4,7 @@ import axios from "axios";
 import config from "../../config";
 
 // content type
-axios.defaults.headers.post["Content-Type"] = "application/json";
+// axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.baseURL = config.API_URL;
 
 // intercepting to capture errors
@@ -50,8 +50,8 @@ const AUTH_SESSION_KEY = "ubold_user";
  * @param {*} token
  */
 const setAuthorization = (token: string | null) => {
-  if (token) axios.defaults.headers.common["Authorization"] = "JWT " + token;
-  else delete axios.defaults.headers.common["Authorization"];
+  // if (token) axios.defaults.headers.common["Authorization"] = "JWT " + token;
+  // else delete axios.defaults.headers.common["Authorization"];
 };
 
 const getUserFromCookie = () => {
@@ -67,8 +67,8 @@ class APICore {
     if (params) {
       var queryString = params
         ? Object.keys(params)
-            .map((key) => key + "=" + params[key])
-            .join("&")
+          .map((key) => key + "=" + params[key])
+          .join("&")
         : "";
       response = axios.get(`${url}?${queryString}`, params);
     } else {
@@ -82,8 +82,8 @@ class APICore {
     if (params) {
       var queryString = params
         ? Object.keys(params)
-            .map((key) => key + "=" + params[key])
-            .join("&")
+          .map((key) => key + "=" + params[key])
+          .join("&")
         : "";
       response = axios.get(`${url}?${queryString}`, { responseType: "blob" });
     } else {
@@ -98,8 +98,8 @@ class APICore {
     if (params) {
       queryString = params
         ? Object.keys(params)
-            .map((key) => key + "=" + params[key])
-            .join("&")
+          .map((key) => key + "=" + params[key])
+          .join("&")
         : "";
     }
 

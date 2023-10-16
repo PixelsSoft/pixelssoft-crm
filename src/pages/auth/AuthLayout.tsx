@@ -69,12 +69,7 @@ const AuthLayout = ({
         </Container>
       </div>
 
-      <footer className="footer footer-alt">
-        2015 - {new Date().getFullYear()} &copy; UBold theme by{" "}
-        <Link to="#" className="text-white-50">
-          Coderthemes
-        </Link>
-      </footer>
+
     </>
   );
 };

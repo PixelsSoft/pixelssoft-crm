@@ -69,17 +69,7 @@ const ThemeCustomizer = () => {
     showSidebarUserInfo: state.Layout.showSidebarUserInfo,
     topbarTheme: state.Layout.topbarTheme,
   }));
-  console.log("layoutMode======>", layoutMode)
-  console.log("twoColumnTheme======>", twoColumnTheme)
-  console.log("layoutColor======>", layoutColor)
-  console.log("layoutType======>", layoutType)
-  console.log("layoutWidth======>", layoutWidth)
-  console.log("menuPosition======>", menuPosition)
-  console.log("leftSideBarTheme======>", leftSideBarTheme)
-  console.log("leftSideBarType======>", leftSideBarType)
-  console.log("showTwoToneIcons======>", showTwoToneIcons)
-  console.log("showSidebarUserInfo======>", showSidebarUserInfo)
-  console.log("topbarTheme======>", topbarTheme)
+
 
 
   const [disableMenuPositions, setDisableMenuPositions] =

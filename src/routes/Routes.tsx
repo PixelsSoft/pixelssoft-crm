@@ -50,6 +50,12 @@ const AllRoutes = (props: IRoutesProps) => {
 
   let Layout = getLayout();
   const api = new APICore();
+  const { userAuthenticate } = useSelector(
+    (state: RootState) => ({
+      userAuthenticate: state.Auth.user,
+    })
+  );
+
 
   return (
     <React.Fragment>
@@ -74,11 +80,11 @@ const AllRoutes = (props: IRoutesProps) => {
               path={route.path}
               element={
                 //  ======================= // change when you register login
-                api.isUserAuthenticated() !== false ? (
+                !userAuthenticate ? (
                   <Navigate
                     to={{
                       pathname: "/auth/login",
-                      // hash:route.path,
+                      // hash: route.path,
                       search: "next=" + route.path,
                     }}
                   />

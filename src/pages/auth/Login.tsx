@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Button, Alert, Row, Col } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Row, Col } from "react-bootstrap";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
-import classNames from "classnames";
+
 
 // actions
-import { resetAuth, loginUser, login } from "../../redux/Slices/auth/Auth";
+import { login } from "../../redux/Slices/auth/Auth";
 
 // store
 import { RootState, AppDispatch } from "../../redux/store";
 
 // components
-import { VerticalForm, FormInput } from "../../components";
+import { FormInput } from "../../components";
 
 import AuthLayout from "./AuthLayout";
-import axios from "axios";
+import { startLoading, stopLoading } from "../../redux/Slices/utiltities/Utiltities";
+import Spinner from "../../components/Spinner";
+
 
 interface UserData {
   username: string;
@@ -47,49 +47,7 @@ const BottomLink = () => {
   );
 };
 
-/* social links */
-const SocialLinks = () => {
-  const socialLinks = [
-    {
-      variant: "primary",
-      icon: "facebook",
-    },
-    {
-      variant: "danger",
-      icon: "google",
-    },
-    {
-      variant: "info",
-      icon: "twitter",
-    },
-    {
-      variant: "secondary",
-      icon: "github",
-    },
-  ];
-  return (
-    <>
-      <ul className="social-list list-inline mt-3 mb-0">
-        {(socialLinks || []).map((item, index: number) => {
-          return (
-            <li key={index} className="list-inline-item">
-              <Link
-                to="#"
-                className={classNames(
-                  "social-list-item",
-                  "border-" + item.variant,
-                  "text-" + item.variant
-                )}
-              >
-                <i className={classNames("mdi", "mdi-" + item.icon)}></i>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </>
-  );
-};
+
 
 const Login = () => {
   const { t } = useTranslation();
@@ -98,28 +56,19 @@ const Login = () => {
   const [password, setPassword] = useState("demo1234")
 
 
-  const { user, userLoggedIn, loading, error } = useSelector(
+  const { token, loading } = useSelector(
     (state: RootState) => ({
-      user: state.Auth.user,
-      loading: state.Auth.loading,
-      error: state.Auth.error,
-      userLoggedIn: state.Auth.userLoggedIn,
+      token: state.Auth.user,
+      loading: state.utiltities.loading,
     })
   );
+
+  console.log("token=======>", token)
 
   useEffect(() => {
     // dispatch(resetAuth());
   }, [dispatch]);
 
-  /*
-  form validation schema
-  */
-  const schemaResolver = yupResolver(
-    yup.object().shape({
-      username: yup.string().required(t("Please enter Username")),
-      password: yup.string().required(t("Please enter Password")),
-    })
-  );
 
   /*
   handle form submission
@@ -129,37 +78,23 @@ const Login = () => {
       email: email,
       password: password
     }
-    await dispatch(login(email, password))
-
+    dispatch(startLoading())
+    await dispatch(login(params)).then(() => {
+      dispatch(stopLoading())
+    }).catch(() => {
+      dispatch(stopLoading())
+    })
   };
-  // const onSubmit = async (formData: UserData) => {
-  //   const params = {
-  //     email: email,
-  //     password: password
-  //   }
-  //   await dispatch(login(email, password))
-  //   // axios.post('https://crm.pixelssoft.com/api/user/login', {
-  //   //   params: {
-  //   //     params
-  //   //   }
-  //   // })
-  //   //   .then(async (response) => {
-  //   //     await console.log("response =====>", response?.data);
-  //   //   })
-  //   //   .catch(function (error) {
-  //   //     console.log(error);
-  //   //   });
-  //   // dispatch(loginUser(formData["username"], formData["password"]));
-  // };
-
   const location = useLocation();
   //
   // const redirectUrl = location.state && location.state.from ? location.state.from.pathname : '/';
   const redirectUrl = location?.search?.slice(6) || "/";
 
   return (
+
     <>
-      {/* {(userLoggedIn || user) && <Navigate to={redirectUrl}></Navigate>} */}
+      {(token) && <Navigate to={redirectUrl}></Navigate>}
+
 
       <AuthLayout
         helpText={t(
@@ -167,44 +102,53 @@ const Login = () => {
         )}
         bottomLinks={<BottomLink />}
       >
-        {error && (
-          <Alert variant="danger" className="my-2">
-            {error}
-          </Alert>
-        )}
 
-        <VerticalForm<UserData>
-          onSubmit={onSubmit}
-          resolver={schemaResolver}
-          defaultValues={{ username: "test", password: "test" }}
-        >
-          <FormInput
-            label={t("Username")}
-            type="text"
-            name="username"
-            placeholder="Enter your Username"
-            containerClass={"mb-3"}
-          />
-          <FormInput
-            label={t("Password")}
-            type="password"
-            name="password"
-            placeholder="Enter your password"
-            containerClass={"mb-3"}
-          ></FormInput>
+        <FormInput
+          label={t("Email")}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value)
+          }}
+          type="text"
+          name="email"
+          placeholder="Enter your Username"
+          containerClass={"mb-3"}
+        />
 
-          <div className="text-center d-grid">
-            <Button variant="primary" type="submit" disabled={loading}>
+        <FormInput
+          label={'Password'}
+          type="password"
+          value={password}
+          name="password"
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter your password"
+          containerClass={'mb-3'}></FormInput>
+
+
+        <div className="text-center d-grid ">
+          {loading ?
+            <div className="text-center d-grid d-flex justify-content-center">
+              <Spinner
+                size={"md"}
+                color="blue" />
+            </div>
+            :
+            <Button variant="primary" type="submit"
+              // disabled={loading}
+              onClick={onSubmit}
+            >
               {t("Log In")}
-            </Button>
-          </div>
-        </VerticalForm>
-
-        <div className="text-center">
-          <h5 className="mt-3 text-muted">{t("Sign in with")}</h5>
-          <SocialLinks />
+            </Button>}
         </div>
+
+
+
       </AuthLayout>
+
+
+
+
+
     </>
   );
 };

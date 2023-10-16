@@ -1,53 +1,34 @@
-// import { createStore, compose, applyMiddleware } from "redux";
-// import createSagaMiddleware from "redux-saga";
-// import reducers from "./reducers";
-// import rootSaga from "./sagas";
-
-// declare global {
-//   interface Window {
-//     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-//   }
-// }
-
-// const sagaMiddleware = createSagaMiddleware();
-// const middlewares = [sagaMiddleware];
-// let store: any;
-
-// export function configureStore(initialState: {}) {
-//   const composeEnhancers =
-//     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-//   const localstore = createStore(
-//     reducers,
-//     initialState,
-//     composeEnhancers(applyMiddleware(...middlewares))
-//   );
-//   sagaMiddleware.run(rootSaga);
-//   store = localstore;
-//   return localstore;
-// }
-
-// // Infer the `RootState` and `AppDispatch` types from the store itself
-// export type RootState = ReturnType<typeof store.getState>;
-
-// export type AppDispatch = typeof store.dispatch;
-
 
 import { configureStore } from '@reduxjs/toolkit';
 import LayoutReducer from './Slices/layout/Layout';
 import AuthReducer from './Slices/auth/Auth';
+import Utiltities from './Slices/utiltities/Utiltities';
+import { persistStore, persistReducer } from 'redux-persist';
+import localStorage from 'redux-persist/es/storage';
 
 
-const reducer = {
-  Layout: LayoutReducer,
-  Auth: AuthReducer
+const persistConfig = {
+  key: 'root',
+  storage: localStorage,
 
 };
+const AuthpersistedReducer = persistReducer(persistConfig, AuthReducer);
+const LayoutpersistedReducer = persistReducer(persistConfig, LayoutReducer);
+const UtiltitiespersistedReducer = persistReducer(persistConfig, Utiltities);
+
+const reducer = {
+  Layout: LayoutpersistedReducer,
+  Auth: AuthpersistedReducer,
+  utiltities: UtiltitiespersistedReducer
+
+};
+
 
 export const store = configureStore({
   reducer: reducer,
   devTools: true,
 });
+export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

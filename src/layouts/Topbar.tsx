@@ -292,6 +292,11 @@ const Topbar = ({
   const handleRightSideBar = () => {
     dispatch(showRightSidebar());
   };
+  const { user } = useSelector(
+    (state: RootState) => ({
+      user: state.Auth.user,
+    })
+  );
 
   /**
    * Toggles the left sidebar width
@@ -383,7 +388,7 @@ const Topbar = ({
               <ProfileDropdown
                 profilePic={profilePic}
                 menuItems={ProfileMenus}
-                username={"Geneva"}
+                username={user.name}
                 userTitle={"Founder"}
               />
             </li>

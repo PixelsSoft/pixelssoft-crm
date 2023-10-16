@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Route, Navigate, RouteProps } from "react-router-dom";
 
 import { APICore } from "../helpers/api/apiCore";
+import { RootState } from "../redux/store";
 
 /**
  * Private Route forces the authorization before the route can be accessed
@@ -11,11 +13,19 @@ import { APICore } from "../helpers/api/apiCore";
 const PrivateRoute = ({ component: Component, roles, ...rest }: any) => {
   const api = new APICore();
 
+
+  const { token } = useSelector(
+    (state: RootState) => ({
+      token: state.Auth.user,
+    })
+  );
+  console.log("token=======>", token)
+
   return (
     <Route
       {...rest}
       render={(props: RouteProps) => {
-        if (api.isUserAuthenticated() === false) {
+        if (token === null) {
           // not logged in so redirect to login page with the return url
           return (
             <Navigate

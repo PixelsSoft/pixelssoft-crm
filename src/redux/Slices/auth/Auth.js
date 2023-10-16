@@ -1,54 +1,52 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { CONSTANTS } from "../../../constants/constant";
+import { createSlice } from "@reduxjs/toolkit";
+import { toast } from 'react-toastify';
 import authService from "../../Services/auth.services";
 
 const initialState = {
-    user: "ascjhas",
-    loading: false,
-    error: "",
-    userLoggedIn: "",
-    passwordReset: "",
-    resetPasswordSuccess: {
-        message: ""
+    user: {
+        id: 3,
+        name: "",
+        email: "",
+        email_verified_at: null,
+        created_at: "",
+        updated_at: "",
+
     },
-    userSignUp: ""
+
+    permissions: null,
+    token: null,
+    userAuthenticate: false,
+    loading: false,
+    error: null,
+    passwordReset: null,
+    resetPasswordSuccess: {
+        message: null
+    },
+    userSignUp: null
 
 }
-export const login = ( email, password ) => async ( dispatch ) => {
+export const login = ( params ) => async ( dispatch ) => {
     try {
-        const response = await axios.post( 'https://crm.pixelssoft.com/api/user/login', {
-            params: {
-                email: email, password: password
-            }
+        const response = await authService.login( params );
+        dispatch( loginUser( response?.data?.user ) )
+        dispatch( userPermission( response?.data?.permission ) )
+        dispatch( userToken( response?.data?.user?.remember_token ) )
+        toast.success( response?.message, {
+            position: toast.POSITION.TOP_RIGHT
         } );
 
-
-
-        console.log( "response===========>", response )
     } catch ( error ) {
         console.log( "error===========>", error )
-
-
     }
 };
-// export const login = createAsyncThunk(
-//     { email, password },
-//     CONSTANTS.API_URLS.LOGIN,
-//     async ( { email, password }, thunk ) => {
-//         try {
-//             const response = await authService.login( email, password );
-//             console.log( "response=====>", response )
-//             if ( response.status === 1 )
-//                 thunk.dispatch( AuthSlice.actions.saveAccessToken( response.data.token ) );
-//             return thunk.fulfillWithValue( response );
-//         } catch ( error ) {
-//             console.log( "error=====>", error )
+export const logout = () => async ( dispatch ) => {
+    try {
+        dispatch( logoutUser() )
+    } catch ( error ) {
+        console.log( "error===========>", error )
+    }
+};
 
-//             return thunk.rejectWithValue( error );
-//         }
-//     },
-// );
 export const AuthSlice = createSlice( {
     name: "Auth",
     initialState,
@@ -59,20 +57,39 @@ export const AuthSlice = createSlice( {
 
         },
         loginUser: ( state, action ) => {
-
+            state.user = action.payload
+            state.userAuthenticate = true
+        },
+        userToken: ( state, action ) => {
+            state.token = action.payload
         },
         forgotPassword: ( state, action ) => {
 
         },
         logoutUser: ( state, action ) => {
+            state.user = ""
+            state.permissions = ""
+            state.token = null
+            state.userAuthenticate = false
 
         },
         signupUser: ( state, action ) => {
             state.userSignUp = action.payload;
         },
+        userPermission: ( state, action ) => {
+            state.permissions = action.payload;
+        },
 
     },
 } );
 
-export const { resetAuth, loginUser, forgotPassword, logoutUser, signupUser } = AuthSlice.actions;
+export const {
+    resetAuth,
+    loginUser,
+    forgotPassword,
+    logoutUser,
+    signupUser,
+    userPermission,
+    userToken,
+} = AuthSlice.actions;
 export default AuthSlice.reducer;

@@ -12,6 +12,7 @@ interface PasswordInputProps {
   control?: Control<any>;
   register?: any;
   className?: string;
+
 }
 
 /* Password Input */
@@ -23,6 +24,7 @@ const PasswordInput = ({
   control,
   register,
   className,
+  ...otherProps
 }: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -30,6 +32,7 @@ const PasswordInput = ({
     <>
       <InputGroup className="mb-0">
         <Form.Control
+          {...otherProps}
           type={showPassword ? "text" : "password"}
           placeholder={placeholder}
           name={name}
@@ -121,6 +124,8 @@ const FormInput = ({
                   </>
                 ) : null}
                 <PasswordInput
+                  {...otherProps}
+
                   name={name}
                   placeholder={placeholder}
                   refCallback={refCallback}

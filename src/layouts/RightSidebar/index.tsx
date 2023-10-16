@@ -31,7 +31,7 @@ const RightSideBar = (props: RightSideBarProps) => {
   const { isOpenRightSideBar } = useSelector((state: RootState) => ({
     isOpenRightSideBar: state.Layout.isOpenRightSideBar,
   }));
-  console.log("isOpenRightSideBar", isOpenRightSideBar)
+
   /**
    * Handle the click anywhere in doc
    */

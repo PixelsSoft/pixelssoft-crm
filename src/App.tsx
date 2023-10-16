@@ -1,7 +1,7 @@
 import React from "react";
 
 import AllRoutes from "./routes/Routes";
-
+import 'react-toastify/dist/ReactToastify.css';
 import { configureFakeBackend } from "./helpers";
 
 
@@ -27,6 +27,7 @@ import './assets/scss/Default.scss';
 // Other
 import './assets/scss/Landing.scss';
 import "./assets/scss/Icons.scss";
+import { ToastContainer } from "react-toastify";
 
 // configure fake backend
 configureFakeBackend();
@@ -36,6 +37,18 @@ const App = () => {
     <>
       <React.Fragment>
         <AllRoutes />
+        < ToastContainer
+          position="top-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </React.Fragment>
     </>
   );

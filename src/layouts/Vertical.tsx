@@ -19,7 +19,7 @@ import { useViewport } from "../hooks/useViewPort";
 const Topbar = React.lazy(() => import("./Topbar"));
 const LeftSidebar = React.lazy(() => import("./LeftSidebar"));
 const Footer = React.lazy(() => import("./Footer"));
-const RightSidebar = React.lazy(() => import("./RightSidebar/"));
+const RightSidebar = React.lazy(() => import("./RightSidebar"));
 
 const loading = () => <div className=""></div>;
 

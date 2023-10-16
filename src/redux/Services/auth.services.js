@@ -1,30 +1,33 @@
-import axios from 'axios';
-import { CONSTANTS } from '../../constants/constant';
+import { CONSTANTS } from "../../constants/constant";
 
-const login = ( email, password ) => {
-    const formData = new FormData();
-    formData.append( 'email', email );
-    formData.append( 'password', password );
-
-    const onSuccess = ( { data } ) => {
-        console.log( "data=====>", data )
-
+const login = ( params ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
     const onFailure = error => {
-        console.log( "error=====>", error )
-
         throw error;
     };
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' // Specify the content type as JSON
+        },
+        body: JSON.stringify( params )
+    };
 
-    return axios
-        .post( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, formData )
-        .then( onSuccess )
-        .catch( onFailure );
+    return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, options )
+        .then( response => response.json() )
+        .then( onSuccess
+        ).catch( onFailure )
+    // return axios
+    //     .post( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, { params: { params } } )
+    //     .then( ( response ) => {
+    //         console.log( "response", response )
+    //         onSuccess( response )
+    //     } )
+    //     .catch( onFailure );
 };
-
-
 
 
 const authService = {
