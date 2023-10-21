@@ -1,55 +1,24 @@
-import { Button, Card, Col, Row } from 'react-bootstrap';
-import Table from '../../../../components/Table';
+import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
+import Table from '../../../components/Table';
+import PageTitle from '../../../components/PageTitle';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import { records as data } from './data';
-import PageTitle from '../../../../components/PageTitle';
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import classNames from 'classnames';
+import { records as data } from '../Invoice/Invoices/data';
+import { FormInput } from '../../../components';
+export default function RolesPermissions() {
+    const [responsiveModal, setResponsiveModal] = useState(false);
 
-
-
-const Invoices = () => {
-    const navigate = useNavigate()
-    /* name column render */
-    const NameColumn = ({ row }: { row: any }) => {
-        return (
-            <div className="table-user">
-                <img src={row.original.avatar} alt="" className="me-2 rounded-circle" />
-                <Link to="#" className="text-body fw-semibold">
-                    {row.original.name}
-                </Link>
-            </div>
-        );
+    /**
+     * Show/hide the modal
+     */
+    const toggleResponsiveModal = () => {
+        setResponsiveModal(!responsiveModal);
     };
 
-    /* last order column render */
-    const LastOrderColumn = ({ row }: { row: any }) => {
-        return (
-            <>
-                {row.original.last_order.date}{" "}
-                <small className="text-muted">{row.original.last_order.time}</small>
-            </>
-        );
-    };
-
-    /* status column render */
-    const StatusColumn = ({ row }: { row: any }) => {
-        return (
-            <React.Fragment>
-                <span
-                    className={classNames("badge", {
-                        "badge-soft-success": row.original.status === "Active",
-                        "badge-soft-danger": row.original.status === "Blocked",
-                    })}
-                >
-                    {row.original.status}
-                </span>
-            </React.Fragment>
-        );
-    };
     /* action column render */
     const ActionColumn = () => {
+
         return (
             <React.Fragment>
                 <Link to="#" className="action-icon">
@@ -73,37 +42,15 @@ const Invoices = () => {
             accessor: 'id',
             sort: true,
         },
-
         {
-            Header: 'Invoice #',
+            Header: 'Name',
             accessor: 'invoiceNumber',
             sort: false,
         },
         {
-            Header: 'Due Date',
+            Header: 'Role',
             accessor: 'dueDate',
             sort: false,
-        },
-        {
-            Header: 'Amount',
-            accessor: 'amount',
-            sort: false,
-        },
-        {
-            Header: 'Pending Amount',
-            accessor: 'pendingAmount',
-            sort: false,
-        },
-        {
-            Header: 'Category',
-            accessor: 'category',
-            sort: false,
-        },
-        {
-            Header: "Status",
-            accessor: "status",
-            sort: true,
-            Cell: StatusColumn,
         },
         {
             Header: "Action",
@@ -137,9 +84,9 @@ const Invoices = () => {
         <>
             <PageTitle
                 breadCrumbItems={[
-                    { label: "Invoices", path: "/apps/invoices" },
+                    { label: "Administartor", path: "/apps/administartor/rolePermission" },
                 ]}
-                title={"Invoices"}
+                title={"Role Permission"}
             />
             <Row>
                 <Col>
@@ -148,11 +95,9 @@ const Invoices = () => {
                             <Row>
                                 <Col sm={4}>
                                     <Button
-                                        onClick={() => {
-                                            navigate("/apps/invoice/createInvoice")
-                                        }}
+                                        onClick={toggleResponsiveModal}
                                         className="btn btn-danger mb-2">
-                                        <i className="mdi mdi-plus-circle me-2"></i> Create Invoice
+                                        <i className="mdi mdi-plus-circle me-2"></i> Create Role
                                     </Button>
                                 </Col>
 
@@ -185,8 +130,46 @@ const Invoices = () => {
                     </Card>
                 </Col>
             </Row>
+            <Modal show={responsiveModal} onHide={toggleResponsiveModal}>
+                <Modal.Header closeButton>
+                    <h4 className="modal-title">Add Role</h4>
+                </Modal.Header>
+                <Modal.Body className="p-4">
+
+                    <FormInput
+                        label="Name"
+                        type="text"
+                        name="Name"
+                        placeholder="Name"
+                        containerClass={'mb-3'}
+                        key="text"
+                    />
+                    <FormInput
+                        label="Permission"
+                        type="text"
+                        name="Name"
+                        placeholder="Permission"
+                        containerClass={'mb-3'}
+                        key="text"
+                    />
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <button
+                        type="button"
+                        className="btn btn-secondary waves-effect"
+                        onClick={toggleResponsiveModal}
+                    >
+                        Close
+                    </button>
+                    <button
+                        type="submit"
+                        className="btn btn-info waves-effect waves-light"
+                    >
+                        Add
+                    </button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
-};
-
-export default Invoices;
+}

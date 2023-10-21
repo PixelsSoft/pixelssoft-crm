@@ -22,9 +22,6 @@ const Landing = React.lazy(() => import("../pages/landing/"));
 
 // dashboard
 const Dashboard1 = React.lazy(() => import("../pages/dashboard/Dashboard1/"));
-const Dashboard2 = React.lazy(() => import("../pages/dashboard/Dashboard2/"));
-const Dashboard3 = React.lazy(() => import("../pages/dashboard/Dashboard3/"));
-const Dashboard4 = React.lazy(() => import("../pages/dashboard/Dashboard4/"));
 
 // apps
 const Invoice = React.lazy(() => import("../pages/apps/Invoice/Invoices/Invoices"));
@@ -34,6 +31,12 @@ const AddEmployee = React.lazy(() => import("../pages/apps/Hr/Employees/AddEmplo
 const Customers = React.lazy(() => import("../pages/apps/Customers/List/Customers"));
 const AddCustomer = React.lazy(() => import("../pages/apps/Customers/CreateCustomer/CreateCustomer"));
 const CustomerProfile = React.lazy(() => import("../pages/apps/Customers/CustomerProfile/CustomerProfile"));
+const RolePermission = React.lazy(() => import("../pages/apps/Roles/RolesPermissions"));
+const ClientCard = React.lazy(() => import("../pages/apps/Customers/ClientCard/ClientCard"));
+const PortalProjects = React.lazy(() => import("../pages/apps/PortalProjects/PortalProjects"));
+const AddPortalProjects = React.lazy(() => import("../pages/apps/PortalProjects/AddPortalProjects"));
+const PortalProjectsProfile = React.lazy(() => import("../pages/apps/PortalProjects/PortalProjectsProfile"));
+const Management = React.lazy(() => import("../pages/apps/Management/Management"));
 
 
 // extra
@@ -204,46 +207,13 @@ export interface RoutesProps {
   roles?: string[];
   children?: RoutesProps[];
 }
-
-
 // dashboards
 const dashboardRoutes: RoutesProps = {
-  path: "/dashboard",
+  path: "/",
   name: "Dashboards",
   icon: "airplay",
   header: "Navigation",
-  children: [
-    {
-      path: "/",
-      name: "Root",
-      element: <Navigate to="/dashboard-1" />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/dashboard-1",
-      name: "Dashboard 1",
-      element: <Dashboard1 />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/dashboard-2",
-      name: "Dashboard 2",
-      element: <Dashboard2 />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/dashboard-3",
-      name: "Dashboard 3",
-      element: <Dashboard3 />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/dashboard-4",
-      name: "Dashboard 4",
-      element: <Dashboard4 />,
-      route: PrivateRoute,
-    },
-  ],
+  element: <Dashboard1 />,
 };
 //invoice Route
 const InvoiceRoutes: RoutesProps = {
@@ -312,6 +282,72 @@ const hrRoutes: RoutesProps = {
       route: PrivateRoute,
     },
   ],
+};
+//Portal Project Route
+const portalProjects: RoutesProps = {
+  path: "/apps/portalProjects",
+  name: "PortalProjects",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  icon: "mail",
+  element: <PortalProjects />,
+  children: [
+    {
+      path: "/apps/portalProjects",
+      name: "Employees",
+      element: <PortalProjects />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/portalProjects/addportalProject",
+      name: "Add Portal Projects",
+      element: <AddPortalProjects />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/portalProjects/Profile",
+      name: "Portal Projects Profile",
+      element: <PortalProjectsProfile />,
+      route: PrivateRoute,
+    },
+  ],
+};
+//Administartor Route
+const administartorRoutes: RoutesProps = {
+  path: "/apps/administrator",
+  name: "Hr",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  icon: "mail",
+  children: [
+    {
+      path: "/apps/hr/employees",
+      name: "Employees",
+      element: <Employees />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/administartor/rolePermission",
+      name: "Role Permission",
+      element: <RolePermission />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/administartor/management",
+      name: "Role Permission",
+      element: <Management />,
+      route: PrivateRoute,
+    },
+  ],
+};
+
+//Client Card Route
+const clientCardRoutes = {
+  path: "/apps/clientCard",
+  name: "Client Cards",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  element: <ClientCard />,
 };
 
 const calendarAppRoutes: RoutesProps = {
@@ -603,6 +639,9 @@ const appRoutes = [
   InvoiceRoutes,
   customerRoutes,
   hrRoutes,
+  administartorRoutes,
+  clientCardRoutes,
+  portalProjects,
   ////// extra route just for design ideas
   calendarAppRoutes,
   chatAppRoutes,

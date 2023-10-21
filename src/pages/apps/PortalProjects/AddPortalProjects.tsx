@@ -2,9 +2,11 @@ import { Row, Col, Card, Button, Form, Alert } from 'react-bootstrap';
 // import { createCustomer, resetCustomers } from '../../../../redux/customers/actions';
 import { FormEventHandler, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import PageTitle from '../../../../components/PageTitle';
+import PageTitle from '../../../components/PageTitle';
+import { FormInput } from '../../../components';
 
-const CreateCustomer = () => {
+
+const AddPortalProjects = () => {
     const dispatch = useDispatch()
 
     const [email, setEmail] = useState('');
@@ -34,10 +36,10 @@ const CreateCustomer = () => {
 
             <PageTitle
                 breadCrumbItems={[
-                    { label: "Customer", path: "/apps/customer/" },
-                    { label: "Add Customer", path: "/apps/customer/addCustomer", active: true },
+                    { label: "Portal Projects", path: "/apps/portalProjects" },
+                    { label: "Add Portal Projects", path: "/apps/portalProjects/addportalProject", active: true },
                 ]}
-                title={"Add Customer"}
+                title={"Add Projects"}
             />
             <Row>
                 <Col>
@@ -55,28 +57,41 @@ const CreateCustomer = () => {
                                     </Alert>
                                 )} */}
                                 <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formGridEmail">
-                                        <Form.Label>Email</Form.Label>
-                                        <Form.Control
-                                            type="email"
-                                            placeholder="Email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formGridPassword">
-                                        <Form.Label>Full Name</Form.Label>
-                                        <Form.Control value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Bidder Name</Form.Label>
+                                        <Form.Select
+                                        //  onChange={(e) => setPlatform(e.target.value)}
+                                        >
+                                            <option>Choose...</option>
+                                            <option>Upwork</option>
+                                            <option>Fiverr</option>
+                                            <option>Freelancer</option>
+                                            <option>Social Media</option>
+                                            <option>Bark</option>
+                                            <option>Linkedin</option>
+                                            <option>Scrapped</option>
+                                            <option>None of above</option>
+                                        </Form.Select>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Phone Number</Form.Label>
-                                        <Form.Control
-                                            value={phoneNumber}
-                                            onChange={(e) => setPhoneNumber(e.target.value)}
-                                        />
+                                        <Form.Label>Sale Person Name</Form.Label>
+                                        <Form.Select
+                                        //  onChange={(e) => setPlatform(e.target.value)}
+                                        >
+                                            <option>Choose...</option>
+                                            <option>Upwork</option>
+                                            <option>Fiverr</option>
+                                            <option>Freelancer</option>
+                                            <option>Social Media</option>
+                                            <option>Bark</option>
+                                            <option>Linkedin</option>
+                                            <option>Scrapped</option>
+                                            <option>None of above</option>
+                                        </Form.Select>
                                     </Form.Group>
+
+
                                 </Row>
 
 
@@ -138,7 +153,14 @@ const CreateCustomer = () => {
                                     </Form.Group>
                                 </Row>
                                 <Row className="mb-3">
+                                    <FormInput
+                                        label="Description"
+                                        type="textarea"
+                                        name="textarea"
+                                        containerClass={'mb-3'}
+                                        key="textarea"
 
+                                    />
                                 </Row>
 
                                 <Row>
@@ -164,4 +186,4 @@ const CreateCustomer = () => {
     );
 };
 
-export default CreateCustomer;
+export default AddPortalProjects;

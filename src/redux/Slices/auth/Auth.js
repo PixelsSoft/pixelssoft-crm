@@ -28,9 +28,11 @@ const initialState = {
 export const login = ( params ) => async ( dispatch ) => {
     try {
         const response = await authService.login( params );
-        dispatch( loginUser( response?.data?.user ) )
-        dispatch( userPermission( response?.data?.permission ) )
-        dispatch( userToken( response?.data?.user?.remember_token ) )
+        console.log( "response===========>", response )
+        // dispatch( loginUser( response?.data?.user ) )
+        // dispatch( userPermission( response?.data?.permission ) )
+        console.log( "token", response )
+        // dispatch( userToken( response?.data?.token ) )
         toast.success( response?.message, {
             position: toast.POSITION.TOP_RIGHT
         } );
@@ -50,8 +52,6 @@ export const logout = () => async ( dispatch ) => {
 export const AuthSlice = createSlice( {
     name: "Auth",
     initialState,
-
-
     reducers: {
         resetAuth: ( state, action ) => {
 

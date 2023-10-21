@@ -1,58 +1,52 @@
 import { Button, Card, Col, Row } from 'react-bootstrap';
-import Table from '../../../../components/Table';
-
-import { records as data } from './data';
-import PageTitle from '../../../../components/PageTitle';
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import PageTitle from '../../../components/PageTitle';
+import Table from '../../../components/Table';
 import classNames from 'classnames';
 
 
+const sizePerPageList = [
+    {
+        text: '5',
+        value: 5,
+    },
+    {
+        text: '10',
+        value: 10,
+    },
+    {
+        text: '25',
+        value: 25,
+    },
 
-const Invoices = () => {
+]
+
+
+export default function PortalProjects() {
     const navigate = useNavigate()
-    /* name column render */
-    const NameColumn = ({ row }: { row: any }) => {
-        return (
-            <div className="table-user">
-                <img src={row.original.avatar} alt="" className="me-2 rounded-circle" />
-                <Link to="#" className="text-body fw-semibold">
-                    {row.original.name}
-                </Link>
-            </div>
-        );
-    };
-
-    /* last order column render */
-    const LastOrderColumn = ({ row }: { row: any }) => {
-        return (
-            <>
-                {row.original.last_order.date}{" "}
-                <small className="text-muted">{row.original.last_order.time}</small>
-            </>
-        );
-    };
 
     /* status column render */
     const StatusColumn = ({ row }: { row: any }) => {
         return (
-            <React.Fragment>
+            <>
                 <span
                     className={classNames("badge", {
-                        "badge-soft-success": row.original.status === "Active",
-                        "badge-soft-danger": row.original.status === "Blocked",
+                        "bg-success": row.original.status === "Open",
+                        "bg-secondary text-light": row.original.status === "Closed",
                     })}
                 >
                     {row.original.status}
                 </span>
-            </React.Fragment>
+            </>
         );
     };
-    /* action column render */
+
+
     const ActionColumn = () => {
         return (
             <React.Fragment>
-                <Link to="#" className="action-icon">
+                <Link to="/apps/portalProjects/Profile" className="action-icon">
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
@@ -70,40 +64,34 @@ const Invoices = () => {
     const columns = [
         {
             Header: 'ID',
-            accessor: 'id',
+            accessor: '_id',
             sort: true,
         },
-
         {
-            Header: 'Invoice #',
-            accessor: 'invoiceNumber',
-            sort: false,
+            Header: 'Project Title',
+            accessor: 'Project Title',
+            sort: true,
         },
         {
-            Header: 'Due Date',
-            accessor: 'dueDate',
+            Header: 'bidder',
+            accessor: 'bidder',
+            sort: true,
+        },
+        {
+            Header: 'Sales Person',
+            accessor: 'SalesPerson',
             sort: false,
         },
         {
             Header: 'Amount',
-            accessor: 'amount',
+            accessor: 'Amount',
             sort: false,
         },
         {
-            Header: 'Pending Amount',
-            accessor: 'pendingAmount',
+            Header: 'status',
+            accessor: 'status',
             sort: false,
-        },
-        {
-            Header: 'Category',
-            accessor: 'category',
-            sort: false,
-        },
-        {
-            Header: "Status",
-            accessor: "status",
-            sort: true,
-            Cell: StatusColumn,
+            cell: StatusColumn
         },
         {
             Header: "Action",
@@ -113,33 +101,17 @@ const Invoices = () => {
         },
     ];
 
-    const sizePerPageList = [
-        {
-            text: '10',
-            value: 10,
-        },
-        {
-            text: '20',
-            value: 20,
-        },
-        {
-            text: '35',
-            value: 35,
-        },
-        {
-            text: 'All',
-            value: data.length,
-        },
-    ];
+    const loading = false
 
-
-    return (
-        <>
+    return loading ? (
+        <h4>Loading...</h4>
+    ) : (
+        <React.Fragment>
             <PageTitle
                 breadCrumbItems={[
-                    { label: "Invoices", path: "/apps/invoices" },
+                    { label: "Portal projects", path: "/apps/portalProjects" },
                 ]}
-                title={"Invoices"}
+                title={"Portal Projects"}
             />
             <Row>
                 <Col>
@@ -149,13 +121,12 @@ const Invoices = () => {
                                 <Col sm={4}>
                                     <Button
                                         onClick={() => {
-                                            navigate("/apps/invoice/createInvoice")
+                                            navigate("/apps/portalProjects/addportalProject")
                                         }}
                                         className="btn btn-danger mb-2">
-                                        <i className="mdi mdi-plus-circle me-2"></i> Create Invoice
+                                        <i className="mdi mdi-plus-circle me-2"></i> Add Projects
                                     </Button>
                                 </Col>
-
                                 <Col sm={8}>
                                     <div className="text-sm-end">
                                         <Button className="btn btn-success mb-2 me-1">
@@ -168,10 +139,9 @@ const Invoices = () => {
                                     </div>
                                 </Col>
                             </Row>
-
                             <Table
                                 columns={columns}
-                                data={data}
+                                data={[1]}
                                 pageSize={10}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}
@@ -185,8 +155,6 @@ const Invoices = () => {
                     </Card>
                 </Col>
             </Row>
-        </>
+        </React.Fragment>
     );
-};
-
-export default Invoices;
+}

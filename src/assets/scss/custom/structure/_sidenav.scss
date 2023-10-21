@@ -242,6 +242,7 @@ html[data-sidenav-user="true"] {
 
             >.menu-link {
                 color: $menu-item-active-color;
+                // color: "#94C973";
 
                 &:not(.collapsed) {
                     >.menu-arrow {

@@ -1,7 +1,6 @@
-
 import { CONSTANTS } from "../../constants/constant";
 
-const login = ( params ) => {
+const addEmployee = ( params ) => {
     const onSuccess = ( data ) => {
         return data;
     };
@@ -17,10 +16,10 @@ const login = ( params ) => {
         body: JSON.stringify( params )
     };
 
-    return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, options )
+    return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.ADD_Employeee, options )
         .then( response => response.json() )
-        .then( onSuccess )
-        .catch( onFailure )
+        .then( onSuccess
+        ).catch( onFailure )
     // return axios
     //     .post( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, { params: { params } } )
     //     .then( ( response ) => {
@@ -31,7 +30,7 @@ const login = ( params ) => {
 };
 
 
-const authService = {
-    login,
+const EmployeeService = {
+    addEmployee,
 };
-export default authService;
+export default EmployeeService;

@@ -14,18 +14,18 @@ const PrivateRoute = ({ component: Component, roles, ...rest }: any) => {
   const api = new APICore();
 
 
-  const { token } = useSelector(
+  const { userAuthenticate } = useSelector(
     (state: RootState) => ({
-      token: state.Auth.user,
+      userAuthenticate: state.Auth.user,
     })
   );
-  console.log("token=======>", token)
 
+  console.log("==========>", userAuthenticate)
   return (
     <Route
       {...rest}
       render={(props: RouteProps) => {
-        if (token === null) {
+        if (!userAuthenticate) {
           // not logged in so redirect to login page with the return url
           return (
             <Navigate

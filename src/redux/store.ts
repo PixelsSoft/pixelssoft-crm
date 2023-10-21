@@ -1,5 +1,6 @@
 
 import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from "redux";
 import LayoutReducer from './Slices/layout/Layout';
 import AuthReducer from './Slices/auth/Auth';
 import Utiltities from './Slices/utiltities/Utiltities';
@@ -12,21 +13,25 @@ const persistConfig = {
   storage: localStorage,
 
 };
-const AuthpersistedReducer = persistReducer(persistConfig, AuthReducer);
-const LayoutpersistedReducer = persistReducer(persistConfig, LayoutReducer);
-const UtiltitiespersistedReducer = persistReducer(persistConfig, Utiltities);
 
-const reducer = {
-  Layout: LayoutpersistedReducer,
-  Auth: AuthpersistedReducer,
-  utiltities: UtiltitiespersistedReducer
+const reducer = combineReducers({
+  Layout: LayoutReducer,
+  Auth: AuthReducer,
+  utiltities: Utiltities
 
-};
+});
+
+const persistedReducer = persistReducer(persistConfig, reducer);
+
 
 
 export const store = configureStore({
-  reducer: reducer,
-  devTools: true,
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      immutableCheck: { warnAfter: 128 },
+      serializableCheck: false,
+    }),
 });
 export const persistor = persistStore(store);
 

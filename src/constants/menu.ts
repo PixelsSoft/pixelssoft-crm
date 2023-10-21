@@ -20,33 +20,34 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Dashboards",
     isTitle: false,
     icon: "airplay",
+    url: "/",
     badge: { variant: "success", text: "4" },
-    children: [
-      {
-        key: "ds-dashboard-1",
-        label: "Dashboard 1",
-        url: "/dashboard-1",
-        parentKey: "dashboards",
-      },
-      {
-        key: "ds-dashboard-2",
-        label: "Dashboard 2",
-        url: "/dashboard-2",
-        parentKey: "dashboards",
-      },
-      {
-        key: "ds-dashboard-3",
-        label: "Dashboard 3",
-        url: "/dashboard-3",
-        parentKey: "dashboards",
-      },
-      {
-        key: "ds-dashboard-4",
-        label: "Dashboard 4",
-        url: "/dashboard-4",
-        parentKey: "dashboards",
-      },
-    ],
+    // children: [
+    //   {
+    //     key: "ds-dashboard-1",
+    //     label: "Dashboard",
+    //     url: "/dashboard",
+    //     parentKey: "dashboards",
+    //   },
+    //   {
+    //     key: "ds-dashboard-2",
+    //     label: "Dashboard 2",
+    //     url: "/dashboard-2",
+    //     parentKey: "dashboards",
+    //   },
+    //   {
+    //     key: "ds-dashboard-3",
+    //     label: "Dashboard 3",
+    //     url: "/dashboard-3",
+    //     parentKey: "dashboards",
+    //   },
+    //   {
+    //     key: "ds-dashboard-4",
+    //     label: "Dashboard 4",
+    //     url: "/dashboard-4",
+    //     parentKey: "dashboards",
+    //   },
+    // ],
   },
   { key: "apps", label: "Apps", isTitle: true },
   {
@@ -217,21 +218,21 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "mail",
     children: [
       {
-        key: "email-inbox",
+        key: "userRole",
         label: "User Role",
         url: "/apps/administartor/userRole",
         parentKey: "administartor",
       },
       {
-        key: "email-read-email",
+        key: "rolePermission",
         label: "Role Permission",
         url: "/apps/administartor/rolePermission",
         parentKey: "administartor",
       },
       {
-        key: "email-compose-email",
-        label: "Manage Project Category",
-        url: "/apps/administartor/manageProjectCategory",
+        key: "Management",
+        label: "Management",
+        url: "/apps/administartor/Management",
         parentKey: "administartor",
       },
     ],
@@ -1008,32 +1009,33 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
     icon: "home",
     label: "Dashboard",
     isTitle: true,
-    children: [
-      {
-        key: "ds-dashboard-1",
-        label: "Dashboard 1",
-        url: "/dashboard-1",
-        parentKey: "dashboard",
-      },
-      {
-        key: "ds-dashboard-2",
-        label: "Dashboard 2",
-        url: "/dashboard-2",
-        parentKey: "dashboard",
-      },
-      {
-        key: "ds-dashboard-3",
-        label: "Dashboard 3",
-        url: "/dashboard-3",
-        parentKey: "dashboard",
-      },
-      {
-        key: "ds-dashboard-4",
-        label: "Dashboard 4",
-        url: "/dashboard-4",
-        parentKey: "dashboard",
-      },
-    ],
+    url: "/",
+    // children: [
+    //   {
+    //     key: "ds-dashboard-1",
+    //     label: "Dashboard 1",
+    //     url: "/dashboard-1",
+    //     parentKey: "dashboard",
+    //   },
+    //   {
+    //     key: "ds-dashboard-2",
+    //     label: "Dashboard 2",
+    //     url: "/dashboard-2",
+    //     parentKey: "dashboard",
+    //   },
+    //   {
+    //     key: "ds-dashboard-3",
+    //     label: "Dashboard 3",
+    //     url: "/dashboard-3",
+    //     parentKey: "dashboard",
+    //   },
+    //   {
+    //     key: "ds-dashboard-4",
+    //     label: "Dashboard 4",
+    //     url: "/dashboard-4",
+    //     parentKey: "dashboard",
+    //   },
+    // ],
   },
   {
     key: "apps",
@@ -2041,32 +2043,34 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
     icon: "home",
     label: "Dashboard",
     isTitle: true,
-    children: [
-      {
-        key: "ds-dashboard-1",
-        label: "Dashboard 1",
-        url: "/dashboard-1",
-        parentKey: "dashboard",
-      },
-      {
-        key: "ds-dashboard-2",
-        label: "Dashboard 2",
-        url: "/dashboard-2",
-        parentKey: "dashboard",
-      },
-      {
-        key: "ds-dashboard-3",
-        label: "Dashboard 3",
-        url: "/dashboard-3",
-        parentKey: "dashboard",
-      },
-      {
-        key: "ds-dashboard-4",
-        label: "Dashboard 4",
-        url: "/dashboard-4",
-        parentKey: "dashboard",
-      },
-    ],
+    url: "/",
+
+    // children: [
+    //   {
+    //     key: "ds-dashboard-1",
+    //     label: "Dashboard 1",
+    //     url: "/dashboard-1",
+    //     parentKey: "dashboard",
+    //   },
+    //   {
+    //     key: "ds-dashboard-2",
+    //     label: "Dashboard 2",
+    //     url: "/dashboard-2",
+    //     parentKey: "dashboard",
+    //   },
+    //   {
+    //     key: "ds-dashboard-3",
+    //     label: "Dashboard 3",
+    //     url: "/dashboard-3",
+    //     parentKey: "dashboard",
+    //   },
+    //   {
+    //     key: "ds-dashboard-4",
+    //     label: "Dashboard 4",
+    //     url: "/dashboard-4",
+    //     parentKey: "dashboard",
+    //   },
+    // ],
   },
   {
     key: "apps",

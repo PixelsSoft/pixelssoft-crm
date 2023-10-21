@@ -1,55 +1,15 @@
-import { Button, Card, Col, Row } from 'react-bootstrap';
+import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
 import Table from '../../../../components/Table';
-
-import { records as data } from './data';
 import PageTitle from '../../../../components/PageTitle';
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import classNames from 'classnames';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
+import { FormInput } from '../../../../components';
+export default function ClientCard() {
 
-
-const Invoices = () => {
-    const navigate = useNavigate()
-    /* name column render */
-    const NameColumn = ({ row }: { row: any }) => {
-        return (
-            <div className="table-user">
-                <img src={row.original.avatar} alt="" className="me-2 rounded-circle" />
-                <Link to="#" className="text-body fw-semibold">
-                    {row.original.name}
-                </Link>
-            </div>
-        );
-    };
-
-    /* last order column render */
-    const LastOrderColumn = ({ row }: { row: any }) => {
-        return (
-            <>
-                {row.original.last_order.date}{" "}
-                <small className="text-muted">{row.original.last_order.time}</small>
-            </>
-        );
-    };
-
-    /* status column render */
-    const StatusColumn = ({ row }: { row: any }) => {
-        return (
-            <React.Fragment>
-                <span
-                    className={classNames("badge", {
-                        "badge-soft-success": row.original.status === "Active",
-                        "badge-soft-danger": row.original.status === "Blocked",
-                    })}
-                >
-                    {row.original.status}
-                </span>
-            </React.Fragment>
-        );
-    };
     /* action column render */
     const ActionColumn = () => {
+
         return (
             <React.Fragment>
                 <Link to="#" className="action-icon">
@@ -73,37 +33,25 @@ const Invoices = () => {
             accessor: 'id',
             sort: true,
         },
-
         {
-            Header: 'Invoice #',
+            Header: 'Name',
+            accessor: 'invoiceNumberq',
+            sort: false,
+        },
+        {
+            Header: 'Card Number',
+            accessor: 'invoiceNumber2',
+            sort: false,
+        },
+        {
+            Header: 'Expire',
             accessor: 'invoiceNumber',
             sort: false,
         },
         {
-            Header: 'Due Date',
+            Header: 'CVC',
             accessor: 'dueDate',
             sort: false,
-        },
-        {
-            Header: 'Amount',
-            accessor: 'amount',
-            sort: false,
-        },
-        {
-            Header: 'Pending Amount',
-            accessor: 'pendingAmount',
-            sort: false,
-        },
-        {
-            Header: 'Category',
-            accessor: 'category',
-            sort: false,
-        },
-        {
-            Header: "Status",
-            accessor: "status",
-            sort: true,
-            Cell: StatusColumn,
         },
         {
             Header: "Action",
@@ -126,10 +74,7 @@ const Invoices = () => {
             text: '35',
             value: 35,
         },
-        {
-            text: 'All',
-            value: data.length,
-        },
+
     ];
 
 
@@ -137,24 +82,16 @@ const Invoices = () => {
         <>
             <PageTitle
                 breadCrumbItems={[
-                    { label: "Invoices", path: "/apps/invoices" },
+                    { label: "Client Card", path: "/apps/clientCard" },
                 ]}
-                title={"Invoices"}
+                title={"Client Card"}
             />
             <Row>
                 <Col>
                     <Card>
                         <Card.Body>
-                            <Row>
-                                <Col sm={4}>
-                                    <Button
-                                        onClick={() => {
-                                            navigate("/apps/invoice/createInvoice")
-                                        }}
-                                        className="btn btn-danger mb-2">
-                                        <i className="mdi mdi-plus-circle me-2"></i> Create Invoice
-                                    </Button>
-                                </Col>
+                            {/* <Row>
+
 
                                 <Col sm={8}>
                                     <div className="text-sm-end">
@@ -167,11 +104,11 @@ const Invoices = () => {
                                         <Button className="btn btn-light mb-2">Export</Button>
                                     </div>
                                 </Col>
-                            </Row>
+                            </Row> */}
 
                             <Table
                                 columns={columns}
-                                data={data}
+                                data={[]}
                                 pageSize={10}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}
@@ -185,8 +122,7 @@ const Invoices = () => {
                     </Card>
                 </Col>
             </Row>
+
         </>
     );
-};
-
-export default Invoices;
+}

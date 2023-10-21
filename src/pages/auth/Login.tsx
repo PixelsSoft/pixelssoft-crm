@@ -63,7 +63,6 @@ const Login = () => {
     })
   );
 
-  console.log("token=======>", token)
 
   useEffect(() => {
     // dispatch(resetAuth());

@@ -18,23 +18,7 @@ import { FormInput } from '../../../../components';
 
 
 
-type User = {
-    _id: string;
-    fullName: string;
-    company: string;
-    email: string;
-    phoneNumber: string;
-    position: string;
-    profilePic: {
-        url: string;
-        path: string;
-    };
-    role: string;
-    designation: string;
-    salary: string;
-    _createdAt: string;
-    password: string;
-};
+
 
 const List = () => {
     const navigate = useNavigate()
