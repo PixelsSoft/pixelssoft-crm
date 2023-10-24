@@ -14,9 +14,11 @@ const PrivateRoute = ({ component: Component, roles, ...rest }: any) => {
   const api = new APICore();
 
 
-  const { userAuthenticate } = useSelector(
+  const { userAuthenticate, user } = useSelector(
     (state: RootState) => ({
       userAuthenticate: state.Auth.user,
+      user: state.Auth.user,
+
     })
   );
 

@@ -18,7 +18,10 @@ const login = ( params ) => {
     };
 
     return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, options )
-        .then( response => response.json() )
+        .then( response => {
+            response.json()
+            console.log( "response", response.json() )
+        } )
         .then( onSuccess )
         .catch( onFailure )
     // return axios

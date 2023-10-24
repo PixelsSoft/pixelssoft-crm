@@ -4,12 +4,13 @@ import authService from "../../Services/auth.services";
 
 const initialState = {
     user: {
-        id: 3,
+        id: 1,
         name: "",
         email: "",
         email_verified_at: null,
         created_at: "",
         updated_at: "",
+        role: ""
 
     },
 
@@ -29,10 +30,10 @@ export const login = ( params ) => async ( dispatch ) => {
     try {
         const response = await authService.login( params );
         console.log( "response===========>", response )
-        // dispatch( loginUser( response?.data?.user ) )
-        // dispatch( userPermission( response?.data?.permission ) )
+        dispatch( loginUser( response?.data?.user ) )
+        dispatch( userPermission( response?.data?.permission ) )
         console.log( "token", response )
-        // dispatch( userToken( response?.data?.token ) )
+        dispatch( userToken( response?.data?.token ) )
         toast.success( response?.message, {
             position: toast.POSITION.TOP_RIGHT
         } );
