@@ -1,27 +1,24 @@
 
-import { ChangeEventHandler, FormEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
-
 // hooks
-
 // data
 // import { contacts } from './data';
 // import { createUser } from '../../../redux/actions';
-import { useForm } from 'react-hook-form';
+// import { useForm } from 'react-hook-form';
 import MaskedInput from 'react-text-mask';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../../components/PageTitle';
 import { FormInput } from '../../../../components';
-import { addEmployee } from '../../../../redux/Slices/employee/Employee';
+// import { AddEmployee } from '../../../../redux/Slices/employee/Employee';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-import { RootState } from '../../../../redux/store';
-
-
-
+// import { RootState } from '../../../../redux/store';
+// import EmployeeService from '../../../../redux/Services/employees.services';
+import { CONSTANTS } from '../../../../constants/constant';
+import { toast } from 'react-toastify';
 
 const List = () => {
-    type Option = string | Record<string, any>;
 
     const [fullName, setFullName] = useState('');
     const [fatherName, setFatherName] = useState('');
@@ -35,13 +32,13 @@ const List = () => {
     const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState('');
     const [joiningDate, setJoiningDate] = useState('');
     const [department, setDepartment] = useState('');
-    const [salary, setSalary] = useState(0);
-    const [profilePic, setProfilePic] = useState<File | null>(null);
-    const [contract, setContract] = useState<File | null>(null);
-    const [CNIC, setCNIC] = useState<File | null>(null);
+    const [salary, setSalary] = useState();
+    const [profilePic, setProfilePic] = useState(null);
+    const [contract, setContract] = useState(null);
+    const [CNIC, setCNIC] = useState(null);
     const [CnicNo, setCnicNo] = useState('');
-    const [CV, setCV] = useState<File | null>(null);
-    const [multipleRoleSelection, setMultipleRoleSelection] = useState<Option[]>([]);
+    const [CV, setCV] = useState(null);
+    const [multipleRoleSelection, setMultipleRoleSelection] = useState([]);
     const [accTitle, setAccTitle] = useState('');
     const [branchCode, setBranchCode] = useState('');
     const [bankAddress, setBankAddress] = useState('');
@@ -51,75 +48,89 @@ const List = () => {
     const [refEmail, setRefEmail] = useState('');
     const [refPhoneNo, setRefPhoneNo] = useState('');
     const [refCnicNo, setRefCnicNo] = useState('');
-    const [refCnicPic, setRefCnicPic] = useState<File | null>(null);
+    const [refCnicPic, setRefCnicPic] = useState(null);
+    const [role, setRole] = useState([]);
+    const dispatch = useDispatch();
 
-
-
-
-
-    const dispatch = useDispatch()
-
-    const { loading } = useSelector(
-        (state: RootState) => ({
+    const { loading, token } = useSelector(
+        (state) => ({
             loading: state.utiltities.loading,
+            token: state.Auth.token,
         })
     );
-    const methods = useForm({
-        defaultValues: {
-            password: '12345',
-            statictext: 'email@example.com',
-            color: '#35b8e0',
-        },
-    });
 
-    const {
-        register,
-        control,
-        formState: { errors },
-    } = methods;
-
-    // const getRole = (id: string): Role => roles.data.find((item: Role) => item._id === id);
-
-    const submit: FormEventHandler<HTMLFormElement> = async (e) => {
+    const submit = async (e) => {
         e.preventDefault();
-        dispatch(startLoading())
-        const params = {
-            name: fullName,
-            father_name: fatherName,
-            email: email,
-            company_provided_email: companyProvideEmail,
-            dob: DOB,
-            cnic_no: CnicNo,
-            phone_no: phoneNumber,
-            emergency_phone_no: emergencyPhoneNumber,
-            emergency_phone_no_2: emergencyPhoneNumber2,
-            joining_date: joiningDate,
-            cnic_img: CNIC,
-            profile_img: profilePic,
-            cv_upload: CV,
-            contract_upload: contract,
-            salary: salary,
-            account_title: accTitle,
-            accound_number: accNo,
-            bank_name: bankName,
-            branch_address: branchCode,
-            reference_name: refName,
-            reference_email: refEmail,
-            reference_cnic_no: refCnicNo,
-            reference_phone_no: refPhoneNo,
-            reference_profile_img: refCnicPic,
-            password: password,
-            roles: multipleRoleSelection
-        }
-        await dispatch(
-            addEmployee(params)
-        )
-        dispatch(stopLoading())
+        dispatch(startLoading());
+        const roles = [];
+        multipleRoleSelection.map(e => {
+            console.log('multipleRoleSelection', e.name);
+            roles.push(e.name);
+        })
+        const params = new FormData();
+        params.append("name", fullName);
+        params.append("father_name", fatherName);
+        params.append("email", email);
+        params.append("company_provided_email", companyProvideEmail);
+        params.append("dob", DOB);
+        params.append("cnic_no", CnicNo);
+        params.append("phone_no", phoneNumber);
+        params.append("emergency_phone_no", emergencyPhoneNumber);
+        params.append("emergency_phone_no_2", emergencyPhoneNumber2);
+        params.append("joining_date", joiningDate);
+        if (CNIC !== null) {
+            params.append("cnic_img", CNIC);
+        };
+        if (profilePic !== null) {
+            params.append("profile_img", profilePic);
+        };
+        if (CV !== null) {
+            params.append("cv_upload", CV);
+        };
+        if (contract !== null) {
+            params.append("contract_upload", contract);
+        };
+        if (refCnicPic !== null) {
+            params.append("reference_profile_img", refCnicPic);
+        };
+        params.append("salary", salary.toString());
+        params.append("account_title", accTitle);
+        params.append("accound_number", accNo);
+        params.append("bank_name", bankName);
+        params.append("branch_address", branchCode);
+        params.append("reference_name", refName);
+        params.append("reference_email", refEmail);
+        params.append("reference_cnic_no", refCnicNo);
+        params.append("reference_phone_no", refPhoneNo);
+        params.append("password", password);
+        params.append("password_confirmation", confirmPassword);
+        params.append("roles", roles);
+        params.append("department_id", 1);
 
+        const options = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: params,
+        };
+
+        await fetch(CONSTANTS.API_URLS.BASE + 'user/register', options)
+            .then(response => response.json())
+            .then(e => {
+                dispatch(stopLoading());
+                toast.success(e?.message, { position: toast.POSITION.TOP_RIGHT });
+            })
+            .catch(err => {
+                dispatch(stopLoading());
+                console.log("err", err);
+            });
+        // await dispatch(AddEmployee(params, token));
     };
 
     // Profile picture upload
-    const handleProfileFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const handleProfileFileChange = (event) => {
         if (event.target.files) {
             const file = event.target.files[0];
             setProfilePic(file);
@@ -127,56 +138,72 @@ const List = () => {
     };
 
     // CNIC picture Upload
-    const handleCNICFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const handleCNICFileChange = (event) => {
         if (event.target.files) {
             const file = event.target.files[0];
             setCNIC(file);
         }
     };
+
     // Reference CNIC picture Upload
-    const handleRefCNICFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const handleRefCNICFileChange = (event) => {
         if (event.target.files) {
             const file = event.target.files[0];
             setRefCnicPic(file);
         }
     };
+
     // CV picture Upload
-    const handleCVFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const handleCVFileChange = (event) => {
         if (event.target.files) {
             const file = event.target.files[0];
             setCV(file);
         }
     };
+
     // Contract picture Upload
-    const handleContractFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const handleContractFileChange = (event) => {
         if (event.target.files) {
             const file = event.target.files[0];
             setContract(file);
         }
     };
 
-
-
-    // form validation schema
-    // useEffect(() => {
-    //     if (createUserSuccess) {
-    //         setFullName('');
-    //         setEmail('');
-    //         setPassword('');
-    //         setRole('');
-    //         setDepartment('');
-    //         setPhoneNumber('');
-    //         setPosition('');
-    //         setSalary(0);
-    //         setProfilePic(null);
-    //     }
-    // }, [createUserSuccess, dispatch]);
-
-
     /////role selection/////
-    const onChangeRoleSelection = (selected: Option[]) => {
+    const onChangeRoleSelection = (selected) => {
         setMultipleRoleSelection(selected);
     };
+
+    const getRoles = async () => {
+        // try {
+        // const res = await EmployeeService.getEmployeeRoles(token);
+        // console.log("get roles res", res);
+        dispatch(startLoading());
+        await fetch('https://crmupd.pixelssoft.com/api/role', {
+            headers: {
+                'Content-Type': 'application/json', // Specify the content type as JSON
+                'Accept': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+        })
+            .then(response => response.json())
+            .then(e => {
+                setRole(e.data);
+                dispatch(stopLoading());
+            })
+            .catch(err => {
+                dispatch(stopLoading());
+                console.log('fetch err', err);
+            })
+        // } catch (error) {
+        //     console.log("getRoles err", error);
+        //     dispatch(stopLoading());
+        // };
+    };
+
+    useEffect(() => {
+        getRoles();
+    }, []);
 
     return loading ? (
         <div>
@@ -205,14 +232,9 @@ const List = () => {
                                             name="Name"
                                             placeholder="Name"
                                             containerClass={'mb-3'}
-
                                             key="text"
                                             value={fullName}
-                                            onChange={(e) => {
-                                                setFullName(e.target.value)
-                                            }}
-
-
+                                            onChange={(e) => setFullName(e.target.value)}
                                         />
                                         <FormInput
                                             label="Email"
@@ -222,12 +244,7 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             key="email"
                                             value={email}
-                                            onChange={(e) => {
-                                                setEmail(e.target.value)
-                                            }}
-
-
-
+                                            onChange={(e) => setEmail(e.target.value)}
                                         />
                                         <FormInput
                                             label="Password"
@@ -235,14 +252,9 @@ const List = () => {
                                             name="password"
                                             placeholder="Password"
                                             containerClass={'mb-3'}
-
                                             key="password"
                                             value={password}
-                                            onChange={(e) => {
-                                                setPassword(e.target.value)
-                                            }}
-
-
+                                            onChange={(e) => setPassword(e.target.value)}
                                         />
                                         <FormInput
                                             label="Date of Birth"
@@ -269,7 +281,6 @@ const List = () => {
                                                     /\d/,
                                                     /\d/,
                                                     /\d/,
-
                                                     '-',
                                                     /\d/,
                                                     /\d/,
@@ -282,9 +293,7 @@ const List = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={phoneNumber}
-                                                onChange={(e) => {
-                                                    setPhoneNumber(e.target.value)
-                                                }}
+                                                onChange={(e) => setPhoneNumber(e.target.value)}
                                             />
                                         </div>
                                         <div className="mb-3">
@@ -324,7 +333,7 @@ const List = () => {
                                             name="date"
                                             containerClass={'mb-3'}
 
-                                            key="date"
+                                            key="join date"
                                             value={joiningDate}
                                             onChange={(e) => {
                                                 setJoiningDate(e.target.value)
@@ -350,7 +359,7 @@ const List = () => {
                                             containerClass={'mb-3'}
 
                                             onChange={handleCVFileChange}
-                                            key="file"
+                                            key="cv file"
 
 
                                         />
@@ -504,19 +513,10 @@ const List = () => {
                                             <label className="form-label">Role</label> <br />
                                             <Typeahead
                                                 id="select3"
-                                                labelKey="label"
+                                                labelKey="name"
                                                 multiple
-                                                onChange={onChangeRoleSelection}
-                                                options={[
-                                                    { id: 1, value: 'Admin', label: 'Admin' },
-                                                    { id: 2, value: 'Sales', label: 'Sales' },
-                                                    { id: 3, value: 'SalesLead', label: 'Sales Lead' },
-                                                    { id: 4, value: 'ProjectManager', label: 'Project manager' },
-                                                    { id: 5, value: 'DevelopmentLead', label: 'Development Lead' },
-                                                    { id: 6, value: 'Developer', label: 'Developer' },
-                                                    { id: 7, value: 'Hr', label: 'Hr' },
-                                                    { id: 8, value: 'Accountant', label: 'Accountant' },
-                                                ]}
+                                                onChange={(e) => onChangeRoleSelection(e)}
+                                                options={role}
                                                 placeholder="Choose a role"
                                                 selected={multipleRoleSelection}
                                             />
@@ -528,7 +528,7 @@ const List = () => {
                                             name="file"
                                             containerClass={'mb-3'}
 
-                                            key="file"
+                                            key="photo file"
                                             accept="image/png, image/jpeg"
 
                                             onChange={handleProfileFileChange}
@@ -540,7 +540,7 @@ const List = () => {
                                             name="file"
                                             containerClass={'mb-3'}
 
-                                            key="file"
+                                            key="con file"
 
                                             accept=".pdf"
                                             onChange={handleContractFileChange}
@@ -559,7 +559,7 @@ const List = () => {
                                             placeholder="Account title"
                                             containerClass={'mb-3'}
 
-                                            key="text"
+                                            key="acc text"
                                             value={accTitle}
                                             onChange={(e) => {
                                                 setAccTitle(e.target.value);
@@ -588,7 +588,7 @@ const List = () => {
                                             placeholder="Bank address"
                                             containerClass={'mb-3'}
 
-                                            key="text"
+                                            key="bank text"
 
 
                                             value={bankAddress}
@@ -665,7 +665,7 @@ const List = () => {
                                             placeholder="Name"
                                             containerClass={'mb-3'}
 
-                                            key="text"
+                                            key="name text"
 
                                             value={refName}
                                             onChange={(e) => {
@@ -756,7 +756,7 @@ const List = () => {
                                             name="file"
                                             containerClass={'mb-3'}
 
-                                            key="file"
+                                            key="cnic file"
                                             onChange={handleRefCNICFileChange}
 
                                         />

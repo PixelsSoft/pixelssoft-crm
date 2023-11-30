@@ -4,38 +4,65 @@ import { Button, Card, Col, Dropdown, Form, Modal, Row } from 'react-bootstrap';
 // import { Contact } from '../pages/apps/Contacts/List/types';
 import { useState } from 'react';
 import FormInput from './FormInput';
+import { CONSTANTS } from '../constants/constant';
+import { useDispatch, useSelector } from 'react-redux';
+import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities';
+import { toast } from 'react-toastify';
 
 
-type User = {
-    _id: string;
-    fullName: string;
-    company: string;
-    email: string;
-    phoneNumber: string;
-    position: string;
-    profilePic: {
-        url: string;
-        path: string;
-    };
-    role: string;
-    designation: string;
-    salary: string;
-    _createdAt: string;
-    password: string;
-};
+// type User = {
+//     _id: string;
+//     fullName: string;
+//     company: string;
+//     email: string;
+//     phoneNumber: string;
+//     position: string;
+//     profilePic: {
+//         url: string;
+//         path: string;
+//     };
+//     role: string;
+//     designation: string;
+//     salary: string;
+//     _createdAt: string;
+//     password: string;
+// };
 
-type ContactDetailsProps = {
-    contact: User;
-};
+// type ContactDetailsProps = {
+//     contact: User;
+// };
 
-const ContactDetails = ({ contact }: ContactDetailsProps) => {
+const ContactDetails = ({ contact, getUser }) => {
+    const { token } = useSelector(state => state.Auth);
+    const dispatch = useDispatch();
     const [accessControlModal, setAccessControlModal] = useState(false);
-
     const [editUserModal, setEditUserModal] = useState(false);
 
     const toggleEditModal = () => setEditUserModal(!editUserModal);
-
     const toggle = () => setAccessControlModal(!accessControlModal);
+
+    const deleteEmp = async () => {
+        dispatch(startLoading());
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        };
+        await fetch(CONSTANTS.API_URLS.BASE + `user/${contact.id}`, options)
+            .then(response => response.json())
+            .then(e => {
+                toast.success('User Deleted Successfully', { position: toast.POSITION.TOP_RIGHT });
+                getUser();
+                dispatch(stopLoading());
+            })
+            .catch(err => {
+                dispatch(stopLoading());
+                console.log('user err', err);
+            });
+    };
+
     return (
         <>
             <Card>
@@ -46,16 +73,13 @@ const ContactDetails = ({ contact }: ContactDetailsProps) => {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={toggleEditModal}>Edit</Dropdown.Item>
-                            <Dropdown.Item>Delete</Dropdown.Item>
+                            <Dropdown.Item onClick={deleteEmp}>Delete</Dropdown.Item>
                             <Dropdown.Item>View Profile</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     <div>
                         <img
-                            src={
-                                contact.profilePic.url ||
-                                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'
-                            }
+                            src={contact?.detail?.profile_img}
                             alt="profileImage"
                             className="rounded-circle avatar-xl img-thumbnail mb-2"
                         />
@@ -65,7 +89,7 @@ const ContactDetails = ({ contact }: ContactDetailsProps) => {
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Full Name :</strong> <span className="ms-2">{contact.fullName}</span>
+                                        <strong>Full Name :</strong> <span className="ms-2">{contact?.name}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
@@ -79,7 +103,7 @@ const ContactDetails = ({ contact }: ContactDetailsProps) => {
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Company Provided email :</strong> <span className="ms-2">{"test@yopmail.com"}</span>
+                                        <strong>Company Provided email :</strong> <span className="ms-2">{contact?.detail?.company_provided_email}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
@@ -91,24 +115,29 @@ const ContactDetails = ({ contact }: ContactDetailsProps) => {
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>CNIC :</strong> <span className="ms-2">{"12345-12234-1212"}</span>
+                                        <strong>CNIC :</strong> <span className="ms-2">{contact?.detail?.cnic_no}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Role :</strong> <span className="ms-2">{"hr"}</span>
+                                        <strong>Role :</strong>
+                                        {contact.roles.map(e => {
+                                            return (
+                                                <span key={e.id} className="ms-2">{e?.name}</span>
+                                            )
+                                        })}
                                     </p>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Mobile no :</strong> <span className="ms-2">{contact.phoneNumber}</span>
+                                        <strong>Mobile no :</strong> <span className="ms-2">{contact?.detail?.phone_no}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Joining Date :</strong> <span className="ms-2">{"12-12-1212"}</span>
+                                        <strong>Joining Date :</strong> <span className="ms-2">{contact?.detail?.joining_date}</span>
                                     </p>
                                 </Col>
                             </Row>

@@ -5,26 +5,26 @@ import EmployeeService from "../../Services/employees.services";
 const initialState = {
 
 }
-export const addEmployee = ( params ) => async ( dispatch ) => {
+export const AddEmployee = (params, token) => async (dispatch) => {
     try {
-        const response = await EmployeeService.addEmployee( params );
-        toast.success( response?.message, {
+        const response = await EmployeeService.AddEmployee(params, token);
+        toast.success(response?.message, {
             position: toast.POSITION.TOP_RIGHT
-        } );
+        });
 
-    } catch ( error ) {
-        console.log( "error===========>", error )
-    }
+    } catch (error) {
+        console.log("error===========>", error)
+    };
 };
 
 
-export const EmployeeSlice = createSlice( {
+export const EmployeeSlice = createSlice({
     name: "Employee",
     initialState,
     reducers: {
 
     },
-} );
+});
 
 export const {
 

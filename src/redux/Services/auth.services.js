@@ -1,40 +1,31 @@
-
 import { CONSTANTS } from "../../constants/constant";
 
-const login = ( params ) => {
-    const onSuccess = ( data ) => {
+const login = (params) => {
+    const onSuccess = (data) => {
         return data;
     };
 
     const onFailure = error => {
         throw error;
     };
+
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json' // Specify the content type as JSON
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify( params )
     };
 
-    return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, options )
-        .then( response => {
-            response.json()
-            console.log( "response", response.json() )
-        } )
-        .then( onSuccess )
-        .catch( onFailure )
-    // return axios
-    //     .post( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, { params: { params } } )
-    //     .then( ( response ) => {
-    //         console.log( "response", response )
-    //         onSuccess( response )
-    //     } )
-    //     .catch( onFailure );
+    return fetch(`${CONSTANTS.API_URLS.BASE}user/login?email=${params.email}&password=${params.password}`, options)
+        .then(response => {
+            return response.json();
+        })
+        .then(onSuccess())
+        .catch(error => onFailure(error));
 };
-
 
 const authService = {
     login,
 };
+
 export default authService;

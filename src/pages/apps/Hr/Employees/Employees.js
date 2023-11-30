@@ -1,45 +1,42 @@
-import { useEffect } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
-// hooks
-
-// component
-import ContactDetails from '../../../../components/ContactDetails';
-
-// data
-// import { contacts } from './data';
-// import { getAllUsers } from '../../../redux/actions';
-// import { getAllRoles } from '../../../redux/roles/actions';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../../../components/PageTitle';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormInput } from '../../../../components';
-
-// dummy data
-
-
-
-
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import { useEffect, useState } from 'react';
+import { CONSTANTS } from '../../../../constants/constant';
+import ContactDetails from '../../../../components/ContactDetails';
 
 const List = () => {
     const navigate = useNavigate()
-
-
     const dispatch = useDispatch()
+    const { token } = useSelector(state => state.Auth);
+    const [user, setUser] = useState([]);
 
-    // const { loading, users } = appSelector((state) => ({
-    //     loading: state.Auth.loading,
-    //     users: state.Auth.users,
-    // }));
-
-
-
-    // form validation schema
-
+    const getUser = async () => {
+        dispatch(startLoading());
+        await fetch(CONSTANTS.API_URLS.BASE + 'user', {
+            headers: {
+                'Accept': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+        })
+            .then(response => response.json())
+            .then(e => {
+                setUser(e.data);
+                dispatch(stopLoading());
+            })
+            .catch(err => {
+                dispatch(stopLoading());
+                console.log('user err', err);
+            });
+    };
 
     useEffect(() => {
-        // dispatch(getAllUsers());
-        // dispatch(getAllRoles());
-    }, [dispatch]);
+        getUser();
+    }, []);
+
     const loading = false
     return loading ? (
         <div>
@@ -93,16 +90,14 @@ const List = () => {
                 </Col>
             </Row>
             <Row>
-                {/* {(users || []).map((user: User, index: any) => {
+                {user.map(user => {
                     return (
-                        <Col xl={6} md={6} key={index.toString()}>
-                            <ContactDetails contact={user} />
+                        <Col xl={6} md={6} key={user.id}>
+                            <ContactDetails contact={user} getUser={getUser} />
                         </Col>
                     );
-                })} */}
-
+                })}
             </Row>
-
         </>
     );
 };

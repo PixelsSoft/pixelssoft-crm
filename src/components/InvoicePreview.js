@@ -2,10 +2,13 @@ import { Button, Col, Modal, Row } from 'react-bootstrap';
 // import PSLogo from '../assets/images/pixelssoft-logo-transparent.png';
 import { useReactToPrint } from 'react-to-print';
 
-export default function InvoicePreview({ previewModal, toggle, componentRef, details }: any) {
+export default function InvoicePreview({ previewModal, toggle, componentRef, details }) {
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
+
+    console.log('InvoicePreview', details);
+
     return (
         <Modal show={previewModal} onHide={toggle} dialogClassName="" size="lg" scrollable={false}>
             <Modal.Header onHide={toggle} closeButton>
@@ -34,15 +37,15 @@ export default function InvoicePreview({ previewModal, toggle, componentRef, det
                     <Col>
                         <div className="d-flex flex-column">
                             <span style={{ fontWeight: 'bold' }}>Bill To:</span>
-                            <span>{details.customerName}</span>
+                            <span>{details?.customerName}</span>
                         </div>
                         <div className="d-flex flex-column">
                             <span style={{ fontWeight: 'bold' }}>Email:</span>
-                            <span>{details.customerEmail}</span>
+                            <span>{details?.customerEmail}</span>
                         </div>
                         <div className="d-flex flex-column">
                             <span style={{ fontWeight: 'bold' }}>Phone Number:</span>
-                            <span>{details.phoneNumber}</span>
+                            <span>{details?.phoneNumber}</span>
                         </div>
                     </Col>
 
@@ -50,20 +53,20 @@ export default function InvoicePreview({ previewModal, toggle, componentRef, det
                         <div className="d-flex justify-content-end">
                             <strong>Invoice #:</strong>
                             <span style={{ marginLeft: 5 }}>
-                                {details.invoiceNumber ? details.invoiceNumber.data : '0000'}
+                                {/* {details.invoiceNumber ? details?.invoiceNumber.data : '0000'} */}
                             </span>
                         </div>
                         <div className="d-flex justify-content-end">
                             <strong>Invoice Date:</strong>
-                            <span style={{ marginLeft: 5 }}>{details.invoiceDate}</span>
+                            <span style={{ marginLeft: 5 }}>{details?.invoiceDate}</span>
                         </div>
                         <div className="d-flex justify-content-end">
                             <strong>Payment Due:</strong>
-                            <span style={{ marginLeft: 5 }}>{details.dueDate}</span>
+                            <span style={{ marginLeft: 5 }}>{details?.dueDate}</span>
                         </div>
                         <div className="d-flex justify-content-end">
                             <strong>Amount Due (USD):</strong>
-                            <span style={{ marginLeft: 5 }}>${details.price}</span>
+                            <span style={{ marginLeft: 5 }}>${details?.price}</span>
                         </div>
                     </Col>
                 </Row>
@@ -75,11 +78,11 @@ export default function InvoicePreview({ previewModal, toggle, componentRef, det
                         <div>
                             <div className="d-flex flex-column">
                                 <strong>Item:</strong>
-                                <span>{details.projectName}</span>
+                                <span>{details?.projectName}</span>
                             </div>
                             <div className="d-flex flex-column">
                                 <strong>Description:</strong>
-                                <p style={{ width: '50%', whiteSpace: 'pre-wrap' }}>{details.description}</p>
+                                <p style={{ width: '50%', whiteSpace: 'pre-wrap' }}>{details?.description}</p>
                             </div>
                         </div>
                         {/* <div className="d-flex mt-2 flex-column">
@@ -91,19 +94,19 @@ export default function InvoicePreview({ previewModal, toggle, componentRef, det
                             <div className="d-flex flex-column align-items-end">
                                 <div>
                                     <strong>Total:</strong>
-                                    <span style={{ marginLeft: 5 }}>${details.price}</span>
+                                    <span style={{ marginLeft: 5 }}>${details?.price}</span>
                                 </div>
 
                                 <div>
                                     <strong>Amount Due:</strong>
-                                    <strong style={{ marginLeft: 5 }}>${details.price}</strong>
+                                    <strong style={{ marginLeft: 5 }}>${details?.price}</strong>
                                 </div>
                             </div>
                         </Row>
                         <Row className="mt-3 text-secondary p-1">
                             <div>
                                 <span style={{ fontStyle: 'italic' }}>Notes:</span>
-                                <p style={{ whiteSpace: 'pre-wrap' }}>{details.memo}</p>
+                                <p style={{ whiteSpace: 'pre-wrap' }}>{details?.memo}</p>
                             </div>
                         </Row>
                     </div>

@@ -1,4 +1,3 @@
-
 import { Row, Col, Card, Button, Form, Table, Alert } from 'react-bootstrap';
 import { ChangeEventHandler, FormEventHandler, useEffect, useRef, useState } from 'react';
 // import { getCustomers } from '../../../../redux/customers/actions';
@@ -7,37 +6,42 @@ import { ChangeEventHandler, FormEventHandler, useEffect, useRef, useState } fro
 import InvoicePreview from '../../../../components/InvoicePreview';
 import { FormInput } from '../../../../components';
 import PageTitle from '../../../../components/PageTitle';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { CONSTANTS } from '../../../../constants/constant';
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import { toast } from 'react-toastify';
 
 const CreateInvoice = () => {
+    const dispatch = useDispatch();
+    const { token, user } = useSelector(state => state.Auth);
     const [previewModal, setPreviewModal] = useState(false);
     const [customer, setCustomer] = useState(undefined);
-    const [customerId, setCustomerId] = useState('');
-
+    const [customerId, setCustomerId] = useState(12);
     const [currency, setCurrency] = useState('');
     const [customerEmail, setCustomerEmail] = useState('');
     const [customerName, setCustomerName] = useState('');
-    const [projectCategory, setProjectCategory] = useState<string | undefined>(undefined);
+    const [projectCategory, setProjectCategory] = useState(undefined);
     const [projectName, setProjectName] = useState('');
     const [address, setAddress] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [invoiceDate, setInvoiceDate] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [price, setPrice] = useState(0);
-    // const [amount, setAmount] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [description, setDescription] = useState('');
     const [memo, setMemo] = useState('');
+    const [cat, setCat] = useState([]);
+    const [detail, setDetail] = useState();
+    const componentRef = useRef(null);
 
     const reset = () => {
-        setCustomer(undefined);
-        setCustomerId('');
+        // setCustomer(undefined);
+        // setCustomerId('');
         setCurrency('');
         setCustomerEmail('');
         setCustomerName('');
         setProjectName('');
         setAddress('');
-
         setPhoneNumber('');
         setPrice(0);
         setQuantity(1);
@@ -45,34 +49,60 @@ const CreateInvoice = () => {
         setMemo('');
     };
 
-    const toggle = () => setPreviewModal(!previewModal);
+    // const toggle = () => setPreviewModal(!previewModal);
 
-    const componentRef = useRef(null);
-
-    const dispatch = useDispatch()
-
-    // const { customers, categories, invoiceNumber, invoiceCreated, data, error } = appSelector((state) => ({
-    //     customers: state.Customer.customers,
-    //     categories: state.ProjectCategories.categories,
-    //     invoiceNumber: state.Invoices.invoiceNumber,
-    //     invoiceCreated: state.Invoices.invoiceCreated,
-    //     data: state.Invoices.data,
-    //     error: state.Invoices.error,
-    // }));
-
-
-
-    // const handleSelectCustomer: ChangeEventHandler<HTMLSelectElement> | undefined = (e) => {
-    //     let found = customers.find((cust: any) => cust._id === e.target.value);
-    //     setCustomer(found);
-    //     setCustomerEmail(found.email);
-    //     setCustomerId(found._id);
-    //     setCustomerName(found.fullName);
-    //     setPhoneNumber(found.phoneNumber);
-    // };
-
-    const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const data = {
+            created_by: user.id,
+            // customer_id: customerId,
+            invoice_date: invoiceDate,
+            due_date: dueDate,
+            title: projectName,
+            quantity: quantity,
+            price: price,
+            currency_code: currency,
+            description: description,
+            notes: memo,
+            email: customerEmail,
+            name: customerName,
+            phone: phoneNumber,
+            category_id: projectCategory,
+            platform: 'Facebook',
+            address: address
+        };
+
+        if (!projectName || !price || !quantity || !currency || !customerEmail || !projectCategory) {
+            toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
+            return;
+        };
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/json",
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        };
+
+        await fetch(CONSTANTS.API_URLS.BASE + `invoice`, options)
+            .then(response => response.json())
+            .then(e => {
+                if (e.status === 200) {
+                    toast.success(e.message, { position: toast.POSITION.TOP_RIGHT });
+                    setDetail(data);
+                    reset();
+                } else {
+                    toast.error('Something went wrong', { position: toast.POSITION.TOP_RIGHT });
+                };
+            })
+            .catch(err => {
+                dispatch(stopLoading());
+                console.log('generateInvoice err', err);
+            });
         // dispatch(
         //     createInvoice({
         //         customerEmail,
@@ -95,34 +125,32 @@ const CreateInvoice = () => {
         // );
     };
 
-    const handleSelectProjectCategory: ChangeEventHandler<HTMLSelectElement> = (e) => {
-        // let found = categories.data?.find((category: any) => category._id === e.target.value);
-        // setProjectName(found.name);
-        // setProjectCategory(found._id);
-        setProjectName(e.target.value);
-
+    const handleSelectProjectCategory = (e) => {
+        setProjectCategory(e.target.value);
     };
 
-    // useEffect(() => {
-    //     if (invoiceCreated) {
-    //         reset();
-    //         // dispatch(getInvoiceNumber());
-    //     }
-    // }, [invoiceCreated, dispatch]);
+    const getCategory = async () => {
+        dispatch(startLoading());
+        await fetch(CONSTANTS.API_URLS.BASE + 'category', {
+            headers: {
+                'Accept': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+        })
+            .then(response => response.json())
+            .then(e => {
+                setCat(e.data);
+                dispatch(stopLoading());
+            })
+            .catch(err => {
+                dispatch(stopLoading());
+                console.log('getPlatform err', err);
+            });
+    };
 
     useEffect(() => {
-        // dispatch(getCustomers());
-        // dispatch(getAllCategories());
-        // dispatch(getInvoiceNumber());
-    }, [dispatch]);
-
-    useEffect(() => {
-        return () => {
-            // dispatch(resetInvoice());
-        };
-    }, [dispatch]);
-
-    console.log(customer);
+        getCategory();
+    }, []);
 
     return (
         <>
@@ -177,29 +205,26 @@ const CreateInvoice = () => {
                                 </Row>
 
                                 <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formGridPassword">
+                                    {/* <Form.Group as={Col} controlId="formGridPassword">
                                         <Form.Label>Invoice #</Form.Label>
-                                        {/* <Form.Control value={invoiceNumber ? invoiceNumber.data : '0000'} disabled /> */}
-                                    </Form.Group>
-
+                                        <Form.Control value={invoiceNumber ? invoiceNumber.data : '0000'} disabled /> 
+                                    </Form.Group> */}
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Project Category</Form.Label>
                                         <Form.Select defaultValue="Choose..." onChange={handleSelectProjectCategory}>
-                                            <option value={undefined}>Choose...</option>
-                                            <option value={"SMM"}>SMM</option>
-                                            <option value={"SEO"}>SEO</option>
-                                            <option value={"Web design"}>Web Design and Development</option>
-                                            <option value={"Mobile app"}>Mobile App development</option>
-                                            <option value={"Logo Design"}>Logo Design</option>
-
+                                            <option >Choose...</option>
+                                            {cat.map(val => {
+                                                return (
+                                                    <option key={val.id} value={val.id}>{val.title}</option>
+                                                );
+                                            })}
                                         </Form.Select>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Currency</Form.Label>
                                         <Form.Select
                                             value={currency}
-                                            defaultValue="Choose..."
-                                        // onChange={(e) => setCurrency(e.target.value)}
+                                            onChange={(e) => setCurrency(e.target.value)}
                                         >
                                             <option value={undefined}>Choose...</option>
                                             <option value="PKR">Pakistani Rupee (PKR)</option>
@@ -282,7 +307,7 @@ const CreateInvoice = () => {
                                                         onChange={(e) => setPrice(parseInt(e.target.value))}
                                                     />
                                                 </td>
-                                                <td>${price}</td>
+                                                <td>${quantity * price}</td>
                                             </tr>
                                         </tbody>
                                     </Table>
@@ -340,9 +365,9 @@ const CreateInvoice = () => {
                                 <Row className="mt-3">
                                     <Col>
                                         <Button type="submit" className="waves-effect waves-light">
-                                            Send Email
+                                            Save
                                         </Button>
-                                        <Button type="button" className="waves-effect waves-light mx-2">
+                                        {/* <Button type="button" className="waves-effect waves-light mx-2">
                                             Generate Link
                                         </Button>
                                         <Button
@@ -351,27 +376,17 @@ const CreateInvoice = () => {
                                             className="waves-effect waves-light"
                                             variant="outline-primary">
                                             Preview
-                                        </Button>
+                                        </Button> */}
                                     </Col>
                                 </Row>
                             </Form>
 
-                            <InvoicePreview
+                            {/* <InvoicePreview
                                 previewModal={previewModal}
                                 toggle={toggle}
                                 componentRef={componentRef}
-                                details={{
-                                    customerName,
-                                    customerEmail,
-                                    // invoiceNumber,
-                                    projectName,
-                                    invoiceDate,
-                                    dueDate,
-                                    price,
-                                    memo,
-                                    description,
-                                }}
-                            />
+                                details={detail}
+                            /> */}
                         </Card.Body>
                     </Card>
                 </Col>
