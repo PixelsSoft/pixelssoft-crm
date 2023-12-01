@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 const initialState = {
     project: [],
+    proectById: null
 }
 
 export const CreateProject = (data, token) => async (dispatch) => {
@@ -24,6 +25,25 @@ export const GetProject = (token) => async (dispatch) => {
     };
 };
 
+export const GetProjectById = (projectId, token) => async (dispatch) => {
+    try {
+        const response = await ProjectService.GetProjectById(projectId, token);
+        dispatch(SingleProject(response));
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+
+export const CreateMilestone = (projectId, data, token) => async (dispatch) => {
+    try {
+        const response = await ProjectService.CreateMilestone(projectId, data, token);
+        console.log('response', response);
+        // dispatch(SingleProject(response));
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+
 export const ProjectSlice = createSlice({
     name: "Projects",
     initialState,
@@ -31,11 +51,15 @@ export const ProjectSlice = createSlice({
         Projects: (state, action) => {
             state.project = action.payload
         },
+        SingleProject: (state, action) => {
+            state.proectById = action.payload
+        },
     },
 });
 
 export const {
-    Projects
+    Projects,
+    SingleProject
 } = ProjectSlice.actions;
 
 export default ProjectSlice.reducer;

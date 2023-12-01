@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
-// import ContactDetails from '../../../../components/ContactDetails';
 import { Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
-// import avatar2 from '../../../../assets/images/users/user-9.jpg';
 import PortalProjectsDetailCard from '../../../components/PortalProjectsDetailCard';
 import StatisticsWidget1 from '../../../components/StatisticsWidget1';
 import Table from '../../../components/Table';
 import { useParams } from 'react-router-dom';
-import { CONSTANTS } from '../../../constants/constant';
 import { useDispatch, useSelector } from 'react-redux';
-import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import { FormInput } from '../../../components';
-import { toast } from 'react-toastify';
+import { CreateMilestone, GetProjectById } from '../../../redux/Slices/Project/Project';
 
 const columns = [
     {
@@ -64,43 +60,29 @@ const sizePerPageList = [
 ];
 
 const CustomerProfile = () => {
-    const { token, user } = useSelector(state => state.Auth);
     const { projectId } = useParams();
     const dispatch = useDispatch();
     const [desc, setDesc] = useState();
     const [amount, setAmount] = useState();
-    const [pro, setPro] = useState();
     const [standard, setStandard] = useState(false);
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
     const [status, setStatus] = useState();
 
-    const getProject = async () => {
-        dispatch(startLoading());
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': "application/json",
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        };
+    const { token, user, project } = useSelector(
+        (state) => ({
+            token: state.Auth.token,
+            user: state.Auth,
+            category: state.Category.category,
+            project: state.Projects.proectById
+        })
+    );
 
-        await fetch(CONSTANTS.API_URLS.BASE + `project/${projectId}/edit`, options)
-            .then(response => response.json())
-            .then(e => {
-                setPro(e.data);
-                dispatch(stopLoading());
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('getProject err', err);
-            });
+    const getProject = async () => {
+        dispatch(GetProjectById(projectId, token));
     };
 
     const createMilestone = async () => {
-        dispatch(startLoading());
-
         const data = {
             project_id: projectId,
             user_id: user.id,
@@ -111,32 +93,46 @@ const CustomerProfile = () => {
             end_date: endDate
         };
 
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': "application/json",
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(data),
-        };
+        // const options = {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': "application/json",
+        //         'Accept': 'application/json',
+        //         'Authorization': `Bearer ${token}`,
+        //     },
+        //     body: JSON.stringify(data),
+        // };
 
-        await fetch(CONSTANTS.API_URLS.BASE + `milestone?project=${projectId}`, options)
-            .then(response => response.json())
-            .then(e => {
-                if (e.status === 200) {
-                    toast.success(e.message, { position: toast.POSITION.TOP_RIGHT });
-                    getProject();
-                    dispatch(stopLoading());
-                } else {
-                    toast.error(e.message[0], { position: toast.POSITION.TOP_RIGHT });
-                };
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                toast.error('Something Went Wrong', { position: toast.POSITION.TOP_RIGHT });
-                console.log('createMilestone err', err);
-            });
+        // await fetch(CONSTANTS.API_URLS.BASE + `milestone?project=${projectId}`, options)
+        //     .then(response => response.json())
+        //     .then(e => {
+        //         if (e.status === 200) {
+        //             toast.success(e.message, { position: toast.POSITION.TOP_RIGHT });
+        //             getProject();
+        //             dispatch(stopLoading());
+        //         } else {
+        //             toast.error(e.message[0], { position: toast.POSITION.TOP_RIGHT });
+        //         };
+        //     })
+        //     .catch(err => {
+        //         dispatch(stopLoading());
+        //         toast.error('Something Went Wrong', { position: toast.POSITION.TOP_RIGHT });
+        //         console.log('createMilestone err', err);
+        //     });
+
+        dispatch(CreateMilestone(projectId, data, token));
+    };
+
+    const formatDate = (inputDate) => {
+        const dateObject = new Date(inputDate);
+        // Extract year, month, and day
+        const year = dateObject.getFullYear();
+        const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObject.getDate()).padStart(2, '0');
+        // Construct formatted date with time
+        const formattedDate = `${year}-${month}-${day} 00:00:00`;
+        console.log('formattedDate', formattedDate);
+        return formattedDate;
     };
 
     useEffect(() => {
@@ -152,20 +148,20 @@ const CustomerProfile = () => {
             <Row>
                 <Col>
                     <Card>
-                        {pro ? (
+                        {project ? (
                             <Card.Body className="p-3">
                                 <Row className="d-flex justify-content-center">
                                     <Col sm={6}>
                                         <PortalProjectsDetailCard
                                             contact={{
                                                 // avatar: avatar,
-                                                description: `${pro?.description}`,
-                                                title: `${pro?.title}`,
-                                                SalesName: `${pro?.closedby.name}`,
-                                                BidderName: `${pro?.bidby.name}`,
-                                                Amount: `${pro?.title}`,
-                                                platform: `${pro?.platform?.title}`,
-                                                _createdAt: `${pro?.title}`
+                                                description: `${project?.description}`,
+                                                title: `${project?.title}`,
+                                                SalesName: `${project?.closedby.name}`,
+                                                BidderName: `${project?.bidby.name}`,
+                                                Amount: `${project?.title}`,
+                                                platform: `${project?.platform?.title}`,
+                                                _createdAt: `${project?.title}`
                                             }}
                                         />
                                     </Col>
@@ -208,7 +204,7 @@ const CustomerProfile = () => {
 
                                     <Table
                                         columns={columns}
-                                        data={pro?.milestone}
+                                        data={project?.milestone}
                                         pageSize={5}
                                         sizePerPageList={sizePerPageList}
                                         isSortable={true}
@@ -269,6 +265,7 @@ const CustomerProfile = () => {
                         <Form.Label>Amount</Form.Label>
                         <Form.Control
                             value={amount}
+                            type='number'
                             onChange={(e) => setAmount(e.target.value)}
                         />
                     </Form.Group>

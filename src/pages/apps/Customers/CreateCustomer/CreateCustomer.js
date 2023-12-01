@@ -2,15 +2,12 @@ import { Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../../components/PageTitle';
-import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-import { CONSTANTS } from '../../../../constants/constant';
 import { toast } from 'react-toastify';
 import { CreateCustomerAPI } from '../../../../redux/Slices/Customer/customer';
 import { GetCategory } from '../../../../redux/Slices/Category/category';
 import { GetPlatform } from '../../../../redux/Slices/Platform/platform';
 
 const CreateCustomer = () => {
-    // const { token, user } = useSelector(state => state.Auth);
     const dispatch = useDispatch()
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
@@ -32,7 +29,6 @@ const CreateCustomer = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        dispatch(startLoading());
 
         if (!email) {
             return toast.error('Enter Email', { position: toast.POSITION.TOP_RIGHT });

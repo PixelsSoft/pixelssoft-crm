@@ -10,6 +10,8 @@ export const CONSTANTS = {
         getCategory: 'category',
         customer: 'customer',
         platform: 'platform',
-        project: 'project'
+        project: 'project',
+        edit: 'edit',
+        projectMilestone: 'milestone?project='
     }
 } 
