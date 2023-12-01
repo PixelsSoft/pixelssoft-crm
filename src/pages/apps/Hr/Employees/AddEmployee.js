@@ -11,15 +11,13 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../../components/PageTitle';
 import { FormInput } from '../../../../components';
-// import { AddEmployee } from '../../../../redux/Slices/employee/Employee';
+import { AddEmployee, GetRoles, getRoles } from '../../../../redux/Slices/employee/Employee';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-// import { RootState } from '../../../../redux/store';
-// import EmployeeService from '../../../../redux/Services/employees.services';
+import EmployeeService from '../../../../redux/Services/employees.services';
 import { CONSTANTS } from '../../../../constants/constant';
 import { toast } from 'react-toastify';
 
 const List = () => {
-
     const [fullName, setFullName] = useState('');
     const [fatherName, setFatherName] = useState('');
     const [email, setEmail] = useState('');
@@ -49,13 +47,13 @@ const List = () => {
     const [refPhoneNo, setRefPhoneNo] = useState('');
     const [refCnicNo, setRefCnicNo] = useState('');
     const [refCnicPic, setRefCnicPic] = useState(null);
-    const [role, setRole] = useState([]);
     const dispatch = useDispatch();
 
-    const { loading, token } = useSelector(
+    const { loading, token, roles } = useSelector(
         (state) => ({
             loading: state.utiltities.loading,
             token: state.Auth.token,
+            roles: state.Employees.roles
         })
     );
 
@@ -120,13 +118,14 @@ const List = () => {
             .then(response => response.json())
             .then(e => {
                 dispatch(stopLoading());
+                dispatch(getRoles());
                 toast.success(e?.message, { position: toast.POSITION.TOP_RIGHT });
             })
             .catch(err => {
                 dispatch(stopLoading());
                 console.log("err", err);
             });
-        // await dispatch(AddEmployee(params, token));
+        // dispatch(AddEmployee(params, token));
     };
 
     // Profile picture upload
@@ -175,30 +174,17 @@ const List = () => {
     };
 
     const getRoles = async () => {
+        // dispatch(startLoading());
         // try {
-        // const res = await EmployeeService.getEmployeeRoles(token);
-        // console.log("get roles res", res);
-        dispatch(startLoading());
-        await fetch('https://crmupd.pixelssoft.com/api/role', {
-            headers: {
-                'Content-Type': 'application/json', // Specify the content type as JSON
-                'Accept': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-        })
-            .then(response => response.json())
-            .then(e => {
-                setRole(e.data);
-                dispatch(stopLoading());
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('fetch err', err);
-            })
+        //     const
+        //     // const res = await EmployeeService.getEmployeeRoles(token);
+        //     // setRole(res);
+        //     // dispatch(stopLoading());
         // } catch (error) {
         //     console.log("getRoles err", error);
-        //     dispatch(stopLoading());
+        //     // dispatch(stopLoading());
         // };
+        dispatch(GetRoles(token));
     };
 
     useEffect(() => {
@@ -516,7 +502,7 @@ const List = () => {
                                                 labelKey="name"
                                                 multiple
                                                 onChange={(e) => onChangeRoleSelection(e)}
-                                                options={role}
+                                                options={roles}
                                                 placeholder="Choose a role"
                                                 selected={multipleRoleSelection}
                                             />

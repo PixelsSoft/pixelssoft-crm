@@ -6,36 +6,40 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-import { CONSTANTS } from '../../../../constants/constant';
+import { GetInvoice } from '../../../../redux/Slices/Invoices/Invoices';
 
 const Invoices = () => {
-    const { token } = useSelector(state => state.Auth);
-    const navigate = useNavigate()
     const dispatch = useDispatch();
-    const [invoice, setInvoice] = useState([]);
+    const navigate = useNavigate()
 
-    /* name column render */
-    const NameColumn = ({ row }) => {
-        return (
-            <div className="table-user">
-                <img src={row.original.avatar} alt="" className="me-2 rounded-circle" />
-                <Link to="#" className="text-body fw-semibold">
-                    {row.original.name}
-                </Link>
-            </div>
-        );
-    };
+    const { token, invoice } = useSelector(
+        (state) => ({
+            token: state.Auth.token,
+            invoice: state.Invoices.Invoices
+        })
+    );
 
-    /* last order column render */
-    const LastOrderColumn = ({ row }) => {
-        return (
-            <>
-                {row.original.last_order.date}{" "}
-                <small className="text-muted">{row.original.last_order.time}</small>
-            </>
-        );
-    };
+    // /* name column render */
+    // const NameColumn = ({ row }) => {
+    //     return (
+    //         <div className="table-user">
+    //             <img src={row.original.avatar} alt="" className="me-2 rounded-circle" />
+    //             <Link to="#" className="text-body fw-semibold">
+    //                 {row.original.name}
+    //             </Link>
+    //         </div>
+    //     );
+    // };
+
+    // /* last order column render */
+    // const LastOrderColumn = ({ row }) => {
+    //     return (
+    //         <>
+    //             {row.original.last_order.date}{" "}
+    //             <small className="text-muted">{row.original.last_order.time}</small>
+    //         </>
+    //     );
+    // };
 
     /* status column render */
     const StatusColumn = ({ row }) => {
@@ -74,11 +78,6 @@ const Invoices = () => {
     };
 
     const columns = [
-        // {
-        //     Header: 'ID',
-        //     accessor: 'id',
-        //     sort: true,
-        // },
         {
             Header: 'Invoice #',
             accessor: 'invoice_key',
@@ -138,25 +137,7 @@ const Invoices = () => {
     ];
 
     const getCustomers = async () => {
-        dispatch(startLoading());
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': "application/json",
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        };
-
-        await fetch(CONSTANTS.API_URLS.BASE + `invoice`, options)
-            .then(response => response.json())
-            .then(e => {
-                setInvoice(e.data);
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('getCustomers err', err);
-            });
+        dispatch(GetInvoice(token));
     };
 
     useEffect(() => {

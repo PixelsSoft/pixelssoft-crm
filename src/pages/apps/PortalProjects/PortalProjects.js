@@ -1,9 +1,13 @@
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import React from 'react';
 import PageTitle from '../../../components/PageTitle';
 import Table from '../../../components/Table';
-import classNames from 'classnames';
+// import classNames from 'classnames';
+// import { records } from '../Invoice/Invoices/data';
+import { CONSTANTS } from '../../../constants/constant';
+import { useDispatch, useSelector } from 'react-redux';
+import { GetProject } from '../../../redux/Slices/Project/Project';
 
 
 const sizePerPageList = [
@@ -24,29 +28,37 @@ const sizePerPageList = [
 
 
 export default function PortalProjects() {
+    const dispatch = useDispatch();
     const navigate = useNavigate()
 
+    const { token, project } = useSelector(
+        (state) => ({
+            token: state.Auth.token,
+            project: state.Projects.project
+        })
+    );
+
     /* status column render */
-    const StatusColumn = ({ row }: { row: any }) => {
-        return (
-            <>
-                <span
-                    className={classNames("badge", {
-                        "bg-success": row.original.status === "Open",
-                        "bg-secondary text-light": row.original.status === "Closed",
-                    })}
-                >
-                    {row.original.status}
-                </span>
-            </>
-        );
-    };
+    // const StatusColumn = ({ row }) => {
+    //     return (
+    //         <>
+    //             <span
+    //                 className={classNames("badge", {
+    //                     "bg-success": row.original.status === "Open",
+    //                     "bg-secondary text-light": row.original.status === "Closed",
+    //                 })}
+    //             >
+    //                 {row.original.status}
+    //             </span>
+    //         </>
+    //     );
+    // };
 
 
-    const ActionColumn = () => {
+    const ActionColumn = ({ row }) => {
         return (
             <React.Fragment>
-                <Link to="/apps/portalProjects/Profile" className="action-icon">
+                <Link to={`/apps/portalProjects/Profile/${row.original.id}`} className="action-icon">
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
@@ -58,50 +70,70 @@ export default function PortalProjects() {
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
-            </React.Fragment>
+            </React.Fragment >
         );
     };
+
     const columns = [
         {
-            Header: 'ID',
-            accessor: '_id',
-            sort: true,
-        },
-        {
             Header: 'Project Title',
-            accessor: 'Project Title',
+            accessor: 'title',
             sort: true,
         },
         {
             Header: 'bidder',
-            accessor: 'bidder',
+            accessor: 'bidby.name',
             sort: true,
         },
         {
             Header: 'Sales Person',
-            accessor: 'SalesPerson',
+            accessor: 'closedby.name',
+            sort: false,
+        },
+        {
+            Header: 'Paid Amount',
+            accessor: 'paid_amount',
             sort: false,
         },
         {
             Header: 'Amount',
-            accessor: 'Amount',
+            accessor: 'total_amount',
             sort: false,
-        },
-        {
-            Header: 'status',
-            accessor: 'status',
-            sort: false,
-            cell: StatusColumn
         },
         {
             Header: "Action",
-            accessor: "action",
+            accessor: "id",
             sort: false,
-            Cell: ActionColumn,
+            Cell: ({ row }) => <ActionColumn row={row} />,
         },
     ];
 
-    const loading = false
+    const loading = false;
+
+    const getProjects = async () => {
+        // const options = {
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-Type': "application/json",
+        //         'Accept': 'application/json',
+        //         'Authorization': `Bearer ${token}`,
+        //     },
+        // };
+
+        // await fetch(CONSTANTS.API_URLS.BASE + `project`, options)
+        //     .then(response => response.json())
+        //     .then(e => {
+        //         setPro(e.data);
+        //     })
+        //     .catch(err => {
+        //         console.log('getCustomers err', err);
+        //     });
+        dispatch(GetProject(token));
+    };
+
+    useEffect(() => {
+        getProjects();
+    }, []);
 
     return loading ? (
         <h4>Loading...</h4>
@@ -141,7 +173,7 @@ export default function PortalProjects() {
                             </Row>
                             <Table
                                 columns={columns}
-                                data={[1]}
+                                data={project}
                                 pageSize={10}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}

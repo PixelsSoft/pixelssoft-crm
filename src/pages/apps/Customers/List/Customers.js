@@ -1,14 +1,12 @@
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import Table from '../../../../components/Table';
-
 import { records as data } from './data';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PageTitle from '../../../../components/PageTitle';
 import { useDispatch, useSelector } from 'react-redux';
-import { CONSTANTS } from '../../../../constants/constant';
-import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-import { toast } from 'react-toastify';
+import { GetCustomer } from '../../../../redux/Slices/Customer/customer';
+// import { toast } from 'react-toastify';
 // import { deleteCustomer, getCustomers } from '../../../../redux/customers/actions';
 /* action column render */
 
@@ -33,10 +31,15 @@ const sizePerPageList = [
 ];
 
 const Customers = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { token, user } = useSelector(state => state.Auth);
-    const navigate = useNavigate()
-    const [data, setData] = useState([]);
+
+    const { token, customer } = useSelector(
+        (state) => ({
+            token: state.Auth.token,
+            customer: state.Customer.customer
+        })
+    );
 
     const ActionColumn = () => {
         return (
@@ -59,12 +62,12 @@ const Customers = () => {
     const columns = [
         {
             Header: 'ID',
-            accessor: '_id',
+            accessor: 'id',
             sort: true,
         },
         {
             Header: 'Name',
-            accessor: 'fullName',
+            accessor: 'name',
             sort: true,
         },
         {
@@ -74,17 +77,27 @@ const Customers = () => {
         },
         {
             Header: 'Phone Number',
-            accessor: 'phoneNumber',
+            accessor: 'phone',
             sort: false,
         },
         {
-            Header: 'Company',
-            accessor: 'company',
+            Header: 'Platform',
+            accessor: 'platform',
             sort: false,
         },
         {
-            Header: 'Time',
-            accessor: '_createdAt',
+            Header: 'Project Title',
+            accessor: 'project_title',
+            sort: false,
+        },
+        {
+            Header: 'Total Amount',
+            accessor: 'total_amount',
+            sort: false,
+        },
+        {
+            Header: 'Paid Amount',
+            accessor: 'paid_amount',
             sort: false,
         },
         {
@@ -104,32 +117,14 @@ const Customers = () => {
     //     deleteCustomerSuccess: state.Customer.deleteCustomerSuccess,
     // }));
 
-    const handleDelete = (id) => {
-        // dispatch(deleteCustomer(id));
-    };
+    // const handleDelete = (id) => {
+    //     // dispatch(deleteCustomer(id));
+    // };
 
     // const toggle = () => setModal(!modal);
 
     const getCustomers = async () => {
-        dispatch(startLoading());
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': "application/json",
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        };
-
-        await fetch(CONSTANTS.API_URLS.BASE + `customer`, options)
-            .then(response => response.json())
-            .then(e => {
-                setData(e.data);
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('user err', err);
-            });
+        dispatch(GetCustomer(token));
     };
 
     useEffect(() => {
@@ -178,7 +173,7 @@ const Customers = () => {
 
                             <Table
                                 columns={columns}
-                                data={data}
+                                data={customer}
                                 pageSize={10}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}

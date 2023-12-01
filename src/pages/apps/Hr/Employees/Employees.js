@@ -3,41 +3,30 @@ import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../../../components/PageTitle';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormInput } from '../../../../components';
-import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-import { useEffect, useState } from 'react';
-import { CONSTANTS } from '../../../../constants/constant';
+import { useEffect } from 'react';
 import ContactDetails from '../../../../components/ContactDetails';
+import { GetEmployees } from '../../../../redux/Slices/employee/Employee';
 
 const List = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { token } = useSelector(state => state.Auth);
-    const [user, setUser] = useState([]);
+
+    const { loading, token, employee } = useSelector(
+        (state) => ({
+            loading: state.utiltities.loading,
+            token: state.Auth.token,
+            employee: state.Employees.employees,
+        })
+    );
 
     const getUser = async () => {
-        dispatch(startLoading());
-        await fetch(CONSTANTS.API_URLS.BASE + 'user', {
-            headers: {
-                'Accept': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-        })
-            .then(response => response.json())
-            .then(e => {
-                setUser(e.data);
-                dispatch(stopLoading());
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('user err', err);
-            });
+        dispatch(GetEmployees(token));
     };
 
     useEffect(() => {
         getUser();
     }, []);
 
-    const loading = false
     return loading ? (
         <div>
             <h2>Loading...</h2>
@@ -90,10 +79,10 @@ const List = () => {
                 </Col>
             </Row>
             <Row>
-                {user.map(user => {
+                {employee.map(user => {
                     return (
                         <Col xl={6} md={6} key={user.id}>
-                            <ContactDetails contact={user} getUser={getUser} />
+                            <ContactDetails contact={user} />
                         </Col>
                     );
                 })}

@@ -305,7 +305,7 @@ const portalProjects: RoutesProps = {
       route: PrivateRoute,
     },
     {
-      path: "/apps/portalProjects/Profile",
+      path: "/apps/portalProjects/Profile/:projectId",
       name: "Portal Projects Profile",
       element: <PortalProjectsProfile />,
       route: PrivateRoute,

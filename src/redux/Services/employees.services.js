@@ -36,7 +36,7 @@ const AddEmployee = async (params, token) => {
 
 const getEmployeeRoles = async (token) => {
     const onSuccess = (data) => {
-        return data;
+        return data.data;
     };
 
     const onFailure = error => {
@@ -45,25 +45,67 @@ const getEmployeeRoles = async (token) => {
     const options = {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json', // Specify the content type as JSON
+            'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        // body: params
     };
 
     return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.role, options)
         .then(response => response.json())
         .then(onSuccess)
         .catch(onFailure)
+};
 
-    // return await fetch('https://crmupd.pixelssoft.com/api/role', options)
-    // .then(response => response.json())
-    // .then(onSuccess)
-    // .catch(onFailure)
+const getEmployee = async (token) => {
+    const onSuccess = (data) => {
+        return data.data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    };
+
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getEmployee, options)
+        .then(response => response.json())
+        .then(onSuccess)
+        .catch(onFailure)
+};
+
+const DelteEmployee = async (id, token) => {
+    const onSuccess = (data) => {
+        return data.data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    };
+
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.deleteEmployee + id, options)
+        .then(response => response.json())
+        .then(onSuccess)
+        .catch(onFailure)
 };
 
 const EmployeeService = {
+    DelteEmployee,
+    getEmployee,
     getEmployeeRoles,
     AddEmployee,
 };

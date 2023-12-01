@@ -1,38 +1,10 @@
 import { Button, Card, Col, Dropdown, Form, Modal, Row } from 'react-bootstrap';
-
-// types
-// import { Contact } from '../pages/apps/Contacts/List/types';
 import { useState } from 'react';
 import FormInput from './FormInput';
-import { CONSTANTS } from '../constants/constant';
 import { useDispatch, useSelector } from 'react-redux';
-import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities';
-import { toast } from 'react-toastify';
+import { DeleteEmployee } from '../redux/Slices/employee/Employee';
 
-
-// type User = {
-//     _id: string;
-//     fullName: string;
-//     company: string;
-//     email: string;
-//     phoneNumber: string;
-//     position: string;
-//     profilePic: {
-//         url: string;
-//         path: string;
-//     };
-//     role: string;
-//     designation: string;
-//     salary: string;
-//     _createdAt: string;
-//     password: string;
-// };
-
-// type ContactDetailsProps = {
-//     contact: User;
-// };
-
-const ContactDetails = ({ contact, getUser }) => {
+const ContactDetails = ({ contact }) => {
     const { token } = useSelector(state => state.Auth);
     const dispatch = useDispatch();
     const [accessControlModal, setAccessControlModal] = useState(false);
@@ -42,25 +14,7 @@ const ContactDetails = ({ contact, getUser }) => {
     const toggle = () => setAccessControlModal(!accessControlModal);
 
     const deleteEmp = async () => {
-        dispatch(startLoading());
-        const options = {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        };
-        await fetch(CONSTANTS.API_URLS.BASE + `user/${contact.id}`, options)
-            .then(response => response.json())
-            .then(e => {
-                toast.success('User Deleted Successfully', { position: toast.POSITION.TOP_RIGHT });
-                getUser();
-                dispatch(stopLoading());
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('user err', err);
-            });
+        dispatch(DeleteEmployee(contact.id, token));
     };
 
     return (

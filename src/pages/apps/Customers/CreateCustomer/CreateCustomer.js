@@ -1,14 +1,16 @@
-import { Row, Col, Card, Button, Form, Alert } from 'react-bootstrap';
-// import { createCustomer, resetCustomers } from '../../../../redux/customers/actions';
-import { FormEventHandler, useEffect, useState } from 'react';
+import { Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../../components/PageTitle';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import { CONSTANTS } from '../../../../constants/constant';
 import { toast } from 'react-toastify';
+import { CreateCustomerAPI } from '../../../../redux/Slices/Customer/customer';
+import { GetCategory } from '../../../../redux/Slices/Category/category';
+import { GetPlatform } from '../../../../redux/Slices/Platform/platform';
 
 const CreateCustomer = () => {
-    const { token, user } = useSelector(state => state.Auth);
+    // const { token, user } = useSelector(state => state.Auth);
     const dispatch = useDispatch()
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
@@ -18,12 +20,18 @@ const CreateCustomer = () => {
     const [total, setTotal] = useState(0);
     const [platform, setPlatform] = useState('');
     const [salePerson, setSalePerson] = useState('');
-    const [plat, setPlat] = useState([]);
-    const [cat, setCat] = useState([]);
+
+    const { token, user, category, plat } = useSelector(
+        (state) => ({
+            token: state.Auth.token,
+            user: state.Auth,
+            category: state.Category.category,
+            plat: state.Platform.platform
+        })
+    );
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        // dispatch(createCustomer({ email, fullName, phoneNumber, company, address, platform, salePerson }));
         dispatch(startLoading());
 
         if (!email) {
@@ -48,38 +56,7 @@ const CreateCustomer = () => {
             category_id: salePerson
         };
 
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': "application/json",
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(data),
-        };
-
-        await fetch(CONSTANTS.API_URLS.BASE + `customer`, options)
-            .then(response => response.json())
-            .then(e => {
-                if (e.message == "Customer Created Successfully") {
-                    toast.success(e.message, { position: toast.POSITION.TOP_RIGHT });
-                    dispatch(stopLoading());
-                    return;
-                } else if (e.message[0] == 'The email has already been taken.') {
-                    toast.error(e.message[0], { position: toast.POSITION.TOP_RIGHT });
-                    dispatch(stopLoading());
-                    return;
-                } else {
-                    dispatch(stopLoading());
-                    toast.error('Something Went Wrong', { position: toast.POSITION.TOP_RIGHT });
-                    return;
-                };
-            })
-            .catch(err => {
-                toast.error('Something Went Wrong', { position: toast.POSITION.TOP_RIGHT });
-                dispatch(stopLoading());
-                console.log('user err', err.response.data);
-            });
+        dispatch(CreateCustomerAPI(data, token))
     };
 
     const selectPlat = (e) => {
@@ -93,41 +70,11 @@ const CreateCustomer = () => {
     };
 
     const getPlatform = async () => {
-        dispatch(startLoading());
-        await fetch(CONSTANTS.API_URLS.BASE + 'platform', {
-            headers: {
-                'Accept': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-        })
-            .then(response => response.json())
-            .then(e => {
-                setPlat(e.data);
-                dispatch(stopLoading());
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('getPlatform err', err);
-            });
+        dispatch(GetPlatform(token));
     };
 
     const getCategory = async () => {
-        dispatch(startLoading());
-        await fetch(CONSTANTS.API_URLS.BASE + 'category', {
-            headers: {
-                'Accept': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-        })
-            .then(response => response.json())
-            .then(e => {
-                setCat(e.data);
-                dispatch(stopLoading());
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('getPlatform err', err);
-            });
+        dispatch(GetCategory(token));
     };
 
     useEffect(() => {
@@ -229,7 +176,7 @@ const CreateCustomer = () => {
                                             onChange={(e) => changeCat(e)}
                                         >
                                             <option>Choose...</option>
-                                            {cat.map(val => {
+                                            {category.map(val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.title}</option>
                                                 );

@@ -6,7 +6,12 @@ import AuthReducer from './Slices/auth/Auth';
 import Utiltities from './Slices/utiltities/Utiltities';
 import { persistStore, persistReducer } from 'redux-persist';
 import localStorage from 'redux-persist/es/storage';
-
+import Employee from './Slices/employee/Employee';
+import Invoices from './Slices/Invoices/Invoices';
+import Category from './Slices/Category/category';
+import CustomerSlice from './Slices/Customer/customer';
+import Platforms from './Slices/Platform/platform';
+import Projects from './Slices/Project/Project';
 
 const persistConfig = {
   key: 'root',
@@ -17,8 +22,13 @@ const persistConfig = {
 const reducer = combineReducers({
   Layout: LayoutReducer,
   Auth: AuthReducer,
-  utiltities: Utiltities
-
+  utiltities: Utiltities,
+  Employees: Employee,
+  Invoices: Invoices,
+  Category: Category,
+  Customer: CustomerSlice,
+  Platform: Platforms,
+  Projects: Projects
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

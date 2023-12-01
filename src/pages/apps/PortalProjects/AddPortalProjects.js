@@ -1,36 +1,80 @@
-import { Row, Col, Card, Button, Form, Alert } from 'react-bootstrap';
-// import { createCustomer, resetCustomers } from '../../../../redux/customers/actions';
-import { FormEventHandler, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../components/PageTitle';
 import { FormInput } from '../../../components';
-
+// import { CONSTANTS } from '../../../constants/constant';
+// import { toast } from 'react-toastify';
+import { GetCategory } from '../../../redux/Slices/Category/category';
+import { GetPlatform } from '../../../redux/Slices/Platform/platform';
+import { GetEmployees } from '../../../redux/Slices/employee/Employee';
+import { CreateProject } from '../../../redux/Slices/Project/Project';
 
 const AddPortalProjects = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const [data, setData] = useState([]);
+    const [bidBy, setBidBy] = useState();
+    const [perName, setPerName] = useState();
+    const [platId, setPlatId] = useState();
+    const [selectCat, setSelectCat] = useState();
+    const [title, setTitle] = useState();
+    const [desc, setDesc] = useState();
+    const [total, setTotal] = useState();
+    const [paidAm, setPaidAm] = useState();
 
-    const [email, setEmail] = useState('');
-    const [fullName, setFullName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [address, setAddress] = useState('');
-    const [platform, setPlatform] = useState('');
-    const [salePerson, setSalePerson] = useState('');
-    const [company, setCompany] = useState('');
+    const { token, category, platforms, employee } = useSelector(
+        (state) => ({
+            token: state.Auth.token,
+            category: state.Category.category,
+            platforms: state.Platform.platform,
+            employee: state.Employees.employees
+        })
+    );
 
-
-
-    const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        // dispatch(createCustomer({ email, fullName, phoneNumber, company, address, platform, salePerson }));
+        const data = {
+            title: title,
+            description: desc,
+            bid_by: bidBy,
+            closed_by: perName,
+            platform_id: platId,
+            category_id: selectCat,
+            paid_amount: paidAm,
+            total_amount: total
+        };
+        dispatch(CreateProject(data, token));
     };
 
+    const filterSales = () => {
+        if (employee.length > 0) {
+            const filteredArray = employee.filter((item) => item.roles.some((role) => role.name === "Sales"));
+            setData(filteredArray);
+        };
+    };
 
+    const getUsers = async () => {
+        dispatch(GetEmployees());
+    };
+
+    const getPlatform = async () => {
+        dispatch(GetPlatform(token));
+    };
+
+    const getCategory = async () => {
+        dispatch(GetCategory(token));
+    };
 
     useEffect(() => {
-        return () => {
-            // dispatch(resetCustomers());
-        };
-    }, [dispatch]);
+        getUsers();
+        getPlatform();
+        getCategory();
+    }, []);
+
+    useEffect(() => {
+        filterSales();
+    }, [employee]);
+
     return (
         <>
 
@@ -59,35 +103,25 @@ const AddPortalProjects = () => {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Bidder Name</Form.Label>
-                                        <Form.Select
-                                        //  onChange={(e) => setPlatform(e.target.value)}
-                                        >
+                                        <Form.Select onChange={(e) => setBidBy(e.target.value)}>
                                             <option>Choose...</option>
-                                            <option>Upwork</option>
-                                            <option>Fiverr</option>
-                                            <option>Freelancer</option>
-                                            <option>Social Media</option>
-                                            <option>Bark</option>
-                                            <option>Linkedin</option>
-                                            <option>Scrapped</option>
-                                            <option>None of above</option>
+                                            {data.map(val => {
+                                                return (
+                                                    <option key={val.id} value={val.id}>{val.name}</option>
+                                                );
+                                            })}
                                         </Form.Select>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Sale Person Name</Form.Label>
-                                        <Form.Select
-                                        //  onChange={(e) => setPlatform(e.target.value)}
-                                        >
+                                        <Form.Select onChange={(e) => setPerName(e.target.value)}>
                                             <option>Choose...</option>
-                                            <option>Upwork</option>
-                                            <option>Fiverr</option>
-                                            <option>Freelancer</option>
-                                            <option>Social Media</option>
-                                            <option>Bark</option>
-                                            <option>Linkedin</option>
-                                            <option>Scrapped</option>
-                                            <option>None of above</option>
+                                            {data.map(val => {
+                                                return (
+                                                    <option key={val.id} value={val.id}>{val.name}</option>
+                                                );
+                                            })}
                                         </Form.Select>
                                     </Form.Group>
 
@@ -99,22 +133,22 @@ const AddPortalProjects = () => {
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Project Title</Form.Label>
                                         <Form.Control
-                                            value={phoneNumber}
-                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                            value={title}
+                                            onChange={(e) => setTitle(e.target.value)}
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Paid Amount</Form.Label>
                                         <Form.Control
-                                            value={phoneNumber}
-                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                            value={paidAm}
+                                            onChange={(e) => setPaidAm(e.target.value)}
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Total Amount</Form.Label>
                                         <Form.Control
-                                            value={phoneNumber}
-                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                            value={total}
+                                            onChange={(e) => setTotal(e.target.value)}
                                         />
                                     </Form.Group>
 
@@ -123,32 +157,25 @@ const AddPortalProjects = () => {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Platform</Form.Label>
-                                        <Form.Select
-                                        //  onChange={(e) => setPlatform(e.target.value)}
-                                        >
+                                        <Form.Select onChange={(e) => setPlatId(e.target.value)}>
                                             <option>Choose...</option>
-                                            <option>Upwork</option>
-                                            <option>Fiverr</option>
-                                            <option>Freelancer</option>
-                                            <option>Social Media</option>
-                                            <option>Bark</option>
-                                            <option>Linkedin</option>
-                                            <option>Scrapped</option>
-                                            <option>None of above</option>
+                                            {platforms.map(val => {
+                                                return (
+                                                    <option key={val.id} value={val.id}>{val.title}</option>
+                                                );
+                                            })}
                                         </Form.Select>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Project Category</Form.Label>
-                                        <Form.Select
-                                        // onChange={(e) => setSalePerson(e.target.value)}
-                                        >
+                                        <Form.Select onChange={(e) => setSelectCat(e.target.value)}>
                                             <option>Choose...</option>
-                                            <option>Daniyal</option>
-                                            <option>Saad</option>
-                                            <option>Taimoor</option>
-                                            <option>Usama</option>
-                                            <option>Huzaifa</option>
+                                            {category.map(val => {
+                                                return (
+                                                    <option key={val.id} value={val.id}>{val.title}</option>
+                                                );
+                                            })}
                                         </Form.Select>
                                     </Form.Group>
                                 </Row>
@@ -159,7 +186,8 @@ const AddPortalProjects = () => {
                                         name="textarea"
                                         containerClass={'mb-3'}
                                         key="textarea"
-
+                                        value={desc}
+                                        onChange={(e) => setDesc(e.target.value)}
                                     />
                                 </Row>
 
@@ -181,7 +209,7 @@ const AddPortalProjects = () => {
                         </Card.Body>
                     </Card>
                 </Col>
-            </Row>
+            </Row >
         </>
     );
 };

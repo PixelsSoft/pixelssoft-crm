@@ -1,5 +1,5 @@
-import { Row, Col, Card, Button, Form, Table, Alert } from 'react-bootstrap';
-import { ChangeEventHandler, FormEventHandler, useEffect, useRef, useState } from 'react';
+import { Row, Col, Card, Button, Form, Table } from 'react-bootstrap';
+import { useEffect, useRef, useState } from 'react';
 // import { getCustomers } from '../../../../redux/customers/actions';
 // import { createInvoice, getInvoiceNumber, resetInvoice } from '../../../../redux/invoices/actions';
 // import { getAllCategories } from '../../../../redux/projectCategories/actions';
@@ -7,16 +7,14 @@ import InvoicePreview from '../../../../components/InvoicePreview';
 import { FormInput } from '../../../../components';
 import PageTitle from '../../../../components/PageTitle';
 import { useDispatch, useSelector } from 'react-redux';
-import { CONSTANTS } from '../../../../constants/constant';
-import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+// import { CONSTANTS } from '../../../../constants/constant';
+// import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import { toast } from 'react-toastify';
+import { AddInvoice } from '../../../../redux/Slices/Invoices/Invoices';
+import { GetCategory } from '../../../../redux/Slices/Category/category';
 
 const CreateInvoice = () => {
     const dispatch = useDispatch();
-    const { token, user } = useSelector(state => state.Auth);
-    const [previewModal, setPreviewModal] = useState(false);
-    const [customer, setCustomer] = useState(undefined);
-    const [customerId, setCustomerId] = useState(12);
     const [currency, setCurrency] = useState('');
     const [customerEmail, setCustomerEmail] = useState('');
     const [customerName, setCustomerName] = useState('');
@@ -30,9 +28,17 @@ const CreateInvoice = () => {
     const [quantity, setQuantity] = useState(1);
     const [description, setDescription] = useState('');
     const [memo, setMemo] = useState('');
-    const [cat, setCat] = useState([]);
+    const [previewModal, setPreviewModal] = useState(false)
     const [detail, setDetail] = useState();
-    const componentRef = useRef(null);
+    const componentRef = useRef();
+
+    const { token, user, category } = useSelector(
+        (state) => ({
+            token: state.Auth.token,
+            user: state.Auth.user,
+            category: state.Category.category
+        })
+    );
 
     const reset = () => {
         // setCustomer(undefined);
@@ -49,14 +55,13 @@ const CreateInvoice = () => {
         setMemo('');
     };
 
-    // const toggle = () => setPreviewModal(!previewModal);
+    const toggle = () => setPreviewModal(!previewModal);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const data = {
             created_by: user.id,
-            // customer_id: customerId,
             invoice_date: invoiceDate,
             due_date: dueDate,
             title: projectName,
@@ -78,51 +83,7 @@ const CreateInvoice = () => {
             return;
         };
 
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': "application/json",
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(data),
-        };
-
-        await fetch(CONSTANTS.API_URLS.BASE + `invoice`, options)
-            .then(response => response.json())
-            .then(e => {
-                if (e.status === 200) {
-                    toast.success(e.message, { position: toast.POSITION.TOP_RIGHT });
-                    setDetail(data);
-                    reset();
-                } else {
-                    toast.error('Something went wrong', { position: toast.POSITION.TOP_RIGHT });
-                };
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('generateInvoice err', err);
-            });
-        // dispatch(
-        //     createInvoice({
-        //         customerEmail,
-        //         customerName,
-        //         address,
-        //         phoneNumber,
-        //         currency,
-        //         amountDue: price,
-        //         total: price,
-        //         customer: customerId,
-        //         quantity,
-        //         invoiceDate,
-        //         dueDate,
-        //         invoiceNumber: invoiceNumber.data,
-        //         memo,
-        //         description,
-        //         projectName,
-        //         projectCategory,
-        //     })
-        // );
+        dispatch(AddInvoice(data, token));
     };
 
     const handleSelectProjectCategory = (e) => {
@@ -130,22 +91,12 @@ const CreateInvoice = () => {
     };
 
     const getCategory = async () => {
-        dispatch(startLoading());
-        await fetch(CONSTANTS.API_URLS.BASE + 'category', {
-            headers: {
-                'Accept': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-        })
-            .then(response => response.json())
-            .then(e => {
-                setCat(e.data);
-                dispatch(stopLoading());
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('getPlatform err', err);
-            });
+        dispatch(GetCategory(token));
+    };
+
+    const handleRedirect = () => {
+        // Replace 'https://example.com' with the actual URL you want to redirect to
+        window.location.href = 'https://crmupd.pixelssoft.com/invoice/MOe3GAkRFD6CW9Nz';
     };
 
     useEffect(() => {
@@ -213,7 +164,7 @@ const CreateInvoice = () => {
                                         <Form.Label>Project Category</Form.Label>
                                         <Form.Select defaultValue="Choose..." onChange={handleSelectProjectCategory}>
                                             <option >Choose...</option>
-                                            {cat.map(val => {
+                                            {category.map(val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.title}</option>
                                                 );
@@ -367,7 +318,7 @@ const CreateInvoice = () => {
                                         <Button type="submit" className="waves-effect waves-light">
                                             Save
                                         </Button>
-                                        {/* <Button type="button" className="waves-effect waves-light mx-2">
+                                        <Button type="button" className="waves-effect waves-light mx-2" onClick={handleRedirect}>
                                             Generate Link
                                         </Button>
                                         <Button
@@ -376,17 +327,17 @@ const CreateInvoice = () => {
                                             className="waves-effect waves-light"
                                             variant="outline-primary">
                                             Preview
-                                        </Button> */}
+                                        </Button>
                                     </Col>
                                 </Row>
                             </Form>
 
-                            {/* <InvoicePreview
+                            <InvoicePreview
                                 previewModal={previewModal}
                                 toggle={toggle}
                                 componentRef={componentRef}
                                 details={detail}
-                            /> */}
+                            />
                         </Card.Body>
                     </Card>
                 </Col>

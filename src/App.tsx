@@ -28,6 +28,7 @@ import './assets/scss/Default.scss';
 import './assets/scss/Landing.scss';
 import "./assets/scss/Icons.scss";
 import { ToastContainer } from "react-toastify";
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 // configure fake backend
 configureFakeBackend();
