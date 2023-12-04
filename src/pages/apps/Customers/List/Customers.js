@@ -2,10 +2,9 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import Table from '../../../../components/Table';
 import { records as data } from './data';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React from 'react';
 import PageTitle from '../../../../components/PageTitle';
-import { useDispatch, useSelector } from 'react-redux';
-import { GetCustomer } from '../../../../redux/Slices/Customer/customer';
+import { useSelector } from 'react-redux';
 // import { toast } from 'react-toastify';
 // import { deleteCustomer, getCustomers } from '../../../../redux/customers/actions';
 /* action column render */
@@ -32,11 +31,9 @@ const sizePerPageList = [
 
 const Customers = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
-    const { token, customer } = useSelector(
+    const { customer } = useSelector(
         (state) => ({
-            token: state.Auth.token,
             customer: state.Customer.customer
         })
     );

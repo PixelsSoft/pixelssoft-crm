@@ -15,6 +15,16 @@ export const GetCategory = (token) => async (dispatch) => {
     };
 };
 
+export const AddnewCategory = (data, token) => async (dispatch) => {
+    try {
+        const response = await CategoryService.createCategory(data, token);
+        dispatch(GetCategory(token));
+        toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+    } catch (error) {
+        console.log("AddnewCategory error===========>", error)
+    };
+};
+
 export const CategorySlice = createSlice({
     name: "Category",
     initialState,

@@ -12,6 +12,7 @@ import Category from './Slices/Category/category';
 import CustomerSlice from './Slices/Customer/customer';
 import Platforms from './Slices/Platform/platform';
 import Projects from './Slices/Project/Project';
+import Roles from './Slices/Roles/Roles';
 
 const persistConfig = {
   key: 'root',
@@ -28,7 +29,8 @@ const reducer = combineReducers({
   Category: Category,
   Customer: CustomerSlice,
   Platform: Platforms,
-  Projects: Projects
+  Projects: Projects,
+  Roles: Roles,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

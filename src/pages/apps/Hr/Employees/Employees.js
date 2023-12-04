@@ -1,31 +1,19 @@
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../../../components/PageTitle';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { FormInput } from '../../../../components';
-import { useEffect } from 'react';
 import ContactDetails from '../../../../components/ContactDetails';
-import { GetEmployees } from '../../../../redux/Slices/employee/Employee';
 
 const List = () => {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
 
-    const { loading, token, employee } = useSelector(
+    const { loading, employee } = useSelector(
         (state) => ({
             loading: state.utiltities.loading,
-            token: state.Auth.token,
             employee: state.Employees.employees,
         })
     );
-
-    // const getUser = async () => {
-    //     dispatch(GetEmployees(token));
-    // };
-
-    // useEffect(() => {
-    //     getUser();
-    // }, []);
 
     return loading ? (
         <div>

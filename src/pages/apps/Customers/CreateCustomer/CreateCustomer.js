@@ -1,11 +1,9 @@
 import { Row, Col, Card, Button, Form } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../../components/PageTitle';
 import { toast } from 'react-toastify';
 import { CreateCustomerAPI } from '../../../../redux/Slices/Customer/customer';
-import { GetCategory } from '../../../../redux/Slices/Category/category';
-import { GetPlatform } from '../../../../redux/Slices/Platform/platform';
 
 const CreateCustomer = () => {
     const dispatch = useDispatch()
@@ -64,19 +62,6 @@ const CreateCustomer = () => {
         e.preventDefault();
         setSalePerson(e.target.value);
     };
-
-    const getPlatform = async () => {
-        dispatch(GetPlatform(token));
-    };
-
-    const getCategory = async () => {
-        dispatch(GetCategory(token));
-    };
-
-    useEffect(() => {
-        getPlatform();
-        getCategory();
-    }, []);
 
     return (
         <>

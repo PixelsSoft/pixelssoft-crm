@@ -3,11 +3,24 @@ import Table from '../../../components/Table';
 import PageTitle from '../../../components/PageTitle';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import { records as data } from '../Invoice/Invoices/data';
 import { FormInput } from '../../../components';
+import { useDispatch, useSelector } from 'react-redux';
+import { CreateNewRole, UpdateRole } from '../../../redux/Slices/Roles/Roles';
+
 export default function RolesPermissions() {
+    const dispatch = useDispatch();
     const [responsiveModal, setResponsiveModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
+    const [id, setId] = useState();
+    const [name, setName] = useState('');
+
+    const { roles, token } = useSelector(
+        (state) => ({
+            roles: state.Roles.roles,
+            token: state.Auth.token,
+        })
+    );
 
     /**
      * Show/hide the modal
@@ -16,16 +29,27 @@ export default function RolesPermissions() {
         setResponsiveModal(!responsiveModal);
     };
 
-    /* action column render */
-    const ActionColumn = () => {
+    const openEdit = ({ id, name }) => {
+        setEditModal(!editModal);
+        setId(id);
+        setName(name);
+    };
 
+    const closeEdit = () => {
+        setEditModal(!editModal);
+        setId();
+        setName('')
+    }
+
+    /* action column render */
+    const ActionColumn = ({ projectId }) => {
         return (
             <React.Fragment>
                 <Link to="#" className="action-icon">
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
-                <Link to="#" className="action-icon">
+                <Link className="action-icon" onClick={() => openEdit(projectId)}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
@@ -44,19 +68,20 @@ export default function RolesPermissions() {
         },
         {
             Header: 'Name',
-            accessor: 'invoiceNumber',
+            accessor: 'name',
             sort: false,
         },
-        {
-            Header: 'Role',
-            accessor: 'dueDate',
-            sort: false,
-        },
+        // {
+        //     Header: 'Role',
+        //     accessor: 'dueDate',
+        //     sort: false,
+        // },
         {
             Header: "Action",
             accessor: "action",
             sort: false,
             Cell: ActionColumn,
+            Cell: ({ row }) => <ActionColumn projectId={row.original} />,
         },
     ];
 
@@ -79,6 +104,21 @@ export default function RolesPermissions() {
         },
     ];
 
+    const addRole = async () => {
+        const data = {
+            name: name
+        };
+
+        dispatch(CreateNewRole(data, token));
+    };
+
+    const updateRole = async () => {
+        const data = {
+            name: name
+        };
+
+        dispatch(UpdateRole(id, data, token));
+    };
 
     return (
         <>
@@ -116,7 +156,7 @@ export default function RolesPermissions() {
 
                             <Table
                                 columns={columns}
-                                data={data}
+                                data={roles}
                                 pageSize={10}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}
@@ -137,6 +177,8 @@ export default function RolesPermissions() {
                 <Modal.Body className="p-4">
 
                     <FormInput
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         label="Name"
                         type="text"
                         name="Name"
@@ -144,14 +186,14 @@ export default function RolesPermissions() {
                         containerClass={'mb-3'}
                         key="text"
                     />
-                    <FormInput
+                    {/* <FormInput
                         label="Permission"
                         type="text"
                         name="Name"
                         placeholder="Permission"
                         containerClass={'mb-3'}
                         key="text"
-                    />
+                    /> */}
                 </Modal.Body>
 
                 <Modal.Footer>
@@ -163,10 +205,46 @@ export default function RolesPermissions() {
                         Close
                     </button>
                     <button
-                        type="submit"
+                        // type="submit"
                         className="btn btn-info waves-effect waves-light"
+                        onClick={addRole}
                     >
                         Add
+                    </button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={editModal} onHide={closeEdit}>
+                <Modal.Header closeButton>
+                    <h4 className="modal-title">Edit Role</h4>
+                </Modal.Header>
+                <Modal.Body className="p-4">
+
+                    <FormInput
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        label="Name"
+                        type="text"
+                        name="Name"
+                        placeholder="Name"
+                        containerClass={'mb-3'}
+                        key="text"
+                    />
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <button
+                        type="button"
+                        className="btn btn-secondary waves-effect"
+                        onClick={closeEdit}
+                    >
+                        Close
+                    </button>
+                    <button
+                        // type="submit"
+                        className="btn btn-info waves-effect waves-light"
+                        onClick={updateRole}
+                    >
+                        Update
                     </button>
                 </Modal.Footer>
             </Modal>

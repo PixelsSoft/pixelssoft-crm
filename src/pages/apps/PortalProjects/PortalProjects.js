@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import PageTitle from '../../../components/PageTitle';
 import Table from '../../../components/Table';
 // import classNames from 'classnames';
 // import { records } from '../Invoice/Invoices/data';
-import { CONSTANTS } from '../../../constants/constant';
-import { useDispatch, useSelector } from 'react-redux';
-import { GetProject } from '../../../redux/Slices/Project/Project';
+import { useSelector } from 'react-redux';
 
 
 const sizePerPageList = [
@@ -28,12 +26,10 @@ const sizePerPageList = [
 
 
 export default function PortalProjects() {
-    const dispatch = useDispatch();
     const navigate = useNavigate()
 
-    const { token, project } = useSelector(
+    const { project } = useSelector(
         (state) => ({
-            token: state.Auth.token,
             project: state.Projects.project
         })
     );
@@ -109,31 +105,6 @@ export default function PortalProjects() {
     ];
 
     const loading = false;
-
-    // const getProjects = async () => {
-    //     // const options = {
-    //     //     method: 'GET',
-    //     //     headers: {
-    //     //         'Content-Type': "application/json",
-    //     //         'Accept': 'application/json',
-    //     //         'Authorization': `Bearer ${token}`,
-    //     //     },
-    //     // };
-
-    //     // await fetch(CONSTANTS.API_URLS.BASE + `project`, options)
-    //     //     .then(response => response.json())
-    //     //     .then(e => {
-    //     //         setPro(e.data);
-    //     //     })
-    //     //     .catch(err => {
-    //     //         console.log('getCustomers err', err);
-    //     //     });
-    //     dispatch(GetProject(token));
-    // };
-
-    // useEffect(() => {
-    //     getProjects();
-    // }, []);
 
     return loading ? (
         <h4>Loading...</h4>

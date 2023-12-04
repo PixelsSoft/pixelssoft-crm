@@ -5,6 +5,9 @@ import { GetEmployees } from "../employee/Employee";
 import { GetCustomer } from "../Customer/customer";
 import { GetInvoice } from "../Invoices/Invoices";
 import { GetProject } from "../Project/Project";
+import { GetPlatform } from "../Platform/platform";
+import { GetCategory } from "../Category/category";
+import { getRoles } from "../Roles/Roles";
 
 const initialState = {
     user: {
@@ -41,6 +44,9 @@ export const login = (params) => async (dispatch) => {
         dispatch(GetCustomer(response?.data?.token));
         dispatch(GetInvoice(response?.data?.token));
         dispatch(GetProject(response?.data?.token));
+        dispatch(GetPlatform(response?.data?.token));
+        dispatch(GetCategory(response?.data?.token));
+        dispatch(getRoles(response?.data?.token));
         toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
     } catch (error) {
         console.log("error===========>", error)

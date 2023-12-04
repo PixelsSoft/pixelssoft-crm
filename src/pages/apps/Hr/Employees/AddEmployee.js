@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 // hooks
 // data
@@ -11,9 +11,8 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../../components/PageTitle';
 import { FormInput } from '../../../../components';
-import { AddEmployee, GetRoles, getRoles } from '../../../../redux/Slices/employee/Employee';
+import { getRoles } from '../../../../redux/Slices/employee/Employee';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-import EmployeeService from '../../../../redux/Services/employees.services';
 import { CONSTANTS } from '../../../../constants/constant';
 import { toast } from 'react-toastify';
 
@@ -172,24 +171,6 @@ const List = () => {
     const onChangeRoleSelection = (selected) => {
         setMultipleRoleSelection(selected);
     };
-
-    const getRoles = async () => {
-        // dispatch(startLoading());
-        // try {
-        //     const
-        //     // const res = await EmployeeService.getEmployeeRoles(token);
-        //     // setRole(res);
-        //     // dispatch(stopLoading());
-        // } catch (error) {
-        //     console.log("getRoles err", error);
-        //     // dispatch(stopLoading());
-        // };
-        dispatch(GetRoles(token));
-    };
-
-    useEffect(() => {
-        getRoles();
-    }, []);
 
     return loading ? (
         <div>

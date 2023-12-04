@@ -2,11 +2,10 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import Table from '../../../../components/Table';
 import { records as data } from './data';
 import PageTitle from '../../../../components/PageTitle';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetInvoice } from '../../../../redux/Slices/Invoices/Invoices';
 
 const Invoices = () => {
     const dispatch = useDispatch();
@@ -135,14 +134,6 @@ const Invoices = () => {
             value: data.length,
         },
     ];
-
-    // const getCustomers = async () => {
-    //     dispatch(GetInvoice(token));
-    // };
-
-    // useEffect(() => {
-    //     getCustomers();
-    // }, []);
 
     return (
         <>

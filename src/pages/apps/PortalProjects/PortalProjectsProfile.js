@@ -93,47 +93,8 @@ const CustomerProfile = () => {
             end_date: endDate
         };
 
-        // const options = {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': "application/json",
-        //         'Accept': 'application/json',
-        //         'Authorization': `Bearer ${token}`,
-        //     },
-        //     body: JSON.stringify(data),
-        // };
-
-        // await fetch(CONSTANTS.API_URLS.BASE + `milestone?project=${projectId}`, options)
-        //     .then(response => response.json())
-        //     .then(e => {
-        //         if (e.status === 200) {
-        //             toast.success(e.message, { position: toast.POSITION.TOP_RIGHT });
-        //             getProject();
-        //             dispatch(stopLoading());
-        //         } else {
-        //             toast.error(e.message[0], { position: toast.POSITION.TOP_RIGHT });
-        //         };
-        //     })
-        //     .catch(err => {
-        //         dispatch(stopLoading());
-        //         toast.error('Something Went Wrong', { position: toast.POSITION.TOP_RIGHT });
-        //         console.log('createMilestone err', err);
-        //     });
-
         dispatch(CreateMilestone(projectId, data, token));
     };
-
-    // const formatDate = (inputDate) => {
-    //     const dateObject = new Date(inputDate);
-    //     // Extract year, month, and day
-    //     const year = dateObject.getFullYear();
-    //     const month = String(dateObject.getMonth() + 1).padStart(2, '0');
-    //     const day = String(dateObject.getDate()).padStart(2, '0');
-    //     // Construct formatted date with time
-    //     const formattedDate = `${year}-${month}-${day} 00:00:00`;
-    //     console.log('formattedDate', formattedDate);
-    //     return formattedDate;
-    // };
 
     useEffect(() => {
         getProject();
