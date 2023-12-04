@@ -45,7 +45,7 @@ export const DeleteEmployee = (id, token) => async (dispatch) => {
     try {
         const response = await EmployeeService.DelteEmployee(id, token);
         toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
-        GetEmployees();
+        dispatch(GetEmployees(token));
     } catch (error) {
         dispatch(stopLoading())
         console.log("DeleteEmployee error===========>", error)
