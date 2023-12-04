@@ -19,13 +19,13 @@ const List = () => {
         })
     );
 
-    const getUser = async () => {
-        dispatch(GetEmployees(token));
-    };
+    // const getUser = async () => {
+    //     dispatch(GetEmployees(token));
+    // };
 
-    useEffect(() => {
-        getUser();
-    }, []);
+    // useEffect(() => {
+    //     getUser();
+    // }, []);
 
     return loading ? (
         <div>

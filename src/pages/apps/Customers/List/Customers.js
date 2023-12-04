@@ -123,14 +123,6 @@ const Customers = () => {
 
     // const toggle = () => setModal(!modal);
 
-    const getCustomers = async () => {
-        dispatch(GetCustomer(token));
-    };
-
-    useEffect(() => {
-        getCustomers();
-    }, []);
-
     const loading = false
 
     return loading ? (

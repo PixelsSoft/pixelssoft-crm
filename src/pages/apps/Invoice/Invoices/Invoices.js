@@ -136,13 +136,13 @@ const Invoices = () => {
         },
     ];
 
-    const getCustomers = async () => {
-        dispatch(GetInvoice(token));
-    };
+    // const getCustomers = async () => {
+    //     dispatch(GetInvoice(token));
+    // };
 
-    useEffect(() => {
-        getCustomers();
-    }, []);
+    // useEffect(() => {
+    //     getCustomers();
+    // }, []);
 
     return (
         <>

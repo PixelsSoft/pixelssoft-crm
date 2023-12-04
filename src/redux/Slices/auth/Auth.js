@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-toastify';
 import authService from "../../Services/auth.services";
+import { GetEmployees } from "../employee/Employee";
+import { GetCustomer } from "../Customer/customer";
+import { GetInvoice } from "../Invoices/Invoices";
+import { GetProject } from "../Project/Project";
 
 const initialState = {
     user: {
@@ -33,6 +37,10 @@ export const login = (params) => async (dispatch) => {
         dispatch(loginUser(response?.data?.user));
         dispatch(userPermission(response?.data?.permission));
         dispatch(userToken(response?.data?.token));
+        dispatch(GetEmployees(response?.data?.token));
+        dispatch(GetCustomer(response?.data?.token));
+        dispatch(GetInvoice(response?.data?.token));
+        dispatch(GetProject(response?.data?.token));
         toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
     } catch (error) {
         console.log("error===========>", error)

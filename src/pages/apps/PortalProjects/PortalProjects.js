@@ -110,30 +110,30 @@ export default function PortalProjects() {
 
     const loading = false;
 
-    const getProjects = async () => {
-        // const options = {
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': "application/json",
-        //         'Accept': 'application/json',
-        //         'Authorization': `Bearer ${token}`,
-        //     },
-        // };
+    // const getProjects = async () => {
+    //     // const options = {
+    //     //     method: 'GET',
+    //     //     headers: {
+    //     //         'Content-Type': "application/json",
+    //     //         'Accept': 'application/json',
+    //     //         'Authorization': `Bearer ${token}`,
+    //     //     },
+    //     // };
 
-        // await fetch(CONSTANTS.API_URLS.BASE + `project`, options)
-        //     .then(response => response.json())
-        //     .then(e => {
-        //         setPro(e.data);
-        //     })
-        //     .catch(err => {
-        //         console.log('getCustomers err', err);
-        //     });
-        dispatch(GetProject(token));
-    };
+    //     // await fetch(CONSTANTS.API_URLS.BASE + `project`, options)
+    //     //     .then(response => response.json())
+    //     //     .then(e => {
+    //     //         setPro(e.data);
+    //     //     })
+    //     //     .catch(err => {
+    //     //         console.log('getCustomers err', err);
+    //     //     });
+    //     dispatch(GetProject(token));
+    // };
 
-    useEffect(() => {
-        getProjects();
-    }, []);
+    // useEffect(() => {
+    //     getProjects();
+    // }, []);
 
     return loading ? (
         <h4>Loading...</h4>

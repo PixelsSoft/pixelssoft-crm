@@ -123,17 +123,17 @@ const CustomerProfile = () => {
         dispatch(CreateMilestone(projectId, data, token));
     };
 
-    const formatDate = (inputDate) => {
-        const dateObject = new Date(inputDate);
-        // Extract year, month, and day
-        const year = dateObject.getFullYear();
-        const month = String(dateObject.getMonth() + 1).padStart(2, '0');
-        const day = String(dateObject.getDate()).padStart(2, '0');
-        // Construct formatted date with time
-        const formattedDate = `${year}-${month}-${day} 00:00:00`;
-        console.log('formattedDate', formattedDate);
-        return formattedDate;
-    };
+    // const formatDate = (inputDate) => {
+    //     const dateObject = new Date(inputDate);
+    //     // Extract year, month, and day
+    //     const year = dateObject.getFullYear();
+    //     const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+    //     const day = String(dateObject.getDate()).padStart(2, '0');
+    //     // Construct formatted date with time
+    //     const formattedDate = `${year}-${month}-${day} 00:00:00`;
+    //     console.log('formattedDate', formattedDate);
+    //     return formattedDate;
+    // };
 
     useEffect(() => {
         getProject();
