@@ -3,6 +3,9 @@ import { Route, Navigate, RouteProps } from "react-router-dom";
 
 // components
 import PrivateRoute from "./PrivateRoute";
+import ListLeadProjects from "../pages/apps/LeadProjects/ListLeadProjects";
+import AddLeadProjets from "../pages/apps/LeadProjects/AddLeadProjets";
+import LeadProjectProfile from "../pages/apps/LeadProjects/LeadProjectProfile";
 
 
 // lazy load all the views
@@ -294,7 +297,7 @@ const portalProjects: RoutesProps = {
   children: [
     {
       path: "/apps/portalProjects",
-      name: "Employees",
+      name: "PortalProjects",
       element: <PortalProjects />,
       route: PrivateRoute,
     },
@@ -308,6 +311,35 @@ const portalProjects: RoutesProps = {
       path: "/apps/portalProjects/Profile/:projectId",
       name: "Portal Projects Profile",
       element: <PortalProjectsProfile />,
+      route: PrivateRoute,
+    },
+  ],
+};
+//lead Project Route
+const LeadProjects: RoutesProps = {
+  path: "/apps/leadProjects",
+  name: "LeadProjects",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  icon: "mail",
+  element: <ListLeadProjects />,
+  children: [
+    {
+      path: "/apps/leadProjects",
+      name: "Employees",
+      element: <ListLeadProjects />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/leadProjects/addleadProjects",
+      name: "Add Portal Projects",
+      element: <AddLeadProjets />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/leadProjects/Profile/:projectId",
+      name: "Portal Projects Profile",
+      element: <LeadProjectProfile />,
       route: PrivateRoute,
     },
   ],
@@ -642,6 +674,7 @@ const appRoutes = [
   administartorRoutes,
   clientCardRoutes,
   portalProjects,
+  LeadProjects,
   ////// extra route just for design ideas
   calendarAppRoutes,
   chatAppRoutes,

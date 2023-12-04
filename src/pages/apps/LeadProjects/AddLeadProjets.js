@@ -5,24 +5,27 @@ import PageTitle from '../../../components/PageTitle';
 import { FormInput } from '../../../components';
 import { CreateProject } from '../../../redux/Slices/Project/Project';
 
-const AddPortalProjects = () => {
+const AddLeadProjets = () => {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
-    const [bidBy, setBidBy] = useState();
-    const [perName, setPerName] = useState();
-    const [platId, setPlatId] = useState();
-    const [selectCat, setSelectCat] = useState();
-    const [title, setTitle] = useState();
-    const [desc, setDesc] = useState();
-    const [total, setTotal] = useState();
-    const [paidAm, setPaidAm] = useState();
+    const [bidBy, setBidBy] = useState('');
+    const [perName, setPerName] = useState('');
+    const [platId, setPlatId] = useState('');
+    const [selectCat, setSelectCat] = useState('');
+    const [title, setTitle] = useState('');
+    const [desc, setDesc] = useState('');
+    const [total, setTotal] = useState('');
+    const [paidAm, setPaidAm] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [num, setNum] = useState('')
 
     const { token, category, platforms, employee } = useSelector(
         (state) => ({
             token: state.Auth.token,
             category: state.Category.category,
             platforms: state.Platform.platform,
-            employee: state.Employees.employees
+            employee: state.Employees.employees,
         })
     );
 
@@ -37,7 +40,7 @@ const AddPortalProjects = () => {
             category_id: selectCat,
             paid_amount: paidAm,
             total_amount: total,
-            type: "portal"
+            type: "lead"
         };
         dispatch(CreateProject(data, token));
     };
@@ -61,7 +64,7 @@ const AddPortalProjects = () => {
                     { label: "Portal Projects", path: "/apps/portalProjects" },
                     { label: "Add Portal Projects", path: "/apps/portalProjects/addportalProject", active: true },
                 ]}
-                title={"Add Projects"}
+                title={"Add Lead Projects"}
             />
             <Row>
                 <Col>
@@ -80,7 +83,7 @@ const AddPortalProjects = () => {
                                 )} */}
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Bidder Name</Form.Label>
+                                        <Form.Label>Scrapper Name</Form.Label>
                                         <Form.Select onChange={(e) => setBidBy(e.target.value)}>
                                             <option>Choose...</option>
                                             {data.map(val => {
@@ -127,6 +130,31 @@ const AddPortalProjects = () => {
                                         <Form.Control
                                             value={total}
                                             onChange={(e) => setTotal(e.target.value)}
+                                        />
+                                    </Form.Group>
+
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Client Name</Form.Label>
+                                        <Form.Control
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Client Email</Form.Label>
+                                        <Form.Control
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="formGridState">
+                                        <Form.Label>Client Number</Form.Label>
+                                        <Form.Control
+                                            value={num}
+                                            onChange={(e) => setName(e.target.value)}
                                         />
                                     </Form.Group>
 
@@ -190,6 +218,6 @@ const AddPortalProjects = () => {
             </Row >
         </>
     );
-};
+}
 
-export default AddPortalProjects;
+export default AddLeadProjets

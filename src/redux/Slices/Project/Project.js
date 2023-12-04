@@ -10,7 +10,12 @@ const initialState = {
 export const CreateProject = (data, token) => async (dispatch) => {
     try {
         const response = await ProjectService.AddProject(data, token);
-        toast.success(response.message, { position: toast.POSITION.TOP_RIGHT });
+        if (response?.status === 409) {
+            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+        } else {
+            toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+        };
+        dispatch(GetProject(token));
     } catch (error) {
         console.log("error===========>", error)
     };
