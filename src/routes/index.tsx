@@ -6,6 +6,7 @@ import PrivateRoute from "./PrivateRoute";
 import ListLeadProjects from "../pages/apps/LeadProjects/ListLeadProjects";
 import AddLeadProjets from "../pages/apps/LeadProjects/AddLeadProjets";
 import LeadProjectProfile from "../pages/apps/LeadProjects/LeadProjectProfile";
+import Report from "../pages/apps/Reports/Report";
 
 
 // lazy load all the views
@@ -382,6 +383,15 @@ const clientCardRoutes = {
   element: <ClientCard />,
 };
 
+//Report Route
+const reportRoutes = {
+  path: "/apps/report",
+  name: "Client Cards",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  element: <Report />,
+};
+
 const calendarAppRoutes: RoutesProps = {
   path: "/apps/calendar",
   name: "Calendar",
@@ -675,6 +685,7 @@ const appRoutes = [
   clientCardRoutes,
   portalProjects,
   LeadProjects,
+  reportRoutes,
   ////// extra route just for design ideas
   calendarAppRoutes,
   chatAppRoutes,
