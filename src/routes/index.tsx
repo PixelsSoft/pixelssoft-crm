@@ -41,6 +41,9 @@ const PortalProjects = React.lazy(() => import("../pages/apps/PortalProjects/Por
 const AddPortalProjects = React.lazy(() => import("../pages/apps/PortalProjects/AddPortalProjects"));
 const PortalProjectsProfile = React.lazy(() => import("../pages/apps/PortalProjects/PortalProjectsProfile"));
 const Management = React.lazy(() => import("../pages/apps/Management/Management"));
+const Target = React.lazy(() => import("../pages/apps/Target/Target"));
+const IndividualTarget = React.lazy(() => import("../pages/apps/Target/SinglePersonTarget"));
+const Expense = React.lazy(() => import("../pages/apps/Accounts/Expenses/Expenses"));
 
 
 // extra
@@ -219,6 +222,23 @@ const dashboardRoutes: RoutesProps = {
   header: "Navigation",
   element: <Dashboard1 />,
 };
+// Target
+const TargetRoutes: RoutesProps = {
+  path: "/apps/target",
+  name: "target",
+  icon: "airplay",
+  header: "Navigation",
+  element: <Target />,
+  children: [
+    {
+      path: "/apps/target/1",
+      name: "individualTarget",
+      element: <IndividualTarget />,
+      route: PrivateRoute,
+    },
+
+  ],
+};
 //invoice Route
 const InvoiceRoutes: RoutesProps = {
   path: "/apps/invoice",
@@ -348,7 +368,7 @@ const LeadProjects: RoutesProps = {
 //Administartor Route
 const administartorRoutes: RoutesProps = {
   path: "/apps/administrator",
-  name: "Hr",
+  name: "administrator",
   route: PrivateRoute,
   roles: ["Admin"],
   icon: "mail",
@@ -357,6 +377,34 @@ const administartorRoutes: RoutesProps = {
       path: "/apps/hr/employees",
       name: "Employees",
       element: <Employees />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/administartor/rolePermission",
+      name: "Role Permission",
+      element: <RolePermission />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/administartor/management",
+      name: "Role Permission",
+      element: <Management />,
+      route: PrivateRoute,
+    },
+  ],
+};
+//Accounts Route
+const AccountsRoutes: RoutesProps = {
+  path: "/apps/accounts",
+  name: "accounts",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  icon: "mail",
+  children: [
+    {
+      path: "/apps/account/expense",
+      name: "expense",
+      element: <Expense />,
       route: PrivateRoute,
     },
     {
@@ -678,6 +726,7 @@ const fileAppRoutes = {
 };
 
 const appRoutes = [
+  TargetRoutes,
   InvoiceRoutes,
   customerRoutes,
   hrRoutes,
@@ -686,6 +735,7 @@ const appRoutes = [
   portalProjects,
   LeadProjects,
   reportRoutes,
+  AccountsRoutes,
   ////// extra route just for design ideas
   calendarAppRoutes,
   chatAppRoutes,

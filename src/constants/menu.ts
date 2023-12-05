@@ -14,7 +14,7 @@ export interface MenuItemTypes {
 }
 
 const MENU_ITEMS: MenuItemTypes[] = [
-  { key: "navigation", label: "Navigation", isTitle: true },
+  { key: "Apps", label: "Apps", isTitle: true },
   {
     key: "dashboards",
     label: "Dashboards",
@@ -49,7 +49,6 @@ const MENU_ITEMS: MenuItemTypes[] = [
     //   },
     // ],
   },
-  { key: "apps", label: "Apps", isTitle: true },
   {
     key: "sales",
     label: "Sales",
@@ -58,10 +57,17 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/apps/Sales",
   },
   {
+    key: "target",
+    label: "Target",
+    isTitle: false,
+    icon: "dollar-sign",
+    url: "/apps/target",
+  },
+  {
     key: "invoice",
     label: "Invoice",
     isTitle: false,
-    icon: "mail",
+    icon: "book",
     children: [
       {
         key: "invoices",
@@ -82,35 +88,35 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "customers",
     label: "Customers",
     isTitle: false,
-    icon: "calendar",
+    icon: "database",
     url: "/apps/customers",
   },
   {
     key: "portalProject",
     label: "Portal Projects",
     isTitle: false,
-    icon: "calendar",
+    icon: "cast",
     url: "/apps/portalProjects",
   },
   {
     key: "leadProject",
     label: "Lead Projects",
     isTitle: false,
-    icon: "calendar",
+    icon: "server",
     url: "/apps/leadProjects",
   },
   {
     key: "ClientCard",
     label: "Client Card",
     isTitle: false,
-    icon: "calendar",
+    icon: "credit-card",
     url: "/apps/clientCard",
   },
   {
     key: "projects",
     label: "Projects",
     isTitle: false,
-    icon: "briefcase",
+    icon: "clipboard",
     children: [
       {
         key: "project-list",
@@ -136,7 +142,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "hr",
     label: "Hr",
     isTitle: false,
-    icon: "briefcase",
+    icon: "users",
     children: [
       {
         key: "employees",
@@ -233,6 +239,20 @@ const MENU_ITEMS: MenuItemTypes[] = [
         key: "Management",
         label: "Management",
         url: "/apps/administartor/Management",
+        parentKey: "administartor",
+      },
+    ],
+  },
+  {
+    key: "account",
+    label: "Account",
+    isTitle: false,
+    icon: "mail",
+    children: [
+      {
+        key: "expense",
+        label: "Expense",
+        url: "/apps/account/expense",
         parentKey: "administartor",
       },
     ],
@@ -1049,6 +1069,13 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "calendar",
         url: "/apps/Sales",
+      },
+      {
+        key: "target",
+        label: "Sales",
+        isTitle: false,
+        icon: "calendar",
+        url: "/apps/target",
       },
       {
         key: "invoice",
@@ -2084,6 +2111,13 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "calendar",
         url: "/apps/Sales",
+      },
+      {
+        key: "target",
+        label: "Sales",
+        isTitle: false,
+        icon: "calendar",
+        url: "/apps/target",
       },
       {
         key: "invoice",
