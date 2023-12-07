@@ -5,12 +5,13 @@ import PageTitle from '../../../../components/PageTitle'
 import Table from '../../../../components/Table'
 
 
-export default function Expenses() {
+export default function Payments() {
     const [loading, setLoading] = useState( false );
     const [visibleModal, setVisibleModal] = useState( false );
 
 
     const [title, setTitle] = useState( '' );
+    const [desc, setDesc] = useState( '' );
     const [amount, setAmount] = useState( '' );
     const [date, setDate] = useState( '' );
     const [category, setCategory] = useState( '' );
@@ -84,13 +85,28 @@ export default function Expenses() {
     return (
         <>
             <PageTitle
-                title={"Expense"}
+                title={"Vendor Payments"}
             />
             <Row>
                 <Card>
                     <Card.Body>
                         <Row>
-                            <Col >
+                            <Col lg={4} >
+                                <FormInput
+                                    label="Vendor"
+                                    name="select"
+                                    type="select"
+                                    className="form-select"
+                                    key="select"
+                                    value={category}
+                                    onChange={( e ) => {
+                                        setCategory( e.target.value );
+                                    }}
+                                >
+                                    <option>no Selected</option>
+                                </FormInput>
+                            </Col>
+                            <Col lg={2} >
                                 <Form.Group as={Col} controlId="formGridState">
                                     <Form.Label>To</Form.Label>
                                     <Form.Control
@@ -100,7 +116,7 @@ export default function Expenses() {
                                     />
                                 </Form.Group>
                             </Col>
-                            <Col >
+                            <Col lg={2} >
                                 <Form.Group as={Col} controlId="formGridState">
                                     <Form.Label>From</Form.Label>
                                     <Form.Control
@@ -110,9 +126,9 @@ export default function Expenses() {
                                     />
                                 </Form.Group>
                             </Col>
-                            <Col>
+                            <Col lg={3} >
                                 <FormInput
-                                    label="Expense Category"
+                                    label="Vendor Category"
                                     name="select"
                                     type="select"
                                     className="form-select"
@@ -129,7 +145,7 @@ export default function Expenses() {
                                 <Button
                                     onClick={toggleModal}
                                     variant={"info"}
-                                    className="waves-effect waves-light px-5 "
+                                    className="waves-effect waves-light "
                                 >
                                     Filter
                                 </Button>
@@ -152,6 +168,10 @@ export default function Expenses() {
                                 </Button>
                             </Col>
                         </Row>
+
+
+
+
                         <Table
                             columns={columns}
                             data={[]}
@@ -168,15 +188,15 @@ export default function Expenses() {
                     </Card.Body>
                 </Card>
             </Row>
-            <Modal size="lg" show={visibleModal} onHide={toggleModal}>
+            <Modal size="lg" show={visibleModal} onHide={toggleModal} >
                 <Modal.Header closeButton>
-                    <h4 className="modal-title">Add Expense</h4>
+                    <h4 className="modal-title">Add Vendor Payments</h4>
                 </Modal.Header>
                 <Modal.Body className="p-4">
                     <Row className='mb-3'>
                         <Col >
                             <Form.Group as={Col} controlId="formGridState">
-                                <Form.Label>Invoice Date</Form.Label>
+                                <Form.Label>Date</Form.Label>
                                 <Form.Control
                                     type="date"
                                     value={date}
@@ -184,6 +204,24 @@ export default function Expenses() {
                                 />
                             </Form.Group>
                         </Col>
+                        <Col>
+                            <FormInput
+                                label="Vendor"
+                                name="select"
+                                type="select"
+                                className="form-select"
+                                key="select"
+                                value={category}
+                                onChange={( e ) => {
+                                    setCategory( e.target.value );
+                                }}
+                            >
+                                <option>no Selected</option>
+                            </FormInput>
+                        </Col>
+
+                    </Row>
+                    <Row className='mb-3'>
                         <Col >
                             <Form.Group as={Col} controlId="formGridPassword">
                                 <Form.Label>Title</Form.Label>
@@ -193,8 +231,6 @@ export default function Expenses() {
                                 />
                             </Form.Group>
                         </Col>
-                    </Row>
-                    <Row className='mb-3'>
                         <Col>
                             <Form.Group as={Col} controlId="formGridPassword">
                                 <Form.Label>Amount</Form.Label>
@@ -206,7 +242,7 @@ export default function Expenses() {
                         </Col>
                         <Col>
                             <FormInput
-                                label="Expense Category"
+                                label="Vendor Category"
                                 name="select"
                                 type="select"
                                 className="form-select"
@@ -220,37 +256,28 @@ export default function Expenses() {
                             </FormInput>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
+                    <FormInput
+                        label="Description"
+                        type="textarea"
+                        name="textarea"
+                        containerClass={'mb-3'}
+                        key="textarea"
+                        value={desc}
+                        onChange={( e ) => setDesc( e.target.value )}
+                    />
+                    <Col>
+                        <Form.Group as={Col} controlId="formGridPassword">
+                            <Form.Label>Upload File</Form.Label>
                             <FormInput
-                                label="Pay by"
-                                name="select"
-                                type="select"
-                                className="form-select"
-                                key="select"
-                                value={category}
-                                onChange={( e ) => {
-                                    setCategory( e.target.value );
-                                }}
-                            >
-                                <option>Cash</option>
-                                <option>Online</option>
-                                <option>Card</option>
-                            </FormInput>
-                        </Col>
+                                type="file"
+                                name="file"
+                                key="file"
+                                onChange={HandleFileUpload}
 
-                        <Col>
-                            <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Upload File</Form.Label>
-                                <FormInput
-                                    type="file"
-                                    name="file"
-                                    key="file"
-                                    onChange={HandleFileUpload}
-                                />
-                            </Form.Group>
-                        </Col>
-                    </Row>
+                            />
+                        </Form.Group>
+
+                    </Col>
                 </Modal.Body>
 
                 <Modal.Footer>
@@ -266,7 +293,7 @@ export default function Expenses() {
                         variant={"success"}
                         className="waves-effect waves-light  "
                     >
-                        Add Expense
+                        Add
                     </Button>
                 </Modal.Footer>
             </Modal>

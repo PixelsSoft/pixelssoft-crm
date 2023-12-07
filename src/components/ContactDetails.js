@@ -4,17 +4,17 @@ import FormInput from './FormInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { DeleteEmployee } from '../redux/Slices/employee/Employee';
 
-const ContactDetails = ({ contact }) => {
-    const { token } = useSelector(state => state.Auth);
+const ContactDetails = ( { contact } ) => {
+    const { token } = useSelector( state => state.Auth );
     const dispatch = useDispatch();
-    const [accessControlModal, setAccessControlModal] = useState(false);
-    const [editUserModal, setEditUserModal] = useState(false);
+    const [accessControlModal, setAccessControlModal] = useState( false );
+    const [editUserModal, setEditUserModal] = useState( false );
 
-    const toggleEditModal = () => setEditUserModal(!editUserModal);
-    const toggle = () => setAccessControlModal(!accessControlModal);
+    const toggleEditModal = () => setEditUserModal( !editUserModal );
+    const toggle = () => setAccessControlModal( !accessControlModal );
 
     const deleteEmp = async () => {
-        dispatch(DeleteEmployee(contact.id, token));
+        dispatch( DeleteEmployee( contact.id, token ) );
     };
 
     return (
@@ -75,11 +75,11 @@ const ContactDetails = ({ contact }) => {
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
                                         <strong>Role :</strong>
-                                        {contact.roles.map(e => {
+                                        {contact.roles.map( e => {
                                             return (
                                                 <span key={e.id} className="ms-2">{e?.name}</span>
                                             )
-                                        })}
+                                        } )}
                                     </p>
                                 </Col>
                             </Row>
@@ -96,86 +96,11 @@ const ContactDetails = ({ contact }) => {
                                 </Col>
                             </Row>
                         </div>
-                        <Button className="rounded-pill waves-effect waves-light" onClick={toggle}>
-                            Access Control
-                        </Button>
+
                     </div>
                 </Card.Body>
             </Card>
-            <Modal show={accessControlModal} onHide={toggle} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title as="h4">Accesss Control</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Row>
-                        <h4 className="header-title">Dashboard</h4>
-                        <div className="mt-1">
-                            <Form.Check type="checkbox" id="default-checkbox1" label="Allow Dashboard" />
-                        </div>
-                    </Row>
-                    <Row className="my-2">
-                        <h4 className="header-title">Invoice</h4>
-                        <div className="mt-1">
-                            <Form.Check type="checkbox" id="default-checkbox1" label="View Invoices" />
-                            <Form.Check type="checkbox" id="default-checkbox1" label="Create Invoice" />
-                        </div>
-                    </Row>
 
-                    <Row className="my-2">
-                        <h4 className="header-title">Customers</h4>
-                        <div className="mt-1">
-                            <Form.Check type="checkbox" id="default-checkbox1" label="View Customers" />
-                            <Form.Check type="checkbox" id="default-checkbox1" label="Create Customers" />
-                        </div>
-                    </Row>
-
-                    <Row className="my-2">
-                        <h4 className="header-title">Projects</h4>
-                        <div className="mt-1">
-                            <Form.Check type="checkbox" id="default-checkbox1" label="View Projects" />
-                            <Form.Check type="checkbox" id="default-checkbox1" label="Create Projects" />
-                        </div>
-                    </Row>
-
-                    <Row className="my-2">
-                        <h4 className="header-title">Sales</h4>
-                        <div className="mt-1">
-                            <Form.Check type="checkbox" id="default-checkbox1" label="Allow Sales" />
-                        </div>
-                    </Row>
-
-                    <Row className="my-2">
-                        <h4 className="header-title">Users</h4>
-                        <div className="mt-1">
-                            <Form.Check type="checkbox" id="default-checkbox1" label="View Users" />
-                            <Form.Check type="checkbox" id="default-checkbox1" label="Create Users" />
-                        </div>
-                    </Row>
-
-                    <Row className="my-2">
-                        <h4 className="header-title">Reports</h4>
-                        <div className="mt-1">
-                            <Form.Check type="checkbox" id="default-checkbox1" label="Allow Reports" />
-                        </div>
-                    </Row>
-                    <Row className="my-2">
-                        <h4 className="header-title">Expenses</h4>
-                        <div className="mt-1">
-                            <Form.Check type="checkbox" id="default-checkbox1" label="View Expenses" />
-                            <Form.Check type="checkbox" id="default-checkbox1" label="Create Expense" />
-                        </div>
-                    </Row>
-
-                    <div className="d-flex justify-content-end border-top border-gray pt-2">
-                        <Button variant="light" className="waves-effect waves-light me-1" type="submit">
-                            Save
-                        </Button>
-                        <Button variant="danger" className="waves-effect waves-light" onClick={toggle}>
-                            Cancel
-                        </Button>
-                    </div>
-                </Modal.Body>
-            </Modal>
 
             <Modal show={editUserModal} onHide={toggleEditModal} centered>
                 <Modal.Header closeButton>

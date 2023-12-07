@@ -1,25 +1,60 @@
+import classNames from 'classnames';
 import React, { useState } from 'react'
 import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap'
-import { FormInput } from '../../../../components';
-import PageTitle from '../../../../components/PageTitle'
-import Table from '../../../../components/Table'
+import { Link } from 'react-router-dom';
+import { FormInput } from '../../../components';
+import PageTitle from '../../../components/PageTitle';
+import Table from '../../../components/Table';
 
 
-export default function Expenses() {
-    const [loading, setLoading] = useState( false );
+
+export default function Leads() {
+
     const [visibleModal, setVisibleModal] = useState( false );
-
-
+    const [desc, setDesc] = useState( '' );
     const [title, setTitle] = useState( '' );
-    const [amount, setAmount] = useState( '' );
-    const [date, setDate] = useState( '' );
     const [category, setCategory] = useState( '' );
 
-    const [file, setFile] = useState( '' );
+
 
     const toggleModal = () => {
         setVisibleModal( !visibleModal );
     };
+    /* action column render */
+    const ActionColumn = () => {
+        return (
+            <React.Fragment>
+                <Link to="#" className="action-icon">
+                    {" "}
+                    <i className="mdi mdi-eye"></i>
+                </Link>
+                <Link to="#" className="action-icon">
+                    {" "}
+                    <i className="mdi mdi-square-edit-outline"></i>
+                </Link>
+                <Link to="#" className="action-icon">
+                    {" "}
+                    <i className="mdi mdi-delete"></i>
+                </Link>
+            </React.Fragment>
+        );
+    };
+    /* status column render */
+    const StatusColumn = ( { row } ) => {
+        return (
+            <React.Fragment>
+                <span
+                    className={classNames( "badge", {
+                        "bg-soft-success text-success": row.original.status === "Active",
+                        "bg-soft-danger text-danger": row.original.status === "Blocked",
+                    } )}
+                >
+                    {row.original.status}
+                </span>
+            </React.Fragment>
+        );
+    };
+
     const columns = [
         {
             Header: 'Sno',
@@ -27,36 +62,42 @@ export default function Expenses() {
             sort: true,
         },
         {
-            Header: 'Date',
+            Header: 'Name',
             accessor: 'date',
             sort: false,
         },
         {
-            Header: 'title',
+            Header: 'Email',
             accessor: 'title',
             sort: false,
         },
         {
-            Header: 'amount',
+            Header: 'Phone',
             accessor: 'amount',
             sort: false,
         },
         {
-            Header: 'category',
-            accessor: 'category',
+            Header: 'Note',
+            accessor: 'note',
             sort: false,
         },
         {
-            Header: 'file',
-            accessor: 'file',
+            Header: 'Last Contact',
+            accessor: 'LastContact',
             sort: false,
         },
-        // {
-        //     Header: "Action",
-        //     accessor: "action",
-        //     sort: false,
-        //     Cell: ActionColumn,
-        // },
+        {
+            Header: 'Respond',
+            accessor: 'Respond',
+            sort: false,
+            Cell: StatusColumn,
+        },
+        {
+            Header: "Action",
+            accessor: "action",
+            sort: false,
+            Cell: ActionColumn,
+        },
     ];
 
     const sizePerPageList = [
@@ -74,45 +115,36 @@ export default function Expenses() {
         },
 
     ];
-    const HandleFileUpload = ( event ) => {
-        if ( event.target.files ) {
-            const file = event.target.files[0];
-            setFile( file );
-        }
-    };
+
 
     return (
         <>
             <PageTitle
-                title={"Expense"}
+                title={"Leads"}
             />
             <Row>
                 <Card>
                     <Card.Body>
                         <Row>
-                            <Col >
-                                <Form.Group as={Col} controlId="formGridState">
-                                    <Form.Label>To</Form.Label>
-                                    <Form.Control
-                                        type="date"
-                                        value={date}
-                                        onChange={( e ) => setDate( e.target.value )}
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col >
-                                <Form.Group as={Col} controlId="formGridState">
-                                    <Form.Label>From</Form.Label>
-                                    <Form.Control
-                                        type="date"
-                                        value={date}
-                                        onChange={( e ) => setDate( e.target.value )}
-                                    />
-                                </Form.Group>
+
+                            <Col>
+                                <FormInput
+                                    label="Status"
+                                    name="select"
+                                    type="select"
+                                    className="form-select"
+                                    key="select"
+                                    value={category}
+                                    onChange={( e ) => {
+                                        setCategory( e.target.value );
+                                    }}
+                                >
+                                    <option>no Selected</option>
+                                </FormInput>
                             </Col>
                             <Col>
                                 <FormInput
-                                    label="Expense Category"
+                                    label="Platform"
                                     name="select"
                                     type="select"
                                     className="form-select"
@@ -154,7 +186,7 @@ export default function Expenses() {
                         </Row>
                         <Table
                             columns={columns}
-                            data={[]}
+                            data={[{ status: "Active" }, { status: "Blocked" }]}
                             pageSize={10}
                             sizePerPageList={sizePerPageList}
                             isSortable={true}
@@ -170,23 +202,22 @@ export default function Expenses() {
             </Row>
             <Modal size="lg" show={visibleModal} onHide={toggleModal}>
                 <Modal.Header closeButton>
-                    <h4 className="modal-title">Add Expense</h4>
+                    <h4 className="modal-title">Add Lead</h4>
                 </Modal.Header>
                 <Modal.Body className="p-4">
                     <Row className='mb-3'>
                         <Col >
-                            <Form.Group as={Col} controlId="formGridState">
-                                <Form.Label>Invoice Date</Form.Label>
+                            <Form.Group as={Col} controlId="formGridPassword">
+                                <Form.Label>Name</Form.Label>
                                 <Form.Control
-                                    type="date"
-                                    value={date}
-                                    onChange={( e ) => setDate( e.target.value )}
+                                    value={title}
+                                    onChange={( e ) => setTitle( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
                         <Col >
                             <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Title</Form.Label>
+                                <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     value={title}
                                     onChange={( e ) => setTitle( e.target.value )}
@@ -195,18 +226,18 @@ export default function Expenses() {
                         </Col>
                     </Row>
                     <Row className='mb-3'>
-                        <Col>
+                        <Col >
                             <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Amount</Form.Label>
+                                <Form.Label>Phone No</Form.Label>
                                 <Form.Control
-                                    value={amount}
-                                    onChange={( e ) => setAmount( e.target.value )}
+                                    value={title}
+                                    onChange={( e ) => setTitle( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
                         <Col>
                             <FormInput
-                                label="Expense Category"
+                                label="Platform"
                                 name="select"
                                 type="select"
                                 className="form-select"
@@ -220,39 +251,17 @@ export default function Expenses() {
                             </FormInput>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <FormInput
-                                label="Pay by"
-                                name="select"
-                                type="select"
-                                className="form-select"
-                                key="select"
-                                value={category}
-                                onChange={( e ) => {
-                                    setCategory( e.target.value );
-                                }}
-                            >
-                                <option>Cash</option>
-                                <option>Online</option>
-                                <option>Card</option>
-                            </FormInput>
-                        </Col>
+                    <FormInput
+                        label="Note"
+                        type="textarea"
+                        name="textarea"
+                        containerClass={'mb-3'}
+                        key="textarea"
+                        value={desc}
+                        onChange={( e ) => setDesc( e.target.value )}
+                    />
 
-                        <Col>
-                            <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Upload File</Form.Label>
-                                <FormInput
-                                    type="file"
-                                    name="file"
-                                    key="file"
-                                    onChange={HandleFileUpload}
-                                />
-                            </Form.Group>
-                        </Col>
-                    </Row>
                 </Modal.Body>
-
                 <Modal.Footer>
                     <Button
                         type="button"
@@ -266,7 +275,7 @@ export default function Expenses() {
                         variant={"success"}
                         className="waves-effect waves-light  "
                     >
-                        Add Expense
+                        Add
                     </Button>
                 </Modal.Footer>
             </Modal>

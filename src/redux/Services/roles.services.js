@@ -1,7 +1,7 @@
 import { CONSTANTS } from "../../constants/constant";
 
-const getRoles = (token) => {
-    const onSuccess = (data) => {
+const getRoles = ( token ) => {
+    const onSuccess = ( data ) => {
         return data?.data;
     };
 
@@ -18,16 +18,16 @@ const getRoles = (token) => {
         },
     };
 
-    return fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.role, options)
-        .then(response => {
+    return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.role, options )
+        .then( response => {
             return response.json()
-        })
-        .then(onSuccess())
-        .catch(error => onFailure(error));
+        } )
+        .then( onSuccess() )
+        .catch( error => onFailure( error ) );
 };
 
-const newRole = (data, token) => {
-    const onSuccess = (data) => {
+const newRole = ( data, token ) => {
+    const onSuccess = ( data ) => {
         return data?.data;
     };
 
@@ -42,19 +42,19 @@ const newRole = (data, token) => {
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify( data ),
     };
 
-    return fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.role, options)
-        .then(response => {
+    return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.role, options )
+        .then( response => {
             return response.json()
-        })
-        .then(onSuccess())
-        .catch(error => onFailure(error));
+        } )
+        .then( onSuccess() )
+        .catch( error => onFailure( error ) );
 };
 
-const updateRole = (id, data, token) => {
-    const onSuccess = (data) => {
+const updateRole = ( id, data, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -63,21 +63,21 @@ const updateRole = (id, data, token) => {
     };
 
     const options = {
-        method: 'GET',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify( data ),
     };
-    console.log(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.role + '/' + id + '/' + CONSTANTS.API_URLS.edit)
-    return fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.role + '/' + id + '/' + CONSTANTS.API_URLS.edit, options)
-        .then(response => {
+    console.log( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.role + '/' + id + '/' + CONSTANTS.API_URLS.edit )
+    return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.role + '/' + id + '/' + CONSTANTS.API_URLS.edit, options )
+        .then( response => {
             return response.json()
-        })
-        .then(onSuccess())
-        .catch(error => onFailure(error));
+        } )
+        .then( onSuccess() )
+        .catch( error => onFailure( error ) );
 };
 
 const RolesServices = {

@@ -52,7 +52,7 @@ const BottomLink = () => {
 const Login = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch<AppDispatch>();
-    const [email, setEmail] = useState("info@admin.com")
+    const [email, setEmail] = useState("info@Pixelssoft.com")
     const [password, setPassword] = useState("demo1234")
 
 

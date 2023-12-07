@@ -32,7 +32,9 @@ const Invoice = React.lazy(() => import("../pages/apps/Invoice/Invoices/Invoices
 const CreateInvoice = React.lazy(() => import("../pages/apps/Invoice/CreateInvoice/CreateInvoice"));
 const Employees = React.lazy(() => import("../pages/apps/Hr/Employees/Employees"));
 const AddEmployee = React.lazy(() => import("../pages/apps/Hr/Employees/AddEmployee"));
+const Leads = React.lazy(() => import("../pages/apps/Leads/Leads"));
 const Customers = React.lazy(() => import("../pages/apps/Customers/List/Customers"));
+const Commissions = React.lazy(() => import("../pages/apps/Commissions/Commissions"));
 const AddCustomer = React.lazy(() => import("../pages/apps/Customers/CreateCustomer/CreateCustomer"));
 const CustomerProfile = React.lazy(() => import("../pages/apps/Customers/CustomerProfile/CustomerProfile"));
 const RolePermission = React.lazy(() => import("../pages/apps/Roles/RolesPermissions"));
@@ -44,6 +46,10 @@ const Management = React.lazy(() => import("../pages/apps/Management/Management"
 const Target = React.lazy(() => import("../pages/apps/Target/Target"));
 const IndividualTarget = React.lazy(() => import("../pages/apps/Target/SinglePersonTarget"));
 const Expense = React.lazy(() => import("../pages/apps/Accounts/Expenses/Expenses"));
+const ExpenseCategory = React.lazy(() => import("../pages/apps/Accounts/Expenses/ExpenseCategory"));
+const Vendor = React.lazy(() => import("../pages/apps/Accounts/Vendor/Vendor"));
+const VendorCategory = React.lazy(() => import("../pages/apps/Accounts/Vendor/VendorCategory"));
+const VendorPayments = React.lazy(() => import("../pages/apps/Accounts/Vendor/Payment"));
 
 
 // extra
@@ -239,6 +245,15 @@ const TargetRoutes: RoutesProps = {
 
   ],
 };
+// Leads
+const LeadsRoutes: RoutesProps = {
+  path: "/apps/leads",
+  name: "target",
+  icon: "airplay",
+  header: "Navigation",
+  element: <Leads />,
+
+};
 //invoice Route
 const InvoiceRoutes: RoutesProps = {
   path: "/apps/invoice",
@@ -257,6 +272,30 @@ const InvoiceRoutes: RoutesProps = {
       path: "/apps/invoice/createInvoice",
       name: "Create Invoice",
       element: <CreateInvoice />,
+      route: PrivateRoute,
+    },
+  ],
+};
+//Commissions Route
+const commissionRoutes: RoutesProps = {
+  path: "/apps/commission",
+  name: "commission",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  icon: "mail",
+  element: <Commissions />,
+
+  children: [
+    {
+      path: "/apps/customer/addCustomer",
+      name: "Add Customer",
+      element: <AddCustomer />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/customer/customerProfile",
+      name: "Customer Profile",
+      element: <CustomerProfile />,
       route: PrivateRoute,
     },
   ],
@@ -365,6 +404,36 @@ const LeadProjects: RoutesProps = {
     },
   ],
 };
+
+// Project Routes
+const projectAppRoutes = {
+  path: "/apps/projects",
+  name: "Projects",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  icon: "uil-briefcase",
+  children: [
+    {
+      path: "/apps/projects/list",
+      name: "List",
+      element: <Projects />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/projects/:id/details",
+      name: "Detail",
+      element: <ProjectDetail />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/projects/create",
+      name: "Create Project",
+      element: <ProjectForm />,
+      route: PrivateRoute,
+    },
+  ],
+};
+
 //Administartor Route
 const administartorRoutes: RoutesProps = {
   path: "/apps/administrator",
@@ -408,17 +477,30 @@ const AccountsRoutes: RoutesProps = {
       route: PrivateRoute,
     },
     {
-      path: "/apps/administartor/rolePermission",
-      name: "Role Permission",
-      element: <RolePermission />,
+      path: "/apps/account/expenseCategory",
+      name: "expenseCategory",
+      element: <ExpenseCategory />,
       route: PrivateRoute,
     },
     {
-      path: "/apps/administartor/management",
-      name: "Role Permission",
-      element: <Management />,
+      path: "/apps/account/vendor",
+      name: "expense",
+      element: <Vendor />,
       route: PrivateRoute,
     },
+    {
+      path: "/apps/account/vendorCategory",
+      name: "expenseCategory",
+      element: <VendorCategory />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/account/vendorPayments",
+      name: "expenseCategory",
+      element: <VendorPayments />,
+      route: PrivateRoute,
+    },
+
   ],
 };
 
@@ -615,34 +697,7 @@ const companiesAppRoutes = {
   element: <Companies />,
 };
 
-const projectAppRoutes = {
-  path: "/apps/projects",
-  name: "Projects",
-  route: PrivateRoute,
-  roles: ["Admin"],
-  icon: "uil-briefcase",
 
-  children: [
-    {
-      path: "/apps/projects/list",
-      name: "List",
-      element: <Projects />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/projects/:id/details",
-      name: "Detail",
-      element: <ProjectDetail />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/projects/create",
-      name: "Create Project",
-      element: <ProjectForm />,
-      route: PrivateRoute,
-    },
-  ],
-};
 
 const taskAppRoutes = {
   path: "/apps/tasks",
@@ -728,7 +783,9 @@ const fileAppRoutes = {
 const appRoutes = [
   TargetRoutes,
   InvoiceRoutes,
+  commissionRoutes,
   customerRoutes,
+  LeadsRoutes,
   hrRoutes,
   administartorRoutes,
   clientCardRoutes,

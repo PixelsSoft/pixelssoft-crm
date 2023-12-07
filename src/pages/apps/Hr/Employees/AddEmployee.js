@@ -11,98 +11,100 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../../components/PageTitle';
 import { FormInput } from '../../../../components';
-import { getRoles } from '../../../../redux/Slices/employee/Employee';
+import { GetEmployees, getRoles } from '../../../../redux/Slices/employee/Employee';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import { CONSTANTS } from '../../../../constants/constant';
 import { toast } from 'react-toastify';
 
 const List = () => {
-    const [fullName, setFullName] = useState('');
-    const [fatherName, setFatherName] = useState('');
-    const [email, setEmail] = useState('');
-    const [companyProvideEmail, setCompanyProvideEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [DOB, setDOB] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState('');
-    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState('');
-    const [joiningDate, setJoiningDate] = useState('');
-    const [department, setDepartment] = useState('');
+    const [fullName, setFullName] = useState( '' );
+    const [fatherName, setFatherName] = useState( '' );
+    const [email, setEmail] = useState( '' );
+    const [companyProvideEmail, setCompanyProvideEmail] = useState( '' );
+    const [password, setPassword] = useState( '' );
+    const [confirmPassword, setConfirmPassword] = useState( '' );
+    const [DOB, setDOB] = useState( '' );
+    const [phoneNumber, setPhoneNumber] = useState( '' );
+    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState( '' );
+    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState( '' );
+    const [joiningDate, setJoiningDate] = useState( '' );
+    const [department, setDepartment] = useState( '' );
     const [salary, setSalary] = useState();
-    const [profilePic, setProfilePic] = useState(null);
-    const [contract, setContract] = useState(null);
-    const [CNIC, setCNIC] = useState(null);
-    const [CnicNo, setCnicNo] = useState('');
-    const [CV, setCV] = useState(null);
-    const [multipleRoleSelection, setMultipleRoleSelection] = useState([]);
-    const [accTitle, setAccTitle] = useState('');
-    const [branchCode, setBranchCode] = useState('');
-    const [bankAddress, setBankAddress] = useState('');
-    const [accNo, setAccNo] = useState('');
-    const [bankName, setBankName] = useState('');
-    const [refName, setRefName] = useState('');
-    const [refEmail, setRefEmail] = useState('');
-    const [refPhoneNo, setRefPhoneNo] = useState('');
-    const [refCnicNo, setRefCnicNo] = useState('');
-    const [refCnicPic, setRefCnicPic] = useState(null);
+    const [profilePic, setProfilePic] = useState( null );
+    const [contract, setContract] = useState( null );
+    const [CNIC, setCNIC] = useState( null );
+    const [CnicNo, setCnicNo] = useState( '' );
+    const [CV, setCV] = useState( null );
+    const [multipleRoleSelection, setMultipleRoleSelection] = useState( [] );
+    const [accTitle, setAccTitle] = useState( '' );
+    const [branchCode, setBranchCode] = useState( '' );
+    const [bankAddress, setBankAddress] = useState( '' );
+    const [accNo, setAccNo] = useState( '' );
+    const [bankName, setBankName] = useState( '' );
+    const [refName, setRefName] = useState( '' );
+    const [refEmail, setRefEmail] = useState( '' );
+    const [refPhoneNo, setRefPhoneNo] = useState( '' );
+    const [refCnicNo, setRefCnicNo] = useState( '' );
+    const [refCnicPic, setRefCnicPic] = useState( null );
     const dispatch = useDispatch();
 
     const { loading, token, roles } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             loading: state.utiltities.loading,
             token: state.Auth.token,
-            roles: state.Employees.roles
-        })
+            roles: state.Roles.roles
+        } )
     );
 
-    const submit = async (e) => {
+
+    const submit = async ( e ) => {
         e.preventDefault();
-        dispatch(startLoading());
-        const roles = [];
-        multipleRoleSelection.map(e => {
-            console.log('multipleRoleSelection', e.name);
-            roles.push(e.name);
-        })
+        dispatch( startLoading() );
+        let roles = [];
+        multipleRoleSelection.map( e => {
+            console.log( 'multipleRoleSelection', e.name );
+            roles.push( e.name );
+        } )
+
         const params = new FormData();
-        params.append("name", fullName);
-        params.append("father_name", fatherName);
-        params.append("email", email);
-        params.append("company_provided_email", companyProvideEmail);
-        params.append("dob", DOB);
-        params.append("cnic_no", CnicNo);
-        params.append("phone_no", phoneNumber);
-        params.append("emergency_phone_no", emergencyPhoneNumber);
-        params.append("emergency_phone_no_2", emergencyPhoneNumber2);
-        params.append("joining_date", joiningDate);
-        if (CNIC !== null) {
-            params.append("cnic_img", CNIC);
+        params.append( "name", fullName );
+        params.append( "father_name", fatherName );
+        params.append( "email", email );
+        params.append( "company_provided_email", companyProvideEmail );
+        params.append( "dob", DOB );
+        params.append( "cnic_no", CnicNo );
+        params.append( "phone_no", phoneNumber );
+        params.append( "emergency_phone_no", emergencyPhoneNumber );
+        params.append( "emergency_phone_no_2", emergencyPhoneNumber2 );
+        params.append( "joining_date", joiningDate );
+        if ( CNIC !== null ) {
+            params.append( "cnic_img", CNIC );
         };
-        if (profilePic !== null) {
-            params.append("profile_img", profilePic);
+        if ( profilePic !== null ) {
+            params.append( "profile_img", profilePic );
         };
-        if (CV !== null) {
-            params.append("cv_upload", CV);
+        if ( CV !== null ) {
+            params.append( "cv_upload", CV );
         };
-        if (contract !== null) {
-            params.append("contract_upload", contract);
+        if ( contract !== null ) {
+            params.append( "contract_upload", contract );
         };
-        if (refCnicPic !== null) {
-            params.append("reference_profile_img", refCnicPic);
+        if ( refCnicPic !== null ) {
+            params.append( "reference_profile_img", refCnicPic );
         };
-        params.append("salary", salary.toString());
-        params.append("account_title", accTitle);
-        params.append("accound_number", accNo);
-        params.append("bank_name", bankName);
-        params.append("branch_address", branchCode);
-        params.append("reference_name", refName);
-        params.append("reference_email", refEmail);
-        params.append("reference_cnic_no", refCnicNo);
-        params.append("reference_phone_no", refPhoneNo);
-        params.append("password", password);
-        params.append("password_confirmation", confirmPassword);
-        params.append("roles", roles);
-        params.append("department_id", 1);
+        params.append( "salary", salary );
+        params.append( "account_title", accTitle );
+        params.append( "accound_number", accNo );
+        params.append( "bank_name", bankName );
+        params.append( "branch_address", branchCode );
+        params.append( "reference_name", refName );
+        params.append( "reference_email", refEmail );
+        params.append( "reference_cnic_no", refCnicNo );
+        params.append( "reference_phone_no", refPhoneNo );
+        params.append( "password", password );
+        params.append( "password_confirmation", confirmPassword );
+        params.append( "roles", roles );
+        params.append( "department_id", 1 );
 
         const options = {
             method: 'POST',
@@ -113,63 +115,64 @@ const List = () => {
             body: params,
         };
 
-        await fetch(CONSTANTS.API_URLS.BASE + 'user/register', options)
-            .then(response => response.json())
-            .then(e => {
-                dispatch(stopLoading());
-                dispatch(getRoles());
-                toast.success(e?.message, { position: toast.POSITION.TOP_RIGHT });
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log("err", err);
-            });
+        await fetch( CONSTANTS.API_URLS.BASE + 'user/register', options )
+            .then( response => response.json() )
+            .then( e => {
+                dispatch( stopLoading() );
+                dispatch( GetEmployees( token ) );
+                dispatch( getRoles( token ) );
+                toast.success( e?.message, { position: toast.POSITION.TOP_RIGHT } );
+            } )
+            .catch( err => {
+                dispatch( stopLoading() );
+                console.log( "err", err );
+            } );
         // dispatch(AddEmployee(params, token));
     };
 
     // Profile picture upload
-    const handleProfileFileChange = (event) => {
-        if (event.target.files) {
+    const handleProfileFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setProfilePic(file);
+            setProfilePic( file );
         }
     };
 
     // CNIC picture Upload
-    const handleCNICFileChange = (event) => {
-        if (event.target.files) {
+    const handleCNICFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setCNIC(file);
+            setCNIC( file );
         }
     };
 
     // Reference CNIC picture Upload
-    const handleRefCNICFileChange = (event) => {
-        if (event.target.files) {
+    const handleRefCNICFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setRefCnicPic(file);
+            setRefCnicPic( file );
         }
     };
 
     // CV picture Upload
-    const handleCVFileChange = (event) => {
-        if (event.target.files) {
+    const handleCVFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setCV(file);
+            setCV( file );
         }
     };
 
     // Contract picture Upload
-    const handleContractFileChange = (event) => {
-        if (event.target.files) {
+    const handleContractFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setContract(file);
+            setContract( file );
         }
     };
 
     /////role selection/////
-    const onChangeRoleSelection = (selected) => {
-        setMultipleRoleSelection(selected);
+    const onChangeRoleSelection = ( selected ) => {
+        setMultipleRoleSelection( selected );
     };
 
     return loading ? (
@@ -201,7 +204,7 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             key="text"
                                             value={fullName}
-                                            onChange={(e) => setFullName(e.target.value)}
+                                            onChange={( e ) => setFullName( e.target.value )}
                                         />
                                         <FormInput
                                             label="Email"
@@ -211,7 +214,7 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             key="email"
                                             value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={( e ) => setEmail( e.target.value )}
                                         />
                                         <FormInput
                                             label="Password"
@@ -221,7 +224,7 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             key="password"
                                             value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
+                                            onChange={( e ) => setPassword( e.target.value )}
                                         />
                                         <FormInput
                                             label="Date of Birth"
@@ -231,8 +234,8 @@ const List = () => {
 
                                             key="date"
                                             value={DOB}
-                                            onChange={(e) => {
-                                                setDOB(e.target.value)
+                                            onChange={( e ) => {
+                                                setDOB( e.target.value )
                                             }}
 
                                         />
@@ -260,7 +263,7 @@ const List = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={phoneNumber}
-                                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                                onChange={( e ) => setPhoneNumber( e.target.value )}
                                             />
                                         </div>
                                         <div className="mb-3">
@@ -288,8 +291,8 @@ const List = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={emergencyPhoneNumber}
-                                                onChange={(e) => {
-                                                    setEmergencyPhoneNumber(e.target.value)
+                                                onChange={( e ) => {
+                                                    setEmergencyPhoneNumber( e.target.value )
                                                 }}
                                             />
                                         </div>
@@ -302,8 +305,8 @@ const List = () => {
 
                                             key="join date"
                                             value={joiningDate}
-                                            onChange={(e) => {
-                                                setJoiningDate(e.target.value)
+                                            onChange={( e ) => {
+                                                setJoiningDate( e.target.value )
                                             }}
 
 
@@ -314,10 +317,8 @@ const List = () => {
                                             name="file"
                                             accept="image/png, image/jpeg"
                                             containerClass={'mb-3'}
-
                                             key="file"
                                             onChange={handleCNICFileChange}
-
                                         />
                                         <FormInput
                                             label="CV Upload"
@@ -339,8 +340,8 @@ const List = () => {
 
                                             key="Number"
                                             value={salary}
-                                            onChange={(e) => {
-                                                setSalary(e.target.valueAsNumber)
+                                            onChange={( e ) => {
+                                                setSalary( e.target.valueAsNumber )
                                             }}
 
 
@@ -357,11 +358,9 @@ const List = () => {
 
                                             key="text"
                                             value={fatherName}
-                                            onChange={(e) => {
-                                                setFatherName(e.target.value)
+                                            onChange={( e ) => {
+                                                setFatherName( e.target.value )
                                             }}
-
-
                                         />
                                         <FormInput
                                             label="Company Provided Email"
@@ -372,8 +371,8 @@ const List = () => {
 
                                             key="email"
                                             value={companyProvideEmail}
-                                            onChange={(e) => {
-                                                setCompanyProvideEmail(e.target.value)
+                                            onChange={( e ) => {
+                                                setCompanyProvideEmail( e.target.value )
                                             }}
 
 
@@ -388,8 +387,8 @@ const List = () => {
 
                                             key="password"
                                             value={confirmPassword}
-                                            onChange={(e) => {
-                                                setConfirmPassword(e.target.value)
+                                            onChange={( e ) => {
+                                                setConfirmPassword( e.target.value )
                                             }}
 
 
@@ -418,8 +417,8 @@ const List = () => {
                                                 placeholder="_____-_______-_"
                                                 className="form-control"
                                                 value={CnicNo}
-                                                onChange={(e) => {
-                                                    setCnicNo(e.target.value)
+                                                onChange={( e ) => {
+                                                    setCnicNo( e.target.value )
                                                 }}
                                             />
 
@@ -434,8 +433,8 @@ const List = () => {
 
                                             key="select"
                                             value={department}
-                                            onChange={(e) => {
-                                                setDepartment(e.target.value)
+                                            onChange={( e ) => {
+                                                setDepartment( e.target.value )
                                             }}
                                         >
                                             <option>Hr</option>
@@ -470,8 +469,8 @@ const List = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={emergencyPhoneNumber2}
-                                                onChange={(e) => {
-                                                    setEmergencyPhoneNumber2(e.target.value)
+                                                onChange={( e ) => {
+                                                    setEmergencyPhoneNumber2( e.target.value )
                                                 }}
                                             />
                                         </div>
@@ -482,7 +481,7 @@ const List = () => {
                                                 id="select3"
                                                 labelKey="name"
                                                 multiple
-                                                onChange={(e) => onChangeRoleSelection(e)}
+                                                onChange={( e ) => onChangeRoleSelection( e )}
                                                 options={roles}
                                                 placeholder="Choose a role"
                                                 selected={multipleRoleSelection}
@@ -528,8 +527,8 @@ const List = () => {
 
                                             key="acc text"
                                             value={accTitle}
-                                            onChange={(e) => {
-                                                setAccTitle(e.target.value);
+                                            onChange={( e ) => {
+                                                setAccTitle( e.target.value );
                                             }}
 
                                         />
@@ -542,8 +541,8 @@ const List = () => {
 
                                             key="Number"
                                             value={branchCode}
-                                            onChange={(e) => {
-                                                setBranchCode(e.target.value);
+                                            onChange={( e ) => {
+                                                setBranchCode( e.target.value );
                                             }}
 
 
@@ -559,8 +558,8 @@ const List = () => {
 
 
                                             value={bankAddress}
-                                            onChange={(e) => {
-                                                setBankAddress(e.target.value);
+                                            onChange={( e ) => {
+                                                setBankAddress( e.target.value );
                                             }}
                                         />
 
@@ -576,8 +575,8 @@ const List = () => {
                                             key="Number"
 
                                             value={accNo}
-                                            onChange={(e) => {
-                                                setAccNo(e.target.value);
+                                            onChange={( e ) => {
+                                                setAccNo( e.target.value );
                                             }}
 
                                         />
@@ -590,8 +589,8 @@ const List = () => {
 
                                             key="select"
                                             value={bankName}
-                                            onChange={(e) => {
-                                                setBankName(e.target.value);
+                                            onChange={( e ) => {
+                                                setBankName( e.target.value );
                                             }}
                                         >
                                             <option>Habib Bank Limited</option>
@@ -635,8 +634,8 @@ const List = () => {
                                             key="name text"
 
                                             value={refName}
-                                            onChange={(e) => {
-                                                setRefName(e.target.value);
+                                            onChange={( e ) => {
+                                                setRefName( e.target.value );
                                             }}
 
                                         />
@@ -666,8 +665,8 @@ const List = () => {
                                                 className="form-control"
 
                                                 value={refPhoneNo}
-                                                onChange={(e) => {
-                                                    setRefPhoneNo(e.target.value);
+                                                onChange={( e ) => {
+                                                    setRefPhoneNo( e.target.value );
                                                 }}
                                             />
                                         </div>
@@ -694,8 +693,8 @@ const List = () => {
                                                 placeholder="_____-_______-_"
                                                 className="form-control"
                                                 value={refCnicNo}
-                                                onChange={(e) => {
-                                                    setRefCnicNo(e.target.value);
+                                                onChange={( e ) => {
+                                                    setRefCnicNo( e.target.value );
                                                 }}
                                             />
                                         </div>
@@ -712,8 +711,8 @@ const List = () => {
                                             key="email"
 
                                             value={refEmail}
-                                            onChange={(e) => {
-                                                setRefEmail(e.target.value);
+                                            onChange={( e ) => {
+                                                setRefEmail( e.target.value );
                                             }}
 
                                         />

@@ -12,11 +12,12 @@ const Invoices = () => {
     const navigate = useNavigate()
 
     const { token, invoice } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             invoice: state.Invoices.Invoices
-        })
+        } )
     );
+    console.log( "invoice=========>", invoice )
 
     // /* name column render */
     // const NameColumn = ({ row }) => {
@@ -41,14 +42,14 @@ const Invoices = () => {
     // };
 
     /* status column render */
-    const StatusColumn = ({ row }) => {
+    const StatusColumn = ( { row } ) => {
         return (
             <React.Fragment>
                 <span
-                    className={classNames("badge", {
+                    className={classNames( "badge", {
                         "badge-soft-success": row.original.status === "Active",
                         "badge-soft-danger": row.original.status === "Blocked",
-                    })}
+                    } )}
                 >
                     {row.original.status}
                 </span>
@@ -151,7 +152,7 @@ const Invoices = () => {
                                 <Col sm={4}>
                                     <Button
                                         onClick={() => {
-                                            navigate("/apps/invoice/createInvoice")
+                                            navigate( "/apps/invoice/createInvoice" )
                                         }}
                                         className="btn btn-danger mb-2">
                                         <i className="mdi mdi-plus-circle me-2"></i> Create Invoice

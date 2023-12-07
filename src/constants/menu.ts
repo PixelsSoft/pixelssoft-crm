@@ -49,13 +49,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     //   },
     // ],
   },
-  {
-    key: "sales",
-    label: "Sales",
-    isTitle: false,
-    icon: "calendar",
-    url: "/apps/Sales",
-  },
+
   {
     key: "target",
     label: "Target",
@@ -85,11 +79,25 @@ const MENU_ITEMS: MenuItemTypes[] = [
     ],
   },
   {
+    key: "commission",
+    label: "Commissions",
+    isTitle: false,
+    icon: "database",
+    url: "/apps/commission",
+  },
+  {
     key: "customers",
     label: "Customers",
     isTitle: false,
     icon: "database",
     url: "/apps/customers",
+  },
+  {
+    key: "leads",
+    label: "Leads",
+    isTitle: false,
+    icon: "database",
+    url: "/apps/leads",
   },
   {
     key: "portalProject",
@@ -253,7 +261,31 @@ const MENU_ITEMS: MenuItemTypes[] = [
         key: "expense",
         label: "Expense",
         url: "/apps/account/expense",
-        parentKey: "administartor",
+        parentKey: "account",
+      },
+      {
+        key: "expenseCategory",
+        label: "Expense Category",
+        url: "/apps/account/expenseCategory",
+        parentKey: "account",
+      },
+      {
+        key: "vendorBills",
+        label: "Vendor Payments",
+        url: "/apps/account/vendorPayments",
+        parentKey: "account",
+      },
+      {
+        key: "vendor",
+        label: "Vendor",
+        url: "/apps/account/vendor",
+        parentKey: "account",
+      },
+      {
+        key: "vendorCategory",
+        label: "Vendor Category",
+        url: "/apps/account/VendorCategory",
+        parentKey: "account",
       },
     ],
   },
