@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities';
 import { UpdateInvoice } from '../redux/Slices/Invoices/Invoices';
 import FormInput from './FormInput';
+import Spinner from './Spinner';
 
 const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, }) => {
-    const { token, loading, singleInvoice, category } = useSelector(
+    const { token, loading, singleInvoice } = useSelector(
         (state) => ({
             token: state.Auth.token,
             loading: state.utiltities.loading,
             singleInvoice: state.Invoices.singleInvoice,
-            category: state.Category.category,
         })
     );
 
@@ -46,7 +46,9 @@ const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, })
     }
 
     return loading ? (
-        <h4>Loading...</h4>
+        <div className='d-flex justify-content-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
     ) : (
         <Modal show={previewModal} onHide={toggleClose} dialogClassName="" size="lg" scrollable={false}>
             <Modal.Header onHide={toggleClose} closeButton>

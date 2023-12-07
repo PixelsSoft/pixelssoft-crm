@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../../components/PageTitle';
 import { toast } from 'react-toastify';
 import { CreateCustomerAPI } from '../../../../redux/Slices/Customer/customer';
+import Spinner from '../../../../components/Spinner';
 
 const CreateCustomer = () => {
     const dispatch = useDispatch()
@@ -16,12 +17,13 @@ const CreateCustomer = () => {
     const [platform, setPlatform] = useState('');
     const [salePerson, setSalePerson] = useState('');
 
-    const { token, user, category, plat } = useSelector(
+    const { token, user, category, plat, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
             user: state.Auth,
             category: state.Category.category,
-            plat: state.Platform.platform
+            plat: state.Platform.platform,
+            loading: state.utiltities.loading,
         })
     );
 
@@ -63,7 +65,11 @@ const CreateCustomer = () => {
         setSalePerson(e.target.value);
     };
 
-    return (
+    return loading ? (
+        <div className='d-flex justify-content-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
             <PageTitle
                 breadCrumbItems={[

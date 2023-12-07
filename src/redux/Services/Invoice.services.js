@@ -96,7 +96,6 @@ const GetInvoiceById = async (projectId, token) => {
 };
 
 const UpdateInvoice = async (projectId, data, token) => {
-    console.log('UpdateInvoice', projectId, data, token);
     const onSuccess = (data) => {
         return data;
     };

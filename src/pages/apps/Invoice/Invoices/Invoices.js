@@ -10,6 +10,7 @@ import { DeleteInvoice, GetInvoiceById } from '../../../../redux/Slices/Invoices
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import UpdateInvoiceModal from '../../../../components/UpdateInvoiceModal';
 import ViewInvoiceModal from '../../../../components/ViewInvoiceModal';
+import Spinner from '../../../../components/Spinner';
 
 const Invoices = () => {
     const { token, invoice, loading, } = useSelector(
@@ -147,7 +148,9 @@ const Invoices = () => {
     };
 
     return loading ? (
-        <h4>Loading...</h4>
+        <div className='d-flex justify-content-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
     ) : (
         <>
             <PageTitle

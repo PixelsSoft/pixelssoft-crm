@@ -2,13 +2,13 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import Table from '../../../../components/Table';
 import { records as data } from './data';
 import { Link, useNavigate } from 'react-router-dom';
-import React from 'react';
+import React, { useState } from 'react';
 import PageTitle from '../../../../components/PageTitle';
-import { useSelector } from 'react-redux';
-// import { toast } from 'react-toastify';
-// import { deleteCustomer, getCustomers } from '../../../../redux/customers/actions';
-/* action column render */
-
+import { useDispatch, useSelector } from 'react-redux';
+import Spinner from '../../../../components/Spinner';
+import { DeleteCustomer } from '../../../../redux/Slices/Customer/customer';
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import CustomerEditModal from '../../../../components/CustomerEditModal';
 
 const sizePerPageList = [
     {
@@ -30,26 +30,44 @@ const sizePerPageList = [
 ];
 
 const Customers = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [id, setId] = useState();
+    const [editUserModal, setEditUserModal] = useState(false);
 
-    const { customer } = useSelector(
+    const { customer, loading, token } = useSelector(
         (state) => ({
-            customer: state.Customer.customer
+            customer: state.Customer.customer,
+            loading: state.utiltities.loading,
+            token: state.Auth.token,
         })
     );
 
-    const ActionColumn = () => {
+    const del = async (id) => {
+        dispatch(startLoading());
+        await dispatch(DeleteCustomer(id, token));
+        dispatch(stopLoading());
+    };
+
+    const toggleEditModal = (id) => {
+        setId(id);
+        setEditUserModal(!editUserModal);
+    }
+
+    const toggleEditClose = () => setEditUserModal(!editUserModal);
+
+    const ActionColumn = ({ projectId }) => {
         return (
             <React.Fragment>
-                <Link to="/apps/customer/customerProfile" className="action-icon">
+                <Link to={`/apps/customer/customerProfile/${projectId}`} className="action-icon">
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
-                <Link to="#" className="action-icon">
+                <Link className="action-icon" onClick={() => toggleEditModal(projectId)}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link to="#" className="action-icon">
+                <Link className="action-icon" onClick={() => del(projectId)}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -101,29 +119,14 @@ const Customers = () => {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ActionColumn,
+            Cell: ({ row }) => <ActionColumn projectId={row.original.id} />,
         },
     ];
 
-
-    // const [modal, setModal] = useState(false);
-
-    // const { customers, loading, deleteCustomerSuccess } = appSelector((state) => ({
-    //     customers: state.Customer.customers,
-    //     loading: state.Customer.loading,
-    //     deleteCustomerSuccess: state.Customer.deleteCustomerSuccess,
-    // }));
-
-    // const handleDelete = (id) => {
-    //     // dispatch(deleteCustomer(id));
-    // };
-
-    // const toggle = () => setModal(!modal);
-
-    const loading = false
-
     return loading ? (
-        <h4>Loading...</h4>
+        <div className='d-flex justify-content-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
     ) : (
         <>
             <PageTitle
@@ -176,6 +179,7 @@ const Customers = () => {
                     </Card>
                 </Col>
             </Row>
+            <CustomerEditModal profileId={id} editUserModal={editUserModal} setEditUserModal={toggleEditClose} />
         </>
     );
 };

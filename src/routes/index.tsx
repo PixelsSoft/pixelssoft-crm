@@ -293,7 +293,7 @@ const commissionRoutes: RoutesProps = {
       route: PrivateRoute,
     },
     {
-      path: "/apps/customer/customerProfile",
+      path: "/apps/customer/customerProfile/:profileId",
       name: "Customer Profile",
       element: <CustomerProfile />,
       route: PrivateRoute,
@@ -317,7 +317,7 @@ const customerRoutes: RoutesProps = {
       route: PrivateRoute,
     },
     {
-      path: "/apps/customer/customerProfile",
+      path: "/apps/customer/customerProfile/:profileId",
       name: "Customer Profile",
       element: <CustomerProfile />,
       route: PrivateRoute,

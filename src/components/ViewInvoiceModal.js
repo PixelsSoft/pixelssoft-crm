@@ -1,5 +1,6 @@
 import { Button, Col, Modal, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux';
+import Spinner from './Spinner';
 
 const ViewInvoiceModal = ({ show, setShow, componentRef }) => {
     const { loading, singleInvoice } = useSelector(
@@ -10,7 +11,9 @@ const ViewInvoiceModal = ({ show, setShow, componentRef }) => {
     );
 
     return loading ? (
-        <h4>Loading...</h4>
+        <div className='d-flex justify-content-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
     ) : (
         <Modal show={show} onHide={() => setShow(!show)} dialogClassName="" size="lg" scrollable={false}>
             <Modal.Header onHide={() => setShow(!show)} closeButton>

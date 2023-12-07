@@ -1,11 +1,13 @@
-// import ContactDetails from '../../../../components/ContactDetails';
 import { Row, Col, Card } from 'react-bootstrap';
-// import avatar2 from '../../../../assets/images/users/user-9.jpg';
 import StatisticsWidget1 from '../../../../components/StatisticsWidget1';
-
 import { records as data } from './data';
 import Table from '../../../../components/Table';
 import CustomerDetailCard from '../../../../components/CustomerDetailCard';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { GetSingleCustomer } from '../../../../redux/Slices/Customer/customer';
+import Spinner from '../../../../components/Spinner';
 
 const columns = [
     {
@@ -65,9 +67,30 @@ const sizePerPageList = [
 ];
 
 const CustomerProfile = () => {
+    const { profileId } = useParams();
+    const dispatch = useDispatch();
 
+    const { loading, token, SingleCustomer } = useSelector(
+        (state) => ({
+            loading: state.utiltities.loading,
+            token: state.Auth.token,
+            SingleCustomer: state.Customer.singleCustomer
+        })
+    );
 
-    return (
+    const getSingleProfile = async () => {
+        dispatch(GetSingleCustomer(profileId, token));
+    };
+
+    useEffect(() => {
+        getSingleProfile();
+    }, [profileId]);
+
+    return loading ? (
+        <div className='d-flex justify-content-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
             <Row>
                 <Col>
@@ -77,15 +100,15 @@ const CustomerProfile = () => {
                                 <Col sm={6}>
                                     <CustomerDetailCard
                                         contact={{
-
                                             // avatar: avatar,
-                                            Detail: 'Hi I am Johnathn Deo, has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type.',
-                                            fullName: 'Johnathan Deo',
-                                            phoneNumber: '(123) 123 1234',
-                                            email: 'coderthemes@gmail.com',
-                                            Address: 'USA',
-                                            company: "abc",
-                                            _createdAt: "12334"
+                                            Detail: SingleCustomer?.platform,
+                                            fullName: SingleCustomer?.name,
+                                            phoneNumber: SingleCustomer?.phone,
+                                            email: SingleCustomer?.email,
+                                            Address: SingleCustomer?.address,
+                                            profileId: profileId
+                                            // company: "abc",
+                                            // _createdAt: "12334"
                                         }}
                                     />
                                 </Col>
@@ -111,7 +134,7 @@ const CustomerProfile = () => {
                                 <h1 className="my-3">Purchase History</h1>
                                 <Table
                                     columns={columns}
-                                    data={data}
+                                    data={SingleCustomer?.invoices}
                                     pageSize={5}
                                     sizePerPageList={sizePerPageList}
                                     isSortable={true}

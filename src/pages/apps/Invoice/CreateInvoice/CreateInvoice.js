@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { AddInvoice } from '../../../../redux/Slices/Invoices/Invoices';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import Spinner from '../../../../components/Spinner';
 
 const CreateInvoice = () => {
     const dispatch = useDispatch();
@@ -94,12 +95,13 @@ const CreateInvoice = () => {
     };
 
     const handleRedirect = () => {
-        // Replace 'https://example.com' with the actual URL you want to redirect to
         window.location.href = 'https://crmupd.pixelssoft.com/invoice/MOe3GAkRFD6CW9Nz';
     };
 
     return loading ? (
-        <h4>Loading...</h4>
+        <div className='d-flex justify-content-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
     ) : (
         <>
             <PageTitle
@@ -120,15 +122,6 @@ const CreateInvoice = () => {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Select Customer (Auto Fill)</Form.Label>
-                                        {/* <Form.Select defaultValue="Choose..." onChange={handleSelectCustomer}>
-                                            <option value={undefined}>Choose...</option>
-                                            {customers &&
-                                                customers.map((customer: any, idx: number) => (
-                                                    <option key={idx} value={customer._id}>
-                                                        {customer.fullName}
-                                                    </option>
-                                                ))}
-                                        </Form.Select> */}
                                     </Form.Group>
                                 </Row>
 
@@ -153,10 +146,6 @@ const CreateInvoice = () => {
                                 </Row>
 
                                 <Row className="mb-3">
-                                    {/* <Form.Group as={Col} controlId="formGridPassword">
-                                        <Form.Label>Invoice #</Form.Label>
-                                        <Form.Control value={invoiceNumber ? invoiceNumber.data : '0000'} disabled /> 
-                                    </Form.Group> */}
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Project Category</Form.Label>
                                         <Form.Select defaultValue="Choose..." onChange={handleSelectProjectCategory}>
@@ -265,12 +254,8 @@ const CreateInvoice = () => {
                                                 label="Description"
                                                 type="textarea"
                                                 name="textarea"
-                                                // rows={5}
                                                 containerClass={'mb-3'}
-                                                // register={register}
                                                 key="textarea"
-                                                // errors={errors}
-                                                // control={control}
                                                 value={description}
                                                 onChange={(e) => setDescription(e.target.value)}
                                             />
@@ -280,36 +265,14 @@ const CreateInvoice = () => {
                                                 label="Memo / Notes"
                                                 type="textarea"
                                                 name="textarea"
-                                                // rows={5}
                                                 containerClass={'mb-3'}
-                                                // register={register}
                                                 key="textarea"
                                                 value={memo}
                                                 onChange={(e) => setMemo(e.target.value)}
-                                            // errors={errors}
-                                            // control={control}
                                             />
                                         </Col>
                                     </Row>
                                 </div>
-                                {/* {data && (
-                                    <Alert variant="success" className="my-2">
-                                        {data.message}
-                                    </Alert>
-                                )}
-
-                                {data && (
-                                    <Alert variant="info" className="my-2">
-                                        Invoice share link: {data.data.shareLink}
-                                    </Alert>
-                                )}
-
-                                {error && (
-                                    <Alert variant="danger" className="my-2">
-                                        {error}
-                                    </Alert>
-                                )} */}
-
                                 <Row className="mt-3">
                                     <Col>
                                         <Button type="submit" className="waves-effect waves-light">
