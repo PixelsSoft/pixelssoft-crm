@@ -2,74 +2,65 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import Table from '../../../../components/Table';
 import { records as data } from './data';
 import PageTitle from '../../../../components/PageTitle';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+import { DeleteInvoice, GetInvoiceById } from '../../../../redux/Slices/Invoices/Invoices';
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import UpdateInvoiceModal from '../../../../components/UpdateInvoiceModal';
+import ViewInvoiceModal from '../../../../components/ViewInvoiceModal';
 
 const Invoices = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate()
-
-    const { token, invoice } = useSelector(
-        ( state ) => ( {
+    const { token, invoice, loading, } = useSelector(
+        (state) => ({
             token: state.Auth.token,
-            invoice: state.Invoices.Invoices
-        } )
+            invoice: state.Invoices.Invoices,
+            loading: state.utiltities.loading,
+        })
     );
-    console.log( "invoice=========>", invoice )
 
-    // /* name column render */
-    // const NameColumn = ({ row }) => {
-    //     return (
-    //         <div className="table-user">
-    //             <img src={row.original.avatar} alt="" className="me-2 rounded-circle" />
-    //             <Link to="#" className="text-body fw-semibold">
-    //                 {row.original.name}
-    //             </Link>
-    //         </div>
-    //     );
-    // };
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [previewModal, setPreviewModal] = useState(false);
+    const [show, setShow] = useState(false);
+    const [id, setId] = useState();
 
-    // /* last order column render */
-    // const LastOrderColumn = ({ row }) => {
-    //     return (
-    //         <>
-    //             {row.original.last_order.date}{" "}
-    //             <small className="text-muted">{row.original.last_order.time}</small>
-    //         </>
-    //     );
-    // };
+    const deleteInvoice = async (projectId) => {
+        dispatch(startLoading());
+        await dispatch(DeleteInvoice(projectId, token));
+        dispatch(stopLoading());
+    };
 
     /* status column render */
-    const StatusColumn = ( { row } ) => {
+    const StatusColumn = ({ status }) => {
         return (
             <React.Fragment>
                 <span
-                    className={classNames( "badge", {
-                        "badge-soft-success": row.original.status === "Active",
-                        "badge-soft-danger": row.original.status === "Blocked",
-                    } )}
+                    className={classNames("badge", {
+                        "badge-soft-success": status !== null,
+                        "badge-soft-danger": status === null,
+                    })}
                 >
-                    {row.original.status}
+                    {status === null ? 'Unpaid' : 'Paid'}
                 </span>
             </React.Fragment>
         );
     };
 
     /* action column render */
-    const ActionColumn = () => {
+    const ActionColumn = ({ projectId }) => {
         return (
             <React.Fragment>
-                <Link to="#" className="action-icon">
+                <Link to="#" className="action-icon" onClick={() => viewInvoice(projectId)}>
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
-                <Link to="#" className="action-icon">
+                <Link to="#" className="action-icon" onClick={() => toggle(projectId)}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link to="#" className="action-icon">
+                <Link to="#" className="action-icon" onClick={() => deleteInvoice(projectId)}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -107,13 +98,13 @@ const Invoices = () => {
             Header: "Status",
             accessor: "status",
             sort: true,
-            Cell: StatusColumn,
+            Cell: ({ row }) => <StatusColumn status={row.original.paid_at} />,
         },
         {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ActionColumn,
+            Cell: ({ row }) => <ActionColumn projectId={row.original.id} />,
         },
     ];
 
@@ -136,7 +127,28 @@ const Invoices = () => {
         },
     ];
 
-    return (
+    const viewInvoice = async (projectId) => {
+        dispatch(startLoading());
+        await dispatch(GetInvoiceById(projectId, token));
+        dispatch(stopLoading());
+        setShow(!show);
+    }
+
+    const toggle = async (projectId) => {
+        setId(projectId);
+        dispatch(startLoading())
+        await dispatch(GetInvoiceById(projectId, token));
+        dispatch(stopLoading())
+        setPreviewModal(!previewModal);
+    };
+
+    const toggleClose = async () => {
+        setPreviewModal(!previewModal);
+    };
+
+    return loading ? (
+        <h4>Loading...</h4>
+    ) : (
         <>
             <PageTitle
                 breadCrumbItems={[
@@ -152,7 +164,7 @@ const Invoices = () => {
                                 <Col sm={4}>
                                     <Button
                                         onClick={() => {
-                                            navigate( "/apps/invoice/createInvoice" )
+                                            navigate("/apps/invoice/createInvoice")
                                         }}
                                         className="btn btn-danger mb-2">
                                         <i className="mdi mdi-plus-circle me-2"></i> Create Invoice
@@ -188,6 +200,8 @@ const Invoices = () => {
                     </Card>
                 </Col>
             </Row>
+            <UpdateInvoiceModal id={id} previewModal={previewModal} setPreviewModal={setPreviewModal} toggleClose={toggleClose} />
+            <ViewInvoiceModal show={show} setShow={setShow} />
         </>
     );
 };

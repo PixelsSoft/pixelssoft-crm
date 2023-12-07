@@ -4,6 +4,7 @@ import InvoiceService from "../../Services/Invoice.services";
 
 const initialState = {
     Invoices: [],
+    singleInvoice: null,
 }
 
 export const GetInvoice = (token) => async (dispatch) => {
@@ -15,10 +16,44 @@ export const GetInvoice = (token) => async (dispatch) => {
     };
 };
 
-export const AddInvoice = (token) => async (dispatch) => {
+export const AddInvoice = (data, token) => async (dispatch) => {
     try {
-        const response = await InvoiceService.CreateInvoice(token);
+        const response = await InvoiceService.CreateInvoice(data, token);
         toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+        dispatch(GetInvoice(token));
+        return response;
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+
+export const DeleteInvoice = (projectId, token) => async (dispatch) => {
+    try {
+        const response = await InvoiceService.DeleteInvoice(projectId, token);
+        toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+        dispatch(GetInvoice(token));
+        return response;
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+
+export const GetInvoiceById = (projectId, token) => async (dispatch) => {
+    try {
+        const response = await InvoiceService.GetInvoiceById(projectId, token);
+        dispatch(SingleInvoice(response));
+        return response;
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+
+export const UpdateInvoice = (projectId, body, token) => async (dispatch) => {
+    try {
+        const response = await InvoiceService.UpdateInvoice(projectId, body, token);
+        toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+        dispatch(GetInvoice(response));
+        return response;
     } catch (error) {
         console.log("error===========>", error)
     };
@@ -31,11 +66,15 @@ export const InvoicesSlice = createSlice({
         Invoices: (state, action) => {
             state.Invoices = action.payload
         },
+        SingleInvoice: (state, action) => {
+            state.singleInvoice = action.payload
+        },
     },
 });
 
 export const {
-    Invoices
+    SingleInvoice,
+    Invoices,
 } = InvoicesSlice.actions;
 
 export default InvoicesSlice.reducer;

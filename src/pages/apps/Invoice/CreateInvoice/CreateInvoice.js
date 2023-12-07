@@ -1,17 +1,12 @@
 import { Row, Col, Card, Button, Form, Table } from 'react-bootstrap';
-import { useEffect, useRef, useState } from 'react';
-// import { getCustomers } from '../../../../redux/customers/actions';
-// import { createInvoice, getInvoiceNumber, resetInvoice } from '../../../../redux/invoices/actions';
-// import { getAllCategories } from '../../../../redux/projectCategories/actions';
+import { useRef, useState } from 'react';
 import InvoicePreview from '../../../../components/InvoicePreview';
 import { FormInput } from '../../../../components';
 import PageTitle from '../../../../components/PageTitle';
 import { useDispatch, useSelector } from 'react-redux';
-// import { CONSTANTS } from '../../../../constants/constant';
-// import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import { toast } from 'react-toastify';
 import { AddInvoice } from '../../../../redux/Slices/Invoices/Invoices';
-import { GetCategory } from '../../../../redux/Slices/Category/category';
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 
 const CreateInvoice = () => {
     const dispatch = useDispatch();
@@ -32,34 +27,41 @@ const CreateInvoice = () => {
     const [detail, setDetail] = useState();
     const componentRef = useRef();
 
-    const { token, user, category } = useSelector(
+    const { token, user, category, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
             user: state.Auth.user,
-            category: state.Category.category
+            category: state.Category.category,
+            loading: state.utiltities.loading,
         })
     );
 
-    const reset = () => {
-        // setCustomer(undefined);
-        // setCustomerId('');
-        setCurrency('');
-        setCustomerEmail('');
-        setCustomerName('');
-        setProjectName('');
-        setAddress('');
-        setPhoneNumber('');
-        setPrice(0);
-        setQuantity(1);
-        setDescription('');
-        setMemo('');
-    };
+    const toggle = () => {
+        const data = {
+            created_by: user.id,
+            invoice_date: invoiceDate,
+            due_date: dueDate,
+            title: projectName,
+            quantity: quantity,
+            price: price,
+            currency_code: currency,
+            description: description,
+            notes: memo,
+            email: customerEmail,
+            name: customerName,
+            phone: phoneNumber,
+            category_id: projectCategory,
+            platform: 'Facebook',
+            address: address
+        };
+        setDetail(data);
 
-    const toggle = () => setPreviewModal(!previewModal);
+        setPreviewModal(!previewModal);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        dispatch(startLoading());
         const data = {
             created_by: user.id,
             invoice_date: invoiceDate,
@@ -83,15 +85,12 @@ const CreateInvoice = () => {
             return;
         };
 
-        dispatch(AddInvoice(data, token));
+        await dispatch(AddInvoice(data, token));
+        dispatch(stopLoading());
     };
 
     const handleSelectProjectCategory = (e) => {
         setProjectCategory(e.target.value);
-    };
-
-    const getCategory = async () => {
-        dispatch(GetCategory(token));
     };
 
     const handleRedirect = () => {
@@ -99,11 +98,9 @@ const CreateInvoice = () => {
         window.location.href = 'https://crmupd.pixelssoft.com/invoice/MOe3GAkRFD6CW9Nz';
     };
 
-    useEffect(() => {
-        getCategory();
-    }, []);
-
-    return (
+    return loading ? (
+        <h4>Loading...</h4>
+    ) : (
         <>
             <PageTitle
                 breadCrumbItems={[
