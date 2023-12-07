@@ -66,7 +66,7 @@ const CreateCustomer = () => {
     };
 
     return loading ? (
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center align-items-center'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (

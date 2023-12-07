@@ -1,13 +1,14 @@
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card, Table } from 'react-bootstrap';
 import StatisticsWidget1 from '../../../../components/StatisticsWidget1';
 import { records as data } from './data';
-import Table from '../../../../components/Table';
+// import Table from '../../../../components/Table';
 import CustomerDetailCard from '../../../../components/CustomerDetailCard';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetSingleCustomer } from '../../../../redux/Slices/Customer/customer';
 import Spinner from '../../../../components/Spinner';
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 
 const columns = [
     {
@@ -79,7 +80,9 @@ const CustomerProfile = () => {
     );
 
     const getSingleProfile = async () => {
+        dispatch(startLoading());
         dispatch(GetSingleCustomer(profileId, token));
+        dispatch(stopLoading());
     };
 
     useEffect(() => {
@@ -87,7 +90,7 @@ const CustomerProfile = () => {
     }, [profileId]);
 
     return loading ? (
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center align-items-center'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (

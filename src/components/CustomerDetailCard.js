@@ -15,7 +15,9 @@ const CustomerDetailCard = ({ contact }) => {
     const navigate = useNavigate();
     const [editUserModal, setEditUserModal] = useState(false);
 
-    const toggleEditModal = () => setEditUserModal(!editUserModal);
+    const toggleClose = async () => {
+        setEditUserModal(!editUserModal);
+    };
 
     const { token, } = useSelector(
         (state) => ({
@@ -38,8 +40,8 @@ const CustomerDetailCard = ({ contact }) => {
                             <i className="mdi mdi-dots-vertical"></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={toggleEditModal}>Edit</Dropdown.Item>
-                            <Dropdown.Item onClick={del}>Delete</Dropdown.Item>
+                            <Dropdown.Item onClick={() => toggleClose()}>Edit</Dropdown.Item>
+                            <Dropdown.Item onClick={() => del()}>Delete</Dropdown.Item>
                             {/* <Dropdown.Item>View Profile</Dropdown.Item> */}
                         </Dropdown.Menu>
                     </Dropdown>
@@ -78,7 +80,9 @@ const CustomerDetailCard = ({ contact }) => {
                     </div>
                 </Card.Body>
             </Card>
-            <CustomerEditModal profileId={contact.profileId} editUserModal={editUserModal} toggleEditModal={toggleEditModal} />
+            {editUserModal ? (
+                <CustomerEditModal profileId={contact.profileId} editUserModal={editUserModal} toggleClose={toggleClose} />
+            ) : null}
         </>
     );
 };

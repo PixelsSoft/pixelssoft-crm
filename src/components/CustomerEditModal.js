@@ -4,16 +4,19 @@ import FormInput from './FormInput'
 import { useDispatch, useSelector } from 'react-redux'
 import { GetSingleCustomer, UpdateCustomerAPI } from '../redux/Slices/Customer/customer'
 import { toast } from 'react-toastify'
+import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities'
+import Spinner from './Spinner'
 
-const CustomerEditModal = ({ profileId, editUserModal, toggleEditModal }) => {
+const CustomerEditModal = ({ profileId, editUserModal, toggleClose }) => {
     const dispatch = useDispatch();
 
-    const { token, SingleCustomer, plat, category } = useSelector(
+    const { token, SingleCustomer, plat, category, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
             SingleCustomer: state.Customer.singleCustomer,
             plat: state.Platform.platform,
             category: state.Category.category,
+            loading: state.utiltities.loading,
         })
     );
 
@@ -27,11 +30,13 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleEditModal }) => {
     const [salePerson, setSalePerson] = useState(SingleCustomer?.category_id);
 
     const getSingleProfile = async () => {
-        dispatch(GetSingleCustomer(profileId, token));
+        // dispatch(startLoading());
+        await dispatch(GetSingleCustomer(profileId, token));
+        // dispatch(stopLoading());
     };
 
     const update = async (e) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         if (!email) {
             return toast.error('Enter Email', { position: toast.POSITION.TOP_RIGHT });
@@ -68,11 +73,15 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleEditModal }) => {
 
     useEffect(() => {
         getSingleProfile();
-    }, [profileId]);
+    }, []);
 
-    return (
-        <Modal show={editUserModal} onHide={toggleEditModal} centered>
-            <Modal.Header closeButton>
+    return loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
+        <Modal show={editUserModal} onHide={toggleClose} centered>
+            <Modal.Header onHide={toggleClose} closeButton>
                 <Modal.Title as="h4">Edit User</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -160,10 +169,10 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleEditModal }) => {
                     value={phone}
                     onChange={e => setPhone(e.target.value)}
                 />
-                <Button variant="dark" className="waves-effect waves-light me-1" type="submit" onClick={update}>
+                <Button variant="dark" className="waves-effect waves-light me-1" type="submit" onClick={() => update()}>
                     Update
                 </Button>
-                <Button variant="danger" className="waves-effect waves-light" onClick={toggleEditModal}>
+                <Button variant="danger" className="waves-effect waves-light" onClick={toggleClose}>
                     Cancel
                 </Button>
             </Modal.Body>

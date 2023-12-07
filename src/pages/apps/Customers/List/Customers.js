@@ -54,7 +54,9 @@ const Customers = () => {
         setEditUserModal(!editUserModal);
     }
 
-    const toggleEditClose = () => setEditUserModal(!editUserModal);
+    const toggleClose = async () => {
+        setEditUserModal(!editUserModal);
+    };
 
     const ActionColumn = ({ projectId }) => {
         return (
@@ -124,7 +126,7 @@ const Customers = () => {
     ];
 
     return loading ? (
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center align-items-center'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
@@ -179,7 +181,9 @@ const Customers = () => {
                     </Card>
                 </Col>
             </Row>
-            <CustomerEditModal profileId={id} editUserModal={editUserModal} setEditUserModal={toggleEditClose} />
+            {editUserModal ? (
+                <CustomerEditModal profileId={id} editUserModal={editUserModal} toggleClose={toggleClose} />
+            ) : null}
         </>
     );
 };
