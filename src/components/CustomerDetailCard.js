@@ -12,7 +12,6 @@ import CustomerEditModal from './CustomerEditModal';
 
 const CustomerDetailCard = ({ contact }) => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [editUserModal, setEditUserModal] = useState(false);
 
     const toggleClose = async () => {
@@ -27,7 +26,7 @@ const CustomerDetailCard = ({ contact }) => {
 
     const del = async () => {
         dispatch(startLoading());
-        await dispatch(DeleteCustomer(contact.profileId, token, navigate));
+        await dispatch(DeleteCustomer(contact.profileId, token));
         dispatch(stopLoading());
     };
 

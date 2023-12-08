@@ -95,7 +95,32 @@ const CreateMilestone = async (projectId, data, token) => {
         .catch(onFailure)
 };
 
+const DeletProject = async (projectId, token) => {
+    const onSuccess = (data) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    };
+
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project + '/' + projectId, options)
+        .then(response => response.json())
+        .then(onSuccess)
+        .catch(onFailure)
+};
+
 const ProjectService = {
+    DeletProject,
     CreateMilestone,
     GetProjectById,
     GetProjects,

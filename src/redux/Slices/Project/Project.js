@@ -43,7 +43,21 @@ export const CreateMilestone = (projectId, data, token) => async (dispatch) => {
     try {
         const response = await ProjectService.CreateMilestone(projectId, data, token);
         console.log('response', response);
-        // dispatch(SingleProject(response));
+        dispatch(SingleProject(token));
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+
+export const DeleteProject = (projectId, token) => async (dispatch) => {
+    try {
+        const response = await ProjectService.DeletProject(projectId, token);
+        if (response?.status === 200) {
+            toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            dispatch(GetProject(token));
+        } else {
+            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+        };
     } catch (error) {
         console.log("error===========>", error)
     };

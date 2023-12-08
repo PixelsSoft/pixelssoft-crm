@@ -5,7 +5,10 @@ import PageTitle from '../../../components/PageTitle';
 import Table from '../../../components/Table';
 // import classNames from 'classnames';
 // import { records } from '../Invoice/Invoices/data';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Spinner from '../../../components/Spinner';
+import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
+import { DeleteProject } from '../../../redux/Slices/Project/Project';
 
 
 const sizePerPageList = [
@@ -26,30 +29,22 @@ const sizePerPageList = [
 
 
 export default function PortalProjects() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const { project } = useSelector(
+    const { project, loading, token } = useSelector(
         (state) => ({
-            project: state.Projects.project
+            project: state.Projects.project,
+            loading: state.utiltities.loading,
+            token: state.Auth.token,
         })
     );
 
-    /* status column render */
-    // const StatusColumn = ({ row }) => {
-    //     return (
-    //         <>
-    //             <span
-    //                 className={classNames("badge", {
-    //                     "bg-success": row.original.status === "Open",
-    //                     "bg-secondary text-light": row.original.status === "Closed",
-    //                 })}
-    //             >
-    //                 {row.original.status}
-    //             </span>
-    //         </>
-    //     );
-    // };
-
+    const del = async (id) => {
+        dispatch(startLoading());
+        await dispatch(DeleteProject(id, token));
+        dispatch(stopLoading());
+    }
 
     const ActionColumn = ({ row }) => {
         return (
@@ -62,7 +57,7 @@ export default function PortalProjects() {
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link to="#" className="action-icon">
+                <Link className="action-icon" onClick={() => del(row.original.id)}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -104,10 +99,10 @@ export default function PortalProjects() {
         },
     ];
 
-    const loading = false;
-
     return loading ? (
-        <h4>Loading...</h4>
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
     ) : (
         <React.Fragment>
             <PageTitle

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../components/PageTitle';
 import { FormInput } from '../../../components';
 import { CreateProject } from '../../../redux/Slices/Project/Project';
+import Spinner from '../../../components/Spinner';
 
 const AddPortalProjects = () => {
     const dispatch = useDispatch();
@@ -17,12 +18,13 @@ const AddPortalProjects = () => {
     const [total, setTotal] = useState();
     const [paidAm, setPaidAm] = useState();
 
-    const { token, category, platforms, employee } = useSelector(
+    const { token, category, platforms, employee, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
             category: state.Category.category,
             platforms: state.Platform.platform,
-            employee: state.Employees.employees
+            employee: state.Employees.employees,
+            loading: state.utiltities.loading,
         })
     );
 
@@ -53,9 +55,12 @@ const AddPortalProjects = () => {
         filterSales();
     }, [employee]);
 
-    return (
+    return loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
-
             <PageTitle
                 breadCrumbItems={[
                     { label: "Portal Projects", path: "/apps/portalProjects" },

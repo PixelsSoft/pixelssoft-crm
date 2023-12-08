@@ -4,28 +4,27 @@ import { Button, Card, Dropdown, Modal } from 'react-bootstrap';
 // import { Contact } from '../pages/apps/Contacts/List/types';
 import { useState } from 'react';
 import FormInput from './FormInput';
+import { useDispatch, useSelector } from 'react-redux';
+import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities';
+import { DeleteCustomer } from '../redux/Slices/Customer/customer';
 
+const PortalProjectsDetailCard = ({ contact }) => {
+    const { token, } = useSelector(
+        (state) => ({
+            token: state.Auth.token,
+        })
+    );
 
-type User = {
-    title: string;
-    platform: string;
-    Amount: string;
-    BidderName: string;
-    SalesName: string;
-    _createdAt: string;
-    description: string;
-
-};
-
-type CustomerDetailCardProps = {
-    contact: User;
-};
-
-const PortalProjectsDetailCard = ({ contact }: CustomerDetailCardProps) => {
+    const dispatch = useDispatch();
     const [editUserModal, setEditUserModal] = useState(false);
 
     const toggleEditModal = () => setEditUserModal(!editUserModal);
 
+    const del = async () => {
+        dispatch(startLoading());
+        await dispatch(DeleteCustomer(contact.projectId, token));
+        dispatch(stopLoading());
+    };
 
     return (
         <>
@@ -37,8 +36,8 @@ const PortalProjectsDetailCard = ({ contact }: CustomerDetailCardProps) => {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={toggleEditModal}>Edit</Dropdown.Item>
-                            <Dropdown.Item>Delete</Dropdown.Item>
-                            <Dropdown.Item>View Profile</Dropdown.Item>
+                            <Dropdown.Item onClick={del}>Delete</Dropdown.Item>
+                            {/* <Dropdown.Item>View Profile</Dropdown.Item> */}
                         </Dropdown.Menu>
                     </Dropdown>
                     <div>

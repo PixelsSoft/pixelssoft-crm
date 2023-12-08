@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormInput } from '../../../components';
 import { CreateMilestone, GetProjectById } from '../../../redux/Slices/Project/Project';
+import Spinner from '../../../components/Spinner';
+import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 
 const columns = [
     {
@@ -69,17 +71,20 @@ const CustomerProfile = () => {
     const [endDate, setEndDate] = useState();
     const [status, setStatus] = useState();
 
-    const { token, user, project } = useSelector(
+    const { token, user, project, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
             user: state.Auth,
             category: state.Category.category,
-            project: state.Projects.proectById
+            project: state.Projects.proectById,
+            loading: state.utiltities.loading,
         })
     );
 
     const getProject = async () => {
-        dispatch(GetProjectById(projectId, token));
+        dispatch(startLoading());
+        await dispatch(GetProjectById(projectId, token));
+        dispatch(stopLoading());
     };
 
     const createMilestone = async () => {
@@ -92,8 +97,9 @@ const CustomerProfile = () => {
             start_date: startDate,
             end_date: endDate
         };
-
-        dispatch(CreateMilestone(projectId, data, token));
+        dispatch(startLoading());
+        await dispatch(CreateMilestone(projectId, data, token));
+        dispatch(stopLoading());
     };
 
     useEffect(() => {
@@ -104,7 +110,11 @@ const CustomerProfile = () => {
         setStandard(!standard);
     };
 
-    return (
+    return loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
             <Row>
                 <Col>
@@ -118,11 +128,12 @@ const CustomerProfile = () => {
                                                 // avatar: avatar,
                                                 description: `${project?.description}`,
                                                 title: `${project?.title}`,
-                                                SalesName: `${project?.closedby.name}`,
-                                                BidderName: `${project?.bidby.name}`,
+                                                SalesName: `${project?.closedby?.name}`,
+                                                BidderName: `${project?.bidby?.name}`,
                                                 Amount: `${project?.title}`,
                                                 platform: `${project?.platform?.title}`,
-                                                _createdAt: `${project?.title}`
+                                                _createdAt: `${project?.title}`,
+                                                projectId: `${project.id}`,
                                             }}
                                         />
                                     </Col>
