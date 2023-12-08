@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import { Button, Card, Col, Row, Modal } from 'react-bootstrap'
+import { useState } from 'react'
+import { Button, Card, Col, Row, Modal, Tab, Nav } from 'react-bootstrap'
 import PageTitle from '../../../components/PageTitle'
 import { useDispatch, useSelector } from 'react-redux';
 import { FormInput } from '../../../components';
 import { AddnewCategory } from '../../../redux/Slices/Category/category';
 import { CreateNewPlatform } from '../../../redux/Slices/Platform/platform';
+import ButtonComp from '../../../components/ButtonComp';
 
 export default function Management() {
     const dispatch = useDispatch();
@@ -51,6 +52,25 @@ export default function Management() {
         togglePlatformModal();
     };
 
+    const tabContents = [
+        {
+            id: 1,
+            title: "Category",
+            icon: "mdi mdi-home-variant",
+            function: toggleResponsiveModal,
+            plat: 0,
+            titles: category,
+        },
+        {
+            id: 2,
+            title: "Platform",
+            icon: "mdi mdi-account-circle",
+            function: togglePlatformModal,
+            plat: 1,
+            titles: platform,
+        },
+    ];
+
     return (
         <>
             <PageTitle
@@ -59,7 +79,51 @@ export default function Management() {
                 ]}
                 title={"Manage"}
             />
-            <Row>
+            <Card>
+                <Card.Body>
+                    <Tab.Container defaultActiveKey="Profile">
+                        <Nav as="ul" variant="pills" justify className="navtab-bg" style={{ maxWidth: 300 }}>
+                            {(tabContents || []).map((tab, index) => {
+                                return (
+                                    <Nav.Item as="li" key={index}>
+                                        <Nav.Link
+                                            className="cursor-pointer"
+                                            href="#"
+                                            eventKey={tab.title}
+                                        >
+                                            {tab.title}
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                );
+                            })}
+                        </Nav>
+
+                        <Tab.Content>
+                            {(tabContents || []).map((tab, index) => {
+                                return (
+                                    <Tab.Pane
+                                        eventKey={tab.title}
+                                        id={String(tab.id)}
+                                        key={index}
+                                    >
+                                        <Row>
+                                            <Col >
+                                                <Button className="btn btn-danger mb-2" onClick={tab.function}>Add</Button>
+                                            </Col>
+                                        </Row>
+                                        {tab?.titles?.map(val => {
+                                            return (
+                                                <ButtonComp key={val.id} id={val.id} title={val.title} plat={tab.plat} />
+                                            );
+                                        })}
+                                    </Tab.Pane>
+                                );
+                            })}
+                        </Tab.Content>
+                    </Tab.Container>
+                </Card.Body>
+            </Card>
+            {/* <Row>
                 <Col>
                     <Card>
                         <Card.Body>
@@ -98,7 +162,7 @@ export default function Management() {
                         </Card.Body>
                     </Card>
                 </Col>
-            </Row>
+            </Row> */}
             <Modal show={responsiveModal} onHide={toggleResponsiveModal}>
                 <Modal.Header closeButton>
                     <h4 className="modal-title">Add Category</h4>

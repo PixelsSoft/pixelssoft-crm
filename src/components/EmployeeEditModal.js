@@ -1,6 +1,6 @@
 import { Button, Modal } from 'react-bootstrap'
 import FormInput from './FormInput'
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 const EmployeeEditModal = ({ editUserModal, toggleEditModal }) => {
     // const { loading, employee } = useSelector(

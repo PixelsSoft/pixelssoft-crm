@@ -3,8 +3,6 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import PageTitle from '../../../components/PageTitle';
 import Table from '../../../components/Table';
-// import classNames from 'classnames';
-// import { records } from '../Invoice/Invoices/data';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';

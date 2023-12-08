@@ -25,6 +25,34 @@ export const AddnewCategory = (data, token) => async (dispatch) => {
     };
 };
 
+export const UpdateCategory = (id, data, token) => async (dispatch) => {
+    try {
+        const response = await CategoryService.UpdateCategory(id, data, token);
+        if (response.status === 200) {
+            dispatch(GetCategory(token));
+            toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+        } else {
+            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+        };
+    } catch (error) {
+        console.log("AddnewCategory error===========>", error)
+    };
+};
+
+export const DeleteCategory = (id, token) => async (dispatch) => {
+    try {
+        const response = await CategoryService.DeleteCategory(id, token);
+        if (response.status === 200) {
+            dispatch(GetCategory(token));
+            toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+        } else {
+            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+        };
+    } catch (error) {
+        console.log("AddnewCategory error===========>", error)
+    };
+};
+
 export const CategorySlice = createSlice({
     name: "Category",
     initialState,
