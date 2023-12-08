@@ -231,12 +231,12 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "mail",
     children: [
-      {
-        key: "userRole",
-        label: "User Role",
-        url: "/apps/administartor/userRole",
-        parentKey: "administartor",
-      },
+      // {
+      //   key: "userRole",
+      //   label: "Permission",
+      //   url: "/apps/administartor/permission",
+      //   parentKey: "administartor",
+      // },
       {
         key: "rolePermission",
         label: "Role Permission",
@@ -1269,12 +1269,12 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "mail",
         children: [
-          {
-            key: "email-inbox",
-            label: "User Role",
-            url: "/apps/administartor/userRole",
-            parentKey: "administartor",
-          },
+          // {
+          //   key: "email-inbox",
+          //   label: "Permission",
+          //   url: "/apps/administartor/permission",
+          //   parentKey: "administartor",
+          // },
           {
             key: "email-read-email",
             label: "Role Permission",
@@ -2311,12 +2311,12 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "mail",
         children: [
-          {
-            key: "email-inbox",
-            label: "User Role",
-            url: "/apps/administartor/userRole",
-            parentKey: "administartor",
-          },
+          // {
+          //   key: "email-inbox",
+          //   label: "Permission",
+          //   url: "/apps/administartor/permission",
+          //   parentKey: "administartor",
+          // },
           {
             key: "email-read-email",
             label: "Role Permission",

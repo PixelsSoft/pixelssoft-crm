@@ -1,111 +1,94 @@
-// import { useEffect, useState } from 'react';
-import { Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
+import { Row, Col, Card, Button } from 'react-bootstrap';
 import PortalProjectsDetailCard from '../../../components/PortalProjectsDetailCard';
 import StatisticsWidget1 from '../../../components/StatisticsWidget1';
-import Table from '../../../components/Table';
+// import Table from '../../../components/Table';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-// import { FormInput } from '../../../components';
-// import { CreateMilestone, GetProjectById } from '../../../redux/Slices/Project/Project';
+// import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
+import { GetProjectById } from '../../../redux/Slices/Project/Project';
+import { useEffect } from 'react';
+import Spinner from '../../../components/Spinner';
 
-const columns = [
-    {
-        Header: 'ID',
-        accessor: 'id',
-        sort: true,
-    },
-    {
-        Header: 'Status',
-        accessor: 'status',
-        sort: false,
-    },
-    {
-        Header: 'Start Date',
-        accessor: 'start_date',
-        sort: false,
-    },
-    {
-        Header: 'End Date',
-        accessor: 'end_date',
-        sort: false,
-    },
-    {
-        Header: 'Description',
-        accessor: 'description',
-        sort: false,
-    },
-    {
-        Header: 'Amount',
-        accessor: 'amount',
-        sort: false,
-    },
+// const columns = [
+//     {
+//         Header: 'ID',
+//         accessor: 'id',
+//         sort: true,
+//     },
+//     {
+//         Header: 'Status',
+//         accessor: 'status',
+//         sort: false,
+//     },
+//     {
+//         Header: 'Start Date',
+//         accessor: 'start_date',
+//         sort: false,
+//     },
+//     {
+//         Header: 'End Date',
+//         accessor: 'end_date',
+//         sort: false,
+//     },
+//     {
+//         Header: 'Description',
+//         accessor: 'description',
+//         sort: false,
+//     },
+//     {
+//         Header: 'Amount',
+//         accessor: 'amount',
+//         sort: false,
+//     },
 
 
-];
+// ];
 
-const sizePerPageList = [
-    {
-        text: '5',
-        value: 5,
-    },
-    {
-        text: '10',
-        value: 10,
-    },
-    {
-        text: '25',
-        value: 25,
-    },
+// const sizePerPageList = [
+//     {
+//         text: '5',
+//         value: 5,
+//     },
+//     {
+//         text: '10',
+//         value: 10,
+//     },
+//     {
+//         text: '25',
+//         value: 25,
+//     },
 
-];
+// ];
 
 const LeadProjectProfile = () => {
-    // const { projectId } = useParams();
-    // const dispatch = useDispatch();
+    const { projectId } = useParams();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const [desc, setDesc] = useState();
-    // const [amount, setAmount] = useState();
-    // const [standard, setStandard] = useState(false);
-    // const [startDate, setStartDate] = useState();
-    // const [endDate, setEndDate] = useState();
-    // const [status, setStatus] = useState();
 
-    const { token, user, project } = useSelector(
+    const { token, project, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
-            user: state.Auth,
             category: state.Category.category,
-            project: state.Projects.proectById
+            project: state.Projects.proectById,
+            loading: state.utiltities.loading,
         })
     );
 
-    // const getProject = async () => {
-    //     dispatch(GetProjectById(projectId, token));
-    // };
+    const getProject = async () => {
+        // dispatch(startLoading());
+        await dispatch(GetProjectById(projectId, token));
+        // dispatch(stopLoading());
+    };
 
-    // const createMilestone = async () => {
-    //     const data = {
-    //         project_id: projectId,
-    //         user_id: user.id,
-    //         description: desc,
-    //         amount: amount,
-    //         status: status,
-    //         start_date: startDate,
-    //         end_date: endDate
-    //     };
+    useEffect(() => {
+        getProject();
+    }, [projectId]);
 
-    //     dispatch(CreateMilestone(projectId, data, token));
-    // };
-
-    // useEffect(() => {
-    //     getProject();
-    // }, []);
-
-    // const toggleModal = () => {
-    //     setStandard(!standard);
-    // };
-
-    return (
+    return loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
             <Row>
                 <Col>
@@ -119,8 +102,8 @@ const LeadProjectProfile = () => {
                                                 // avatar: avatar,
                                                 description: `${project?.description}`,
                                                 title: `${project?.title}`,
-                                                SalesName: `${project?.closedby.name}`,
-                                                BidderName: `${project?.bidby.name}`,
+                                                SalesName: `${project?.closedby?.name}`,
+                                                BidderName: `${project?.bidby?.name}`,
                                                 Amount: `${project?.title}`,
                                                 platform: `${project?.platform?.title}`,
                                                 _createdAt: `${project?.title}`
@@ -162,7 +145,7 @@ const LeadProjectProfile = () => {
                                 </Row>
                                 <Row>
 
-                                    <Table
+                                    {/* <Table
                                         columns={columns}
                                         data={project?.milestone}
                                         pageSize={5}
@@ -170,7 +153,7 @@ const LeadProjectProfile = () => {
                                         isSortable={true}
                                         pagination={true}
                                         isSearchable={true}
-                                    />
+                                    /> */}
                                 </Row>
                             </Card.Body>
                         ) : null}

@@ -10,10 +10,10 @@ const initialState = {
 export const CreateProject = (data, token) => async (dispatch) => {
     try {
         const response = await ProjectService.AddProject(data, token);
-        if (response?.status === 409) {
-            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
-        } else {
+        if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+        } else {
+            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
         };
         dispatch(GetProject(token));
     } catch (error) {
@@ -32,8 +32,10 @@ export const GetProject = (token) => async (dispatch) => {
 
 export const GetProjectById = (projectId, token) => async (dispatch) => {
     try {
-        const response = await ProjectService.GetProjectById(projectId, token);
-        dispatch(SingleProject(response));
+        if (projectId) {
+            const response = await ProjectService.GetProjectById(projectId, token);
+            dispatch(SingleProject(response));
+        }
     } catch (error) {
         console.log("error===========>", error)
     };
@@ -42,8 +44,12 @@ export const GetProjectById = (projectId, token) => async (dispatch) => {
 export const CreateMilestone = (projectId, data, token) => async (dispatch) => {
     try {
         const response = await ProjectService.CreateMilestone(projectId, data, token);
-        console.log('response', response);
-        dispatch(SingleProject(token));
+        if (response?.status === 200) {
+            toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+        } else {
+            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+        };
+        dispatch(GetProjectById(projectId, token));
     } catch (error) {
         console.log("error===========>", error)
     };
@@ -55,6 +61,20 @@ export const DeleteProject = (projectId, token) => async (dispatch) => {
         if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             dispatch(GetProject(token));
+        } else {
+            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+        };
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+
+export const UpdateProject = (projectId, data, token) => async (dispatch) => {
+    try {
+        const response = await ProjectService.UpdateProject(projectId, data, token);
+        if (response?.status === 200) {
+            toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            dispatch(GetProjectById(projectId, token));
         } else {
             toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
         };

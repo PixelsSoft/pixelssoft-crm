@@ -442,12 +442,12 @@ const administartorRoutes: RoutesProps = {
   roles: ["Admin"],
   icon: "mail",
   children: [
-    {
-      path: "/apps/hr/employees",
-      name: "Employees",
-      element: <Employees />,
-      route: PrivateRoute,
-    },
+    // {
+    //   path: "/apps/administartor/permission",
+    //   name: "Employees",
+    //   element: <Permission />,
+    //   route: PrivateRoute,
+    // },
     {
       path: "/apps/administartor/rolePermission",
       name: "Role Permission",

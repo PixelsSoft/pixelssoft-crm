@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../components/PageTitle';
 import { FormInput } from '../../../components';
 import { CreateProject } from '../../../redux/Slices/Project/Project';
+import Spinner from '../../../components/Spinner';
+import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 
 const AddLeadProjets = () => {
     const dispatch = useDispatch();
@@ -20,7 +22,7 @@ const AddLeadProjets = () => {
     const [email, setEmail] = useState('');
     const [num, setNum] = useState('')
 
-    const { token, category, platforms, employee } = useSelector(
+    const { token, category, platforms, employee, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
             category: state.Category.category,
@@ -42,7 +44,9 @@ const AddLeadProjets = () => {
             total_amount: total,
             type: "lead"
         };
-        dispatch(CreateProject(data, token));
+        dispatch(startLoading());
+        await dispatch(CreateProject(data, token));
+        dispatch(stopLoading());
     };
 
     const filterSales = () => {
@@ -56,7 +60,11 @@ const AddLeadProjets = () => {
         filterSales();
     }, [employee]);
 
-    return (
+    return loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
 
             <PageTitle
@@ -86,7 +94,7 @@ const AddLeadProjets = () => {
                                         <Form.Label>Scrapper Name</Form.Label>
                                         <Form.Select onChange={(e) => setBidBy(e.target.value)}>
                                             <option>Choose...</option>
-                                            {data.map(val => {
+                                            {data?.map(val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.name}</option>
                                                 );
@@ -98,7 +106,7 @@ const AddLeadProjets = () => {
                                         <Form.Label>Sale Person Name</Form.Label>
                                         <Form.Select onChange={(e) => setPerName(e.target.value)}>
                                             <option>Choose...</option>
-                                            {data.map(val => {
+                                            {data?.map(val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.name}</option>
                                                 );
@@ -154,7 +162,7 @@ const AddLeadProjets = () => {
                                         <Form.Label>Client Number</Form.Label>
                                         <Form.Control
                                             value={num}
-                                            onChange={(e) => setName(e.target.value)}
+                                            onChange={(e) => setNum(e.target.value)}
                                         />
                                     </Form.Group>
 
@@ -165,7 +173,7 @@ const AddLeadProjets = () => {
                                         <Form.Label>Platform</Form.Label>
                                         <Form.Select onChange={(e) => setPlatId(e.target.value)}>
                                             <option>Choose...</option>
-                                            {platforms.map(val => {
+                                            {platforms?.map(val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.title}</option>
                                                 );
@@ -177,7 +185,7 @@ const AddLeadProjets = () => {
                                         <Form.Label>Project Category</Form.Label>
                                         <Form.Select onChange={(e) => setSelectCat(e.target.value)}>
                                             <option>Choose...</option>
-                                            {category.map(val => {
+                                            {category?.map(val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.title}</option>
                                                 );

@@ -4,6 +4,7 @@ import PageTitle from '../../../../components/PageTitle';
 import { useSelector } from 'react-redux';
 import { FormInput } from '../../../../components';
 import ContactDetails from '../../../../components/ContactDetails';
+import Spinner from '../../../../components/Spinner';
 
 const List = () => {
     const navigate = useNavigate()
@@ -16,8 +17,8 @@ const List = () => {
     );
 
     return loading ? (
-        <div>
-            <h2>Loading...</h2>
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
         <>

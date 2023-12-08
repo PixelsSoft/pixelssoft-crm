@@ -3,10 +3,9 @@ import Table from '../../../components/Table';
 import PageTitle from '../../../components/PageTitle';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { records as data } from '../Invoice/Invoices/data';
 import { FormInput } from '../../../components';
 import { useDispatch, useSelector } from 'react-redux';
-import { CreateNewRole, UpdateRole } from '../../../redux/Slices/Roles/Roles';
+import { CreateNewRole, DeleteRole, UpdateRole } from '../../../redux/Slices/Roles/Roles';
 
 export default function RolesPermissions() {
     const dispatch = useDispatch();
@@ -14,6 +13,8 @@ export default function RolesPermissions() {
     const [editModal, setEditModal] = useState(false);
     const [id, setId] = useState();
     const [name, setName] = useState('');
+    const [openView, setOpenView] = useState(false);
+    const [viewName, setViewName] = useState('');
 
     const { roles, token } = useSelector(
         (state) => ({
@@ -40,12 +41,20 @@ export default function RolesPermissions() {
         setId();
         setName('')
     }
+    const closeView = (pro) => {
+        setViewName(pro?.name)
+        setOpenView(!openView);
+    };
+
+    const delRole = async ({ id }) => {
+        dispatch(DeleteRole(id, token));
+    }
 
     /* action column render */
     const ActionColumn = ({ projectId }) => {
         return (
             <React.Fragment>
-                <Link to="#" className="action-icon">
+                <Link className="action-icon" onClick={() => closeView(projectId)}>
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
@@ -53,7 +62,7 @@ export default function RolesPermissions() {
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link to="#" className="action-icon">
+                <Link className="action-icon" onClick={() => delRole(projectId)}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -71,11 +80,6 @@ export default function RolesPermissions() {
             accessor: 'name',
             sort: false,
         },
-        // {
-        //     Header: 'Role',
-        //     accessor: 'dueDate',
-        //     sort: false,
-        // },
         {
             Header: "Action",
             accessor: "action",
@@ -100,7 +104,7 @@ export default function RolesPermissions() {
         },
         {
             text: 'All',
-            value: data.length,
+            value: roles?.length,
         },
     ];
 
@@ -245,6 +249,25 @@ export default function RolesPermissions() {
                         onClick={updateRole}
                     >
                         Update
+                    </button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={openView} onHide={closeView}>
+                <Modal.Header closeButton>
+                    <h4 className="modal-title">Role</h4>
+                </Modal.Header>
+                <Modal.Body className="p-4">
+                    <p>Role Name</p>
+                    <p>{viewName}</p>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <button
+                        type="button"
+                        className="btn btn-secondary waves-effect"
+                        onClick={closeView}
+                    >
+                        Close
                     </button>
                 </Modal.Footer>
             </Modal>

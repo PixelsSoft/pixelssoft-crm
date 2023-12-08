@@ -172,18 +172,19 @@ const CustomerProfile = () => {
                                     </Col>
 
                                 </Row>
-                                <Row>
-
-                                    <Table
-                                        columns={columns}
-                                        data={project?.milestone}
-                                        pageSize={5}
-                                        sizePerPageList={sizePerPageList}
-                                        isSortable={true}
-                                        pagination={true}
-                                        isSearchable={true}
-                                    />
-                                </Row>
+                                {project?.milestone ? (
+                                    <Row>
+                                        <Table
+                                            columns={columns}
+                                            data={project?.milestone}
+                                            pageSize={5}
+                                            sizePerPageList={sizePerPageList}
+                                            isSortable={true}
+                                            pagination={true}
+                                            isSearchable={true}
+                                        />
+                                    </Row>
+                                ) : null}
                             </Card.Body>
                         ) : null}
                     </Card>

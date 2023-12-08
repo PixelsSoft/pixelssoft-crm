@@ -12,6 +12,6 @@ export const CONSTANTS = {
         platform: 'platform',
         project: 'project',
         edit: 'edit',
-        projectMilestone: 'milestone?project='
+        projectMilestone: 'milestone?project=',
     }
 } 

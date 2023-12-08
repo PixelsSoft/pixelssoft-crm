@@ -3,7 +3,11 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import PageTitle from '../../../components/PageTitle';
 import Table from '../../../components/Table';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Spinner from '../../../components/Spinner';
+import { DeleteProject } from '../../../redux/Slices/Project/Project';
+import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
+import EditPortalProject from '../../../components/EditPortalProject';
 
 const sizePerPageList = [
     {
@@ -23,30 +27,18 @@ const sizePerPageList = [
 
 const ListLeadProjects = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [data, setData] = useState([]);
+    const [id, setId] = useState();
+    const [editUserModal, setEditUserModal] = useState(false);
 
-    const { project } = useSelector(
+    const { project, loading, token } = useSelector(
         (state) => ({
-            project: state.Projects.project
+            project: state.Projects.project,
+            loading: state.utiltities.loading,
+            token: state.Auth.token,
         })
     );
-
-    /* status column render */
-    // const StatusColumn = ({ row }) => {
-    //     return (
-    //         <>
-    //             <span
-    //                 className={classNames("badge", {
-    //                     "bg-success": row.original.status === "Open",
-    //                     "bg-secondary text-light": row.original.status === "Closed",
-    //                 })}
-    //             >
-    //                 {row.original.status}
-    //             </span>
-    //         </>
-    //     );
-    // };
-
 
     const ActionColumn = ({ row }) => {
         return (
@@ -55,16 +47,27 @@ const ListLeadProjects = () => {
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
-                <Link to="#" className="action-icon">
+                <Link className="action-icon" onClick={() => toggleEditModal(row.original.id)}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link to="#" className="action-icon">
+                <Link className="action-icon" onClick={() => del(row.original.id)}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
             </React.Fragment >
         );
+    };
+
+    const toggleEditModal = (id) => {
+        setId(id);
+        setEditUserModal(!editUserModal);
+    }
+
+    const del = async (id) => {
+        dispatch(startLoading());
+        await dispatch(DeleteProject(id, token));
+        dispatch(stopLoading());
     };
 
     const columns = [
@@ -102,7 +105,7 @@ const ListLeadProjects = () => {
     ];
 
     const filterProjects = () => {
-        if (project.length > 0) {
+        if (project?.length > 0) {
             const filteredArray = project.filter((item) => item.type === "lead");
             setData(filteredArray);
         };
@@ -112,10 +115,10 @@ const ListLeadProjects = () => {
         filterProjects();
     }, []);
 
-    const loading = false;
-
     return loading ? (
-        <h4>Loading...</h4>
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
     ) : (
         <React.Fragment>
             <PageTitle
@@ -166,6 +169,9 @@ const ListLeadProjects = () => {
                     </Card>
                 </Col>
             </Row>
+            {editUserModal ? (
+                <EditPortalProject projectId={id} editUserModal={editUserModal} toggleEditModal={toggleEditModal} />
+            ) : null}
         </React.Fragment>
     );
 }

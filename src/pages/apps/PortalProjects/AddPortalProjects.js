@@ -5,6 +5,7 @@ import PageTitle from '../../../components/PageTitle';
 import { FormInput } from '../../../components';
 import { CreateProject } from '../../../redux/Slices/Project/Project';
 import Spinner from '../../../components/Spinner';
+import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 
 const AddPortalProjects = () => {
     const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const AddPortalProjects = () => {
     );
 
     const onSubmit = async (e) => {
+        dispatch(startLoading());
         e.preventDefault();
         const data = {
             title: title,
@@ -41,7 +43,8 @@ const AddPortalProjects = () => {
             total_amount: total,
             type: "portal"
         };
-        dispatch(CreateProject(data, token));
+        await dispatch(CreateProject(data, token));
+        dispatch(stopLoading());
     };
 
     const filterSales = () => {

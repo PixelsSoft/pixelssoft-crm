@@ -1,20 +1,21 @@
-import { Button, Card, Col, Dropdown, Form, Modal, Row } from 'react-bootstrap';
+import { Card, Col, Dropdown, Row } from 'react-bootstrap';
 import { useState } from 'react';
-import FormInput from './FormInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { DeleteEmployee } from '../redux/Slices/employee/Employee';
+import { DeleteEmployee, GetEmployeeById } from '../redux/Slices/employee/Employee';
+import EmployeeEditModal from './EmployeeEditModal';
 
-const ContactDetails = ( { contact } ) => {
-    const { token } = useSelector( state => state.Auth );
+const ContactDetails = ({ contact }) => {
+    const { token } = useSelector(state => state.Auth);
     const dispatch = useDispatch();
-    const [accessControlModal, setAccessControlModal] = useState( false );
-    const [editUserModal, setEditUserModal] = useState( false );
+    const [editUserModal, setEditUserModal] = useState(false);
 
-    const toggleEditModal = () => setEditUserModal( !editUserModal );
-    const toggle = () => setAccessControlModal( !accessControlModal );
+    const toggleEditModal = () => {
+        setEditUserModal(!editUserModal);
+        dispatch(GetEmployeeById(contact.id, token));
+    };
 
     const deleteEmp = async () => {
-        dispatch( DeleteEmployee( contact.id, token ) );
+        dispatch(DeleteEmployee(contact.id, token));
     };
 
     return (
@@ -28,7 +29,7 @@ const ContactDetails = ( { contact } ) => {
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={toggleEditModal}>Edit</Dropdown.Item>
                             <Dropdown.Item onClick={deleteEmp}>Delete</Dropdown.Item>
-                            <Dropdown.Item>View Profile</Dropdown.Item>
+                            {/* <Dropdown.Item>View Profile</Dropdown.Item> */}
                         </Dropdown.Menu>
                     </Dropdown>
                     <div>
@@ -75,11 +76,11 @@ const ContactDetails = ( { contact } ) => {
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
                                         <strong>Role :</strong>
-                                        {contact.roles.map( e => {
+                                        {contact.roles.map(e => {
                                             return (
                                                 <span key={e.id} className="ms-2">{e?.name}</span>
                                             )
-                                        } )}
+                                        })}
                                     </p>
                                 </Col>
                             </Row>
@@ -100,96 +101,7 @@ const ContactDetails = ( { contact } ) => {
                     </div>
                 </Card.Body>
             </Card>
-
-
-            <Modal show={editUserModal} onHide={toggleEditModal} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title as="h4">Edit User</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <FormInput
-                        label={'Name'}
-                        type="text"
-                        name="name"
-                        placeholder="Enter name"
-                        containerClass={'mb-3'}
-                    />
-
-                    <FormInput
-                        label={'Position'}
-                        type="text"
-                        name="position"
-                        placeholder="Enter position"
-                        containerClass={'mb-3'}
-                    />
-
-                    <FormInput
-                        label={'Company'}
-                        type="text"
-                        name="company"
-                        placeholder="Enter company"
-                        containerClass={'mb-3'}
-                    />
-
-                    <FormInput
-                        label={'Email address'}
-                        type="email"
-                        name="email"
-                        placeholder="Enter email"
-                        containerClass={'mb-3'}
-                    />
-
-                    <FormInput
-                        label={'Role'}
-                        type="text"
-                        name="role"
-                        placeholder="Enter role"
-                        containerClass={'mb-3'}
-                    />
-
-                    <FormInput
-                        label={'Designation'}
-                        type="text"
-                        name="designation"
-                        placeholder="Enter Designation"
-                        containerClass={'mb-3'}
-                    />
-
-                    <FormInput
-                        label={'Salary'}
-                        type="text"
-                        name="salary"
-                        placeholder="Enter Salary"
-                        containerClass={'mb-3'}
-                    />
-
-                    <FormInput
-                        label={'Phone #'}
-                        type="text"
-                        name="phone"
-                        placeholder="Enter Phone #"
-                        containerClass={'mb-3'}
-                    />
-
-                    <FormInput
-                        label="Profile Picture"
-                        type="file"
-                        name="file"
-                        containerClass={'mb-3'}
-                        // register={register}
-                        key="file"
-                    // errors={errors}
-                    // control={control}
-                    />
-
-                    <Button variant="dark" className="waves-effect waves-light me-1" type="submit">
-                        Save
-                    </Button>
-                    <Button variant="danger" className="waves-effect waves-light" onClick={toggleEditModal}>
-                        Cancel
-                    </Button>
-                </Modal.Body>
-            </Modal>
+            <EmployeeEditModal editUserModal={editUserModal} toggleEditModal={toggleEditModal} />
         </>
     );
 };

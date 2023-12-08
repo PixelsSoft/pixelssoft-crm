@@ -6,7 +6,9 @@ import { stopLoading } from "../utiltities/Utiltities";
 const initialState = {
     roles: [],
     employees: [],
+    singleEmployee: null,
 }
+
 export const AddEmployee = (params, token) => async (dispatch) => {
     try {
         const response = await EmployeeService.AddEmployee(params, token);
@@ -52,6 +54,16 @@ export const DeleteEmployee = (id, token) => async (dispatch) => {
     }
 }
 
+export const GetEmployeeById = (id, token) => async (dispatch) => {
+    try {
+        const response = await EmployeeService.GetEmployeeId(id, token);
+        dispatch(SingleEmployee(response));
+    } catch (error) {
+        dispatch(stopLoading())
+        console.log("DeleteEmployee error===========>", error)
+    }
+}
+
 export const EmployeeSlice = createSlice({
     name: "Employee",
     initialState,
@@ -62,10 +74,14 @@ export const EmployeeSlice = createSlice({
         Employee: (state, action) => {
             state.employees = action.payload
         },
+        SingleEmployee: (state, action) => {
+            state.singleEmployee = action.payload
+        },
     },
 });
 
 export const {
+    SingleEmployee,
     Employee,
     getRoles,
 } = EmployeeSlice.actions;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import PageTitle from '../../../components/PageTitle';
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import { DeleteProject } from '../../../redux/Slices/Project/Project';
+import EditPortalProject from '../../../components/EditPortalProject';
 
 
 const sizePerPageList = [
@@ -31,6 +32,8 @@ const sizePerPageList = [
 export default function PortalProjects() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [id, setId] = useState();
+    const [editUserModal, setEditUserModal] = useState(false);
 
     const { project, loading, token } = useSelector(
         (state) => ({
@@ -53,7 +56,7 @@ export default function PortalProjects() {
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
-                <Link to="#" className="action-icon">
+                <Link className="action-icon" onClick={() => toggleEditModal(row.original.id)}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
@@ -64,6 +67,11 @@ export default function PortalProjects() {
             </React.Fragment >
         );
     };
+
+    const toggleEditModal = (id) => {
+        setId(id);
+        setEditUserModal(!editUserModal);
+    }
 
     const columns = [
         {
@@ -153,6 +161,9 @@ export default function PortalProjects() {
                     </Card>
                 </Col>
             </Row>
+            {editUserModal ? (
+                <EditPortalProject projectId={id} editUserModal={editUserModal} toggleEditModal={toggleEditModal} />
+            ) : null}
         </React.Fragment>
     );
 }
