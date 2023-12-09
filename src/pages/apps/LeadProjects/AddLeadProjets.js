@@ -32,10 +32,24 @@ const AddLeadProjets = () => {
         })
     );
 
+    const reset = () => {
+        setBidBy()
+        setPerName()
+        setPlatId()
+        setSelectCat()
+        setTitle()
+        setDesc()
+        setTotal()
+        setPaidAm()
+        setName()
+        setEmail()
+        setNum()
+    }
+
     const onSubmit = async (e) => {
         e.preventDefault();
         if (bidBy || perName || platId || selectCat || title || desc || total || name || email || num) {
-            toast.success('Please enter all fields', { position: toast.POSITION.TOP_RIGHT });
+            toast.error('Please enter all fields', { position: toast.POSITION.TOP_RIGHT });
             return
         }
         const data = {
@@ -50,7 +64,7 @@ const AddLeadProjets = () => {
             type: "lead"
         };
         dispatch(startLoading());
-        await dispatch(CreateProject(data, token));
+        await dispatch(CreateProject(data, token, reset));
         dispatch(stopLoading());
     };
 
