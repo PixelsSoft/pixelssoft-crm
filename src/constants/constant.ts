@@ -13,5 +13,8 @@ export const CONSTANTS = {
         project: 'project',
         edit: 'edit',
         projectMilestone: 'milestone?project=',
+        lead: 'lead',
+        expenseCategory: 'expense/category',
+        expense: 'expense',
     }
 } 

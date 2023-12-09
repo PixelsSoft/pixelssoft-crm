@@ -13,6 +13,9 @@ import CustomerSlice from './Slices/Customer/customer';
 import Platforms from './Slices/Platform/platform';
 import Projects from './Slices/Project/Project';
 import Roles from './Slices/Roles/Roles';
+import leads from './Slices/Leads/leads';
+import ExpenseCategory from './Slices/ExpenseCategory/expenseCategory';
+import Expense from './Slices/Expense/expense';
 
 const persistConfig = {
   key: 'root',
@@ -31,6 +34,9 @@ const reducer = combineReducers({
   Platform: Platforms,
   Projects: Projects,
   Roles: Roles,
+  Leads: leads,
+  ExpenseCategory: ExpenseCategory,
+  Expense: Expense
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

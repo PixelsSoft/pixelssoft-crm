@@ -3,47 +3,62 @@ import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap'
 import { FormInput } from '../../../../components';
 import PageTitle from '../../../../components/PageTitle'
 import Table from '../../../../components/Table'
-
+import Spinner from '../../../../components/Spinner';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import { AddExpense } from '../../../../redux/Slices/Expense/expense';
 
 export default function Expenses() {
-    const [loading, setLoading] = useState( false );
-    const [visibleModal, setVisibleModal] = useState( false );
+    const { expenseCategory, token, expenses, loading } = useSelector(
+        (state) => ({
+            token: state.Auth.token,
+            loading: state.utiltities.loading,
+            expenseCategory: state.ExpenseCategory.expenseCategory,
+            expenses: state.Expense.expense,
+        })
+    );
 
-
-    const [title, setTitle] = useState( '' );
-    const [amount, setAmount] = useState( '' );
-    const [date, setDate] = useState( '' );
-    const [category, setCategory] = useState( '' );
-
-    const [file, setFile] = useState( '' );
+    const dispatch = useDispatch();
+    // const [loading, setLoading] = useState(false);
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [title, setTitle] = useState();
+    const [amount, setAmount] = useState();
+    const [date, setDate] = useState();
+    const [category, setCategory] = useState();
+    const [file, setFile] = useState();
+    const [inDate, setInDate] = useState();
+    const [catId, setCatId] = useState();
+    const [pay, setPay] = useState();
 
     const toggleModal = () => {
-        setVisibleModal( !visibleModal );
+        setVisibleModal(!visibleModal);
     };
+
     const columns = [
-        {
-            Header: 'Sno',
-            accessor: 'sno',
-            sort: true,
-        },
+        // {
+        //     Header: 'Sno',
+        //     accessor: 'sno',
+        //     sort: true,
+        // },
         {
             Header: 'Date',
-            accessor: 'date',
+            accessor: 'invoice_date',
             sort: false,
         },
         {
-            Header: 'title',
+            Header: 'Title',
             accessor: 'title',
             sort: false,
         },
         {
-            Header: 'amount',
+            Header: 'Amount',
             accessor: 'amount',
             sort: false,
         },
         {
             Header: 'category',
-            accessor: 'category',
+            accessor: 'expense_category_id',
             sort: false,
         },
         {
@@ -72,16 +87,47 @@ export default function Expenses() {
             text: '35',
             value: 35,
         },
-
     ];
-    const HandleFileUpload = ( event ) => {
-        if ( event.target.files ) {
+
+    const HandleFileUpload = (event) => {
+        if (event.target.files) {
             const file = event.target.files[0];
-            setFile( file );
+            setFile(file);
         }
     };
 
-    return (
+    const addExpense = async () => {
+        if (inDate === undefined || title == undefined || amount === undefined || catId === undefined || pay === undefined || file === undefined) {
+            toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
+            return;
+        };
+        const formData = new FormData();
+        formData.append('invoice_date', inDate);
+        formData.append('title', title);
+        formData.append('amount', amount);
+        formData.append('expense_category_id', catId);
+        formData.append('pay_by', pay);
+        formData.append('file', file);
+        console.log('formData', formData);
+        // dispatch(startLoading());
+        // await dispatch(AddExpense(formData, token, reset));
+        // dispatch(stopLoading());
+    };
+
+    const reset = () => {
+        // setInDate();
+        // setTitle();
+        // setAmount();
+        // setCatId();
+        // setPay();
+        // setFile();
+    };
+
+    return loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
             <PageTitle
                 title={"Expense"}
@@ -96,7 +142,7 @@ export default function Expenses() {
                                     <Form.Control
                                         type="date"
                                         value={date}
-                                        onChange={( e ) => setDate( e.target.value )}
+                                        onChange={(e) => setDate(e.target.value)}
                                     />
                                 </Form.Group>
                             </Col>
@@ -106,7 +152,7 @@ export default function Expenses() {
                                     <Form.Control
                                         type="date"
                                         value={date}
-                                        onChange={( e ) => setDate( e.target.value )}
+                                        onChange={(e) => setDate(e.target.value)}
                                     />
                                 </Form.Group>
                             </Col>
@@ -118,8 +164,8 @@ export default function Expenses() {
                                     className="form-select"
                                     key="select"
                                     value={category}
-                                    onChange={( e ) => {
-                                        setCategory( e.target.value );
+                                    onChange={(e) => {
+                                        setCategory(e.target.value);
                                     }}
                                 >
                                     <option>no Selected</option>
@@ -154,7 +200,7 @@ export default function Expenses() {
                         </Row>
                         <Table
                             columns={columns}
-                            data={[]}
+                            data={expenses}
                             pageSize={10}
                             sizePerPageList={sizePerPageList}
                             isSortable={true}
@@ -179,8 +225,8 @@ export default function Expenses() {
                                 <Form.Label>Invoice Date</Form.Label>
                                 <Form.Control
                                     type="date"
-                                    value={date}
-                                    onChange={( e ) => setDate( e.target.value )}
+                                    value={inDate}
+                                    onChange={(e) => setInDate(e.target.value)}
                                 />
                             </Form.Group>
                         </Col>
@@ -189,7 +235,7 @@ export default function Expenses() {
                                 <Form.Label>Title</Form.Label>
                                 <Form.Control
                                     value={title}
-                                    onChange={( e ) => setTitle( e.target.value )}
+                                    onChange={(e) => setTitle(e.target.value)}
                                 />
                             </Form.Group>
                         </Col>
@@ -200,7 +246,8 @@ export default function Expenses() {
                                 <Form.Label>Amount</Form.Label>
                                 <Form.Control
                                     value={amount}
-                                    onChange={( e ) => setAmount( e.target.value )}
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    type='number'
                                 />
                             </Form.Group>
                         </Col>
@@ -211,12 +258,15 @@ export default function Expenses() {
                                 type="select"
                                 className="form-select"
                                 key="select"
-                                value={category}
-                                onChange={( e ) => {
-                                    setCategory( e.target.value );
-                                }}
+                                value={catId}
+                                onChange={(e) => setCatId(e.target.value)}
                             >
                                 <option>no Selected</option>
+                                {expenseCategory?.map(val => {
+                                    return (
+                                        <option key={val.id} value={val.id}>{val.name}</option>
+                                    );
+                                })}
                             </FormInput>
                         </Col>
                     </Row>
@@ -228,10 +278,8 @@ export default function Expenses() {
                                 type="select"
                                 className="form-select"
                                 key="select"
-                                value={category}
-                                onChange={( e ) => {
-                                    setCategory( e.target.value );
-                                }}
+                                value={pay}
+                                onChange={(e) => setPay(e.target.value)}
                             >
                                 <option>Cash</option>
                                 <option>Online</option>
@@ -265,11 +313,12 @@ export default function Expenses() {
                         type="submit"
                         variant={"success"}
                         className="waves-effect waves-light  "
+                        onClick={addExpense}
                     >
                         Add Expense
                     </Button>
                 </Modal.Footer>
-            </Modal>
+            </Modal >
         </>
 
     )

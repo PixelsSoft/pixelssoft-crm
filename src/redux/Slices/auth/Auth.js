@@ -8,6 +8,9 @@ import { GetProject } from "../Project/Project";
 import { GetPlatform } from "../Platform/platform";
 import { GetCategory } from "../Category/category";
 import { getRoles } from "../Roles/Roles";
+import { GetLead } from "../Leads/leads";
+import { GetExpenseCategory } from "../ExpenseCategory/expenseCategory";
+import { GetExpense } from "../Expense/expense";
 
 const initialState = {
     user: {
@@ -47,6 +50,9 @@ export const login = (params) => async (dispatch) => {
         dispatch(GetPlatform(response?.data?.token));
         dispatch(GetCategory(response?.data?.token));
         dispatch(getRoles(response?.data?.token));
+        dispatch(GetLead(response?.data?.token));
+        dispatch(GetExpenseCategory(response?.data?.token));
+        dispatch(GetExpense(response?.data?.token));
         toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
     } catch (error) {
         console.log("error===========>", error)
