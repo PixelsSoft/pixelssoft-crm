@@ -52,15 +52,51 @@ const List = () => {
         })
     );
 
+    const reset = () => {
+        setFullName('')
+        setFatherName('')
+        setEmail('')
+        setCompanyProvideEmail('')
+        setPassword('')
+        setConfirmPassword('')
+        setDOB('')
+        setPhoneNumber('')
+        setEmergencyPhoneNumber('')
+        setEmergencyPhoneNumber2('')
+        setJoiningDate('')
+        setDepartment('')
+        setSalary('')
+        setProfilePic(null)
+        setContract(null)
+        setCNIC(null)
+        setCV(null)
+        setRefCnicPic(null)
+        setCnicNo('')
+        setAccTitle('')
+        setBranchCode('')
+        setBankAddress('')
+        setAccNo('')
+        setBankName('')
+        setRefName('')
+        setRefEmail('')
+        setRefPhoneNo('')
+        setRefCnicNo('')
+        setMultipleRoleSelection([])
+    }
 
     const submit = async (e) => {
         e.preventDefault();
         dispatch(startLoading());
         let roles = [];
         multipleRoleSelection.map(e => {
-            console.log('multipleRoleSelection', e.name);
             roles.push(e.name);
         })
+
+        if (password !== confirmPassword) {
+            toast.error("Password and confirm Password are not same", { position: toast.POSITION.TOP_RIGHT });
+            dispatch(stopLoading());
+            return
+        };
 
         const params = new FormData();
         params.append("name", fullName);
@@ -114,10 +150,14 @@ const List = () => {
         await fetch(CONSTANTS.API_URLS.BASE + 'user/register', options)
             .then(response => response.json())
             .then(e => {
+                if (e.status === 200) {
+                    dispatch(GetEmployees(token));
+                    toast.success(e?.message, { position: toast.POSITION.TOP_RIGHT });
+                    reset();
+                } else {
+                    toast.error(e?.message[0], { position: toast.POSITION.TOP_RIGHT });
+                }
                 dispatch(stopLoading());
-                dispatch(GetEmployees(token));
-                dispatch(getRoles(token));
-                toast.success(e?.message, { position: toast.POSITION.TOP_RIGHT });
             })
             .catch(err => {
                 dispatch(stopLoading());

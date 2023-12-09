@@ -17,6 +17,17 @@ const CreateCustomer = () => {
     const [platform, setPlatform] = useState('');
     const [salePerson, setSalePerson] = useState('');
 
+    const reset = () => {
+        setEmail('');
+        setFullName('');
+        setPhoneNumber('');
+        setTitle('');
+        setPlatform('');
+        setSalePerson('');
+        setPaidAm(0);
+        setTotal(0);
+    }
+
     const { token, user, category, plat, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
@@ -52,7 +63,7 @@ const CreateCustomer = () => {
             category_id: salePerson
         };
 
-        dispatch(CreateCustomerAPI(data, token))
+        dispatch(CreateCustomerAPI(data, token, reset))
     };
 
     const selectPlat = (e) => {

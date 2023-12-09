@@ -6,14 +6,15 @@ import { FormInput } from '../../../components';
 import { CreateProject } from '../../../redux/Slices/Project/Project';
 import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
+import { toast } from 'react-toastify';
 
 const AddLeadProjets = () => {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
-    const [bidBy, setBidBy] = useState('');
-    const [perName, setPerName] = useState('');
-    const [platId, setPlatId] = useState('');
-    const [selectCat, setSelectCat] = useState('');
+    const [bidBy, setBidBy] = useState();
+    const [perName, setPerName] = useState();
+    const [platId, setPlatId] = useState();
+    const [selectCat, setSelectCat] = useState();
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
     const [total, setTotal] = useState('');
@@ -33,6 +34,10 @@ const AddLeadProjets = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        if (bidBy || perName || platId || selectCat || title || desc || total || name || email || num) {
+            toast.success('Please enter all fields', { position: toast.POSITION.TOP_RIGHT });
+            return
+        }
         const data = {
             title: title,
             description: desc,
@@ -131,6 +136,7 @@ const AddLeadProjets = () => {
                                         <Form.Control
                                             value={paidAm}
                                             onChange={(e) => setPaidAm(e.target.value)}
+                                            type='number'
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
@@ -138,6 +144,7 @@ const AddLeadProjets = () => {
                                         <Form.Control
                                             value={total}
                                             onChange={(e) => setTotal(e.target.value)}
+                                            type='number'
                                         />
                                     </Form.Group>
 

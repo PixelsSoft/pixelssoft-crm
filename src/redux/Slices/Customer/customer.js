@@ -41,12 +41,13 @@ export const DeleteCustomer = (id, token, navigate) => async (dispatch) => {
     };
 };
 
-export const CreateCustomerAPI = (data, token) => async (dispatch) => {
+export const CreateCustomerAPI = (data, token, reset) => async (dispatch) => {
     try {
         const response = await CustomerService.AddCustomer(data, token);
         if (response?.message === "Customer Created Successfully") {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             dispatch(GetCustomer(token));
+            reset();
             return;
         } else {
             toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });

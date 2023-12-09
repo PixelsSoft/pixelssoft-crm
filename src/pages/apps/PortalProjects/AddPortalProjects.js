@@ -29,6 +29,17 @@ const AddPortalProjects = () => {
         })
     );
 
+    const reset = () => {
+        setBidBy()
+        setPerName()
+        setPlatId()
+        setSelectCat()
+        setTitle()
+        setDesc()
+        setTotal()
+        setPaidAm()
+    }
+
     const onSubmit = async (e) => {
         dispatch(startLoading());
         e.preventDefault();
@@ -43,7 +54,7 @@ const AddPortalProjects = () => {
             total_amount: total,
             type: "portal"
         };
-        await dispatch(CreateProject(data, token));
+        await dispatch(CreateProject(data, token, reset));
         dispatch(stopLoading());
     };
 

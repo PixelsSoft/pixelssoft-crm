@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row } from 'react-bootstrap';
-// import PSLogo from '../assets/images/pixelssoft-logo-transparent.png';
+import PSLogo from '../assets/images/logo-dark.png';
 import { useReactToPrint } from 'react-to-print';
 
 export default function InvoicePreview({ previewModal, toggle, componentRef, details }) {
@@ -19,7 +19,7 @@ export default function InvoicePreview({ previewModal, toggle, componentRef, det
                 style={{ width: '794px', height: '1123px', position: 'relative' }}>
                 <Row className="align-items-center">
                     <Col>
-                        {/* <img src={PSLogo} width={250} height={50} alt="" /> */}
+                        <img src={PSLogo} width={250} height={50} alt="" />
                     </Col>
                     <Col className="d-flex justify-content-end">
                         <div className="d-flex align-items-end flex-column">

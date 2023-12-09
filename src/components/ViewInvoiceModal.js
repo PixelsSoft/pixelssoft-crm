@@ -1,4 +1,5 @@
 import { Button, Col, Modal, Row } from 'react-bootstrap'
+import PSLogo from '../assets/images/logo-dark.png';
 import { useSelector } from 'react-redux';
 import Spinner from './Spinner';
 
@@ -24,6 +25,20 @@ const ViewInvoiceModal = ({ show, setShow, componentRef }) => {
                 ref={componentRef}
                 className="text-black px-3"
                 style={{ width: '794px', height: '1123px', position: 'relative' }}>
+                <Row className="align-items-center">
+                    <Col>
+                        <img src={PSLogo} width={250} height={50} alt="" />
+                    </Col>
+                    <Col className="d-flex justify-content-end">
+                        <div className="d-flex align-items-end flex-column">
+                            <h2>Invoice</h2>
+                            <span style={{ fontWeight: 'bold' }}>Pixels Soft</span>
+                            <span className="text-end">pixelssoft22@gmail.com</span>
+                        </div>
+                    </Col>
+                </Row>
+                <Row className="border-bottom border-secondary my-3" />
+
                 <Row>
                     <Col>
                         <div className="d-flex flex-column">

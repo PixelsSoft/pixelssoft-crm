@@ -6,6 +6,7 @@ import { FormInput } from '../../../components';
 import { AddnewCategory } from '../../../redux/Slices/Category/category';
 import { CreateNewPlatform } from '../../../redux/Slices/Platform/platform';
 import ButtonComp from '../../../components/ButtonComp';
+import Spinner from '../../../components/Spinner';
 
 export default function Management() {
     const dispatch = useDispatch();
@@ -16,11 +17,12 @@ export default function Management() {
     const [platTitle, setPlatTitle] = useState('');
     const [platDesc, setPlatDesc] = useState('');
 
-    const { category, token, platform } = useSelector(
+    const { category, token, platform, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
             category: state.Category.category,
-            platform: state.Platform.platform
+            platform: state.Platform.platform,
+            loading: state.utiltities.loading,
         })
     );
 
@@ -71,7 +73,11 @@ export default function Management() {
         },
     ];
 
-    return (
+    return loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
             <PageTitle
                 breadCrumbItems={[
@@ -81,7 +87,7 @@ export default function Management() {
             />
             <Card>
                 <Card.Body>
-                    <Tab.Container defaultActiveKey="Profile">
+                    <Tab.Container defaultActiveKey="Category">
                         <Nav as="ul" variant="pills" justify className="navtab-bg" style={{ maxWidth: 300 }}>
                             {(tabContents || []).map((tab, index) => {
                                 return (
@@ -91,7 +97,7 @@ export default function Management() {
                                             href="#"
                                             eventKey={tab.title}
                                         >
-                                            {tab.title}
+                                            {tab?.title}
                                         </Nav.Link>
                                     </Nav.Item>
                                 );
@@ -108,12 +114,12 @@ export default function Management() {
                                     >
                                         <Row>
                                             <Col >
-                                                <Button className="btn btn-danger mb-2" onClick={tab.function}>Add</Button>
+                                                <Button  className="btn btn-success mb-2" onClick={tab.function}>Add</Button>
                                             </Col>
                                         </Row>
                                         {tab?.titles?.map(val => {
                                             return (
-                                                <ButtonComp key={val.id} id={val.id} title={val.title} plat={tab.plat} />
+                                                <ButtonComp key={val?.id} id={val?.id} title={val?.title} plat={tab?.plat} />
                                             );
                                         })}
                                     </Tab.Pane>
@@ -123,46 +129,6 @@ export default function Management() {
                     </Tab.Container>
                 </Card.Body>
             </Card>
-            {/* <Row>
-                <Col>
-                    <Card>
-                        <Card.Body>
-                            <Row>
-                                <Col lg={6}>
-                                    <Row>
-                                        <Col>
-                                            <h3>Categories</h3>
-                                        </Col>
-                                        <Col>
-                                            <Button className="btn btn-danger mb-2" onClick={toggleResponsiveModal}>Add</Button>
-                                        </Col>
-                                    </Row>
-                                    {category.map(val => {
-                                        return (
-                                            <li key={val.id}>{val.title}</li>
-                                        );
-                                    })}
-                                </Col>
-                                <Col lg={6}>
-                                    <Row>
-                                        <Col>
-                                            <h3>Platforms</h3>
-                                        </Col>
-                                        <Col>
-                                            <Button className="btn btn-danger mb-2" onClick={togglePlatformModal}>Add</Button>
-                                        </Col>
-                                    </Row>
-                                    {platform.map(val => {
-                                        return (
-                                            <li key={val.id}>{val.title}</li>
-                                        );
-                                    })}
-                                </Col>
-                            </Row>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row> */}
             <Modal show={responsiveModal} onHide={toggleResponsiveModal}>
                 <Modal.Header closeButton>
                     <h4 className="modal-title">Add Category</h4>

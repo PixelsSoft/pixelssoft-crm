@@ -7,11 +7,12 @@ const initialState = {
     proectById: null
 }
 
-export const CreateProject = (data, token) => async (dispatch) => {
+export const CreateProject = (data, token, reset) => async (dispatch) => {
     try {
         const response = await ProjectService.AddProject(data, token);
         if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            reset();
         } else {
             toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
         };
