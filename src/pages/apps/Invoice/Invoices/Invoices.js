@@ -1,6 +1,5 @@
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import Table from '../../../../components/Table';
-import { records as data } from './data';
 import PageTitle from '../../../../components/PageTitle';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -124,7 +123,7 @@ const Invoices = () => {
         },
         {
             text: 'All',
-            value: data.length,
+            value: invoice?.length,
         },
     ];
 

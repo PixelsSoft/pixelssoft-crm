@@ -7,7 +7,9 @@ import Spinner from '../../../../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-import { AddExpense } from '../../../../redux/Slices/Expense/expense';
+import { AddExpense, DeleteExpense, GetExpenseById } from '../../../../redux/Slices/Expense/expense';
+import { Link } from 'react-router-dom';
+import EditExpenseModal from '../../../../components/EditExpenseModal';
 
 export default function Expenses() {
     const { expenseCategory, token, expenses, loading } = useSelector(
@@ -20,8 +22,8 @@ export default function Expenses() {
     );
 
     const dispatch = useDispatch();
-    // const [loading, setLoading] = useState(false);
     const [visibleModal, setVisibleModal] = useState(false);
+    const [exModal, setExModal] = useState(false);
     const [title, setTitle] = useState();
     const [amount, setAmount] = useState();
     const [date, setDate] = useState();
@@ -35,12 +37,46 @@ export default function Expenses() {
         setVisibleModal(!visibleModal);
     };
 
+    /* action column render */
+    const ActionColumn = ({ projectId }) => {
+        return (
+            <React.Fragment>
+                {/* <Link to="#" className="action-icon"
+                // onClick={() => viewInvoice(projectId)}
+                >
+                    {" "}
+                    <i className="mdi mdi-eye"></i>
+                </Link> */}
+                <Link to="#" className="action-icon" onClick={() => editEx(projectId)}>
+                    {" "}
+                    <i className="mdi mdi-square-edit-outline"></i>
+                </Link>
+                <Link to="#" className="action-icon" onClick={() => deleteExpense(projectId)}>
+                    {" "}
+                    <i className="mdi mdi-delete"></i>
+                </Link>
+            </React.Fragment>
+        );
+    };
+
+    const deleteExpense = async (id) => {
+        dispatch(startLoading())
+        await dispatch(DeleteExpense(id, token));
+        dispatch(stopLoading());
+    };
+
+    const editEx = async (id) => {
+        dispatch(startLoading());
+        await dispatch(GetExpenseById(id, token));
+        dispatch(stopLoading());
+        setExModal(!exModal);
+    };
+
+    const toggleEdit = () => {
+        setExModal(!exModal);
+    };
+
     const columns = [
-        // {
-        //     Header: 'Sno',
-        //     accessor: 'sno',
-        //     sort: true,
-        // },
         {
             Header: 'Date',
             accessor: 'invoice_date',
@@ -66,12 +102,12 @@ export default function Expenses() {
             accessor: 'file',
             sort: false,
         },
-        // {
-        //     Header: "Action",
-        //     accessor: "action",
-        //     sort: false,
-        //     Cell: ActionColumn,
-        // },
+        {
+            Header: "Action",
+            accessor: "action",
+            sort: false,
+            Cell: ({ row }) => <ActionColumn projectId={row.original.id} />,
+        },
     ];
 
     const sizePerPageList = [
@@ -97,7 +133,7 @@ export default function Expenses() {
     };
 
     const addExpense = async () => {
-        if (inDate === undefined || title == undefined || amount === undefined || catId === undefined || pay === undefined || file === undefined) {
+        if (inDate === undefined || title === undefined || amount === undefined || catId === undefined || pay === undefined || file === undefined) {
             toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
             return;
         };
@@ -110,17 +146,17 @@ export default function Expenses() {
         formData.append('file', file);
         console.log('formData', formData);
         // dispatch(startLoading());
-        // await dispatch(AddExpense(formData, token, reset));
+        await dispatch(AddExpense(formData, token, reset));
         // dispatch(stopLoading());
     };
 
     const reset = () => {
-        // setInDate();
-        // setTitle();
-        // setAmount();
-        // setCatId();
-        // setPay();
-        // setFile();
+        setInDate();
+        setTitle();
+        setAmount();
+        setCatId();
+        setPay();
+        setFile();
     };
 
     return loading ? (
@@ -318,8 +354,8 @@ export default function Expenses() {
                         Add Expense
                     </Button>
                 </Modal.Footer>
-            </Modal >
+            </Modal>
+            <EditExpenseModal visibleModal={exModal} toggleModal={toggleEdit} />
         </>
-
     )
 }

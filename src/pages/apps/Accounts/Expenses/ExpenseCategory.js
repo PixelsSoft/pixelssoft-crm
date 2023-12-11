@@ -45,10 +45,9 @@ export default function ExpenseCategory() {
     };
 
     const deleteCat = async ({ id }) => {
-        console.log('deleteCat', id);
-        // dispatch(startLoading());
-        // await dispatch(DeleteExpenseCategory(id, token));
-        // dispatch(startLoading());
+        dispatch(startLoading());
+        await dispatch(DeleteExpenseCategory(id, token));
+        dispatch(stopLoading());
     }
 
     const editCat = async (row) => {
