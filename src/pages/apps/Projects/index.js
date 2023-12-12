@@ -20,7 +20,7 @@ import PageTitle from "../../../components/PageTitle";
 import { projects, ProjectsList } from "./data";
 
 // single project
-const SingleProject = (props: { project: ProjectsList }) => {
+const SingleProject = (props) => {
   const project = props.project || {};
 
   return (
@@ -50,7 +50,7 @@ const SingleProject = (props: { project: ProjectsList }) => {
           </Dropdown.Menu>
         </Dropdown>
         <h4 className="mt-0">
-          <Link to="/apps/projects/details" className="text-dark">
+          <Link to="/apps/projects/:id/details" className="text-dark">
             {project.title}
           </Link>
         </h4>

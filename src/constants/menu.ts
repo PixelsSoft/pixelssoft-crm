@@ -125,26 +125,26 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Projects",
     isTitle: false,
     icon: "clipboard",
-    children: [
-      {
-        key: "project-list",
-        label: "List",
-        url: "/apps/projects/list",
-        parentKey: "projects",
-      },
-      {
-        key: "project-details",
-        label: "Details",
-        url: "/apps/projects/:id/details",
-        parentKey: "projects",
-      },
-      {
-        key: "project-create-project",
-        label: "Create Project",
-        url: "/apps/projects/create",
-        parentKey: "projects",
-      },
-    ],
+    // children: [
+    //   {
+    //     key: "project-list",
+    //     label: "List",
+    //     url: "/apps/projects/list",
+    //     parentKey: "projects",
+    //   },
+    //   {
+    //     key: "project-details",
+    //     label: "Details",
+    //     url: "/apps/projects/:id/details",
+    //     parentKey: "projects",
+    //   },
+    //   {
+    //     key: "project-create-project",
+    //     label: "Create Project",
+    //     url: "/apps/projects/create",
+    //     parentKey: "projects",
+    //   },
+    // ],
   },
   {
     key: "hr",
@@ -457,26 +457,26 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Projects",
     isTitle: false,
     icon: "briefcase",
-    children: [
-      {
-        key: "project-list",
-        label: "List",
-        url: "/apps/projects/list",
-        parentKey: "apps-projects",
-      },
-      {
-        key: "project-details",
-        label: "Details",
-        url: "/apps/projects/:id/details",
-        parentKey: "apps-projects",
-      },
-      {
-        key: "project-create-project",
-        label: "Create Project",
-        url: "/apps/projects/create",
-        parentKey: "apps-projects",
-      },
-    ],
+    // children: [
+    //   {
+    //     key: "project-list",
+    //     label: "List",
+    //     url: "/apps/projects/list",
+    //     parentKey: "apps-projects",
+    //   },
+    //   {
+    //     key: "project-details",
+    //     label: "Details",
+    //     url: "/apps/projects/:id/details",
+    //     parentKey: "apps-projects",
+    //   },
+    //   {
+    //     key: "project-create-project",
+    //     label: "Create Project",
+    //     url: "/apps/projects/create",
+    //     parentKey: "apps-projects",
+    //   },
+    // ],
   },
   {
     key: "apps-tasks",
@@ -1163,26 +1163,26 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         label: "Projects",
         isTitle: false,
         icon: "briefcase",
-        children: [
-          {
-            key: "project-list",
-            label: "List",
-            url: "/apps/projects/list",
-            parentKey: "projects",
-          },
-          {
-            key: "project-details",
-            label: "Details",
-            url: "/apps/projects/:id/details",
-            parentKey: "projects",
-          },
-          {
-            key: "project-create-project",
-            label: "Create Project",
-            url: "/apps/projects/create",
-            parentKey: "projects",
-          },
-        ],
+        // children: [
+        //   {
+        //     key: "project-list",
+        //     label: "List",
+        //     url: "/apps/projects/list",
+        //     parentKey: "projects",
+        //   },
+        //   {
+        //     key: "project-details",
+        //     label: "Details",
+        //     url: "/apps/projects/:id/details",
+        //     parentKey: "projects",
+        //   },
+        //   {
+        //     key: "project-create-project",
+        //     label: "Create Project",
+        //     url: "/apps/projects/create",
+        //     parentKey: "projects",
+        //   },
+        // ],
       },
       {
         key: "hr",
@@ -1463,26 +1463,26 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "briefcase",
         parentKey: "apps",
-        children: [
-          {
-            key: "project-list",
-            label: "List",
-            url: "/apps/projects/list",
-            parentKey: "apps-projects",
-          },
-          {
-            key: "project-details",
-            label: "Details",
-            url: "/apps/projects/:id/details",
-            parentKey: "apps-projects",
-          },
-          {
-            key: "project-create-project",
-            label: "Create Project",
-            url: "/apps/projects/create",
-            parentKey: "apps-projects",
-          },
-        ],
+        // children: [
+        //   {
+        //     key: "project-list",
+        //     label: "List",
+        //     url: "/apps/projects/list",
+        //     parentKey: "apps-projects",
+        //   },
+        //   {
+        //     key: "project-details",
+        //     label: "Details",
+        //     url: "/apps/projects/:id/details",
+        //     parentKey: "apps-projects",
+        //   },
+        //   {
+        //     key: "project-create-project",
+        //     label: "Create Project",
+        //     url: "/apps/projects/create",
+        //     parentKey: "apps-projects",
+        //   },
+        // ],
       },
       {
         key: "apps-tasks",
@@ -2205,26 +2205,26 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         label: "Projects",
         isTitle: false,
         icon: "briefcase",
-        children: [
-          {
-            key: "project-list",
-            label: "List",
-            url: "/apps/projects/list",
-            parentKey: "projects",
-          },
-          {
-            key: "project-details",
-            label: "Details",
-            url: "/apps/projects/:id/details",
-            parentKey: "projects",
-          },
-          {
-            key: "project-create-project",
-            label: "Create Project",
-            url: "/apps/projects/create",
-            parentKey: "projects",
-          },
-        ],
+        // children: [
+        //   {
+        //     key: "project-list",
+        //     label: "List",
+        //     url: "/apps/projects/list",
+        //     parentKey: "projects",
+        //   },
+        //   {
+        //     key: "project-details",
+        //     label: "Details",
+        //     url: "/apps/projects/:id/details",
+        //     parentKey: "projects",
+        //   },
+        //   {
+        //     key: "project-create-project",
+        //     label: "Create Project",
+        //     url: "/apps/projects/create",
+        //     parentKey: "projects",
+        //   },
+        // ],
       },
       {
         key: "hr",
@@ -2505,26 +2505,26 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "briefcase",
         parentKey: "apps",
-        children: [
-          {
-            key: "project-list",
-            label: "List",
-            url: "/apps/projects/list",
-            parentKey: "apps-projects",
-          },
-          {
-            key: "project-details",
-            label: "Details",
-            url: "/apps/projects/:id/details",
-            parentKey: "apps-projects",
-          },
-          {
-            key: "project-create-project",
-            label: "Create Project",
-            url: "/apps/projects/create",
-            parentKey: "apps-projects",
-          },
-        ],
+        // children: [
+        //   {
+        //     key: "project-list",
+        //     label: "List",
+        //     url: "/apps/projects/list",
+        //     parentKey: "apps-projects",
+        //   },
+        //   {
+        //     key: "project-details",
+        //     label: "Details",
+        //     url: "/apps/projects/:id/details",
+        //     parentKey: "apps-projects",
+        //   },
+        //   {
+        //     key: "project-create-project",
+        //     label: "Create Project",
+        //     url: "/apps/projects/create",
+        //     parentKey: "apps-projects",
+        //   },
+        // ],
       },
       {
         key: "apps-tasks",

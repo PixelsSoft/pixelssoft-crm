@@ -7,9 +7,10 @@ import Spinner from '../../../../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-import { AddExpense, DeleteExpense, GetExpenseById } from '../../../../redux/Slices/Expense/expense';
+import { DeleteExpense, GetExpense, GetExpenseById } from '../../../../redux/Slices/Expense/expense';
 import { Link } from 'react-router-dom';
 import EditExpenseModal from '../../../../components/EditExpenseModal';
+import { CONSTANTS } from '../../../../constants/constant';
 
 export default function Expenses() {
     const { expenseCategory, token, expenses, loading } = useSelector(
@@ -144,10 +145,39 @@ export default function Expenses() {
         formData.append('expense_category_id', catId);
         formData.append('pay_by', pay);
         formData.append('file', file);
-        console.log('formData', formData);
-        // dispatch(startLoading());
-        await dispatch(AddExpense(formData, token, reset));
-        // dispatch(stopLoading());
+        dispatch(startLoading());
+
+        var myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Authorization", `Bearer ${token}`);
+
+        const options = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formData,
+        };
+
+        await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.expense, options)
+            .then(response => response.json())
+            .then((e) => {
+                dispatch(stopLoading());
+                if (e?.status === 200) {
+                    toast.success(e?.message, { position: toast.POSITION.TOP_RIGHT });
+                    dispatch(GetExpense(token));
+                    reset();
+                    return
+                } else {
+                    toast.error(e?.message[0], { position: toast.POSITION.TOP_RIGHT });
+                    return;
+                };
+            })
+            .catch(err => {
+                dispatch(stopLoading());
+                console.log('addExpense err', err);
+                toast.error(err, { position: toast.POSITION.TOP_RIGHT });
+            });
+
+        // await dispatch(AddExpense(formData, token, reset));
     };
 
     const reset = () => {

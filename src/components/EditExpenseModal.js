@@ -31,10 +31,9 @@ const EditExpenseModal = ({ visibleModal, toggleModal }) => {
         formData.append("expense_category_id", catId);
         formData.append("pay_by", pay);
         formData.append("file", file);
-        console.log('formData', formData);
-        // dispatch(startLoading());
+        dispatch(startLoading());
         await dispatch(EditExpense(singleExpense?.id, formData, token, reset));
-        // dispatch(stopLoading());
+        dispatch(stopLoading());
         toggleModal();
     };
 

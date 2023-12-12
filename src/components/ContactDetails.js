@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DeleteEmployee, GetEmployeeById } from '../redux/Slices/employee/Employee';
 import EmployeeEditModal from './EmployeeEditModal';
+import { useNavigate } from 'react-router-dom';
 
 const ContactDetails = ({ contact }) => {
     const { token } = useSelector(state => state.Auth);
+    const naviage = useNavigate();
     const dispatch = useDispatch();
     const [editUserModal, setEditUserModal] = useState(false);
 
@@ -29,7 +31,7 @@ const ContactDetails = ({ contact }) => {
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={toggleEditModal}>Edit</Dropdown.Item>
                             <Dropdown.Item onClick={deleteEmp}>Delete</Dropdown.Item>
-                            {/* <Dropdown.Item>View Profile</Dropdown.Item> */}
+                            <Dropdown.Item onClick={() => naviage(`/apps/hr/viewEmployee/${contact.id}`)}>View Profile</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     <div>

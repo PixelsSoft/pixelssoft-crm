@@ -65,7 +65,6 @@ export const GetExpenseById = (id, token) => async (dispatch) => {
 export const EditExpense = (id, data, token, reset) => async (dispatch) => {
     try {
         const response = await ExpenseServices.EditExpense(id, data, token);
-        console.log('response', response);
         if (response.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             dispatch(GetExpense(token));

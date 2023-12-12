@@ -92,12 +92,12 @@ export default function InvoicePreview({ previewModal, toggle, componentRef, det
                             <div className="d-flex flex-column align-items-end">
                                 <div>
                                     <strong>Total:</strong>
-                                    <span style={{ marginLeft: 5 }}>${details?.price * details.quantity}</span>
+                                    <span style={{ marginLeft: 5 }}>${details?.price * details?.quantity}</span>
                                 </div>
 
                                 <div>
                                     <strong>Amount Due:</strong>
-                                    <strong style={{ marginLeft: 5 }}>${details?.price * details.quantity}</strong>
+                                    <strong style={{ marginLeft: 5 }}>${details?.price * details?.quantity}</strong>
                                 </div>
                             </div>
                         </Row>

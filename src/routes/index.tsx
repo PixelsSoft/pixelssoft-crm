@@ -7,6 +7,7 @@ import ListLeadProjects from "../pages/apps/LeadProjects/ListLeadProjects";
 import AddLeadProjets from "../pages/apps/LeadProjects/AddLeadProjets";
 import LeadProjectProfile from "../pages/apps/LeadProjects/LeadProjectProfile";
 import Report from "../pages/apps/Reports/Report";
+import ViewEmployee from "../pages/apps/Hr/Employees/ViewEmployee";
 
 
 // lazy load all the views
@@ -344,6 +345,12 @@ const hrRoutes: RoutesProps = {
       element: <AddEmployee />,
       route: PrivateRoute,
     },
+    {
+      path: "/apps/hr/viewEmployee/:employeeId",
+      name: "Add Employee",
+      element: <ViewEmployee />,
+      route: PrivateRoute,
+    },
   ],
 };
 //Portal Project Route
@@ -406,7 +413,7 @@ const LeadProjects: RoutesProps = {
 };
 
 // Project Routes
-const projectAppRoutes = {
+const projectAppRoutes: RoutesProps = {
   path: "/apps/projects",
   name: "Projects",
   route: PrivateRoute,

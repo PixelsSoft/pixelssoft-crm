@@ -1,6 +1,7 @@
 import { CONSTANTS } from "../../constants/constant";
 
 const AddExpense = async (data, token) => {
+    console.log('AddExpense', data, token)
     const onSuccess = (data) => {
         return data;
     };
@@ -107,13 +108,13 @@ const EditExpense = async (exId, data, token) => {
         throw error;
     };
 
+    var myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
     const options = {
         method: 'POST',
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'Accept': 'multipart/form-data',
-            'Authorization': `Bearer ${token}`
-        },
+        headers: myHeaders,
         body: data,
     };
 

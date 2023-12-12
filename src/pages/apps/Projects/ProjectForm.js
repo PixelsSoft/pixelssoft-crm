@@ -17,7 +17,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import PageTitle from "../../../components/PageTitle";
 import HyperDatepicker from "../../../components/Datepicker";
 import FileUploader from "../../../components/FileUploader";
-import { FormInput } from "../../../components/";
+import { FormInput } from "../../../components";
 
 import avatar1 from "../../../assets/images/users/user-6.jpg";
 import avatar2 from "../../../assets/images/users/user-7.jpg";
@@ -28,16 +28,16 @@ import avatar6 from "../../../assets/images/users/user-4.jpg";
 import avatar7 from "../../../assets/images/users/user-5.jpg";
 import avatar8 from "../../../assets/images/users/user-1.jpg";
 
-interface MemberTypes {
-  value: string;
-  name: string;
-  image: string;
-}
+// interface MemberTypes {
+//   value: string;
+//   name: string;
+//   image: string;
+// }
 
 const ProjectForm = () => {
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
-  const [teamMembers] = useState<MemberTypes[]>([
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [teamMembers] = useState([
     { value: "Shreyu N", name: "Shreyu N", image: avatar2 },
     { value: "Greeva N", name: "Greeva N", image: avatar5 },
     { value: "Dhyanu B", name: "Dhyanu B", image: avatar4 },
@@ -46,7 +46,7 @@ const ProjectForm = () => {
     { value: "Nik N", name: "Nik N", image: avatar1 },
     { value: "Rik N", name: "Rik N", image: avatar8 },
   ]);
-  const [selectedTeamMembers, setSelectedTeamMembers] = useState<MemberTypes[]>(
+  const [selectedTeamMembers, setSelectedTeamMembers] = useState(
     [
       { value: "Shreyu N", name: "Shreyu N", image: avatar1 },
       { value: "Greeva N", name: "Greeva N", image: avatar2 },
@@ -57,7 +57,7 @@ const ProjectForm = () => {
   /*
    *  add selected team members
    */
-  const selectTeamMembers = (e: any) => {
+  const selectTeamMembers = (e) => {
     if (e.length !== 0) {
       const isAlreadySelected = selectedTeamMembers.filter(
         (x) => x["name"] === e[0].name
@@ -88,6 +88,25 @@ const ProjectForm = () => {
     formState: { errors },
   } = methods;
 
+  const tabContents = [
+    {
+      id: 1,
+      title: "Category",
+      icon: "mdi mdi-home-variant",
+      function: toggleResponsiveModal,
+      plat: 0,
+      titles: category,
+    },
+    {
+      id: 2,
+      title: "Platform",
+      icon: "mdi mdi-account-circle",
+      function: togglePlatformModal,
+      plat: 1,
+      titles: platform,
+    },
+  ];
+
   return (
     <>
       <PageTitle
@@ -106,7 +125,7 @@ const ProjectForm = () => {
         <Col>
           <Card>
             <Card.Body>
-              <form onSubmit={handleSubmit(() => {})}>
+              <form onSubmit={handleSubmit(() => { })}>
                 <Row>
                   <Col xl={6}>
                     <FormInput
