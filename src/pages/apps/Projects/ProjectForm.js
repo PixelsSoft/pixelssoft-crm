@@ -88,24 +88,24 @@ const ProjectForm = () => {
     formState: { errors },
   } = methods;
 
-  const tabContents = [
-    {
-      id: 1,
-      title: "Category",
-      icon: "mdi mdi-home-variant",
-      function: toggleResponsiveModal,
-      plat: 0,
-      titles: category,
-    },
-    {
-      id: 2,
-      title: "Platform",
-      icon: "mdi mdi-account-circle",
-      function: togglePlatformModal,
-      plat: 1,
-      titles: platform,
-    },
-  ];
+  // const tabContents = [
+  //   {
+  //     id: 1,
+  //     title: "Category",
+  //     icon: "mdi mdi-home-variant",
+  //     function: toggleResponsiveModal,
+  //     plat: 0,
+  //     titles: category,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Platform",
+  //     icon: "mdi mdi-account-circle",
+  //     function: togglePlatformModal,
+  //     plat: 1,
+  //     titles: platform,
+  //   },
+  // ];
 
   return (
     <>
