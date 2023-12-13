@@ -17,7 +17,7 @@ const ViewLeadModal = ({ leadId, visibleModal, toggleModal }) => {
     );
 
     const dispatch = useDispatch();
-    const [plat, setPlat] = useState(leads?.platform);
+    const [plat, setPlat] = useState(leads?.platform?.id);
     const [name, setName] = useState(leads?.name);
     const [email, setEmail] = useState(leads?.email);
     const [phone, setPhone] = useState(leads?.phone);
@@ -45,7 +45,7 @@ const ViewLeadModal = ({ leadId, visibleModal, toggleModal }) => {
         <>
             <Modal size="lg" show={visibleModal} onHide={toggleModal}>
                 <Modal.Header closeButton>
-                    <h4 className="modal-title">Add Lead</h4>
+                    <h4 className="modal-title">Edit Lead</h4>
                 </Modal.Header>
                 <Modal.Body className="p-4">
                     <Row className='mb-3'>

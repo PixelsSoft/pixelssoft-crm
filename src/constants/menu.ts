@@ -125,6 +125,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Projects",
     isTitle: false,
     icon: "clipboard",
+    url: "/apps/projects/list",
     // children: [
     //   {
     //     key: "project-list",
@@ -457,6 +458,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Projects",
     isTitle: false,
     icon: "briefcase",
+    url: "/apps/projects/list",
     // children: [
     //   {
     //     key: "project-list",
@@ -1163,6 +1165,7 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         label: "Projects",
         isTitle: false,
         icon: "briefcase",
+        url: "/apps/projects/list",
         // children: [
         //   {
         //     key: "project-list",
@@ -1463,6 +1466,7 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "briefcase",
         parentKey: "apps",
+        url: "/apps/projects/list",
         // children: [
         //   {
         //     key: "project-list",
@@ -2205,6 +2209,7 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         label: "Projects",
         isTitle: false,
         icon: "briefcase",
+        url: "/apps/projects/list",
         // children: [
         //   {
         //     key: "project-list",
@@ -2505,6 +2510,7 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "briefcase",
         parentKey: "apps",
+        url: "/apps/projects/list",
         // children: [
         //   {
         //     key: "project-list",

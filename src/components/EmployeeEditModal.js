@@ -1,16 +1,79 @@
 import { Button, Modal } from 'react-bootstrap'
 import FormInput from './FormInput'
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 const EmployeeEditModal = ({ editUserModal, toggleEditModal }) => {
-    // const { loading, employee } = useSelector(
-    //     (state) => ({
-    //         loading: state.utiltities.loading,
-    //         employee: state.Employees.singleEmployee
-    //     })
-    // );
+    const { loading, employee } = useSelector(
+        (state) => ({
+            loading: state.utiltities.loading,
+            employee: state.Employees.singleEmployee
+        })
+    );
 
-    // console.log('EmployeeEditModal', employee);
+    const [fullName, setFullName] = useState(employee?.name);
+    const [fatherName, setFatherName] = useState(employee?.detail?.father_name);
+    const [email, setEmail] = useState(employee?.email);
+    const [companyProvideEmail, setCompanyProvideEmail] = useState(employee?.detail?.company_provided_email);
+    // const [password, setPassword] = useState('');
+    // const [confirmPassword, setConfirmPassword] = useState('');
+    const [DOB, setDOB] = useState(employee?.detail?.dob);
+    const [phoneNumber, setPhoneNumber] = useState(employee?.detail?.phone_no);
+    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState(employee?.detail?.emergency_phone_no);
+    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState(employee?.detail?.emergency_phone_no_2);
+    const [joiningDate, setJoiningDate] = useState(employee?.detail?.joining_date);
+    const [department, setDepartment] = useState('');
+    const [salary, setSalary] = useState(employee?.detail?.salary);
+    const [profilePic, setProfilePic] = useState(employee?.detail?.profile_img);
+    const [contract, setContract] = useState(employee?.detail?.contract_upload);
+    const [CNIC, setCNIC] = useState(employee?.detail?.cnic_img);
+    const [CnicNo, setCnicNo] = useState(employee?.detail?.cnic_no);
+    const [CV, setCV] = useState(employee?.detail?.cv_upload);
+    const [multipleRoleSelection, setMultipleRoleSelection] = useState(employee?.roles);
+    const [accTitle, setAccTitle] = useState('');
+    const [branchCode, setBranchCode] = useState('');
+    const [bankAddress, setBankAddress] = useState('');
+    const [accNo, setAccNo] = useState('');
+    const [bankName, setBankName] = useState('');
+    const [refName, setRefName] = useState('');
+    const [refEmail, setRefEmail] = useState('');
+    const [refPhoneNo, setRefPhoneNo] = useState('');
+    const [refCnicNo, setRefCnicNo] = useState('');
+    const [refCnicPic, setRefCnicPic] = useState(null);
+
+    console.log('EmployeeEditModal', employee);
+
+    // const reset = () => {
+    //     setFullName('')
+    //     setFatherName('')
+    //     setEmail('')
+    //     setCompanyProvideEmail('')
+    //     setPassword('')
+    //     setConfirmPassword('')
+    //     setDOB('')
+    //     setPhoneNumber('')
+    //     setEmergencyPhoneNumber('')
+    //     setEmergencyPhoneNumber2('')
+    //     setJoiningDate('')
+    //     setDepartment('')
+    //     setSalary('')
+    //     setProfilePic(null)
+    //     setContract(null)
+    //     setCNIC(null)
+    //     setCV(null)
+    //     setRefCnicPic(null)
+    //     setCnicNo('')
+    //     setAccTitle('')
+    //     setBranchCode('')
+    //     setBankAddress('')
+    //     setAccNo('')
+    //     setBankName('')
+    //     setRefName('')
+    //     setRefEmail('')
+    //     setRefPhoneNo('')
+    //     setRefCnicNo('')
+    //     setMultipleRoleSelection([])
+    // }
 
     return (
         <Modal show={editUserModal} onHide={toggleEditModal} centered>
@@ -24,14 +87,18 @@ const EmployeeEditModal = ({ editUserModal, toggleEditModal }) => {
                     name="name"
                     placeholder="Enter name"
                     containerClass={'mb-3'}
+                    value={fullName}
+                    onChange={e => setFullName(e.target.name)}
                 />
 
                 <FormInput
-                    label={'Position'}
+                    label={'Email'}
                     type="text"
-                    name="position"
-                    placeholder="Enter position"
+                    name="email"
+                    placeholder="Enter email"
                     containerClass={'mb-3'}
+                    value={email}
+                    onChange={e => setEmail(e.target.name)}
                 />
 
                 <FormInput
