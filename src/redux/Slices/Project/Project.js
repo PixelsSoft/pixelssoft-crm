@@ -63,7 +63,7 @@ export const DeleteProject = (projectId, token, navigate, lead) => async (dispat
         const response = await ProjectService.DeletProject(projectId, token);
         if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
-            if (lead == 1) {
+            if (lead === 1) {
                 navigate('/apps/leadProjects');
             } else {
                 navigate('/apps/portalProjects');
