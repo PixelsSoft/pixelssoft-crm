@@ -58,7 +58,9 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleClose }) => {
             platform: platform,
             category_id: salePerson
         };
-        dispatch(UpdateCustomerAPI(profileId, data, token));
+        dispatch(startLoading());
+        await dispatch(UpdateCustomerAPI(profileId, data, token, toggleClose));
+        dispatch(stopLoading());
     }
 
     const selectPlat = (e) => {

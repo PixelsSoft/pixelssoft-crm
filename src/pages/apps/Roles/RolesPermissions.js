@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { FormInput } from '../../../components';
 import { useDispatch, useSelector } from 'react-redux';
 import { CreateNewRole, DeleteRole, UpdateRole } from '../../../redux/Slices/Roles/Roles';
+import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
+import Spinner from '../../../components/Spinner';
 
 export default function RolesPermissions() {
     const dispatch = useDispatch();
@@ -16,10 +18,11 @@ export default function RolesPermissions() {
     const [openView, setOpenView] = useState(false);
     const [viewName, setViewName] = useState('');
 
-    const { roles, token } = useSelector(
+    const { roles, token, loading } = useSelector(
         (state) => ({
             roles: state.Roles.roles,
             token: state.Auth.token,
+            loading: state.utiltities.loading,
         })
     );
 
@@ -47,7 +50,9 @@ export default function RolesPermissions() {
     };
 
     const delRole = async ({ id }) => {
-        dispatch(DeleteRole(id, token));
+        dispatch(startLoading());
+        await dispatch(DeleteRole(id, token));
+        dispatch(stopLoading());
     }
 
     /* action column render */
@@ -84,7 +89,6 @@ export default function RolesPermissions() {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ActionColumn,
             Cell: ({ row }) => <ActionColumn projectId={row.original} />,
         },
     ];
@@ -112,19 +116,27 @@ export default function RolesPermissions() {
         const data = {
             name: name
         };
-
-        dispatch(CreateNewRole(data, token));
+        dispatch(startLoading());
+        await dispatch(CreateNewRole(data, token));
+        dispatch(stopLoading());
+        toggleResponsiveModal();
     };
 
     const updateRole = async () => {
         const data = {
             name: name
         };
-
-        dispatch(UpdateRole(id, data, token));
+        dispatch(startLoading());
+        await dispatch(UpdateRole(id, data, token));
+        closeEdit();
+        dispatch(stopLoading());
     };
 
-    return (
+    return loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
             <PageTitle
                 breadCrumbItems={[

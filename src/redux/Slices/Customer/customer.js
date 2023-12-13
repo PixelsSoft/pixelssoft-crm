@@ -30,6 +30,7 @@ export const DeleteCustomer = (id, token, navigate) => async (dispatch) => {
         const response = await CustomerService.DeleteCustomer(id, token);
         if (response.message === "Customer Deleted Successfully") {
             toast.success(response.message, { position: toast.POSITION.TOP_RIGHT });
+            navigate('/apps/customers');
             dispatch(GetCustomer(token));
             return;
         } else {
@@ -58,11 +59,16 @@ export const CreateCustomerAPI = (data, token, reset) => async (dispatch) => {
     };
 };
 
-export const UpdateCustomerAPI = (profileId, data, token) => async (dispatch) => {
+export const UpdateCustomerAPI = (profileId, data, token, toggleClose) => async (dispatch) => {
     try {
         const response = await CustomerService.UpdateCustomer(profileId, data, token);
-        toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
-        dispatch(GetSingleCustomer(profileId, token));
+        if (response?.message === 'Customer Updated Successfully') {
+            toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            toggleClose();
+            dispatch(GetCustomer(token));
+        } else {
+            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+        };
     } catch (error) {
         console.log("error===========>", error)
     };

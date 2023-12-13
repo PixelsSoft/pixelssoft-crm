@@ -21,11 +21,12 @@ const CreateInvoice = () => {
     const [invoiceDate, setInvoiceDate] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [price, setPrice] = useState(0);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(0);
     const [description, setDescription] = useState('');
     const [memo, setMemo] = useState('');
     const [previewModal, setPreviewModal] = useState(false)
     const [detail, setDetail] = useState();
+    const [country, setCountry] = useState('');
     const componentRef = useRef();
 
     const { token, user, category, loading } = useSelector(
@@ -36,6 +37,23 @@ const CreateInvoice = () => {
             loading: state.utiltities.loading,
         })
     );
+
+    const reset = () => {
+        setInvoiceDate('');
+        setDescription('');
+        setCurrency('');
+        setDueDate('');
+        setProjectName('');
+        setMemo('');
+        setCustomerEmail('');
+        setCustomerName('');
+        setPhoneNumber('');
+        setCountry('');
+        setAddress('');
+        setQuantity(0)
+        setPrice(0)
+        setProjectCategory(undefined);
+    }
 
     const toggle = () => {
         const data = {
@@ -52,7 +70,6 @@ const CreateInvoice = () => {
             name: customerName,
             phone: phoneNumber,
             category_id: projectCategory,
-            platform: 'Facebook',
             address: address
         };
         setDetail(data);
@@ -77,16 +94,17 @@ const CreateInvoice = () => {
             name: customerName,
             phone: phoneNumber,
             category_id: projectCategory,
-            platform: 'Facebook',
-            address: address
+            address: address,
+            country: country
         };
 
-        if (!projectName || !price || !quantity || !currency || !customerEmail || !projectCategory) {
+        if (!projectName || !address || !phoneNumber || !description || !customerName || !memo || !dueDate || !invoiceDate || !price || !quantity || !currency || !customerEmail || !projectCategory || !country) {
             toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
+            dispatch(stopLoading());
             return;
         };
 
-        await dispatch(AddInvoice(data, token));
+        await dispatch(AddInvoice(data, token, reset));
         dispatch(stopLoading());
     };
 
@@ -96,6 +114,24 @@ const CreateInvoice = () => {
 
     const handleRedirect = () => {
         window.location.href = 'https://crmupd.pixelssoft.com/invoice/MOe3GAkRFD6CW9Nz';
+    };
+
+    const changeQuant = (e) => {
+        if (e.target.value >= 1) {
+            setQuantity(parseInt(e.target.value))
+        };
+    };
+
+    const changePrice = (e) => {
+        if (e.target.value >= 1) {
+            setPrice(parseInt(e.target.value))
+        };
+    };
+
+    const numFunc = (e) => {
+        if (e.target.value >= 0) {
+            setPhoneNumber(e.target.value)
+        };
     };
 
     return loading ? (
@@ -181,13 +217,22 @@ const CreateInvoice = () => {
                                         placeholder="1234 Main St"
                                     />
                                 </Form.Group>
+                                <Form.Group className="mb-3" controlId="formGridAddress1">
+                                    <Form.Label>Country</Form.Label>
+                                    <Form.Control
+                                        value={country}
+                                        onChange={(e) => setCountry(e.target.value)}
+                                        placeholder="america"
+                                    />
+                                </Form.Group>
 
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridCity">
                                         <Form.Label>Phone</Form.Label>
                                         <Form.Control
+                                            type='phone'
                                             value={phoneNumber}
-                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                            onChange={(e) => numFunc(e)}
                                         />
                                     </Form.Group>
 
@@ -234,14 +279,14 @@ const CreateInvoice = () => {
                                                     <Form.Control
                                                         type="number"
                                                         value={quantity}
-                                                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                                        onChange={(e) => changeQuant(e)}
                                                     />
                                                 </td>
                                                 <td>
                                                     <Form.Control
                                                         type="number"
                                                         value={price}
-                                                        onChange={(e) => setPrice(parseInt(e.target.value))}
+                                                        onChange={(e) => changePrice(e)}
                                                     />
                                                 </td>
                                                 <td>${quantity * price}</td>

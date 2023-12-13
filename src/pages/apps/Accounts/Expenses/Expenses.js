@@ -11,6 +11,7 @@ import { DeleteExpense, GetExpense, GetExpenseById } from '../../../../redux/Sli
 import { Link } from 'react-router-dom';
 import EditExpenseModal from '../../../../components/EditExpenseModal';
 import { CONSTANTS } from '../../../../constants/constant';
+import ViewExpense from '../../../../components/ViewExpense';
 
 export default function Expenses() {
     const { expenseCategory, token, expenses, loading } = useSelector(
@@ -24,6 +25,7 @@ export default function Expenses() {
 
     const dispatch = useDispatch();
     const [visibleModal, setVisibleModal] = useState(false);
+    const [openView, setOpenView] = useState(false);
     const [exModal, setExModal] = useState(false);
     const [title, setTitle] = useState();
     const [amount, setAmount] = useState();
@@ -42,23 +44,29 @@ export default function Expenses() {
     const ActionColumn = ({ projectId }) => {
         return (
             <React.Fragment>
-                {/* <Link to="#" className="action-icon"
-                // onClick={() => viewInvoice(projectId)}
-                >
+                <Link className="action-icon" onClick={() => ViewExpenseFunc(projectId)}>
                     {" "}
                     <i className="mdi mdi-eye"></i>
-                </Link> */}
-                <Link to="#" className="action-icon" onClick={() => editEx(projectId)}>
+                </Link>
+                <Link className="action-icon" onClick={() => editEx(projectId)}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link to="#" className="action-icon" onClick={() => deleteExpense(projectId)}>
+                <Link className="action-icon" onClick={() => deleteExpense(projectId)}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
             </React.Fragment>
         );
     };
+
+    const ViewExpenseFunc = async (id) => {
+        dispatch(startLoading())
+        await dispatch(GetExpenseById(id, token));
+        dispatch(stopLoading());
+        setOpenView(!openView);
+    };
+    dispatch(stopLoading());
 
     const deleteExpense = async (id) => {
         dispatch(startLoading())
@@ -98,11 +106,11 @@ export default function Expenses() {
             accessor: 'expense_category_id',
             sort: false,
         },
-        {
-            Header: 'file',
-            accessor: 'file',
-            sort: false,
-        },
+        // {
+        //     Header: 'file',
+        //     accessor: 'file',
+        //     sort: false,
+        // },
         {
             Header: "Action",
             accessor: "action",
@@ -386,6 +394,7 @@ export default function Expenses() {
                 </Modal.Footer>
             </Modal>
             <EditExpenseModal visibleModal={exModal} toggleModal={toggleEdit} />
+            <ViewExpense show={openView} setShow={setOpenView} />
         </>
     )
 }

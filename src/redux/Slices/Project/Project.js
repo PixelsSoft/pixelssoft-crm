@@ -42,11 +42,13 @@ export const GetProjectById = (projectId, token) => async (dispatch) => {
     };
 };
 
-export const CreateMilestone = (projectId, data, token) => async (dispatch) => {
+export const CreateMilestone = (projectId, data, token, toggleModal) => async (dispatch) => {
     try {
         const response = await ProjectService.CreateMilestone(projectId, data, token);
         if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            toggleModal();
+            GetProjectById(projectId, token);
         } else {
             toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
         };
@@ -56,11 +58,16 @@ export const CreateMilestone = (projectId, data, token) => async (dispatch) => {
     };
 };
 
-export const DeleteProject = (projectId, token) => async (dispatch) => {
+export const DeleteProject = (projectId, token, navigate, lead) => async (dispatch) => {
     try {
         const response = await ProjectService.DeletProject(projectId, token);
         if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            if (lead == 1) {
+                navigate('/apps/leadProjects');
+            } else {
+                navigate('/apps/portalProjects');
+            }
             dispatch(GetProject(token));
         } else {
             toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
@@ -70,12 +77,13 @@ export const DeleteProject = (projectId, token) => async (dispatch) => {
     };
 };
 
-export const UpdateProject = (projectId, data, token) => async (dispatch) => {
+export const UpdateProject = (projectId, data, token, toggleEditModal) => async (dispatch) => {
     try {
         const response = await ProjectService.UpdateProject(projectId, data, token);
         if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
-            dispatch(GetProjectById(projectId, token));
+            toggleEditModal();
+            dispatch(GetProject(token));
         } else {
             toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
         };

@@ -7,6 +7,7 @@ import { AddnewCategory } from '../../../redux/Slices/Category/category';
 import { CreateNewPlatform } from '../../../redux/Slices/Platform/platform';
 import ButtonComp from '../../../components/ButtonComp';
 import Spinner from '../../../components/Spinner';
+import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 
 export default function Management() {
     const dispatch = useDispatch();
@@ -34,24 +35,27 @@ export default function Management() {
         setOpenPlatform(!openPlatform);
     };
 
-    const addCategory = () => {
+    const addCategory = async () => {
         const data = {
             title: title,
             description: desc
         };
-
-        dispatch(AddnewCategory(data, token));
+        dispatch(startLoading());
+        await dispatch(AddnewCategory(data, token));
         toggleResponsiveModal();
+        dispatch(stopLoading());
     };
 
-    const addPlatform = () => {
+    const addPlatform = async () => {
         const data = {
             title: platTitle,
             description: platDesc
         };
 
-        dispatch(CreateNewPlatform(data, token));
+        dispatch(startLoading());
+        await dispatch(CreateNewPlatform(data, token));
         togglePlatformModal();
+        dispatch(stopLoading());
     };
 
     const tabContents = [
@@ -94,7 +98,6 @@ export default function Management() {
                                     <Nav.Item as="li" key={index}>
                                         <Nav.Link
                                             className="cursor-pointer"
-                                            href="#"
                                             eventKey={tab.title}
                                         >
                                             {tab?.title}
@@ -114,7 +117,7 @@ export default function Management() {
                                     >
                                         <Row>
                                             <Col >
-                                                <Button  className="btn btn-success mb-2" onClick={tab.function}>Add</Button>
+                                                <Button className="btn btn-success mb-2" onClick={tab.function}>Add</Button>
                                             </Col>
                                         </Row>
                                         {tab?.titles?.map(val => {
@@ -164,13 +167,13 @@ export default function Management() {
                     >
                         Close
                     </button>
-                    <button
+                    <Button
                         type="button"
-                        className="btn btn-info waves-effect waves-light"
+                        className="btn btn-success waves-effect waves-light"
                         onClick={addCategory}
                     >
                         Update
-                    </button>
+                    </Button>
                 </Modal.Footer>
             </Modal>
             <Modal show={openPlatform} onHide={togglePlatformModal}>
@@ -201,20 +204,20 @@ export default function Management() {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <button
+                    <Button
                         type="button"
                         className="btn btn-secondary waves-effect"
                         onClick={togglePlatformModal}
                     >
                         Close
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         type="button"
-                        className="btn btn-info waves-effect waves-light"
+                        className="btn btn-success waves-effect waves-light"
                         onClick={addPlatform}
                     >
                         Update
-                    </button>
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </>

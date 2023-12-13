@@ -64,7 +64,7 @@ export default function InvoicePreview({ previewModal, toggle, componentRef, det
                         </div>
                         <div className="d-flex justify-content-end">
                             <strong>Amount Due ({details?.currency_code}):</strong>
-                            <span style={{ marginLeft: 5 }}>${details?.price}</span>
+                            <span style={{ marginLeft: 5 }}>${details?.price * details?.quantity}</span>
                         </div>
                     </Col>
                 </Row>

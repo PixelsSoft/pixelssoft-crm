@@ -82,7 +82,7 @@ const getEmployee = async (token) => {
 
 const DelteEmployee = async (id, token) => {
     const onSuccess = (data) => {
-        return data.data;
+        return data;
     };
 
     const onFailure = error => {
@@ -126,7 +126,32 @@ const GetEmployeeId = async (id, token) => {
         .catch(onFailure)
 };
 
+const UpdateEmployee = async (id, data, token) => {
+    const onSuccess = (data) => {
+        return data.data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: data,
+    };
+
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getEmployee + '/' + id, options)
+        .then(response => response.json())
+        .then(onSuccess)
+        .catch(onFailure)
+};
+
 const EmployeeService = {
+    UpdateEmployee,
     GetEmployeeId,
     DelteEmployee,
     getEmployee,

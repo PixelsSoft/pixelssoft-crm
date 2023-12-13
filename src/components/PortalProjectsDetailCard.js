@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities';
 import EditPortalProject from './EditPortalProject';
 import { DeleteProject } from '../redux/Slices/Project/Project';
+import { useNavigate } from 'react-router-dom';
 
 const PortalProjectsDetailCard = ({ contact }) => {
     const { token, } = useSelector(
@@ -12,6 +13,7 @@ const PortalProjectsDetailCard = ({ contact }) => {
         })
     );
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [editUserModal, setEditUserModal] = useState(false);
 
@@ -19,7 +21,7 @@ const PortalProjectsDetailCard = ({ contact }) => {
 
     const del = async () => {
         dispatch(startLoading());
-        await dispatch(DeleteProject(contact.projectId, token));
+        await dispatch(DeleteProject(contact.projectId, token, navigate));
         dispatch(stopLoading());
     };
 

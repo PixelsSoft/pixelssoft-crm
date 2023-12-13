@@ -43,7 +43,7 @@ export default function PortalProjects() {
 
     const del = async (id) => {
         dispatch(startLoading());
-        await dispatch(DeleteProject(id, token));
+        await dispatch(DeleteProject(id, token, navigate));
         dispatch(stopLoading());
     }
 
@@ -68,6 +68,10 @@ export default function PortalProjects() {
 
     const toggleEditModal = (id) => {
         setId(id);
+        setEditUserModal(!editUserModal);
+    }
+
+    const closeProject = () => {
         setEditUserModal(!editUserModal);
     }
 
@@ -160,7 +164,7 @@ export default function PortalProjects() {
                 </Col>
             </Row>
             {editUserModal ? (
-                <EditPortalProject projectId={id} editUserModal={editUserModal} toggleEditModal={toggleEditModal} />
+                <EditPortalProject projectId={id} editUserModal={editUserModal} toggleEditModal={closeProject} />
             ) : null}
         </React.Fragment>
     );

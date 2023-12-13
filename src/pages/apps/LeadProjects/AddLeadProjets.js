@@ -17,8 +17,8 @@ const AddLeadProjets = () => {
     const [selectCat, setSelectCat] = useState();
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
-    const [total, setTotal] = useState('');
-    const [paidAm, setPaidAm] = useState('');
+    const [total, setTotal] = useState(0);
+    const [paidAm, setPaidAm] = useState(0);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [num, setNum] = useState('')
@@ -29,6 +29,7 @@ const AddLeadProjets = () => {
             category: state.Category.category,
             platforms: state.Platform.platform,
             employee: state.Employees.employees,
+            loading: state.utiltities.loading,
         })
     );
 
@@ -48,10 +49,6 @@ const AddLeadProjets = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        if (bidBy || perName || platId || selectCat || title || desc || total || name || email || num) {
-            toast.error('Please enter all fields', { position: toast.POSITION.TOP_RIGHT });
-            return
-        }
         const data = {
             title: title,
             description: desc,
@@ -63,6 +60,10 @@ const AddLeadProjets = () => {
             total_amount: total,
             type: "lead"
         };
+        if (bidBy === undefined || perName === undefined || platId === undefined || selectCat === undefined || title === '' || desc === '' || total === '' || paidAm === '') {
+            toast.error('Please enter all fields', { position: toast.POSITION.TOP_RIGHT });
+            return
+        }
         dispatch(startLoading());
         await dispatch(CreateProject(data, token, reset));
         dispatch(stopLoading());
@@ -74,6 +75,24 @@ const AddLeadProjets = () => {
             setData(filteredArray);
         };
     };
+
+    const totalAmount = (e) => {
+        if (e.target.value >= 0) {
+            setTotal(e.target.value)
+        }
+    }
+
+    const paidAmount = (e) => {
+        if (e.target.value >= 0) {
+            setPaidAm(e.target.value)
+        }
+    }
+
+    const number = (e) => {
+        if (e.target.value >= 0) {
+            setNum(e.target.value)
+        }
+    }
 
     useEffect(() => {
         filterSales();
@@ -149,7 +168,7 @@ const AddLeadProjets = () => {
                                         <Form.Label>Paid Amount</Form.Label>
                                         <Form.Control
                                             value={paidAm}
-                                            onChange={(e) => setPaidAm(e.target.value)}
+                                            onChange={(e) => paidAmount(e)}
                                             type='number'
                                         />
                                     </Form.Group>
@@ -157,7 +176,7 @@ const AddLeadProjets = () => {
                                         <Form.Label>Total Amount</Form.Label>
                                         <Form.Control
                                             value={total}
-                                            onChange={(e) => setTotal(e.target.value)}
+                                            onChange={(e) => totalAmount(e)}
                                             type='number'
                                         />
                                     </Form.Group>
@@ -182,8 +201,9 @@ const AddLeadProjets = () => {
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Client Number</Form.Label>
                                         <Form.Control
+                                            type='number'
                                             value={num}
-                                            onChange={(e) => setNum(e.target.value)}
+                                            onChange={(e) => number(e)}
                                         />
                                     </Form.Group>
 

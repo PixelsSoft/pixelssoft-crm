@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import PageTitle from '../../../components/PageTitle';
@@ -65,8 +65,9 @@ const ListLeadProjects = () => {
     }
 
     const del = async (id) => {
+        let lead = 1
         dispatch(startLoading());
-        await dispatch(DeleteProject(id, token));
+        await dispatch(DeleteProject(id, token, navigate, lead));
         dispatch(stopLoading());
     };
 
@@ -104,12 +105,12 @@ const ListLeadProjects = () => {
         },
     ];
 
-    const filterProjects = () => {
+    const filterProjects = useCallback(() => {
         if (project?.length > 0) {
             const filteredArray = project.filter((item) => item.type === "lead");
             setData(filteredArray);
         };
-    };
+    }, [project]);
 
     useEffect(() => {
         filterProjects();

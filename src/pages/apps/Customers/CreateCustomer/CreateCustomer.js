@@ -5,6 +5,7 @@ import PageTitle from '../../../../components/PageTitle';
 import { toast } from 'react-toastify';
 import { CreateCustomerAPI } from '../../../../redux/Slices/Customer/customer';
 import Spinner from '../../../../components/Spinner';
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 
 const CreateCustomer = () => {
     const dispatch = useDispatch()
@@ -62,8 +63,9 @@ const CreateCustomer = () => {
             platform: platform,
             category_id: salePerson
         };
-
-        dispatch(CreateCustomerAPI(data, token, reset))
+        dispatch(startLoading());
+        await dispatch(CreateCustomerAPI(data, token, reset))
+        dispatch(stopLoading());
     };
 
     const selectPlat = (e) => {
@@ -75,6 +77,24 @@ const CreateCustomer = () => {
         e.preventDefault();
         setSalePerson(e.target.value);
     };
+
+    const phoneFunc = (e) => {
+        if (e.target.value >= 0) {
+            setPhoneNumber(e.target.value);
+        }
+    }
+
+    const paidFunc = (e) => {
+        if (e.target.value >= 0) {
+            setPaidAm(e.target.value);
+        }
+    }
+
+    const totalFunc = (e) => {
+        if (e.target.value >= 0) {
+            setTotal(e.target.value);
+        }
+    }
 
     return loading ? (
         <div className='d-flex justify-content-center align-items-center'>
@@ -123,8 +143,9 @@ const CreateCustomer = () => {
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Phone Number</Form.Label>
                                         <Form.Control
+                                            type='number'
                                             value={phoneNumber}
-                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                            onChange={(e) => phoneFunc(e)}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -141,15 +162,17 @@ const CreateCustomer = () => {
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Paid Amount</Form.Label>
                                         <Form.Control
+                                            type='number'
                                             value={paidAm}
-                                            onChange={(e) => setPaidAm(e.target.value)}
+                                            onChange={(e) => paidFunc(e)}
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Total Amount</Form.Label>
                                         <Form.Control
+                                            type='number'
                                             value={total}
-                                            onChange={(e) => setTotal(e.target.value)}
+                                            onChange={(e) => totalFunc(e)}
                                         />
                                     </Form.Group>
 

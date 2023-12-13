@@ -46,6 +46,7 @@ export const GetEmployees = (token) => async (dispatch) => {
 export const DeleteEmployee = (id, token) => async (dispatch) => {
     try {
         const response = await EmployeeService.DelteEmployee(id, token);
+        console.log('response', response);
         toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
         dispatch(GetEmployees(token));
     } catch (error) {
@@ -58,6 +59,17 @@ export const GetEmployeeById = (id, token) => async (dispatch) => {
     try {
         const response = await EmployeeService.GetEmployeeId(id, token);
         dispatch(SingleEmployee(response));
+    } catch (error) {
+        dispatch(stopLoading())
+        console.log("DeleteEmployee error===========>", error)
+    }
+}
+
+export const UpdateEmployee = (id, data, token, reset) => async (dispatch) => {
+    try {
+        const response = await EmployeeService.UpdateEmployee(id, data, token);
+        console.log('UpdateEmployee', response);
+        // dispatch(GetEmployees(token));
     } catch (error) {
         dispatch(stopLoading())
         console.log("DeleteEmployee error===========>", error)

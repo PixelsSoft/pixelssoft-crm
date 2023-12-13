@@ -115,6 +115,7 @@ export default function ExpenseCategory() {
         dispatch(startLoading());
         await dispatch(EditExpenseCategory(id, data, token, reset));
         dispatch(stopLoading());
+        close();
     };
 
     const addCat = async () => {

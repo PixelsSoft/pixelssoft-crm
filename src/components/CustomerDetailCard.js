@@ -1,9 +1,5 @@
-import { Button, Card, Dropdown, Modal } from 'react-bootstrap';
-
-// types
-// import { Contact } from '../pages/apps/Contacts/List/types';
+import { Card, Dropdown } from 'react-bootstrap';
 import { useState } from 'react';
-import FormInput from './FormInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities';
 import { DeleteCustomer } from '../redux/Slices/Customer/customer';
@@ -12,6 +8,7 @@ import CustomerEditModal from './CustomerEditModal';
 
 const CustomerDetailCard = ({ contact }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [editUserModal, setEditUserModal] = useState(false);
 
     const toggleClose = async () => {
@@ -26,7 +23,7 @@ const CustomerDetailCard = ({ contact }) => {
 
     const del = async () => {
         dispatch(startLoading());
-        await dispatch(DeleteCustomer(contact.profileId, token));
+        await dispatch(DeleteCustomer(contact.profileId, token, navigate));
         dispatch(stopLoading());
     };
 

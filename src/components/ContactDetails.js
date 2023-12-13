@@ -29,7 +29,7 @@ const ContactDetails = ({ contact }) => {
                             <i className="mdi mdi-dots-vertical"></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={toggleEditModal}>Edit</Dropdown.Item>
+                            <Dropdown.Item onClick={() => naviage(`/apps/hr/editEmployee/${contact.id}`)}>Edit</Dropdown.Item>
                             <Dropdown.Item onClick={deleteEmp}>Delete</Dropdown.Item>
                             <Dropdown.Item onClick={() => naviage(`/apps/hr/viewEmployee/${contact.id}`)}>View Profile</Dropdown.Item>
                         </Dropdown.Menu>
@@ -103,7 +103,7 @@ const ContactDetails = ({ contact }) => {
                     </div>
                 </Card.Body>
             </Card>
-            <EmployeeEditModal editUserModal={editUserModal} toggleEditModal={toggleEditModal} />
+            {/* <EmployeeEditModal editUserModal={editUserModal} toggleEditModal={toggleEditModal} /> */}
         </>
     );
 };

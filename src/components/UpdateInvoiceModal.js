@@ -45,6 +45,18 @@ const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, })
         setPreviewModal(!previewModal);
     }
 
+    const changeQuant = (e) => {
+        if (e.target.value >= 1) {
+            setQuantity(parseInt(e.target.value))
+        };
+    };
+
+    const changePrice = (e) => {
+        if (e.target.value >= 1) {
+            setPrice(parseInt(e.target.value))
+        };
+    };
+
     return loading ? (
         <div className='d-flex justify-content-center'>
             <Spinner className="m-2" color={'primary'} />
@@ -117,14 +129,14 @@ const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, })
                                     <Form.Control
                                         type="number"
                                         value={quantity}
-                                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                        onChange={(e) => changeQuant(e)}
                                     />
                                 </td>
                                 <td>
                                     <Form.Control
                                         type="number"
                                         value={price}
-                                        onChange={(e) => setPrice(parseInt(e.target.value))}
+                                        onChange={(e) => changePrice(e)}
                                     />
                                 </td>
                                 <td>${quantity * price}</td>

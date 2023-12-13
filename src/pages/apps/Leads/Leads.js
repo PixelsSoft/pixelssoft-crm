@@ -14,11 +14,11 @@ import ViewLeadModal from '../../../components/ViewLeadModal';
 export default function Leads() {
     const dispatch = useDispatch();
     const [visibleModal, setVisibleModal] = useState(false);
-    const [plat, setPlat] = useState();
+    const [plat, setPlat] = useState('');
     const [category, setCategory] = useState();
     const [name, setName] = useState();
     const [email, setEmail] = useState();
-    const [phone, setPhone] = useState();
+    const [phone, setPhone] = useState('');
     const [note, setNote] = useState();
     const [viewEdit, setViewEdit] = useState(false);
     const [view, setView] = useState(false);
@@ -171,7 +171,7 @@ export default function Leads() {
     };
 
     const addnew = async () => {
-        if (name === undefined || plat === undefined || email === undefined || phone === undefined || note === undefined) {
+        if (name === undefined || plat === '' || plat === 'no Selected' || email === undefined || phone === undefined || note === undefined) {
             toast.error("Enter all fields", { position: toast.POSITION.TOP_RIGHT });
             return;
         };
@@ -186,6 +186,12 @@ export default function Leads() {
         await dispatch(AddLead(data, token, reset));
         dispatch(stopLoading());
     };
+
+    const phoneFunc = (e) => {
+        if (e.target.value >= 0) {
+            setPhone(e.target.value);
+        }
+    }
 
     return loading ? (
         <div className='d-flex justify-content-center align-items-center'>
@@ -302,8 +308,9 @@ export default function Leads() {
                             <Form.Group as={Col} controlId="formGridPassword">
                                 <Form.Label>Phone No</Form.Label>
                                 <Form.Control
+                                    type='number'
                                     value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
+                                    onChange={(e) => phoneFunc(e)}
                                 />
                             </Form.Group>
                         </Col>

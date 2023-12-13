@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Button, Col, Form, Modal } from 'react-bootstrap'
+import { Button, Modal } from 'react-bootstrap'
 import FormInput from './FormInput';
 import { useDispatch, useSelector } from 'react-redux';
-// import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities';
 import { GetProjectById, UpdateProject } from '../redux/Slices/Project/Project';
 import Spinner from './Spinner';
+import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities';
 
 const EditPortalProject = ({ projectId, editUserModal, toggleEditModal }) => {
 
@@ -22,11 +22,11 @@ const EditPortalProject = ({ projectId, editUserModal, toggleEditModal }) => {
     const dispatch = useDispatch();
     const [title, setTitle] = useState(project?.title);
     const [desc, setDesc] = useState(project?.description);
-    const [platform, setPlatform] = useState(project?.platform?.id)
-    const [salePerson, setSalePerson] = useState(project?.closedby?.id);
+    const [platform, setPlatform] = useState(project?.platform_id)
+    const [salePerson, setSalePerson] = useState(project?.category_id);
     const [data, setData] = useState([]);
     const [bidBy, setBidBy] = useState(project?.bidby?.id);
-    const [perName, setPerName] = useState(project?.category?.id);
+    const [perName, setPerName] = useState(project?.closedby?.id);
     const [total, setTotal] = useState(project?.total_amount);
     const [paidAm, setPaidAm] = useState(project?.platform_id);
 
@@ -41,17 +41,16 @@ const EditPortalProject = ({ projectId, editUserModal, toggleEditModal }) => {
             paid_amount: paidAm,
             total_amount: total
         };
-
-        dispatch(UpdateProject(projectId, data, token));
+        dispatch(startLoading());
+        await dispatch(UpdateProject(projectId, data, token, toggleEditModal));
+        dispatch(stopLoading());
     }
 
     const selectPlat = (e) => {
-        e.preventDefault();
         setPlatform(e.target.value);
     };
 
     const changeCat = (e) => {
-        e.preventDefault();
         setSalePerson(e.target.value);
     };
 
@@ -106,52 +105,70 @@ const EditPortalProject = ({ projectId, editUserModal, toggleEditModal }) => {
                     onChange={e => setDesc(e.target.value)}
                 />
 
-                <Form.Group as={Col} controlId="formGridState">
-                    <Form.Label>Bid</Form.Label>
-                    <Form.Select onChange={(e) => setBidBy(e.target.value)}>
-                        <option>Choose...</option>
-                        {data.map(val => {
-                            return (
-                                <option key={val.id} value={val.id}>{val.name}</option>
-                            );
-                        })}
-                    </Form.Select>
-                </Form.Group>
-                <Form.Group as={Col} controlId="formGridState">
-                    <Form.Label>Close By</Form.Label>
-                    <Form.Select onChange={(e) => setPerName(e.target.value)}>
-                        <option>Choose...</option>
-                        {data.map(val => {
-                            return (
-                                <option key={val.id} value={val.id}>{val.name}</option>
-                            );
-                        })}
-                    </Form.Select>
-                </Form.Group>
-
-                <Form.Group as={Col} controlId="formGridState">
-                    <Form.Label>Platform</Form.Label>
-                    <Form.Select onChange={(e) => selectPlat(e)}>
-                        <option>Choose...</option>
-                        {plat.map(val => {
-                            return (
-                                <option key={val.id}>{val.title}</option>
-                            );
-                        })}
-                    </Form.Select>
-                </Form.Group>
-
-                <Form.Group as={Col} controlId="formGridState">
-                    <Form.Label>category By</Form.Label>
-                    <Form.Select onChange={(e) => changeCat(e)}>
-                        <option>Choose...</option>
-                        {category.map(val => {
-                            return (
-                                <option key={val.id} value={val.id}>{val.title}</option>
-                            );
-                        })}
-                    </Form.Select>
-                </Form.Group>
+                <FormInput
+                    label="Bid By"
+                    name="select"
+                    type="select"
+                    className="form-select"
+                    key="Bid"
+                    value={bidBy}
+                    onChange={(e) => setBidBy(e.target.value)}
+                >
+                    <option>no Selected</option>
+                    {data?.map(val => {
+                        return (
+                            <option key={val.id} value={val.id}>{val.name}</option>
+                        );
+                    })}
+                </FormInput>
+                <FormInput
+                    label="Close By"
+                    name="select"
+                    type="select"
+                    className="form-select"
+                    key="Close"
+                    value={perName}
+                    onChange={(e) => setPerName(e.target.value)}
+                >
+                    <option>no Selected</option>
+                    {data?.map(val => {
+                        return (
+                            <option key={val.id} value={val.id}>{val.name}</option>
+                        );
+                    })}
+                </FormInput>
+                <FormInput
+                    label="Platform"
+                    name="select"
+                    type="select"
+                    className="form-select"
+                    key="Platform"
+                    value={platform}
+                    onChange={(e) => selectPlat(e)}
+                >
+                    <option>no Selected</option>
+                    {plat?.map(val => {
+                        return (
+                            <option key={val.id} value={val.id}>{val.name}</option>
+                        );
+                    })}
+                </FormInput>
+                <FormInput
+                    label="category"
+                    name="select"
+                    type="select"
+                    className="form-select"
+                    key="category"
+                    value={salePerson}
+                    onChange={(e) => changeCat(e)}
+                >
+                    <option>no Selected</option>
+                    {category?.map(val => {
+                        return (
+                            <option key={val.id} value={val.id}>{val.name}</option>
+                        );
+                    })}
+                </FormInput>
 
                 <FormInput
                     label={'Paid amount'}

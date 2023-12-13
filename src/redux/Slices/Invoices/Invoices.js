@@ -16,11 +16,16 @@ export const GetInvoice = (token) => async (dispatch) => {
     };
 };
 
-export const AddInvoice = (data, token) => async (dispatch) => {
+export const AddInvoice = (data, token, reset) => async (dispatch) => {
     try {
         const response = await InvoiceService.CreateInvoice(data, token);
-        toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
-        dispatch(GetInvoice(token));
+        if (response.status === 200) {
+            reset();
+            toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            dispatch(GetInvoice(token));
+        } else {
+            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+        };
         return response;
     } catch (error) {
         console.log("error===========>", error)
@@ -52,7 +57,7 @@ export const UpdateInvoice = (projectId, body, token) => async (dispatch) => {
     try {
         const response = await InvoiceService.UpdateInvoice(projectId, body, token);
         toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
-        dispatch(GetInvoice(response));
+        dispatch(GetInvoice(token));
         return response;
     } catch (error) {
         console.log("error===========>", error)

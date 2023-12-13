@@ -16,8 +16,8 @@ const AddPortalProjects = () => {
     const [selectCat, setSelectCat] = useState();
     const [title, setTitle] = useState();
     const [desc, setDesc] = useState();
-    const [total, setTotal] = useState();
-    const [paidAm, setPaidAm] = useState();
+    const [total, setTotal] = useState(0);
+    const [paidAm, setPaidAm] = useState(0);
 
     const { token, category, platforms, employee, loading } = useSelector(
         (state) => ({
@@ -64,6 +64,18 @@ const AddPortalProjects = () => {
             setData(filteredArray);
         };
     };
+
+    const PaidAmountFunc = (e) => {
+        if (e.target.value >= 0) {
+            setPaidAm(e.target.value);
+        }
+    }
+
+    const totalFunc = (e) => {
+        if (e.target.value >= 0) {
+            setTotal(e.target.value);
+        }
+    }
 
     useEffect(() => {
         filterSales();
@@ -137,15 +149,17 @@ const AddPortalProjects = () => {
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Paid Amount</Form.Label>
                                         <Form.Control
+                                            type='number'
                                             value={paidAm}
-                                            onChange={(e) => setPaidAm(e.target.value)}
+                                            onChange={(e) => PaidAmountFunc(e)}
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Total Amount</Form.Label>
                                         <Form.Control
+                                            type='number'
                                             value={total}
-                                            onChange={(e) => setTotal(e.target.value)}
+                                            onChange={(e) => totalFunc(e)}
                                         />
                                     </Form.Group>
 

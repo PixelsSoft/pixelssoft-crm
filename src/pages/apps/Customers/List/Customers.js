@@ -1,6 +1,5 @@
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import Table from '../../../../components/Table';
-import { records as data } from './data';
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import PageTitle from '../../../../components/PageTitle';
@@ -9,25 +8,6 @@ import Spinner from '../../../../components/Spinner';
 import { DeleteCustomer } from '../../../../redux/Slices/Customer/customer';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import CustomerEditModal from '../../../../components/CustomerEditModal';
-
-const sizePerPageList = [
-    {
-        text: '5',
-        value: 5,
-    },
-    {
-        text: '10',
-        value: 10,
-    },
-    {
-        text: '25',
-        value: 25,
-    },
-    {
-        text: 'All',
-        value: data.length,
-    },
-];
 
 const Customers = () => {
     const dispatch = useDispatch();
@@ -43,9 +23,28 @@ const Customers = () => {
         })
     );
 
+    const sizePerPageList = [
+        {
+            text: '5',
+            value: 5,
+        },
+        {
+            text: '10',
+            value: 10,
+        },
+        {
+            text: '25',
+            value: 25,
+        },
+        {
+            text: 'All',
+            value: customer.length,
+        },
+    ];
+
     const del = async (id) => {
         dispatch(startLoading());
-        await dispatch(DeleteCustomer(id, token));
+        await dispatch(DeleteCustomer(id, token, navigate));
         dispatch(stopLoading());
     };
 

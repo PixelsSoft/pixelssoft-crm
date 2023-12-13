@@ -9,6 +9,7 @@ import { FormInput } from '../../../components';
 import { CreateMilestone, GetProjectById } from '../../../redux/Slices/Project/Project';
 import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
+import { toast } from 'react-toastify';
 
 const columns = [
     {
@@ -64,17 +65,17 @@ const sizePerPageList = [
 const CustomerProfile = () => {
     const { projectId } = useParams();
     const dispatch = useDispatch();
-    const [desc, setDesc] = useState();
-    const [amount, setAmount] = useState();
+    const [desc, setDesc] = useState('');
+    const [amount, setAmount] = useState('');
     const [standard, setStandard] = useState(false);
-    const [startDate, setStartDate] = useState();
-    const [endDate, setEndDate] = useState();
-    const [status, setStatus] = useState();
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [status, setStatus] = useState('');
 
     const { token, user, project, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
-            user: state.Auth,
+            user: state.Auth.user,
             category: state.Category.category,
             project: state.Projects.proectById,
             loading: state.utiltities.loading,
@@ -97,8 +98,12 @@ const CustomerProfile = () => {
             start_date: startDate,
             end_date: endDate
         };
+        if (desc === '' || amount === '' || startDate === '' || endDate === '' || status === '') {
+            toast.error('Enter all field', { position: toast.POSITION.TOP_RIGHT });
+            return
+        };
         dispatch(startLoading());
-        await dispatch(CreateMilestone(projectId, data, token));
+        await dispatch(CreateMilestone(projectId, data, token, toggleModal));
         dispatch(stopLoading());
     };
 
@@ -109,6 +114,12 @@ const CustomerProfile = () => {
     const toggleModal = () => {
         setStandard(!standard);
     };
+
+    const amountFunc = (e) => {
+        if (e.target.value >= 0) {
+            setAmount(e.target.value)
+        }
+    }
 
     return loading ? (
         <div className='d-flex justify-content-center align-items-center'>
@@ -239,7 +250,7 @@ const CustomerProfile = () => {
                         <Form.Control
                             value={amount}
                             type='number'
-                            onChange={(e) => setAmount(e.target.value)}
+                            onChange={(e) => amountFunc(e)}
                         />
                     </Form.Group>
 

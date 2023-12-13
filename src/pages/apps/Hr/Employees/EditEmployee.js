@@ -1,90 +1,92 @@
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import MaskedInput from 'react-text-mask';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../../components/PageTitle';
 import { FormInput } from '../../../../components';
-import { GetEmployees } from '../../../../redux/Slices/employee/Employee';
+import { GetEmployeeById } from '../../../../redux/Slices/employee/Employee';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import { CONSTANTS } from '../../../../constants/constant';
 import { toast } from 'react-toastify';
 import Spinner from '../../../../components/Spinner';
+import { useParams } from 'react-router-dom';
 
-const List = () => {
-    const [fullName, setFullName] = useState('');
-    const [fatherName, setFatherName] = useState('');
-    const [email, setEmail] = useState('');
-    const [companyProvideEmail, setCompanyProvideEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [DOB, setDOB] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState('');
-    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState('');
-    const [joiningDate, setJoiningDate] = useState('');
-    const [department, setDepartment] = useState('');
-    const [salary, setSalary] = useState();
-    const [profilePic, setProfilePic] = useState(null);
-    const [contract, setContract] = useState(null);
-    const [CNIC, setCNIC] = useState(null);
-    const [CnicNo, setCnicNo] = useState('');
-    const [CV, setCV] = useState(null);
-    const [multipleRoleSelection, setMultipleRoleSelection] = useState([]);
-    const [accTitle, setAccTitle] = useState('');
-    const [branchCode, setBranchCode] = useState('');
-    const [bankAddress, setBankAddress] = useState('');
-    const [accNo, setAccNo] = useState('');
-    const [bankName, setBankName] = useState('');
-    const [refName, setRefName] = useState('');
-    const [refEmail, setRefEmail] = useState('');
-    const [refPhoneNo, setRefPhoneNo] = useState('');
-    const [refCnicNo, setRefCnicNo] = useState('');
-    const [refCnicPic, setRefCnicPic] = useState(null);
-    const [target, setTarget] = useState(0);
-    const [comm, setComm] = useState(0);
-    const dispatch = useDispatch();
-
-    const { loading, token, roles } = useSelector(
+const EditEmployee = () => {
+    const { employeeId } = useParams();
+    const { loading, token, roles, employee } = useSelector(
         (state) => ({
             loading: state.utiltities.loading,
             token: state.Auth.token,
-            roles: state.Roles.roles
+            roles: state.Roles.roles,
+            employee: state.Employees.singleEmployee
         })
     );
 
-    const reset = () => {
-        setFullName('')
-        setFatherName('')
-        setEmail('')
-        setCompanyProvideEmail('')
-        setPassword('')
-        setConfirmPassword('')
-        setDOB('')
-        setPhoneNumber('')
-        setEmergencyPhoneNumber('')
-        setEmergencyPhoneNumber2('')
-        setJoiningDate('')
-        setDepartment('')
-        setSalary('')
-        setProfilePic(null)
-        setContract(null)
-        setCNIC(null)
-        setCV(null)
-        setRefCnicPic(null)
-        setCnicNo('')
-        setAccTitle('')
-        setBranchCode('')
-        setBankAddress('')
-        setAccNo('')
-        setBankName('')
-        setRefName('')
-        setRefEmail('')
-        setRefPhoneNo('')
-        setRefCnicNo('')
-        setMultipleRoleSelection([])
-    }
+    // console.log('employee', employee);
+
+    const [fullName, setFullName] = useState(employee?.name);
+    const [fatherName, setFatherName] = useState(employee?.detail?.father_name);
+    const [email, setEmail] = useState(employee?.email);
+    const [companyProvideEmail, setCompanyProvideEmail] = useState(employee?.detail?.company_provided_email);
+    const [DOB, setDOB] = useState(employee?.detail?.dob);
+    const [phoneNumber, setPhoneNumber] = useState(employee?.detail?.phone_no);
+    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState(employee?.detail?.emergency_phone_no);
+    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState(employee?.detail?.emergency_phone_no_2);
+    const [joiningDate, setJoiningDate] = useState(employee?.detail?.joining_date);
+    const [department, setDepartment] = useState('');
+    const [salary, setSalary] = useState(employee?.detail?.salary);
+    const [profilePic, setProfilePic] = useState(employee?.detail?.profile_img);
+    const [contract, setContract] = useState(employee?.detail?.contract_upload);
+    const [CNIC, setCNIC] = useState(employee?.detail?.cnic_img);
+    const [CnicNo, setCnicNo] = useState(employee?.detail?.cnic_no);
+    const [CV, setCV] = useState(employee?.detail?.cv_upload);
+    const [multipleRoleSelection, setMultipleRoleSelection] = useState(employee?.roles);
+    // const [password, setPassword] = useState('');
+    // const [confirmPassword, setConfirmPassword] = useState('');
+    // const [accTitle, setAccTitle] = useState('');
+    // const [branchCode, setBranchCode] = useState('');
+    // const [bankAddress, setBankAddress] = useState('');
+    // const [accNo, setAccNo] = useState('');
+    // const [bankName, setBankName] = useState('');
+    // const [refName, setRefName] = useState('');
+    // const [refEmail, setRefEmail] = useState('');
+    // const [refPhoneNo, setRefPhoneNo] = useState('');
+    // const [refCnicNo, setRefCnicNo] = useState('');
+    // const [refCnicPic, setRefCnicPic] = useState(null);
+    const dispatch = useDispatch();
+
+    // const reset = () => {
+    //     setFullName('')
+    //     setFatherName('')
+    //     setEmail('')
+    //     setCompanyProvideEmail('')
+    //     // setPassword('')
+    //     // setConfirmPassword('')
+    //     setDOB('')
+    //     setPhoneNumber('')
+    //     setEmergencyPhoneNumber('')
+    //     setEmergencyPhoneNumber2('')
+    //     setJoiningDate('')
+    //     setDepartment('')
+    //     setSalary('')
+    //     setProfilePic(null)
+    //     setContract(null)
+    //     setCNIC(null)
+    //     setCV(null)
+    //     setRefCnicPic(null)
+    //     setCnicNo('')
+    //     setAccTitle('')
+    //     setBranchCode('')
+    //     setBankAddress('')
+    //     setAccNo('')
+    //     setBankName('')
+    //     setRefName('')
+    //     setRefEmail('')
+    //     setRefPhoneNo('')
+    //     setRefCnicNo('')
+    //     setMultipleRoleSelection([])
+    // }
 
     const submit = async (e) => {
         e.preventDefault();
@@ -93,12 +95,6 @@ const List = () => {
         multipleRoleSelection.map(e => {
             roles.push(e.name);
         })
-
-        if (password !== confirmPassword) {
-            toast.error("Password and confirm Password are not same", { position: toast.POSITION.TOP_RIGHT });
-            dispatch(stopLoading());
-            return
-        };
 
         const params = new FormData();
         params.append("name", fullName);
@@ -123,48 +119,48 @@ const List = () => {
         if (contract !== null) {
             params.append("contract_upload", contract);
         };
-        if (refCnicPic !== null) {
-            params.append("reference_profile_img", refCnicPic);
-        };
+        // if (refCnicPic !== null) {
+        //     params.append("reference_profile_img", refCnicPic);
+        // };
         params.append("salary", salary);
-        params.append("account_title", accTitle);
-        params.append("accound_number", accNo);
-        params.append("bank_name", bankName);
-        params.append("branch_address", branchCode);
-        params.append("reference_name", refName);
-        params.append("reference_email", refEmail);
-        params.append("reference_cnic_no", refCnicNo);
-        params.append("reference_phone_no", refPhoneNo);
-        params.append("password", password);
-        params.append("password_confirmation", confirmPassword);
+        // params.append("account_title", accTitle);
+        // params.append("accound_number", accNo);
+        // params.append("bank_name", bankName);
+        // params.append("branch_address", branchCode);
+        // params.append("reference_name", refName);
+        // params.append("reference_email", refEmail);
+        // params.append("reference_cnic_no", refCnicNo);
+        // params.append("reference_phone_no", refPhoneNo);
+        // params.append("password", password);
+        // params.append("password_confirmation", confirmPassword);
         params.append("roles", roles);
-        params.append("department_id", 1);
+        // params.append("department_id", 1);
 
-        const options = {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: params,
-        };
+        // const options = {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Authorization': `Bearer ${token}`,
+        //     },
+        //     body: params,
+        // };
 
-        await fetch(CONSTANTS.API_URLS.BASE + 'user/register', options)
-            .then(response => response.json())
-            .then(e => {
-                if (e.status === 200) {
-                    dispatch(GetEmployees(token));
-                    toast.success(e?.message, { position: toast.POSITION.TOP_RIGHT });
-                    reset();
-                } else {
-                    toast.error(e?.message[0], { position: toast.POSITION.TOP_RIGHT });
-                }
-                dispatch(stopLoading());
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log("err", err);
-            });
+        // await fetch(CONSTANTS.API_URLS.BASE + 'user/register', options)
+        //     .then(response => response.json())
+        //     .then(e => {
+        //         if (e.status === 200) {
+        //             dispatch(GetEmployees(token));
+        //             toast.success(e?.message, { position: toast.POSITION.TOP_RIGHT });
+        //             reset();
+        //         } else {
+        //             toast.error(e?.message[0], { position: toast.POSITION.TOP_RIGHT });
+        //         }
+        dispatch(stopLoading());
+        //     })
+        //     .catch(err => {
+        //         dispatch(stopLoading());
+        //         console.log("err", err);
+        //     });
         // await dispatch(AddEmployee(params, token));
         // dispatch(stopLoading());
     };
@@ -186,12 +182,12 @@ const List = () => {
     };
 
     // Reference CNIC picture Upload
-    const handleRefCNICFileChange = (event) => {
-        if (event.target.files) {
-            const file = event.target.files[0];
-            setRefCnicPic(file);
-        }
-    };
+    // const handleRefCNICFileChange = (event) => {
+    //     if (event.target.files) {
+    //         const file = event.target.files[0];
+    //         setRefCnicPic(file);
+    //     }
+    // };
 
     // CV picture Upload
     const handleCVFileChange = (event) => {
@@ -214,17 +210,15 @@ const List = () => {
         setMultipleRoleSelection(selected);
     };
 
-    const targetFunc = (e) => {
-        if (e.target.value >= 0) {
-            setTarget(e.target.value);
-        }
-    }
+    const getEmployee = async () => {
+        dispatch(startLoading());
+        await dispatch(GetEmployeeById(employeeId, token));
+        dispatch(stopLoading());
+    };
 
-    const comFunc = (e) => {
-        if (e.target.value >= 0) {
-            setComm(e.target.value)(e.target.value);
-        }
-    }
+    useEffect(() => {
+        getEmployee();
+    }, []);
 
     return loading ? (
         <div className='d-flex justify-content-center align-items-center'>
@@ -237,7 +231,7 @@ const List = () => {
                     { label: "Employee", path: "/apps/hr/employees/" },
                     { label: "Addn Employee", path: "/apps/hr/employee/addEmployee", active: true },
                 ]}
-                title={"Add Employee"}
+                title={"Edit Employee"}
             />
             <Row>
                 <Col xs={12}>
@@ -267,7 +261,7 @@ const List = () => {
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                         />
-                                        <FormInput
+                                        {/* <FormInput
                                             label="Password"
                                             type="password"
                                             name="password"
@@ -276,19 +270,15 @@ const List = () => {
                                             key="password"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                        />
+                                        /> */}
                                         <FormInput
                                             label="Date of Birth"
                                             type="date"
                                             name="date"
                                             containerClass={'mb-3'}
-
                                             key="date"
                                             value={DOB}
-                                            onChange={(e) => {
-                                                setDOB(e.target.value)
-                                            }}
-
+                                            onChange={(e) => setDOB(e.target.value)}
                                         />
                                         <div className="mb-3">
                                             <label className="form-label">Phone Number with Area Code</label> <br />
@@ -329,7 +319,6 @@ const List = () => {
                                                     /\d/,
                                                     /\d/,
                                                     /\d/,
-
                                                     '-',
                                                     /\d/,
                                                     /\d/,
@@ -342,25 +331,17 @@ const List = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={emergencyPhoneNumber}
-                                                onChange={(e) => {
-                                                    setEmergencyPhoneNumber(e.target.value)
-                                                }}
+                                                onChange={(e) => setEmergencyPhoneNumber(e.target.value)}
                                             />
                                         </div>
-
                                         <FormInput
                                             label="Joining Date"
                                             type="date"
                                             name="date"
                                             containerClass={'mb-3'}
-
                                             key="join date"
                                             value={joiningDate}
-                                            onChange={(e) => {
-                                                setJoiningDate(e.target.value)
-                                            }}
-
-
+                                            onChange={(e) => setJoiningDate(e.target.value)}
                                         />
                                         <FormInput
                                             label="Cnic Upload"
@@ -376,11 +357,8 @@ const List = () => {
                                             type="file"
                                             name="file"
                                             containerClass={'mb-3'}
-
                                             onChange={handleCVFileChange}
                                             key="cv file"
-
-
                                         />
                                         <FormInput
                                             label="Salary "
@@ -388,30 +366,21 @@ const List = () => {
                                             name="number"
                                             placeholder="Salary"
                                             containerClass={'mb-3'}
-
-                                            key="Salary"
+                                            key="Number"
                                             value={salary}
-                                            onChange={(e) => {
-                                                setSalary(e.target.valueAsNumber)
-                                            }}
-
-
+                                            onChange={(e) => setSalary(e.target.valueAsNumber)}
                                         />
                                     </Col>
                                     <Col lg={6}>
-
                                         <FormInput
                                             label="Father Name"
                                             type="text"
                                             name="Name"
                                             placeholder="Father Name"
                                             containerClass={'mb-3'}
-
                                             key="text"
                                             value={fatherName}
-                                            onChange={(e) => {
-                                                setFatherName(e.target.value)
-                                            }}
+                                            onChange={(e) => setFatherName(e.target.value)}
                                         />
                                         <FormInput
                                             label="Company Provided Email"
@@ -419,31 +388,20 @@ const List = () => {
                                             name="email"
                                             placeholder="Company Provided Email"
                                             containerClass={'mb-3'}
-
                                             key="email"
                                             value={companyProvideEmail}
-                                            onChange={(e) => {
-                                                setCompanyProvideEmail(e.target.value)
-                                            }}
-
-
-
+                                            onChange={(e) => setCompanyProvideEmail(e.target.value)}
                                         />
-                                        <FormInput
+                                        {/* <FormInput
                                             label="Confirm Password"
                                             type="password"
                                             name="password"
                                             placeholder="Confirm Password"
                                             containerClass={'mb-3'}
-
                                             key="password"
                                             value={confirmPassword}
-                                            onChange={(e) => {
-                                                setConfirmPassword(e.target.value)
-                                            }}
-
-
-                                        />
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                        /> */}
                                         <div className="mb-3">
                                             <label className="form-label">CNIC Number</label> <br />
                                             <MaskedInput
@@ -463,25 +421,19 @@ const List = () => {
                                                     /\d/,
                                                     '-',
                                                     /\d/,
-
                                                 ]}
                                                 placeholder="_____-_______-_"
                                                 className="form-control"
                                                 value={CnicNo}
-                                                onChange={(e) => {
-                                                    setCnicNo(e.target.value)
-                                                }}
+                                                onChange={(e) => setCnicNo(e.target.value)}
                                             />
-
                                         </div>
-
                                         <FormInput
                                             label="Select Department"
                                             name="select"
                                             type="select"
                                             containerClass="mb-3"
                                             className="form-select"
-
                                             key="select"
                                             value={department}
                                             onChange={(e) => setDepartment(e.target.value)}
@@ -491,31 +443,6 @@ const List = () => {
                                             <option>Design & Development</option>
                                             <option>Sales</option>
                                         </FormInput>
-                                        {department == "Sales" ? (
-                                            <>
-                                                <FormInput
-                                                    label="Target"
-                                                    type="number"
-                                                    name="number"
-                                                    placeholder="Target"
-                                                    containerClass={'mb-3'}
-                                                    key="Targert"
-                                                    value={target}
-                                                    onChange={(e) => targetFunc(e)}
-                                                />
-                                                <FormInput
-                                                    label="Comission"
-                                                    type="number"
-                                                    name="number"
-                                                    placeholder="Comission"
-                                                    containerClass={'mb-3'}
-                                                    key="Comission"
-                                                    value={comm}
-                                                    onChange={(e) => comFunc(e)}
-                                                />
-                                            </>
-                                        ) : null}
-
                                         <div className="mb-3">
                                             <label className="form-label">Emergency Phone number 2 with Area Code</label> <br />
                                             <MaskedInput
@@ -528,7 +455,6 @@ const List = () => {
                                                     /\d/,
                                                     /\d/,
                                                     /\d/,
-
                                                     '-',
                                                     /\d/,
                                                     /\d/,
@@ -541,12 +467,9 @@ const List = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={emergencyPhoneNumber2}
-                                                onChange={(e) => {
-                                                    setEmergencyPhoneNumber2(e.target.value)
-                                                }}
+                                                onChange={(e) => setEmergencyPhoneNumber2(e.target.value)}
                                             />
                                         </div>
-
                                         <div className="mb-3">
                                             <label className="form-label">Role</label> <br />
                                             <Typeahead
@@ -559,35 +482,27 @@ const List = () => {
                                                 selected={multipleRoleSelection}
                                             />
                                         </div>
-
                                         <FormInput
                                             label="Photo Upload"
                                             type="file"
                                             name="file"
                                             containerClass={'mb-3'}
-
                                             key="photo file"
                                             accept="image/png, image/jpeg"
-
                                             onChange={handleProfileFileChange}
-
                                         />
                                         <FormInput
                                             label="Contract Upload"
                                             type="file"
                                             name="file"
                                             containerClass={'mb-3'}
-
                                             key="con file"
-
                                             accept=".pdf"
                                             onChange={handleContractFileChange}
-
                                         />
-
                                     </Col>
                                 </Row>
-                                <h4 className="header-title">Account Details</h4>
+                                {/* <h4 className="header-title">Account Details</h4>
                                 <Row>
                                     <Col lg={6}>
                                         <FormInput
@@ -596,13 +511,11 @@ const List = () => {
                                             name="Name"
                                             placeholder="Account title"
                                             containerClass={'mb-3'}
-
                                             key="acc text"
                                             value={accTitle}
                                             onChange={(e) => {
                                                 setAccTitle(e.target.value);
                                             }}
-
                                         />
                                         <FormInput
                                             label="Branch Code "
@@ -610,14 +523,11 @@ const List = () => {
                                             name="number"
                                             placeholder="Branch Code"
                                             containerClass={'mb-3'}
-
-                                            key="Branch"
+                                            key="Number"
                                             value={branchCode}
                                             onChange={(e) => {
                                                 setBranchCode(e.target.value);
                                             }}
-
-
                                         />
                                         <FormInput
                                             label="Bank Address"
@@ -625,16 +535,12 @@ const List = () => {
                                             name="Name"
                                             placeholder="Bank address"
                                             containerClass={'mb-3'}
-
                                             key="bank text"
-
-
                                             value={bankAddress}
                                             onChange={(e) => {
                                                 setBankAddress(e.target.value);
                                             }}
                                         />
-
                                     </Col>
                                     <Col lg={6}>
                                         <FormInput
@@ -643,14 +549,11 @@ const List = () => {
                                             name="number"
                                             placeholder="Account Number"
                                             containerClass={'mb-3'}
-
-                                            key="Account"
-
+                                            key="Number"
                                             value={accNo}
                                             onChange={(e) => {
                                                 setAccNo(e.target.value);
                                             }}
-
                                         />
                                         <FormInput
                                             label="Select Bank"
@@ -658,7 +561,6 @@ const List = () => {
                                             type="select"
                                             containerClass="mb-3"
                                             className="form-select"
-
                                             key="select"
                                             value={bankName}
                                             onChange={(e) => {
@@ -690,7 +592,6 @@ const List = () => {
                                             <option>Sindh Bank</option>
                                             <option>Standard Chartered</option>
                                         </FormInput>
-
                                     </Col>
                                 </Row>
                                 <h4 className="header-title">Reference Details</h4>
@@ -702,14 +603,11 @@ const List = () => {
                                             name="Name"
                                             placeholder="Name"
                                             containerClass={'mb-3'}
-
                                             key="name text"
-
                                             value={refName}
                                             onChange={(e) => {
                                                 setRefName(e.target.value);
                                             }}
-
                                         />
                                         <div className="mb-3">
                                             <label className="form-label">Phone Number with Area Code</label> <br />
@@ -723,7 +621,6 @@ const List = () => {
                                                     /\d/,
                                                     /\d/,
                                                     /\d/,
-
                                                     '-',
                                                     /\d/,
                                                     /\d/,
@@ -735,7 +632,6 @@ const List = () => {
                                                 ]}
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
-
                                                 value={refPhoneNo}
                                                 onChange={(e) => {
                                                     setRefPhoneNo(e.target.value);
@@ -770,7 +666,6 @@ const List = () => {
                                                 }}
                                             />
                                         </div>
-
                                     </Col>
                                     <Col lg={6}>
                                         <FormInput
@@ -779,43 +674,32 @@ const List = () => {
                                             name="email"
                                             placeholder="Email"
                                             containerClass={'mb-3'}
-
                                             key="email"
-
                                             value={refEmail}
                                             onChange={(e) => {
                                                 setRefEmail(e.target.value);
                                             }}
-
                                         />
                                         <FormInput
                                             label="CNIC Upload"
                                             type="file"
                                             name="file"
                                             containerClass={'mb-3'}
-
                                             key="cnic file"
                                             onChange={handleRefCNICFileChange}
-
                                         />
                                     </Col>
-                                </Row>
-
-                                <Button className='rounded-pill'
-                                    type="submit"
-                                >
+                                </Row> */}
+                                <Button className='rounded-pill' type="submit">
                                     Submit
                                 </Button>
                             </form>
                         </Card.Body>
-
                     </Card>
                 </Col>
             </Row>
-
-
         </>
     );
 };
 
-export default List;
+export default EditEmployee;

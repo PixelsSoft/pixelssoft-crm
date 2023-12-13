@@ -65,7 +65,7 @@ const ButtonComp = ({ id, title, plat }) => {
                     </Button>
                     {hovered && (
                         <ButtonGroup>
-                            <Button variant="warning" onClick={() => setEdit(!edit)}>Edit</Button>
+                            <Button variant="success" onClick={() => setEdit(!edit)}>Edit</Button>
                             <Button variant="danger" onClick={() => deleteFunc()}>Delete</Button>
                         </ButtonGroup>
                     )}
@@ -80,7 +80,10 @@ const ButtonComp = ({ id, title, plat }) => {
                         placeholder="Name"
                         key="desc"
                     />
-                    <Button variant="warning" onClick={() => updateFunc()}>Update</Button>
+                    <ButtonGroup>
+                        <Button variant="success" onClick={() => updateFunc()}>Update</Button>
+                        <Button variant="danger" onClick={() => setEdit(!edit)}>Cancel</Button>
+                    </ButtonGroup>
                 </>
             )}
         </ButtonGroup>
