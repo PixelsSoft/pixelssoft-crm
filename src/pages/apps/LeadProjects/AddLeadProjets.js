@@ -7,8 +7,10 @@ import { CreateProject } from '../../../redux/Slices/Project/Project';
 import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const AddLeadProjets = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [bidBy, setBidBy] = useState();
@@ -60,7 +62,7 @@ const AddLeadProjets = () => {
             total_amount: total,
             type: "lead"
         };
-        if (bidBy === undefined || perName === undefined || platId === undefined || selectCat === undefined || title === '' || desc === '' || total === '' || paidAm === '') {
+        if (bidBy === undefined || perName === undefined || platId === undefined || platId === 'Choose...' || selectCat === 'Choose...' || selectCat === undefined || title === '' || desc === '' || total === '' || paidAm === '') {
             toast.error('Please enter all fields', { position: toast.POSITION.TOP_RIGHT });
             return
         }
@@ -251,7 +253,9 @@ const AddLeadProjets = () => {
                                         <Button
                                             type="button"
                                             className="waves-effect waves-light"
-                                            variant="outline-primary">
+                                            variant="outline-primary"
+                                            onClick={() => navigate('/apps/leadProjects')}
+                                        >
                                             Cancel
                                         </Button>
 

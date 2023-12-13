@@ -149,7 +149,7 @@ const EditPortalProject = ({ projectId, editUserModal, toggleEditModal }) => {
                     <option>no Selected</option>
                     {plat?.map(val => {
                         return (
-                            <option key={val.id} value={val.id}>{val.name}</option>
+                            <option key={val.id} value={val.id}>{val.title}</option>
                         );
                     })}
                 </FormInput>
@@ -165,7 +165,7 @@ const EditPortalProject = ({ projectId, editUserModal, toggleEditModal }) => {
                     <option>no Selected</option>
                     {category?.map(val => {
                         return (
-                            <option key={val.id} value={val.id}>{val.name}</option>
+                            <option key={val.id} value={val.id}>{val.title}</option>
                         );
                     })}
                 </FormInput>

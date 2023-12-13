@@ -14,7 +14,7 @@ export const CreateProject = (data, token, reset) => async (dispatch) => {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             reset();
         } else {
-            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+            toast.error(response?.message, { position: toast.POSITION.TOP_RIGHT });
         };
         dispatch(GetProject(token));
     } catch (error) {

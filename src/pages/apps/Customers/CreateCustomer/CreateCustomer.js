@@ -6,8 +6,10 @@ import { toast } from 'react-toastify';
 import { CreateCustomerAPI } from '../../../../redux/Slices/Customer/customer';
 import Spinner from '../../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import { useNavigate } from 'react-router-dom';
 
 const CreateCustomer = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch()
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
@@ -214,10 +216,11 @@ const CreateCustomer = () => {
                                         <Button
                                             type="button"
                                             className="waves-effect waves-light"
-                                            variant="outline-primary">
+                                            variant="outline-primary"
+                                            onClick={() => navigate('/apps/customers')}
+                                        >
                                             Cancel
                                         </Button>
-
                                         <Button type="submit" className="waves-effect waves-light mx-2">
                                             Save
                                         </Button>

@@ -6,8 +6,10 @@ import { FormInput } from '../../../components';
 import { CreateProject } from '../../../redux/Slices/Project/Project';
 import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
+import { useNavigate } from 'react-router-dom';
 
 const AddPortalProjects = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [bidBy, setBidBy] = useState();
@@ -207,7 +209,9 @@ const AddPortalProjects = () => {
                                         <Button
                                             type="button"
                                             className="waves-effect waves-light"
-                                            variant="outline-primary">
+                                            variant="outline-primary"
+                                            onClick={() => navigate('/apps/portalProjects')}
+                                        >
                                             Cancel
                                         </Button>
 

@@ -82,6 +82,14 @@ const CustomerProfile = () => {
         })
     );
 
+    const reset = () => {
+        setDesc('')
+        setAmount('')
+        setStartDate('')
+        setEndDate('')
+        setStatus('')
+    }
+
     const getProject = async () => {
         dispatch(startLoading());
         await dispatch(GetProjectById(projectId, token));
@@ -113,6 +121,7 @@ const CustomerProfile = () => {
 
     const toggleModal = () => {
         setStandard(!standard);
+        reset();
     };
 
     const amountFunc = (e) => {
