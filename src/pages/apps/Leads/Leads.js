@@ -10,6 +10,7 @@ import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Util
 import { AddLead, DeleteLead, GetLeadById } from '../../../redux/Slices/Leads/leads';
 import { toast } from 'react-toastify';
 import ViewLeadModal from '../../../components/ViewLeadModal';
+import utils from '../../../utils/utils';
 
 export default function Leads() {
     const dispatch = useDispatch();
@@ -175,6 +176,10 @@ export default function Leads() {
             toast.error("Enter all fields", { position: toast.POSITION.TOP_RIGHT });
             return;
         };
+        if (!utils.validateEmail(email)) {
+            toast.error("Enter correct Email", { position: toast.POSITION.TOP_RIGHT });
+            return;
+        };
         const data = {
             name: name,
             platform: plat,
@@ -217,7 +222,7 @@ export default function Leads() {
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
                                 >
-                                    <option>no Selected</option>
+                                    <option>No selected</option>
                                 </FormInput>
                             </Col>
                             <Col>
@@ -230,7 +235,7 @@ export default function Leads() {
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
                                 >
-                                    <option>no Selected</option>
+                                    <option>No selected</option>
                                 </FormInput>
                             </Col>
                             <Col style={{ alignSelf: "end" }}>
@@ -324,7 +329,7 @@ export default function Leads() {
                                 value={plat}
                                 onChange={(e) => setPlat(e.target.value)}
                             >
-                                <option>no Selected</option>
+                                <option>No selected</option>
                                 {platforms?.map(val => {
                                     return (
                                         <option key={val.id} value={val.id}>{val.title}</option>

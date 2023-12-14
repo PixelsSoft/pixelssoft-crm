@@ -98,7 +98,7 @@ const CreateInvoice = () => {
             country: country
         };
 
-        if (!projectName || !address || !phoneNumber || !description || !customerName || !memo || !dueDate || !invoiceDate || !price || !quantity || !currency || !customerEmail || !projectCategory || !country) {
+        if (!projectName || !address || !phoneNumber || !description || !customerName || !memo || !dueDate || !invoiceDate || !price || !quantity || !currency || !customerEmail || !projectCategory) {
             toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
             dispatch(stopLoading());
             return;

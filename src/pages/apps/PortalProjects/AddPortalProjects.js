@@ -68,6 +68,7 @@ const AddPortalProjects = () => {
     };
 
     const PaidAmountFunc = (e) => {
+        console.log(e.target.value >= 0 && e.target.value <= total)
         if (e.target.value >= 0 && e.target.value <= total) {
             setPaidAm(e.target.value);
         }
