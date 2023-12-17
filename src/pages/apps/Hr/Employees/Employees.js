@@ -67,15 +67,17 @@ const List = () => {
                     </Card>
                 </Col>
             </Row>
-            <Row>
-                {employee.map(user => {
-                    return (
-                        <Col xl={6} md={6} key={user.id}>
-                            <ContactDetails contact={user} />
-                        </Col>
-                    );
-                })}
-            </Row>
+            {employee !== undefined && employee !== null ? (
+                <Row>
+                    {employee.map(user => {
+                        return (
+                            <Col xl={6} md={6} key={user.id}>
+                                <ContactDetails contact={user} />
+                            </Col>
+                        );
+                    })}
+                </Row>
+            ) : null}
         </>
     );
 };

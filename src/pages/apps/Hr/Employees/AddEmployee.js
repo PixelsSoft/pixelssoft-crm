@@ -11,6 +11,7 @@ import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/U
 import { CONSTANTS } from '../../../../constants/constant';
 import { toast } from 'react-toastify';
 import Spinner from '../../../../components/Spinner';
+import utils from '../../../../utils/utils';
 
 const List = () => {
     const [fullName, setFullName] = useState('');
@@ -94,6 +95,21 @@ const List = () => {
             roles.push(e.name);
         })
 
+        if (!utils.validateEmail(email)) {
+            toast.error("Enter correct email", { position: toast.POSITION.TOP_RIGHT });
+            dispatch(stopLoading());
+            return
+        }
+        if (!utils.validateEmail(refEmail)) {
+            toast.error("Enter correct reference email", { position: toast.POSITION.TOP_RIGHT });
+            dispatch(stopLoading());
+            return
+        }
+        if (!utils.validateEmail(companyProvideEmail)) {
+            toast.error("Enter correct company email", { position: toast.POSITION.TOP_RIGHT });
+            dispatch(stopLoading());
+            return
+        }
         if (password !== confirmPassword) {
             toast.error("Password and confirm Password are not same", { position: toast.POSITION.TOP_RIGHT });
             dispatch(stopLoading());
@@ -259,7 +275,7 @@ const List = () => {
                                         />
                                         <FormInput
                                             label="Email"
-                                            type="email"
+                                            type="text"
                                             name="email"
                                             placeholder="Email"
                                             containerClass={'mb-3'}
@@ -415,7 +431,7 @@ const List = () => {
                                         />
                                         <FormInput
                                             label="Company Provided Email"
-                                            type="email"
+                                            type="text"
                                             name="email"
                                             placeholder="Company Provided Email"
                                             containerClass={'mb-3'}

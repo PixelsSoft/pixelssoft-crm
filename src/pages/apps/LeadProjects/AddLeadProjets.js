@@ -8,6 +8,7 @@ import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import utils from '../../../utils/utils';
 
 const AddLeadProjets = () => {
     const navigate = useNavigate();
@@ -62,6 +63,9 @@ const AddLeadProjets = () => {
             total_amount: total,
             type: "lead"
         };
+        if (!utils.validateEmail(email)) {
+            return toast.error('Enter correct client email', { position: toast.POSITION.TOP_RIGHT });
+        }
         if (bidBy === undefined || perName === undefined || platId === undefined || platId === 'Choose...' || selectCat === 'Choose...' || selectCat === undefined || title === '' || desc === '' || total === '' || paidAm === '') {
             toast.error('Please enter all fields', { position: toast.POSITION.TOP_RIGHT });
             return

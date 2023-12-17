@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { AddInvoice } from '../../../../redux/Slices/Invoices/Invoices';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import Spinner from '../../../../components/Spinner';
+import utils from '../../../../utils/utils';
 
 const CreateInvoice = () => {
     const dispatch = useDispatch();
@@ -98,6 +99,12 @@ const CreateInvoice = () => {
             country: country
         };
 
+        if (!utils.validateEmail(customerEmail)) {
+            toast.error('Enter correct email', { position: toast.POSITION.TOP_RIGHT });
+            dispatch(stopLoading());
+            return;
+        }
+
         if (!projectName || !address || !phoneNumber || !description || !customerName || !memo || !dueDate || !invoiceDate || !price || !quantity || !currency || !customerEmail || !projectCategory) {
             toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
             dispatch(stopLoading());
@@ -134,6 +141,30 @@ const CreateInvoice = () => {
         };
     };
 
+    const dueDateFuc = (e) => {
+        const selectedDate = new Date(e.target.value);
+        const today = new Date();
+
+        if (selectedDate < today && selectedDate > invoiceDate) {
+            setDueDate(new Date().toLocaleDateString());
+            toast.error('Due date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT });
+        } else {
+            setDueDate(e.target.value);
+        }
+    }
+
+    const invoiceFuc = (e) => {
+        const selectedDate = new Date(e.target.value);
+        const today = new Date();
+
+        if (selectedDate < today) {
+            setInvoiceDate(new Date().toLocaleDateString());
+            toast.error('Invoice date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT });
+        } else {
+            setInvoiceDate(e.target.value);
+        }
+    }
+
     return loading ? (
         <div className='d-flex justify-content-center align-items-center'>
             <Spinner className="m-2" color={'primary'} />
@@ -165,7 +196,7 @@ const CreateInvoice = () => {
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Email</Form.Label>
                                         <Form.Control
-                                            type="email"
+                                            type="text"
                                             placeholder="Email"
                                             value={customerEmail}
                                             onChange={(e) => setCustomerEmail(e.target.value)}
@@ -241,7 +272,7 @@ const CreateInvoice = () => {
                                         <Form.Control
                                             type="date"
                                             value={invoiceDate}
-                                            onChange={(e) => setInvoiceDate(e.target.value)}
+                                            onChange={(e) => invoiceFuc(e)}
                                         />
                                     </Form.Group>
 
@@ -250,7 +281,7 @@ const CreateInvoice = () => {
                                         <Form.Control
                                             type="date"
                                             value={dueDate}
-                                            onChange={(e) => setDueDate(e.target.value)}
+                                            onChange={(e) => dueDateFuc(e)}
                                         />
                                     </Form.Group>
                                 </Row>

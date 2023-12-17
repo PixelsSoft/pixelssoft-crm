@@ -38,7 +38,7 @@ const Customers = () => {
         },
         {
             text: 'All',
-            value: customer.length,
+            value: customer?.length,
         },
     ];
 
@@ -163,19 +163,20 @@ const Customers = () => {
                                     </div>
                                 </Col>
                             </Row>
-
-                            <Table
-                                columns={columns}
-                                data={customer}
-                                pageSize={10}
-                                sizePerPageList={sizePerPageList}
-                                isSortable={true}
-                                pagination={true}
-                                isSelectable={true}
-                                isSearchable={true}
-                                tableClass="table-striped dt-responsive nowrap w-100"
-                                searchBoxClass="my-2"
-                            />
+                            {customer !== undefined && customer !== null ? (
+                                <Table
+                                    columns={columns}
+                                    data={customer}
+                                    pageSize={10}
+                                    sizePerPageList={sizePerPageList}
+                                    isSortable={true}
+                                    pagination={true}
+                                    isSelectable={true}
+                                    isSearchable={true}
+                                    tableClass="table-striped dt-responsive nowrap w-100"
+                                    searchBoxClass="my-2"
+                                />
+                            ) : null}
                         </Card.Body>
                     </Card>
                 </Col>

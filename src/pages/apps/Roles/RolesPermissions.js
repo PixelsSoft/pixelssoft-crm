@@ -169,19 +169,20 @@ export default function RolesPermissions() {
                                     </div>
                                 </Col>
                             </Row>
-
-                            <Table
-                                columns={columns}
-                                data={roles}
-                                pageSize={10}
-                                sizePerPageList={sizePerPageList}
-                                isSortable={true}
-                                pagination={true}
-                                isSelectable={true}
-                                isSearchable={true}
-                                tableClass="table-striped dt-responsive nowrap w-100"
-                                searchBoxClass="my-2"
-                            />
+                            {roles !== undefined && roles !== null ? (
+                                <Table
+                                    columns={columns}
+                                    data={roles}
+                                    pageSize={10}
+                                    sizePerPageList={sizePerPageList}
+                                    isSortable={true}
+                                    pagination={true}
+                                    isSelectable={true}
+                                    isSearchable={true}
+                                    tableClass="table-striped dt-responsive nowrap w-100"
+                                    searchBoxClass="my-2"
+                                />
+                            ) : null}
                         </Card.Body>
                     </Card>
                 </Col>

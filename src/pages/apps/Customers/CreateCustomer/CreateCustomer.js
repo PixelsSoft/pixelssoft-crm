@@ -7,6 +7,7 @@ import { CreateCustomerAPI } from '../../../../redux/Slices/Customer/customer';
 import Spinner from '../../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import { useNavigate } from 'react-router-dom';
+import utils from '../../../../utils/utils';
 
 const CreateCustomer = () => {
     const navigate = useNavigate();
@@ -54,6 +55,10 @@ const CreateCustomer = () => {
             return toast.error('Select Project Category', { position: toast.POSITION.TOP_RIGHT });
         };
 
+        if (!utils.validateEmail(email)) {
+            return toast.error('Enter correct email', { position: toast.POSITION.TOP_RIGHT });
+        };
+
         const data = {
             created_by: user.id,
             email: email,
@@ -87,7 +92,7 @@ const CreateCustomer = () => {
     }
 
     const paidFunc = (e) => {
-        if (e.target.value >= 0) {
+        if (e.target.value >= 0 && e.target.value <= total) {
             setPaidAm(e.target.value);
         }
     }
@@ -130,7 +135,7 @@ const CreateCustomer = () => {
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Email</Form.Label>
                                         <Form.Control
-                                            type="email"
+                                            type="text"
                                             placeholder="Email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
@@ -206,9 +211,6 @@ const CreateCustomer = () => {
                                             })}
                                         </Form.Select>
                                     </Form.Group>
-                                </Row>
-                                <Row className="mb-3">
-
                                 </Row>
 
                                 <Row>

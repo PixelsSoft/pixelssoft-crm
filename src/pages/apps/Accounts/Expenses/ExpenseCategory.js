@@ -202,19 +202,20 @@ export default function ExpenseCategory() {
                                 </Col>
                             )}
                         </Row>
-                        <Table
-                            columns={columns}
-                            data={category}
-                            pageSize={10}
-                            sizePerPageList={sizePerPageList}
-                            isSortable={true}
-                            pagination={true}
-                            isSelectable={true}
-                            isSearchable={true}
-                            tableClass="table-striped dt-responsive nowrap w-100"
-                            searchBoxClass="my-2"
-                        />
-
+                        {category !== undefined && category !== null ? (
+                            <Table
+                                columns={columns}
+                                data={category}
+                                pageSize={10}
+                                sizePerPageList={sizePerPageList}
+                                isSortable={true}
+                                pagination={true}
+                                isSelectable={true}
+                                isSearchable={true}
+                                tableClass="table-striped dt-responsive nowrap w-100"
+                                searchBoxClass="my-2"
+                            />
+                        ) : null}
                     </Card.Body>
                 </Card>
             </Row>

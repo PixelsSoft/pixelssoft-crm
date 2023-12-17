@@ -154,18 +154,20 @@ const ListLeadProjects = () => {
                                     </div>
                                 </Col>
                             </Row>
-                            <Table
-                                columns={columns}
-                                data={data}
-                                pageSize={10}
-                                sizePerPageList={sizePerPageList}
-                                isSortable={true}
-                                pagination={true}
-                                isSelectable={true}
-                                isSearchable={true}
-                                tableClass="table-striped dt-responsive nowrap w-100"
-                                searchBoxClass="my-2"
-                            />
+                            {data !== undefined && data !== null ? (
+                                <Table
+                                    columns={columns}
+                                    data={data}
+                                    pageSize={10}
+                                    sizePerPageList={sizePerPageList}
+                                    isSortable={true}
+                                    pagination={true}
+                                    isSelectable={true}
+                                    isSearchable={true}
+                                    tableClass="table-striped dt-responsive nowrap w-100"
+                                    searchBoxClass="my-2"
+                                />
+                            ) : null}
                         </Card.Body>
                     </Card>
                 </Col>

@@ -12,6 +12,7 @@ export const GetInvoice = (token) => async (dispatch) => {
         const response = await InvoiceService.getInvoices(token);
         dispatch(Invoices(response));
     } catch (error) {
+        toast.error('Something went wrong', { position: toast.POSITION.TOP_RIGHT });
         console.log("error===========>", error)
     };
 };
@@ -28,6 +29,7 @@ export const AddInvoice = (data, token, reset) => async (dispatch) => {
         };
         return response;
     } catch (error) {
+        toast.error('Something went wrong', { position: toast.POSITION.TOP_RIGHT });
         console.log("error===========>", error)
     };
 };

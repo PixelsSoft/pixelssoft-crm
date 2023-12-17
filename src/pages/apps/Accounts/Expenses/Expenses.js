@@ -14,12 +14,13 @@ import { CONSTANTS } from '../../../../constants/constant';
 import ViewExpense from '../../../../components/ViewExpense';
 
 export default function Expenses() {
-    const { expenseCategory, token, expenses, loading } = useSelector(
+    const { expenseCategory, token, expenses, loading, role } = useSelector(
         (state) => ({
             token: state.Auth.token,
             loading: state.utiltities.loading,
             expenseCategory: state.ExpenseCategory.expenseCategory,
             expenses: state.Expense.expense,
+            role: state,
         })
     );
 
@@ -272,19 +273,20 @@ export default function Expenses() {
                                 </Button>
                             </Col>
                         </Row>
-                        <Table
-                            columns={columns}
-                            data={expenses}
-                            pageSize={10}
-                            sizePerPageList={sizePerPageList}
-                            isSortable={true}
-                            pagination={true}
-                            isSelectable={true}
-                            isSearchable={true}
-                            tableClass="table-striped dt-responsive nowrap w-100"
-                            searchBoxClass="my-2"
-                        />
-
+                        {expenses !== undefined && expenses !== null ? (
+                            <Table
+                                columns={columns}
+                                data={expenses}
+                                pageSize={10}
+                                sizePerPageList={sizePerPageList}
+                                isSortable={true}
+                                pagination={true}
+                                isSelectable={true}
+                                isSearchable={true}
+                                tableClass="table-striped dt-responsive nowrap w-100"
+                                searchBoxClass="my-2"
+                            />
+                        ) : null}
                     </Card.Body>
                 </Card>
             </Row>
