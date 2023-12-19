@@ -1,50 +1,17 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
 import PortalProjectsDetailCard from '../../../components/PortalProjectsDetailCard';
 import StatisticsWidget1 from '../../../components/StatisticsWidget1';
 import Table from '../../../components/Table';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormInput } from '../../../components';
-import { CreateMilestone, GetProjectById } from '../../../redux/Slices/Project/Project';
+import { CreateMilestone, DeleMilestone, GetMilestoneById, GetProjectById } from '../../../redux/Slices/Project/Project';
 import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import { toast } from 'react-toastify';
+import EditMilestoneModal from '../../../components/EditMilestoneModal';
 
-const columns = [
-    {
-        Header: 'ID',
-        accessor: 'id',
-        sort: true,
-    },
-    {
-        Header: 'Status',
-        accessor: 'status',
-        sort: false,
-    },
-    {
-        Header: 'Start Date',
-        accessor: 'start_date',
-        sort: false,
-    },
-    {
-        Header: 'End Date',
-        accessor: 'end_date',
-        sort: false,
-    },
-    {
-        Header: 'Description',
-        accessor: 'description',
-        sort: false,
-    },
-    {
-        Header: 'Amount',
-        accessor: 'amount',
-        sort: false,
-    },
-
-
-];
 
 const sizePerPageList = [
     {
@@ -71,6 +38,8 @@ const CustomerProfile = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [status, setStatus] = useState('');
+    const [id, setId] = useState();
+    const [edit, setEdit] = useState(false);
 
     const { token, user, project, loading } = useSelector(
         (state) => ({
@@ -128,6 +97,105 @@ const CustomerProfile = () => {
         if (e.target.value >= 0) {
             setAmount(e.target.value)
         }
+    }
+
+    const StartDateFuc = (e) => {
+        const selectedDate = new Date(e.target.value);
+        const today = new Date();
+
+        if (selectedDate < today) {
+            // setStartDate(new Date().toLocaleDateString());
+            toast.error('Start date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT });
+        } else {
+            setStartDate(e.target.value);
+        }
+    }
+
+    const EndDateFuc = (e) => {
+        const selectedDate = new Date(e.target.value);
+        const today = new Date();
+
+        if (selectedDate < today) {
+            // setEndDate(new Date().toLocaleDateString());
+            toast.error('End date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT });
+        } else {
+            setEndDate(e.target.value);
+        }
+    }
+
+    const columns = [
+        {
+            Header: 'ID',
+            accessor: 'id',
+            sort: true,
+        },
+        {
+            Header: 'Status',
+            accessor: 'status',
+            sort: false,
+        },
+        {
+            Header: 'Start Date',
+            accessor: 'start_date',
+            sort: false,
+        },
+        {
+            Header: 'End Date',
+            accessor: 'end_date',
+            sort: false,
+        },
+        {
+            Header: 'Description',
+            accessor: 'description',
+            sort: false,
+        },
+        {
+            Header: 'Amount',
+            accessor: 'amount',
+            sort: false,
+        },
+        {
+            Header: "Action",
+            sort: false,
+            Cell: ({ row }) => <ActionColumn row={row} />,
+        },
+    ];
+
+    const ActionColumn = ({ row }) => {
+        return (
+            <React.Fragment>
+                <Link to={`/apps/portalProjects/Profile/${row.original.id}`} className="action-icon">
+                    {" "}
+                    <i className="mdi mdi-eye"></i>
+                </Link>
+                <Link className="action-icon" onClick={() => toggleEditModal(row.original.id)}>
+                    {" "}
+                    <i className="mdi mdi-square-edit-outline"></i>
+                </Link>
+                <Link className="action-icon" onClick={() => del(row.original.id)}>
+                    {" "}
+                    <i className="mdi mdi-delete"></i>
+                </Link>
+            </React.Fragment >
+        );
+    };
+
+    const toggleEditModal = async (id) => {
+        setId(id);
+        dispatch(startLoading());
+        await dispatch(GetMilestoneById(id, token));
+        dispatch(stopLoading());
+        setEdit(!edit);
+    };
+
+    const closeEditModal = () => {
+        setEdit(false)
+    }
+
+    const del = async (id) => {
+        dispatch(startLoading());
+        await dispatch(DeleMilestone(id, token));
+        dispatch(stopLoading())
     }
 
     return loading ? (
@@ -192,17 +260,19 @@ const CustomerProfile = () => {
                                     </Col>
 
                                 </Row>
-                                {project?.milestone ? (
+                                {project?.milestone !== undefined && project?.milestone !== null ? (
                                     <Row>
-                                        <Table
-                                            columns={columns}
-                                            data={project?.milestone}
-                                            pageSize={5}
-                                            sizePerPageList={sizePerPageList}
-                                            isSortable={true}
-                                            pagination={true}
-                                            isSearchable={true}
-                                        />
+                                        {project?.milestone ? (
+                                            <Table
+                                                columns={columns}
+                                                data={project?.milestone}
+                                                pageSize={5}
+                                                sizePerPageList={sizePerPageList}
+                                                isSortable={true}
+                                                pagination={true}
+                                                isSearchable={true}
+                                            />
+                                        ) : null}
                                     </Row>
                                 ) : null}
                             </Card.Body>
@@ -225,7 +295,8 @@ const CustomerProfile = () => {
                             key="date"
                             value={startDate}
                             onChange={(e) => {
-                                setStartDate(e.target.value)
+                                // setStartDate(e.target.value)
+                                StartDateFuc(e)
                             }}
                         />
                     </div>
@@ -238,7 +309,8 @@ const CustomerProfile = () => {
                             key="date"
                             value={endDate}
                             onChange={(e) => {
-                                setEndDate(e.target.value)
+                                // setEndDate(e.target.value)
+                                EndDateFuc(e)
                             }}
                         />
                     </div>
@@ -283,6 +355,7 @@ const CustomerProfile = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <EditMilestoneModal projectId={projectId} id={id} edit={edit} closeEditModal={closeEditModal} />
         </>
     );
 };

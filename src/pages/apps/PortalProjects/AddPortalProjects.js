@@ -7,6 +7,7 @@ import { CreateProject } from '../../../redux/Slices/Project/Project';
 import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AddPortalProjects = () => {
     const navigate = useNavigate();
@@ -43,7 +44,6 @@ const AddPortalProjects = () => {
     }
 
     const onSubmit = async (e) => {
-        dispatch(startLoading());
         e.preventDefault();
         const data = {
             title: title,
@@ -56,6 +56,21 @@ const AddPortalProjects = () => {
             total_amount: total,
             type: "portal"
         };
+        if (bidBy === undefined ||
+            bidBy === 'Choose...' ||
+            perName === 'Choose...' ||
+            platId === 'Choose...' ||
+            selectCat === 'Choose...' ||
+            perName === undefined ||
+            title === undefined ||
+            desc === undefined ||
+            platId === undefined ||
+            selectCat === undefined ||
+            total === 0
+        ) {
+            return toast.error('Enter all field', { position: toast.POSITION.TOP_RIGHT });
+        };
+        dispatch(startLoading());
         await dispatch(CreateProject(data, token, reset));
         dispatch(stopLoading());
     };

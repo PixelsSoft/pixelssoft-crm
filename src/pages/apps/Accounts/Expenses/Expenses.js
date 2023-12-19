@@ -14,13 +14,12 @@ import { CONSTANTS } from '../../../../constants/constant';
 import ViewExpense from '../../../../components/ViewExpense';
 
 export default function Expenses() {
-    const { expenseCategory, token, expenses, loading, role } = useSelector(
+    const { expenseCategory, token, expenses, loading } = useSelector(
         (state) => ({
             token: state.Auth.token,
             loading: state.utiltities.loading,
             expenseCategory: state.ExpenseCategory.expenseCategory,
             expenses: state.Expense.expense,
-            role: state,
         })
     );
 

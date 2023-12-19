@@ -3,30 +3,59 @@ import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap'
 import { FormInput } from '../../../../components';
 import PageTitle from '../../../../components/PageTitle'
 import Table from '../../../../components/Table'
-
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import Spinner from '../../../../components/Spinner';
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import { Link } from 'react-router-dom';
+import { AddVendorPayment, DeleVendorPayment, GetVendorById } from '../../../../redux/Slices/VendorPayment/VendorPayment';
+import EditVendorPaymentModal from '../../../../components/EditVendorPaymentModal';
 
 export default function Payments() {
-    const [loading, setLoading] = useState( false );
-    const [visibleModal, setVisibleModal] = useState( false );
+    const { vendorPay, token, loading, vendors, vendorCategory } = useSelector((state) => ({
+        token: state.Auth.token,
+        loading: state.utiltities.loading,
+        vendors: state.Vendor.vendors,
+        vendorCategory: state.VendorCategory.venCat,
+        vendorPay: state.VendorPayment.vendorPayments,
+    }));
 
+    const dispatch = useDispatch();
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [title, setTitle] = useState('');
+    const [desc, setDesc] = useState('');
+    const [amount, setAmount] = useState('');
+    const [date, setDate] = useState('');
+    const [category, setCategory] = useState('');
+    const [file, setFile] = useState('');
+    const [vendorId, setVendorId] = useState('')
+    const [vendorCatId, setVendorCatId] = useState('')
+    const [edit, setEdit] = useState(false);
+    const [id, setId] = useState();
 
-    const [title, setTitle] = useState( '' );
-    const [desc, setDesc] = useState( '' );
-    const [amount, setAmount] = useState( '' );
-    const [date, setDate] = useState( '' );
-    const [category, setCategory] = useState( '' );
-
-    const [file, setFile] = useState( '' );
+    const reset = () => {
+        setTitle('');
+        setDesc('');
+        setAmount('');
+        setDate('');
+        setCategory('');
+        setFile('');
+        setVendorId('');
+        setVendorCatId('');
+        setVisibleModal(false);
+        setId()
+    }
 
     const toggleModal = () => {
-        setVisibleModal( !visibleModal );
+        setVisibleModal(!visibleModal);
     };
+
+    const toggleClose = () => {
+        setEdit(false);
+        setId();
+    }
+
     const columns = [
-        {
-            Header: 'Sno',
-            accessor: 'sno',
-            sort: true,
-        },
         {
             Header: 'Date',
             accessor: 'date',
@@ -43,22 +72,57 @@ export default function Payments() {
             sort: false,
         },
         {
-            Header: 'category',
-            accessor: 'category',
+            Header: 'vendor',
+            accessor: 'vendor.name',
             sort: false,
         },
         {
-            Header: 'file',
-            accessor: 'file',
+            Header: 'category',
+            accessor: 'category.name',
             sort: false,
         },
         // {
-        //     Header: "Action",
-        //     accessor: "action",
+        //     Header: 'file',
+        //     accessor: 'file',
         //     sort: false,
-        //     Cell: ActionColumn,
         // },
+        {
+            Header: "Action",
+            accessor: "action",
+            sort: false,
+            Cell: ({ row }) => <ActionColumn data={row.original} />,
+        },
     ];
+
+    const ActionColumn = ({ data }) => {
+        const { id } = data;
+        return (
+            <React.Fragment>
+                <Link className="action-icon" onClick={() => editFunc(id)}>
+                    {" "}
+                    <i className="mdi mdi-square-edit-outline"></i>
+                </Link>
+                <Link className="action-icon" onClick={() => deleteFunc(id)}>
+                    {" "}
+                    <i className="mdi mdi-delete"></i>
+                </Link>
+            </React.Fragment>
+        );
+    };
+
+    const editFunc = async (id) => {
+        dispatch(startLoading());
+        await dispatch(GetVendorById(id, token));
+        setEdit(true);
+        setId(id);
+        dispatch(stopLoading());
+    }
+
+    const deleteFunc = async (id) => {
+        dispatch(startLoading());
+        await dispatch(DeleVendorPayment(id, token));
+        dispatch(stopLoading());
+    }
 
     const sizePerPageList = [
         {
@@ -75,14 +139,53 @@ export default function Payments() {
         },
 
     ];
-    const HandleFileUpload = ( event ) => {
-        if ( event.target.files ) {
+
+    const HandleFileUpload = (event) => {
+        if (event.target.files) {
             const file = event.target.files[0];
-            setFile( file );
+            setFile(file);
         }
     };
 
-    return (
+    const createPayment = async () => {
+        if (
+            date === '' ||
+            title === '' ||
+            desc === '' ||
+            amount === '' ||
+            file === '' ||
+            vendorCatId === '' ||
+            vendorCatId === 'no Selected' ||
+            vendorId === '' ||
+            vendorId === 'no Selected'
+        ) {
+            return toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
+        }
+        const data = {
+            date: date,
+            vendor_id: vendorId,
+            vendor_category_id: vendorCatId,
+            title: title,
+            description: desc,
+            amount: amount,
+            file: file,
+        }
+        dispatch(startLoading());
+        await dispatch(AddVendorPayment(data, token, reset));
+        dispatch(stopLoading());
+    }
+
+    const numFunc = (e) => {
+        if (e.target.value > 0) {
+            setAmount(e.target.value);
+        }
+    }
+
+    return loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
             <PageTitle
                 title={"Vendor Payments"}
@@ -99,8 +202,8 @@ export default function Payments() {
                                     className="form-select"
                                     key="select"
                                     value={category}
-                                    onChange={( e ) => {
-                                        setCategory( e.target.value );
+                                    onChange={(e) => {
+                                        setCategory(e.target.value);
                                     }}
                                 >
                                     <option>no Selected</option>
@@ -112,7 +215,7 @@ export default function Payments() {
                                     <Form.Control
                                         type="date"
                                         value={date}
-                                        onChange={( e ) => setDate( e.target.value )}
+                                        onChange={(e) => setDate(e.target.value)}
                                     />
                                 </Form.Group>
                             </Col>
@@ -122,7 +225,7 @@ export default function Payments() {
                                     <Form.Control
                                         type="date"
                                         value={date}
-                                        onChange={( e ) => setDate( e.target.value )}
+                                        onChange={(e) => setDate(e.target.value)}
                                     />
                                 </Form.Group>
                             </Col>
@@ -134,8 +237,8 @@ export default function Payments() {
                                     className="form-select"
                                     key="select"
                                     value={category}
-                                    onChange={( e ) => {
-                                        setCategory( e.target.value );
+                                    onChange={(e) => {
+                                        setCategory(e.target.value);
                                     }}
                                 >
                                     <option>no Selected</option>
@@ -171,20 +274,20 @@ export default function Payments() {
 
 
 
-
-                        <Table
-                            columns={columns}
-                            data={[]}
-                            pageSize={10}
-                            sizePerPageList={sizePerPageList}
-                            isSortable={true}
-                            pagination={true}
-                            isSelectable={true}
-                            isSearchable={true}
-                            tableClass="table-striped dt-responsive nowrap w-100"
-                            searchBoxClass="my-2"
-                        />
-
+                        {vendorPay !== undefined && vendorPay !== null ? (
+                            <Table
+                                columns={columns}
+                                data={vendorPay}
+                                pageSize={10}
+                                sizePerPageList={sizePerPageList}
+                                isSortable={true}
+                                pagination={true}
+                                isSelectable={true}
+                                isSearchable={true}
+                                tableClass="table-striped dt-responsive nowrap w-100"
+                                searchBoxClass="my-2"
+                            />
+                        ) : null}
                     </Card.Body>
                 </Card>
             </Row>
@@ -200,7 +303,7 @@ export default function Payments() {
                                 <Form.Control
                                     type="date"
                                     value={date}
-                                    onChange={( e ) => setDate( e.target.value )}
+                                    onChange={(e) => setDate(e.target.value)}
                                 />
                             </Form.Group>
                         </Col>
@@ -211,12 +314,17 @@ export default function Payments() {
                                 type="select"
                                 className="form-select"
                                 key="select"
-                                value={category}
-                                onChange={( e ) => {
-                                    setCategory( e.target.value );
+                                value={vendorId}
+                                onChange={(e) => {
+                                    setVendorId(e.target.value);
                                 }}
                             >
                                 <option>no Selected</option>
+                                {vendors?.map(val => {
+                                    return (
+                                        <option value={val?.id} key={val?.id}>{val?.name}</option>
+                                    )
+                                })}
                             </FormInput>
                         </Col>
 
@@ -227,7 +335,7 @@ export default function Payments() {
                                 <Form.Label>Title</Form.Label>
                                 <Form.Control
                                     value={title}
-                                    onChange={( e ) => setTitle( e.target.value )}
+                                    onChange={(e) => setTitle(e.target.value)}
                                 />
                             </Form.Group>
                         </Col>
@@ -236,7 +344,8 @@ export default function Payments() {
                                 <Form.Label>Amount</Form.Label>
                                 <Form.Control
                                     value={amount}
-                                    onChange={( e ) => setAmount( e.target.value )}
+                                    type='number'
+                                    onChange={(e) => numFunc(e)}
                                 />
                             </Form.Group>
                         </Col>
@@ -247,12 +356,17 @@ export default function Payments() {
                                 type="select"
                                 className="form-select"
                                 key="select"
-                                value={category}
-                                onChange={( e ) => {
-                                    setCategory( e.target.value );
+                                value={vendorCatId}
+                                onChange={(e) => {
+                                    setVendorCatId(e.target.value);
                                 }}
                             >
                                 <option>no Selected</option>
+                                {vendorCategory?.map(val => {
+                                    return (
+                                        <option value={val?.id} key={val?.id}>{val?.name}</option>
+                                    )
+                                })}
                             </FormInput>
                         </Col>
                     </Row>
@@ -263,7 +377,7 @@ export default function Payments() {
                         containerClass={'mb-3'}
                         key="textarea"
                         value={desc}
-                        onChange={( e ) => setDesc( e.target.value )}
+                        onChange={(e) => setDesc(e.target.value)}
                     />
                     <Col>
                         <Form.Group as={Col} controlId="formGridPassword">
@@ -291,12 +405,14 @@ export default function Payments() {
                     <Button
                         type="submit"
                         variant={"success"}
-                        className="waves-effect waves-light  "
+                        className="waves-effect waves-light"
+                        onClick={createPayment}
                     >
                         Add
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <EditVendorPaymentModal id={id} edit={edit} toggleClose={toggleClose} />
         </>
 
     )

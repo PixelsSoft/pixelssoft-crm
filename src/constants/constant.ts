@@ -16,5 +16,9 @@ export const CONSTANTS = {
         lead: 'lead',
         expenseCategory: 'expense/category',
         expense: 'expense',
+        milestone: 'milestone',
+        vendorCategory: 'vendor/category',
+        vendor: 'vendor',
+        vendorPayment: 'payment/vendor',
     }
 } 

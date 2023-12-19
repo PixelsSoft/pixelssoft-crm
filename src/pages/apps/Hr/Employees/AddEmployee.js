@@ -507,7 +507,7 @@ const List = () => {
                                             <option>Design & Development</option>
                                             <option>Sales</option>
                                         </FormInput>
-                                        {department == "Sales" ? (
+                                        {department === "Sales" ? (
                                             <>
                                                 <FormInput
                                                     label="Target"

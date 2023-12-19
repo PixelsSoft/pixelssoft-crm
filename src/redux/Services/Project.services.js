@@ -95,6 +95,80 @@ const CreateMilestone = async (projectId, data, token) => {
         .catch(onFailure)
 };
 
+const DeleteMilestone = async (id, token) => {
+    const onSuccess = (data) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    };
+
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.milestone + '/' + id, options)
+        .then(response => response.json())
+        .then(onSuccess)
+        .catch(onFailure)
+};
+
+
+const GetMileById = async (projectId, token) => {
+    const onSuccess = (data) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+    
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    };
+
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.milestone + '/' + projectId + '/' + CONSTANTS.API_URLS.edit, options)
+        .then(response => response.json())
+        .then(onSuccess)
+        .catch(onFailure)
+};
+
+const UpdateMile = async (projectId, data, token) => {
+    const onSuccess = (data) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    };
+
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.milestone + '/' + projectId, options)
+        .then(response => response.json())
+        .then(onSuccess)
+        .catch(onFailure)
+};
+
 const DeletProject = async (projectId, token) => {
     const onSuccess = (data) => {
         return data;
@@ -147,6 +221,9 @@ const UpdateProject = async (projectId, data, token) => {
 const ProjectService = {
     UpdateProject,
     DeletProject,
+    UpdateMile,
+    GetMileById,
+    DeleteMilestone,
     CreateMilestone,
     GetProjectById,
     GetProjects,

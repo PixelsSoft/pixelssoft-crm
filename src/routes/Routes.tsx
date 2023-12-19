@@ -19,7 +19,7 @@ import {
   authProtectedFlattenRoutes,
   publicProtectedFlattenRoutes,
 } from "./index";
-import { APICore } from "../helpers/api/apiCore";
+// import { APICore } from "../helpers/api/apiCore";
 
 interface IRoutesProps { }
 
@@ -47,15 +47,17 @@ const AllRoutes = (props: IRoutesProps) => {
     }
     return layoutCls;
   };
-
+ 
   let Layout = getLayout();
-  const api = new APICore();
-  const { userAuthenticate } = useSelector(
+  // const api = new APICore();
+  const { token } = useSelector(
     (state: RootState) => ({
       userAuthenticate: state.Auth.user,
+      token: state.Auth.token
     })
   );
 
+  // console.log('accessToken', token);
 
   return (
     <React.Fragment>
@@ -80,7 +82,7 @@ const AllRoutes = (props: IRoutesProps) => {
               path={route.path}
               element={
                 //  ======================= // change when you register login
-                !userAuthenticate ? (
+                !token ? (
                   <Navigate
                     to={{
                       pathname: "/auth/login",

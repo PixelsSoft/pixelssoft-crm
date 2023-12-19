@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 
 const initialState = {
     project: [],
-    proectById: null
+    proectById: null,
+    singleMile: null
 }
 
 export const CreateProject = (data, token, reset) => async (dispatch) => {
@@ -48,11 +49,54 @@ export const CreateMilestone = (projectId, data, token, toggleModal) => async (d
         if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             toggleModal();
-            GetProjectById(projectId, token);
+            dispatch(GetProjectById(projectId, token))
         } else {
             toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
         };
-        dispatch(GetProjectById(projectId, token));
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+
+export const DeleMilestone = (projectId, token) => async (dispatch) => {
+    try {
+        const response = await ProjectService.DeleteMilestone(projectId, token);
+        if (response?.message === 'Milestone Deleted Successfully') {
+            toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            dispatch(GetProjectById(projectId, token))
+        } else {
+            toast.error(response?.message, { position: toast.POSITION.TOP_RIGHT });
+        };
+    } catch (error) {
+        toast.error(error, { position: toast.POSITION.TOP_RIGHT });
+        console.log("error===========>", error)
+    };
+};
+
+export const GetMilestoneById = (projectId, token) => async (dispatch) => {
+    try {
+        if (projectId) {
+            const response = await ProjectService.GetMileById(projectId, token);
+            if (response.status === 200) {
+                dispatch(SingleMilestone(response?.data));
+            };
+        }
+    } catch (error) {
+        console.log("error===========>", error)
+        toast.error(error, { position: toast.POSITION.TOP_RIGHT });
+    };
+};
+
+export const UpdateMilstone = (projectId, id, data, token, toggleEditModal) => async (dispatch) => {
+    try {
+        const response = await ProjectService.UpdateMile(id, data, token);
+        if (response?.status === 200) {
+            toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            toggleEditModal();
+            dispatch(GetProjectById(projectId, token));
+        } else {
+            toast.error(response?.message, { position: toast.POSITION.TOP_RIGHT });
+        };
     } catch (error) {
         console.log("error===========>", error)
     };
@@ -102,12 +146,16 @@ export const ProjectSlice = createSlice({
         SingleProject: (state, action) => {
             state.proectById = action.payload
         },
+        SingleMilestone: (state, action) => {
+            state.singleMile = action.payload
+        },
     },
 });
 
 export const {
     Projects,
-    SingleProject
+    SingleProject,
+    SingleMilestone,
 } = ProjectSlice.actions;
 
 export default ProjectSlice.reducer;

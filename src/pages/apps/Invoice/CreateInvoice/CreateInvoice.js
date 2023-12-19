@@ -158,7 +158,7 @@ const CreateInvoice = () => {
         const today = new Date();
 
         if (selectedDate < today) {
-            setInvoiceDate(new Date().toLocaleDateString());
+            // setInvoiceDate(new Date().toLocaleDateString());
             toast.error('Invoice date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT });
         } else {
             setInvoiceDate(e.target.value);

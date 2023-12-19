@@ -1,27 +1,42 @@
 import React, { useState } from 'react'
 import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap'
-import { FormInput } from '../../../../components';
 import PageTitle from '../../../../components/PageTitle'
 import Table from '../../../../components/Table'
+import { useDispatch, useSelector } from 'react-redux';
+import Spinner from '../../../../components/Spinner';
+import { toast } from 'react-toastify';
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import { AddVendor, DeleVendor } from '../../../../redux/Slices/Vendor/Vendor';
+import utils from '../../../../utils/utils';
+import { Link } from 'react-router-dom';
+import EditVendorModal from '../../../../components/EditVendorModal';
 
 
 export default function Vendor() {
+    const { token, loading, vendors } = useSelector((state) => ({
+        token: state.Auth.token,
+        loading: state.utiltities.loading,
+        vendors: state.Vendor.vendors
+    }));
 
-    const [visibleModal, setVisibleModal] = useState( false );
-    const [name, setName] = useState( '' );
-    const [email, setEmail] = useState( '' );
-    const [phone, setPhone] = useState( '' );
-
+    const dispatch = useDispatch();
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [editModal, setEditModal] = useState(false);
+    const [detail, setDetail] = useState();
 
     const toggleModal = () => {
-        setVisibleModal( !visibleModal );
+        setVisibleModal(!visibleModal);
     };
+
+    const closeEdit = () => {
+        setDetail()
+        setEditModal(!editModal);
+    };
+
     const columns = [
-        {
-            Header: 'Sno',
-            accessor: 'sno',
-            sort: true,
-        },
         {
             Header: 'Name',
             accessor: 'name',
@@ -37,14 +52,40 @@ export default function Vendor() {
             accessor: 'phone',
             sort: false,
         },
-
-        // {
-        //     Header: "Action",
-        //     accessor: "action",
-        //     sort: false,
-        //     Cell: ActionColumn,
-        // },
+        {
+            Header: "Action",
+            accessor: "action",
+            sort: false,
+            Cell: ({ row }) => <ActionColumn data={row.original} />,
+        },
     ];
+
+    const ActionColumn = ({ data }) => {
+        const { id } = data;
+        return (
+            <React.Fragment>
+                <Link className="action-icon" onClick={() => editFunc(data)}>
+                    {" "}
+                    <i className="mdi mdi-square-edit-outline"></i>
+                </Link>
+                <Link className="action-icon" onClick={() => deleteFunc(id)}>
+                    {" "}
+                    <i className="mdi mdi-delete"></i>
+                </Link>
+            </React.Fragment>
+        );
+    };
+
+    const deleteFunc = async (id) => {
+        dispatch(startLoading());
+        await dispatch(DeleVendor(id, token));
+        dispatch(stopLoading())
+    }
+
+    const editFunc = (data) => {
+        setDetail(data);
+        setEditModal(!editModal);
+    }
 
     const sizePerPageList = [
         {
@@ -62,8 +103,40 @@ export default function Vendor() {
 
     ];
 
+    const reset = () => {
+        setName('');
+        setEmail('');
+        setPhone('');
+    }
 
-    return (
+    const addVendor = async () => {
+        if (name === '' || email === '' || phone === '') {
+            return toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
+        }
+        if (!utils.validateEmail(email)) {
+            return toast.error('Enter correct email', { position: toast.POSITION.TOP_RIGHT });
+        }
+        const data = {
+            name: name,
+            email: email,
+            phone: phone,
+        };
+        dispatch(startLoading());
+        await dispatch(AddVendor(data, token, reset));
+        dispatch(stopLoading());
+    }
+
+    const phoneFunc = (e) => {
+        if (e.target.value > 0) {
+            setPhone(e.target.value)
+        }
+    }
+
+    return loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ) : (
         <>
             <PageTitle
                 title={"Vendor"}
@@ -83,19 +156,20 @@ export default function Vendor() {
                                 </Button>
                             </Col>
                         </Row>
-                        <Table
-                            columns={columns}
-                            data={[]}
-                            pageSize={10}
-                            sizePerPageList={sizePerPageList}
-                            isSortable={true}
-                            pagination={true}
-                            isSelectable={true}
-                            isSearchable={true}
-                            tableClass="table-striped dt-responsive nowrap w-100"
-                            searchBoxClass="my-2"
-                        />
-
+                        {vendors !== undefined && vendors !== null ? (
+                            <Table
+                                columns={columns}
+                                data={vendors}
+                                pageSize={10}
+                                sizePerPageList={sizePerPageList}
+                                isSortable={true}
+                                pagination={true}
+                                isSelectable={true}
+                                isSearchable={true}
+                                tableClass="table-striped dt-responsive nowrap w-100"
+                                searchBoxClass="my-2"
+                            />
+                        ) : null}
                     </Card.Body>
                 </Card>
             </Row>
@@ -110,7 +184,7 @@ export default function Vendor() {
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
                                     value={name}
-                                    onChange={( e ) => setName( e.target.value )}
+                                    onChange={(e) => setName(e.target.value)}
                                 />
                             </Form.Group>
                         </Col>
@@ -119,7 +193,7 @@ export default function Vendor() {
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     value={email}
-                                    onChange={( e ) => setEmail( e.target.value )}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </Form.Group>
                         </Col>
@@ -130,7 +204,8 @@ export default function Vendor() {
                                 <Form.Label>Phone</Form.Label>
                                 <Form.Control
                                     value={phone}
-                                    onChange={( e ) => setPhone( e.target.value )}
+                                    type='number'
+                                    onChange={(e) => phoneFunc(e)}
                                 />
                             </Form.Group>
                         </Col>
@@ -152,11 +227,15 @@ export default function Vendor() {
                         type="submit"
                         variant={"success"}
                         className="waves-effect waves-light  "
+                        onClick={addVendor}
                     >
-                        Add Expense
+                        Add Vendor
                     </Button>
                 </Modal.Footer>
             </Modal>
+            {detail !== undefined ? (
+                <EditVendorModal detail={detail} editModal={editModal} closeEdit={closeEdit} />
+            ) : null}
         </>
 
     )
