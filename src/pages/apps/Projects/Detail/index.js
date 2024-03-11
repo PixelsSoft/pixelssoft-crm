@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Card, Dropdown, Tab, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
@@ -51,7 +51,7 @@ const ProjectDetail = () => {
     startTime: "1:00 PM",
     endDate: "22 December 2019",
     endTime: "1:00 PM",
-    totalBudget: "$15,800",
+
     teamMembers: [
       {
         name: "Mat Helme",
@@ -216,18 +216,10 @@ const ProjectDetail = () => {
                       </p>
                     </div>
                   </Col>
-                  <Col md={4}>
-                    <div className="mb-4">
-                      <h5>Budget</h5>
-                      <p>{project.totalBudget}</p>
-                    </div>
-                  </Col>
                 </Row>
-
                 <TeamMembers teamMembers={project.teamMembers} />
               </Card.Body>
             </Card>
-
             <Comments />
           </Col>
 
@@ -260,9 +252,57 @@ const ProjectDetail = () => {
     ]
   }
 
+
+
   const RenderCards = () => {
+    const [state, setState] = useState()
+    const setEventBus = ( eventBus ) => {
+      setState( { eventBus } )
+    }
+
+    const handleDragStart = ( cardId, laneId ) => {
+      console.log( 'drag started' )
+      console.log( `cardId: ${cardId}` )
+      console.log( `laneId: ${laneId}` )
+    }
+
+    const handleDragEnd = ( cardId, sourceLaneId, targetLaneId ) => {
+      console.log( 'drag ended' )
+      console.log( `cardId: ${cardId}` )
+      console.log( `sourceLaneId: ${sourceLaneId}` )
+      console.log( `targetLaneId: ${targetLaneId}` )
+    }
+    const shouldReceiveNewData = ( nextData ) => {
+      console.log( 'New card has been added' )
+      console.log( nextData )
+    }
+
+    const handleCardAdd = ( card, laneId ) => {
+      console.log( `New card added to lane ${laneId}` )
+      console.dir( card )
+    }
     return (
-      <Board data={data} />
+      <Board
+        editable
+        onCardAdd={handleCardAdd}
+        data={data}
+        draggable
+        onDataChange={shouldReceiveNewData}
+        eventBusHandle={setEventBus}
+        handleDragStart={handleDragStart}
+        handleDragEnd={handleDragEnd}
+      />
+    );
+  };
+  const RenderTest = () => {
+    return (
+      <iframe src="https:pixelssoft.com"
+        title="W3Schools Free Online Web Tutorials"
+        style={{
+          width: '100%',
+          height: "600px"
+        }}
+      ></iframe>
     );
   };
 
@@ -275,9 +315,15 @@ const ProjectDetail = () => {
     },
     {
       id: 2,
-      title: "Cards",
+      title: "Tasks",
       icon: "mdi mdi-account-circle",
       function: <RenderCards />,
+    },
+    {
+      id: 3,
+      title: "Testing",
+      icon: "mdi mdi-account-circle",
+      function: <RenderTest />,
     },
   ];
 
@@ -300,7 +346,7 @@ const ProjectDetail = () => {
             <Card.Body>
               <Tab.Container defaultActiveKey="Details">
                 <Nav as="ul" variant="tabs">
-                  {(tabContents || []).map((tab, index) => {
+                  {( tabContents || [] ).map( ( tab, index ) => {
                     return (
                       <Nav.Item as="li" key={index}>
                         <Nav.Link
@@ -312,21 +358,21 @@ const ProjectDetail = () => {
                         </Nav.Link>
                       </Nav.Item>
                     );
-                  })}
+                  } )}
                 </Nav>
 
                 <Tab.Content>
-                  {(tabContents || []).map((tab, index) => {
+                  {( tabContents || [] ).map( ( tab, index ) => {
                     return (
                       <Tab.Pane
                         eventKey={tab.title}
-                        id={String(tab.id)}
+                        id={String( tab.id )}
                         key={index}
                       >
                         <>{tab.function}</>
                       </Tab.Pane>
                     );
-                  })}
+                  } )}
                 </Tab.Content>
               </Tab.Container>
             </Card.Body>

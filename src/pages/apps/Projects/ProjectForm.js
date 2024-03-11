@@ -35,9 +35,9 @@ import avatar8 from "../../../assets/images/users/user-1.jpg";
 // }
 
 const ProjectForm = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [teamMembers] = useState([
+  const [startDate, setStartDate] = useState( new Date() );
+  const [endDate, setEndDate] = useState( new Date() );
+  const [teamMembers] = useState( [
     { value: "Shreyu N", name: "Shreyu N", image: avatar2 },
     { value: "Greeva N", name: "Greeva N", image: avatar5 },
     { value: "Dhyanu B", name: "Dhyanu B", image: avatar4 },
@@ -45,7 +45,7 @@ const ProjectForm = () => {
     { value: "Katu S", name: "Katu S", image: avatar7 },
     { value: "Nik N", name: "Nik N", image: avatar1 },
     { value: "Rik N", name: "Rik N", image: avatar8 },
-  ]);
+  ] );
   const [selectedTeamMembers, setSelectedTeamMembers] = useState(
     [
       { value: "Shreyu N", name: "Shreyu N", image: avatar1 },
@@ -57,13 +57,13 @@ const ProjectForm = () => {
   /*
    *  add selected team members
    */
-  const selectTeamMembers = (e) => {
-    if (e.length !== 0) {
+  const selectTeamMembers = ( e ) => {
+    if ( e.length !== 0 ) {
       const isAlreadySelected = selectedTeamMembers.filter(
-        (x) => x["name"] === e[0].name
+        ( x ) => x["name"] === e[0].name
       );
-      if (isAlreadySelected && isAlreadySelected.length === 0) {
-        setSelectedTeamMembers([...selectedTeamMembers, e[0]]);
+      if ( isAlreadySelected && isAlreadySelected.length === 0 ) {
+        setSelectedTeamMembers( [...selectedTeamMembers, e[0]] );
       }
     }
   };
@@ -72,15 +72,15 @@ const ProjectForm = () => {
    * form validation schema
    */
   const schemaResolver = yupResolver(
-    yup.object().shape({
-      name: yup.string().required("Please enter Project Name"),
-    })
+    yup.object().shape( {
+      name: yup.string().required( "Please enter Project Name" ),
+    } )
   );
 
   /*
    * form methods
    */
-  const methods = useForm({ resolver: schemaResolver });
+  const methods = useForm( { resolver: schemaResolver } );
   const {
     handleSubmit,
     register,
@@ -106,7 +106,7 @@ const ProjectForm = () => {
         <Col>
           <Card>
             <Card.Body>
-              <form onSubmit={handleSubmit(() => { })}>
+              <form onSubmit={handleSubmit( () => { } )}>
                 <Row>
                   <Col xl={6}>
                     <FormInput
@@ -180,6 +180,53 @@ const ProjectForm = () => {
                         </label>
                       </div>
                     </div>
+                    <div className="mb-3">
+                      <label className="form-label">Project Category</label>
+                      <br />
+                      <div className="form-check form-check-inline">
+                        <input
+                          type="radio"
+                          id="customRadio1"
+                          name="projectCategory"
+                          className="form-check-input"
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="customRadio1"
+                        >
+                          Website Development
+                        </label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          type="radio"
+                          id="customRadio2"
+                          name="projectCategory"
+                          className="form-check-input"
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="customRadio2"
+                        >
+                          Mobile App Development
+                        </label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          type="radio"
+                          id="customRadio3"
+                          name="projectCategory"
+                          className="form-check-input"
+                          defaultChecked
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="customRadio3"
+                        >
+                          SEO and Marketing
+                        </label>
+                      </div>
+                    </div>
 
                     <Row>
                       <Col lg={6}>
@@ -188,7 +235,7 @@ const ProjectForm = () => {
                           <HyperDatepicker
                             hideAddon
                             value={startDate}
-                            onChange={(date) => setStartDate(date)}
+                            onChange={( date ) => setStartDate( date )}
                           />
                         </Form.Group>
                       </Col>
@@ -198,7 +245,7 @@ const ProjectForm = () => {
                           <HyperDatepicker
                             hideAddon
                             value={endDate}
-                            onChange={(date) => setEndDate(date)}
+                            onChange={( date ) => setEndDate( date )}
                           />
                         </Form.Group>
                       </Col>
@@ -218,24 +265,12 @@ const ProjectForm = () => {
                       />
                     </Form.Group>
 
-                    <FormInput
-                      name="budget"
-                      label="Budget"
-                      placeholder="Enter project budget"
-                      type="number"
-                      containerClass={"mb-3"}
-                      register={register}
-                      key="budget"
-                      errors={errors}
-                      control={control}
-                    />
+
                   </Col>
                   <Col xl={6}>
                     <Form.Group className="my-3 mt-xl-0">
-                      <Form.Label className="mb-0">Avatar</Form.Label>
-                      <p className="text-muted font-14">
-                        Recommended thumbnail size 800x400 (px).
-                      </p>
+                      <Form.Label className="mb-0">File Uploads</Form.Label>
+
                       <FileUploader />
                     </Form.Group>
 
@@ -250,7 +285,7 @@ const ProjectForm = () => {
                         onChange={selectTeamMembers}
                       />
                       <div className="mt-2">
-                        {(selectedTeamMembers || []).map((member, index) => {
+                        {( selectedTeamMembers || [] ).map( ( member, index ) => {
                           return (
                             <OverlayTrigger
                               key={index}
@@ -275,7 +310,7 @@ const ProjectForm = () => {
                               </a>
                             </OverlayTrigger>
                           );
-                        })}
+                        } )}
                       </div>
                     </Form.Group>
                   </Col>
