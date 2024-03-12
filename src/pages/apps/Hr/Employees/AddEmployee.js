@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import MaskedInput from 'react-text-mask';
-import { Typeahead } from 'react-bootstrap-typeahead';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../../components/PageTitle';
 import { FormInput } from '../../../../components';
@@ -12,6 +11,7 @@ import { CONSTANTS } from '../../../../constants/constant';
 import { toast } from 'react-toastify';
 import Spinner from '../../../../components/Spinner';
 import utils from '../../../../utils/utils';
+import Select from "react-select";
 
 const List = () => {
     const [fullName, setFullName] = useState('');
@@ -45,6 +45,7 @@ const List = () => {
     const [refCnicPic, setRefCnicPic] = useState(null);
     const [target, setTarget] = useState(0);
     const [comm, setComm] = useState(0);
+    // const [permissions,setPermissions]=useState([])
     const dispatch = useDispatch();
 
     const { loading, token, roles } = useSelector(
@@ -54,6 +55,8 @@ const List = () => {
             roles: state.Roles.roles
         })
     );
+
+    console.log(roles,"roles")
 
     const reset = () => {
         setFullName('')
@@ -90,10 +93,10 @@ const List = () => {
     const submit = async (e) => {
         e.preventDefault();
         dispatch(startLoading());
-        let roles = [];
-        multipleRoleSelection.map(e => {
-            roles.push(e.name);
-        })
+        // let roles = [];
+        // multipleRoleSelection.map(e => {
+        //     roles.push(e?.name);
+        // })
 
         if (!utils.validateEmail(email)) {
             toast.error("Enter correct email", { position: toast.POSITION.TOP_RIGHT });
@@ -153,7 +156,7 @@ const List = () => {
         params.append("reference_phone_no", refPhoneNo);
         params.append("password", password);
         params.append("password_confirmation", confirmPassword);
-        params.append("roles", roles);
+        params.append("roles", multipleRoleSelection);
         params.append("department_id", 1);
 
         const options = {
@@ -182,7 +185,7 @@ const List = () => {
                 console.log("err", err);
             });
         // await dispatch(AddEmployee(params, token));
-        // dispatch(stopLoading());
+        dispatch(stopLoading());
     };
 
     // Profile picture upload
@@ -192,6 +195,23 @@ const List = () => {
             setProfilePic(file);
         }
     };
+
+     // Handler for the Select component's onChange event
+  const handleSelectChange = (selectedOption) => {
+    // Extracting values from selected options and updating the state
+    const selectedValues = selectedOption ? selectedOption.map(option => option.value) : [];
+    setMultipleRoleSelection(selectedValues);
+  };
+ // roles selection options 
+  const options = [
+    { value: "Hr", label: "Hr" },
+    { value: "Developer", label: "Developer" },
+    { value: "Lead", label: "Lead" },
+    { value: "Project Manager", label: "Project Manager" },
+    { value: "Sales Person", label: "Sales Person" },
+    { value: "Scraper", label: "Scraper" },
+    { value: "QA", label: "QA" },
+  ];
 
     // CNIC picture Upload
     const handleCNICFileChange = (event) => {
@@ -226,9 +246,7 @@ const List = () => {
     };
 
     /////role selection/////
-    const onChangeRoleSelection = (selected) => {
-        setMultipleRoleSelection(selected);
-    };
+   
 
     const targetFunc = (e) => {
         if (e.target.value >= 0) {
@@ -565,15 +583,49 @@ const List = () => {
 
                                         <div className="mb-3">
                                             <label className="form-label">Role</label> <br />
-                                            <Typeahead
+                                                <Select
+                                                    isMulti={true}
+                                                    options={options}
+                                                    className="react-select react-select-container"
+                                                    classNamePrefix="react-select"
+                                                    onChange={handleSelectChange}
+                                                ></Select>
+                                            {/* <Typeahead
                                                 id="select3"
                                                 labelKey="name"
                                                 multiple
                                                 onChange={(e) => onChangeRoleSelection(e)}
-                                                options={roles}
+                                               
                                                 placeholder="Choose a role"
                                                 selected={multipleRoleSelection}
-                                            />
+                                            /> */}
+                                        </div>
+
+
+                                        <div className="mb-3">
+                                            <label className="form-label">Permisions</label>  <br />
+                                                <Select
+                                                    isMulti={true}
+                                                    options={[
+                                                        { value: "Read", label: "Read" },
+                                                        { value: "Write", label: "Write" },
+                                                        { value: "Update", label: "Update" },
+                                                        { value: "Delete", label: "Delete" },
+                                                        { value: "Read, Write, Update, Delete", label: "All" },
+                                                     
+                                                    ]}
+                                                    className="react-select react-select-container"
+                                                    classNamePrefix="react-select"
+                                                ></Select>
+                                            {/* <Typeahead
+                                                id="select3"
+                                                labelKey="name"
+                                                multiple
+                                                onChange={(e) => onChangeRoleSelection(e)}
+                                               
+                                                placeholder="Choose a role"
+                                                selected={multipleRoleSelection}
+                                            /> */}
                                         </div>
 
                                         <FormInput

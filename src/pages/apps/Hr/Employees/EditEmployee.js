@@ -23,7 +23,7 @@ const EditEmployee = () => {
         })
     );
 
-    // console.log('employee', employee);
+    console.log('employee', employee);
 
     const [fullName, setFullName] = useState(employee?.name);
     const [fatherName, setFatherName] = useState(employee?.detail?.father_name);
