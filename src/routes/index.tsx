@@ -67,26 +67,7 @@ const ProjectForm = React.lazy(
 // - chat
 const ChatApp = React.lazy(() => import("../pages/apps/Chat/"));
 // - ecommece pages
-const EcommerceDashboard = React.lazy(
-  () => import("../pages/apps/Ecommerce/Dashboard/")
-);
-const EcommerceProducts = React.lazy(
-  () => import("../pages/apps/Ecommerce/Products")
-);
-const ProductDetails = React.lazy(
-  () => import("../pages/apps/Ecommerce/ProductDetails")
-);
-const ProductEdit = React.lazy(
-  () => import("../pages/apps/Ecommerce/ProductEdit")
-);
-// const Customers = React.lazy(() => import("../pages/apps/Ecommerce/Customers"));
-const Orders = React.lazy(() => import("../pages/apps/Ecommerce/Orders"));
-const OrderDetails = React.lazy(
-  () => import("../pages/apps/Ecommerce/OrderDetails")
-);
-const Sellers = React.lazy(() => import("../pages/apps/Ecommerce/Sellers"));
-const Cart = React.lazy(() => import("../pages/apps/Ecommerce/Cart"));
-const Checkout = React.lazy(() => import("../pages/apps/Ecommerce/Checkout"));
+
 // - crm pages
 const CRMDashboard = React.lazy(() => import("../pages/apps/CRM/Dashboard/"));
 const CRMContacts = React.lazy(() => import("../pages/apps/CRM/Contacts/"));
@@ -207,9 +188,7 @@ const AdvancedTables = React.lazy(() => import("../pages/tables/Advanced"));
 const ApexChart = React.lazy(() => import("../pages/charts/Apex"));
 const ChartJs = React.lazy(() => import("../pages/charts/ChartJs"));
 
-// maps
-const GoogleMaps = React.lazy(() => import("../pages/maps/GoogleMaps"));
-const VectorMaps = React.lazy(() => import("../pages/maps/VectorMaps"));
+
 
 export interface RoutesProps {
   path: RouteProps["path"];
@@ -555,75 +534,7 @@ const chatAppRoutes = {
   element: <ChatApp />,
 };
 
-const ecommerceAppRoutes = {
-  path: "/apps/ecommerce",
-  name: "eCommerce",
-  route: PrivateRoute,
-  roles: ["Admin"],
-  icon: "shopping-cart",
-  children: [
-    {
-      path: "/apps/ecommerce/dashboard",
-      name: "Products",
-      element: <EcommerceDashboard />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/ecommerce/products",
-      name: "Products",
-      element: <EcommerceProducts />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/ecommerce/product-details",
-      name: "Product Details",
-      element: <ProductDetails />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/ecommerce/edit-product",
-      name: "Product Edit",
-      element: <ProductEdit />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/ecommerce/customers",
-      name: "Customers",
-      element: <Customers />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/ecommerce/orders",
-      name: "Orders",
-      element: <Orders />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/ecommerce/order/details",
-      name: "Order Details",
-      element: <OrderDetails />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/ecommerce/sellers",
-      name: "Sellers",
-      element: <Sellers />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/ecommerce/shopping-cart",
-      name: "Shopping Cart",
-      element: <Cart />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/apps/ecommerce/checkout",
-      name: "Checkout",
-      element: <Checkout />,
-      route: PrivateRoute,
-    },
-  ],
-};
+
 
 const crmAppRoutes = {
   path: "/apps/crm",
@@ -810,7 +721,7 @@ const appRoutes = [
   ////// extra route just for design ideas
   calendarAppRoutes,
   chatAppRoutes,
-  ecommerceAppRoutes,
+
   crmAppRoutes,
   emailAppRoutes,
   socialAppRoutes,
@@ -1211,24 +1122,7 @@ const uiRoutes = {
         },
       ],
     },
-    {
-      path: "/ui/maps",
-      name: "Maps",
-      children: [
-        {
-          path: "/ui/googlemaps",
-          name: "Google Maps",
-          element: <GoogleMaps />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/ui/vectorMaps",
-          name: "Google Maps",
-          element: <VectorMaps />,
-          route: PrivateRoute,
-        },
-      ],
-    },
+    
   ],
 };
 

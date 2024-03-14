@@ -19,6 +19,7 @@ const Invoices = () => {
             loading: state.utiltities.loading,
         })
     );
+console.log("invoice====>",invoice)
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -70,8 +71,8 @@ const Invoices = () => {
 
     const columns = [
         {
-            Header: 'Invoice #',
-            accessor: 'invoice_key',
+            Header: 'Created Date',
+            accessor: 'invoice_date',
             sort: false,
         },
         {
@@ -80,13 +81,8 @@ const Invoices = () => {
             sort: false,
         },
         {
-            Header: 'Amount',
-            accessor: 'price',
-            sort: false,
-        },
-        {
-            Header: 'Quantity',
-            accessor: 'quantity',
+            Header: 'Creator',
+            accessor: 'creator.name',
             sort: false,
         },
         {
@@ -94,6 +90,18 @@ const Invoices = () => {
             accessor: 'title',
             sort: false,
         },
+       
+        {
+            Header: 'Quantity',
+            accessor: 'quantity',
+            sort: false,
+        },
+        {
+            Header: 'Amount',
+            accessor: 'price',
+            sort: false,
+        },
+        
         {
             Header: "Status",
             accessor: "status",

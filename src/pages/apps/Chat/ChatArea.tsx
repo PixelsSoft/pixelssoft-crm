@@ -292,7 +292,7 @@ const ChatArea = ({ selectedUser }: ChatAreaProps) => {
                   noValidate
                   name="chat-form"
                   id="chat-form"
-                  onSubmit={handleSubmit(sendChatMessage)}
+                  // onSubmit={handleSubmit(((sendChatMessage())))}
                 >
                   <div className="row">
                     <div className="col mb-2 mb-sm-0">

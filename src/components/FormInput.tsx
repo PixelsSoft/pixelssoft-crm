@@ -134,11 +134,11 @@ const FormInput = ({
                   className={className}
                 />
 
-                {errors && errors[name] ? (
-                  <Form.Control.Feedback type="invalid" className="d-block">
-                    {errors[name]["message"]}
-                  </Form.Control.Feedback>
-                ) : null}
+{errors && errors[name] ? (
+  <Form.Control.Feedback type="invalid" className="d-block">
+    {errors[name]?.message} {/* Use optional chaining here */}
+  </Form.Control.Feedback>
+) : null}
               </Form.Group>
             </>
           ) : (
@@ -162,7 +162,7 @@ const FormInput = ({
 
                     {errors && errors[name] ? (
                       <Form.Control.Feedback type="invalid">
-                        {errors[name]["message"]}
+                        {errors?.[name]?.["message"]}
                       </Form.Control.Feedback>
                     ) : null}
                   </Form.Group>
@@ -194,7 +194,7 @@ const FormInput = ({
 
                   {errors && errors[name] ? (
                     <Form.Control.Feedback type="invalid">
-                      {errors[name]["message"]}
+                      {errors?.[name]?.["message"]}
                     </Form.Control.Feedback>
                   ) : null}
                 </Form.Group>

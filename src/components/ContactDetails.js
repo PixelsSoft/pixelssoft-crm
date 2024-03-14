@@ -78,9 +78,10 @@ const ContactDetails = ({ contact }) => {
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
                                         <strong>Role :</strong>
-                                        {contact.roles.map(e => {
+                                        {contact.roles.map((e, index)=> {
+                                            console.log("role kia hy akhir====>".e.names)
                                             return (
-                                                <span key={e.id} className="ms-2">{e?.name}</span>
+                                                <span key={index} className="ms-2">{e?.name}</span>
                                             )
                                         })}
                                     </p>

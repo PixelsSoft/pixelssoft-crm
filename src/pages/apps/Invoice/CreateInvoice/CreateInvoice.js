@@ -5,7 +5,7 @@ import { FormInput } from '../../../../components';
 import PageTitle from '../../../../components/PageTitle';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { AddInvoice } from '../../../../redux/Slices/Invoices/Invoices';
+import { AddInvoice, GetInvoice } from '../../../../redux/Slices/Invoices/Invoices';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import Spinner from '../../../../components/Spinner';
 import utils from '../../../../utils/utils';
@@ -112,6 +112,7 @@ const CreateInvoice = () => {
         };
 
         await dispatch(AddInvoice(data, token, reset));
+        await dispatch(GetInvoice(token))
         dispatch(stopLoading());
     };
 
@@ -217,11 +218,12 @@ const CreateInvoice = () => {
                                         <Form.Label>Project Category</Form.Label>
                                         <Form.Select defaultValue="Choose..." onChange={handleSelectProjectCategory}>
                                             <option >Choose...</option>
-                                            {category.map(val => {
-                                                return (
-                                                    <option key={val.id} value={val.id}>{val.title}</option>
-                                                );
-                                            })}
+                                    
+                                              {   category.map(val => {
+                                                 return (
+                                                     <option key={val.id} value={val.id}>{val.title}</option>
+                                                );})}
+                                        
                                         </Form.Select>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">

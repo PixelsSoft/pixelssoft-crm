@@ -14,7 +14,9 @@ import { useParams } from 'react-router-dom';
 
 const EditEmployee = () => {
     const { employeeId } = useParams();
+   
     const { loading, token, roles, employee } = useSelector(
+        
         (state) => ({
             loading: state.utiltities.loading,
             token: state.Auth.token,
@@ -22,6 +24,10 @@ const EditEmployee = () => {
             employee: state.Employees.singleEmployee
         })
     );
+
+    let entireStore = useSelector(state=>state)
+    console.log(entireStore,"entire store")
+    console.log(employeeId,"id",token,"token")
 
     console.log('employee', employee);
 

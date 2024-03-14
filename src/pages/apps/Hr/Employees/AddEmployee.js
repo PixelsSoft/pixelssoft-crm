@@ -236,7 +236,6 @@ const List = () => {
             setCV(file);
         }
     };
-
     // Contract picture Upload
     const handleContractFileChange = (event) => {
         if (event.target.files) {

@@ -27,6 +27,7 @@ import avatar5 from "../../../assets/images/users/user-10.jpg";
 import avatar6 from "../../../assets/images/users/user-4.jpg";
 import avatar7 from "../../../assets/images/users/user-5.jpg";
 import avatar8 from "../../../assets/images/users/user-1.jpg";
+import { useSelector } from "react-redux";
 
 // interface MemberTypes {
 //   value: string;
@@ -48,9 +49,7 @@ const ProjectForm = () => {
   ] );
   const [selectedTeamMembers, setSelectedTeamMembers] = useState(
     [
-      { value: "Shreyu N", name: "Shreyu N", image: avatar1 },
-      { value: "Greeva N", name: "Greeva N", image: avatar2 },
-      { value: "Dhyanu B", name: "Dhyanu B", image: avatar3 },
+      
     ]
   );
 
@@ -62,9 +61,9 @@ const ProjectForm = () => {
       const isAlreadySelected = selectedTeamMembers.filter(
         ( x ) => x["name"] === e[0].name
       );
-      if ( isAlreadySelected && isAlreadySelected.length === 0 ) {
-        setSelectedTeamMembers( [...selectedTeamMembers, e[0]] );
-      }
+
+setSelectedTeamMembers(e)
+console.log("selected team",selectedTeamMembers)
     }
   };
 
@@ -87,6 +86,18 @@ const ProjectForm = () => {
     control,
     formState: { errors },
   } = methods;
+
+
+  const { token, user, category, loading,employee } = useSelector(
+    (state) => ({
+        token: state.Auth.token,
+        user: state.Auth.user,
+        category: state.Category.category,
+        loading: state.utiltities.loading,
+        employee: state.Employees.employees,
+    })
+);
+
 
   return (
     <>
@@ -183,7 +194,12 @@ const ProjectForm = () => {
                     <div className="mb-3">
                       <label className="form-label">Project Category</label>
                       <br />
-                      <div className="form-check form-check-inline">
+                      {category!==null && category !==undefined
+                      
+                      &&
+                      category.map((e,index)=>{
+return(
+  <div className="form-check form-check-inline">
                         <input
                           type="radio"
                           id="customRadio1"
@@ -194,38 +210,13 @@ const ProjectForm = () => {
                           className="form-check-label"
                           htmlFor="customRadio1"
                         >
-                          Website Development
+                      {e?.title}
                         </label>
                       </div>
-                      <div className="form-check form-check-inline">
-                        <input
-                          type="radio"
-                          id="customRadio2"
-                          name="projectCategory"
-                          className="form-check-input"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="customRadio2"
-                        >
-                          Mobile App Development
-                        </label>
-                      </div>
-                      <div className="form-check form-check-inline">
-                        <input
-                          type="radio"
-                          id="customRadio3"
-                          name="projectCategory"
-                          className="form-check-input"
-                          defaultChecked
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="customRadio3"
-                        >
-                          SEO and Marketing
-                        </label>
-                      </div>
+)
+                      })
+                      }
+                
                     </div>
 
                     <Row>
@@ -279,35 +270,44 @@ const ProjectForm = () => {
                       <Typeahead
                         id="select3"
                         labelKey="name"
-                        multiple={false}
-                        options={teamMembers}
+                        multiple={true}
+                        options={employee}
                         placeholder="select Team Member..."
                         onChange={selectTeamMembers}
                       />
                       <div className="mt-2">
                         {( selectedTeamMembers || [] ).map( ( member, index ) => {
+                          console.log("member===>",member?.name)
                           return (
                             <OverlayTrigger
                               key={index}
                               placement="top"
                               overlay={
                                 <Tooltip id={member.name}>
-                                  {member.name}
+                                  {member?.name}
                                 </Tooltip>
                               }
                             >
-                              <a
+                              {/* <a
                                 href="/"
                                 title={member.name}
                                 data-original-title="James Anderson"
                                 className="d-inline-block me-1"
-                              >
-                                <img
+                              > */}
+                                
+                                 <label
+                              className="form-check-label"
+                            >
+                              {member?.name}{" ,"}
+                            </label>
+                         
+
+                                {/* <img
                                   src={member.image}
                                   className="rounded-circle avatar-xs"
                                   alt="friend"
-                                />
-                              </a>
+                                /> */}
+                              {/* </a> */}
                             </OverlayTrigger>
                           );
                         } )}
