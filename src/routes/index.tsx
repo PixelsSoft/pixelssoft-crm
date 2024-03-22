@@ -718,6 +718,8 @@ const appRoutes = [
   LeadProjects,
   reportRoutes,
   AccountsRoutes,
+  projectAppRoutes,
+
   ////// extra route just for design ideas
   calendarAppRoutes,
   chatAppRoutes,
@@ -726,7 +728,6 @@ const appRoutes = [
   emailAppRoutes,
   socialAppRoutes,
   companiesAppRoutes,
-  projectAppRoutes,
   taskAppRoutes,
   contactsRoutes,
   ticketsRoutes,
@@ -1122,7 +1123,7 @@ const uiRoutes = {
         },
       ],
     },
-    
+
   ],
 };
 

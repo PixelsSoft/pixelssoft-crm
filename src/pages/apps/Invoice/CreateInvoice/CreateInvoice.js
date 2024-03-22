@@ -12,48 +12,50 @@ import utils from '../../../../utils/utils';
 
 const CreateInvoice = () => {
     const dispatch = useDispatch();
-    const [currency, setCurrency] = useState('');
-    const [customerEmail, setCustomerEmail] = useState('');
-    const [customerName, setCustomerName] = useState('');
-    const [projectCategory, setProjectCategory] = useState(undefined);
-    const [projectName, setProjectName] = useState('');
-    const [address, setAddress] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [invoiceDate, setInvoiceDate] = useState('');
-    const [dueDate, setDueDate] = useState('');
-    const [price, setPrice] = useState(0);
-    const [quantity, setQuantity] = useState(0);
-    const [description, setDescription] = useState('');
-    const [memo, setMemo] = useState('');
-    const [previewModal, setPreviewModal] = useState(false)
+    const [currency, setCurrency] = useState( '' );
+    const [customerEmail, setCustomerEmail] = useState( '' );
+    const [customerName, setCustomerName] = useState( '' );
+    const [projectCategory, setProjectCategory] = useState( undefined );
+    const [projectName, setProjectName] = useState( '' );
+    const [address, setAddress] = useState( '' );
+    const [phoneNumber, setPhoneNumber] = useState( '' );
+    const [invoiceDate, setInvoiceDate] = useState( '' );
+    const [dueDate, setDueDate] = useState( '' );
+    const [price, setPrice] = useState( 0 );
+    const [quantity, setQuantity] = useState( 0 );
+    const [description, setDescription] = useState( '' );
+    const [memo, setMemo] = useState( '' );
+    const [previewModal, setPreviewModal] = useState( false )
     const [detail, setDetail] = useState();
-    const [country, setCountry] = useState('');
+    const [country, setCountry] = useState( '' );
+    const [generatedLink, setGeneratedLink] = useState( null );
     const componentRef = useRef();
 
     const { token, user, category, loading } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             user: state.Auth.user,
             category: state.Category.category,
             loading: state.utiltities.loading,
-        })
+        } )
     );
 
     const reset = () => {
-        setInvoiceDate('');
-        setDescription('');
-        setCurrency('');
-        setDueDate('');
-        setProjectName('');
-        setMemo('');
-        setCustomerEmail('');
-        setCustomerName('');
-        setPhoneNumber('');
-        setCountry('');
-        setAddress('');
-        setQuantity(0)
-        setPrice(0)
-        setProjectCategory(undefined);
+        setInvoiceDate( '' );
+        setDescription( '' );
+        setCurrency( '' );
+        setDueDate( '' );
+        setProjectName( '' );
+        setMemo( '' );
+        setCustomerEmail( '' );
+        setCustomerName( '' );
+        setPhoneNumber( '' );
+        setCountry( '' );
+        setAddress( '' );
+        setQuantity( 0 )
+        setPrice( 0 )
+        setProjectCategory( undefined );
+        setGeneratedLink( null )
     }
 
     const toggle = () => {
@@ -73,14 +75,14 @@ const CreateInvoice = () => {
             category_id: projectCategory,
             address: address
         };
-        setDetail(data);
+        setDetail( data );
 
-        setPreviewModal(!previewModal);
+        setPreviewModal( !previewModal );
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async ( e ) => {
         e.preventDefault();
-        dispatch(startLoading());
+        dispatch( startLoading() );
         const data = {
             created_by: user.id,
             invoice_date: invoiceDate,
@@ -99,70 +101,77 @@ const CreateInvoice = () => {
             country: country
         };
 
-        if (!utils.validateEmail(customerEmail)) {
-            toast.error('Enter correct email', { position: toast.POSITION.TOP_RIGHT });
-            dispatch(stopLoading());
+        if ( !utils.validateEmail( customerEmail ) ) {
+            toast.error( 'Enter correct email', { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
             return;
         }
 
-        if (!projectName || !address || !phoneNumber || !description || !customerName || !memo || !dueDate || !invoiceDate || !price || !quantity || !currency || !customerEmail || !projectCategory) {
-            toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
-            dispatch(stopLoading());
+        if ( !projectName || !address || !phoneNumber || !description || !customerName || !memo || !dueDate || !invoiceDate || !price || !quantity || !currency || !customerEmail || !projectCategory ) {
+            toast.error( 'Enter all fields', { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
             return;
         };
 
-        await dispatch(AddInvoice(data, token, reset));
-        await dispatch(GetInvoice(token))
-        dispatch(stopLoading());
+        const response = await dispatch( AddInvoice( data, token, reset ) );
+        console.log( response?.Link );
+        handleRedirect( response?.Link )
+        setGeneratedLink( response?.Link )
+        await dispatch( GetInvoice( token ) )
+        dispatch( stopLoading() );
     };
 
-    const handleSelectProjectCategory = (e) => {
-        setProjectCategory(e.target.value);
+    const handleSelectProjectCategory = ( e ) => {
+        setProjectCategory( e.target.value );
     };
 
-    const handleRedirect = () => {
-        window.location.href = 'https://crmupd.pixelssoft.com/invoice/MOe3GAkRFD6CW9Nz';
+    const handleRedirect = ( link ) => {
+        window.open(
+            link,
+            '_blank' // <- This is what makes it open in a new window.
+        );
+
     };
 
-    const changeQuant = (e) => {
-        if (e.target.value >= 1) {
-            setQuantity(parseInt(e.target.value))
+    const changeQuant = ( e ) => {
+        if ( e.target.value >= 1 ) {
+            setQuantity( parseInt( e.target.value ) )
         };
     };
 
-    const changePrice = (e) => {
-        if (e.target.value >= 1) {
-            setPrice(parseInt(e.target.value))
+    const changePrice = ( e ) => {
+        if ( e.target.value >= 1 ) {
+            setPrice( parseInt( e.target.value ) )
         };
     };
 
-    const numFunc = (e) => {
-        if (e.target.value >= 0) {
-            setPhoneNumber(e.target.value)
+    const numFunc = ( e ) => {
+        if ( e.target.value >= 0 ) {
+            setPhoneNumber( e.target.value )
         };
     };
 
-    const dueDateFuc = (e) => {
-        const selectedDate = new Date(e.target.value);
+    const dueDateFuc = ( e ) => {
+        const selectedDate = new Date( e.target.value );
         const today = new Date();
 
-        if (selectedDate < today && selectedDate > invoiceDate) {
-            setDueDate(new Date().toLocaleDateString());
-            toast.error('Due date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT });
+        if ( selectedDate < today && selectedDate > invoiceDate ) {
+            setDueDate( new Date().toLocaleDateString() );
+            toast.error( 'Due date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT } );
         } else {
-            setDueDate(e.target.value);
+            setDueDate( e.target.value );
         }
     }
 
-    const invoiceFuc = (e) => {
-        const selectedDate = new Date(e.target.value);
+    const invoiceFuc = ( e ) => {
+        const selectedDate = new Date( e.target.value );
         const today = new Date();
 
-        if (selectedDate < today) {
+        if ( selectedDate < today ) {
             // setInvoiceDate(new Date().toLocaleDateString());
-            toast.error('Invoice date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT });
+            toast.error( 'Invoice date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT } );
         } else {
-            setInvoiceDate(e.target.value);
+            setInvoiceDate( e.target.value );
         }
     }
 
@@ -184,6 +193,12 @@ const CreateInvoice = () => {
                     <Card>
                         <Card.Body>
                             <Form onSubmit={handleSubmit}>
+                                {generatedLink != null &&
+                                    <Row>
+                                        <Form.Label>Generated Link : {generatedLink}</Form.Label>
+                                    </Row>
+                                }
+
                                 <Row>
                                     <h3 className="mb-3 mt-4">Customer Details</h3>
                                 </Row>
@@ -200,7 +215,7 @@ const CreateInvoice = () => {
                                             type="text"
                                             placeholder="Email"
                                             value={customerEmail}
-                                            onChange={(e) => setCustomerEmail(e.target.value)}
+                                            onChange={( e ) => setCustomerEmail( e.target.value )}
                                         />
                                     </Form.Group>
 
@@ -208,7 +223,7 @@ const CreateInvoice = () => {
                                         <Form.Label>Full Name</Form.Label>
                                         <Form.Control
                                             value={customerName}
-                                            onChange={(e) => setCustomerName(e.target.value)}
+                                            onChange={( e ) => setCustomerName( e.target.value )}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -218,19 +233,20 @@ const CreateInvoice = () => {
                                         <Form.Label>Project Category</Form.Label>
                                         <Form.Select defaultValue="Choose..." onChange={handleSelectProjectCategory}>
                                             <option >Choose...</option>
-                                    
-                                              {   category.map(val => {
-                                                 return (
-                                                     <option key={val.id} value={val.id}>{val.title}</option>
-                                                );})}
-                                        
+
+                                            {category.map( val => {
+                                                return (
+                                                    <option key={val.id} value={val.id}>{val.title}</option>
+                                                );
+                                            } )}
+
                                         </Form.Select>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Currency</Form.Label>
                                         <Form.Select
                                             value={currency}
-                                            onChange={(e) => setCurrency(e.target.value)}
+                                            onChange={( e ) => setCurrency( e.target.value )}
                                         >
                                             <option value={undefined}>Choose...</option>
                                             <option value="PKR">Pakistani Rupee (PKR)</option>
@@ -246,7 +262,7 @@ const CreateInvoice = () => {
                                     <Form.Label>Address</Form.Label>
                                     <Form.Control
                                         value={address}
-                                        onChange={(e) => setAddress(e.target.value)}
+                                        onChange={( e ) => setAddress( e.target.value )}
                                         placeholder="1234 Main St"
                                     />
                                 </Form.Group>
@@ -254,7 +270,7 @@ const CreateInvoice = () => {
                                     <Form.Label>Country</Form.Label>
                                     <Form.Control
                                         value={country}
-                                        onChange={(e) => setCountry(e.target.value)}
+                                        onChange={( e ) => setCountry( e.target.value )}
                                         placeholder="america"
                                     />
                                 </Form.Group>
@@ -265,7 +281,7 @@ const CreateInvoice = () => {
                                         <Form.Control
                                             type='phone'
                                             value={phoneNumber}
-                                            onChange={(e) => numFunc(e)}
+                                            onChange={( e ) => numFunc( e )}
                                         />
                                     </Form.Group>
 
@@ -274,7 +290,7 @@ const CreateInvoice = () => {
                                         <Form.Control
                                             type="date"
                                             value={invoiceDate}
-                                            onChange={(e) => invoiceFuc(e)}
+                                            onChange={( e ) => invoiceFuc( e )}
                                         />
                                     </Form.Group>
 
@@ -283,7 +299,7 @@ const CreateInvoice = () => {
                                         <Form.Control
                                             type="date"
                                             value={dueDate}
-                                            onChange={(e) => dueDateFuc(e)}
+                                            onChange={( e ) => dueDateFuc( e )}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -304,7 +320,7 @@ const CreateInvoice = () => {
 
                                                     <Form.Control
                                                         value={projectName}
-                                                        onChange={(e) => setProjectName(e.target.value)}
+                                                        onChange={( e ) => setProjectName( e.target.value )}
                                                     />
 
                                                 </td>
@@ -312,14 +328,14 @@ const CreateInvoice = () => {
                                                     <Form.Control
                                                         type="number"
                                                         value={quantity}
-                                                        onChange={(e) => changeQuant(e)}
+                                                        onChange={( e ) => changeQuant( e )}
                                                     />
                                                 </td>
                                                 <td>
                                                     <Form.Control
                                                         type="number"
                                                         value={price}
-                                                        onChange={(e) => changePrice(e)}
+                                                        onChange={( e ) => changePrice( e )}
                                                     />
                                                 </td>
                                                 <td>${quantity * price}</td>
@@ -335,7 +351,7 @@ const CreateInvoice = () => {
                                                 containerClass={'mb-3'}
                                                 key="textarea"
                                                 value={description}
-                                                onChange={(e) => setDescription(e.target.value)}
+                                                onChange={( e ) => setDescription( e.target.value )}
                                             />
                                         </Col>
                                         <Col>
@@ -346,7 +362,7 @@ const CreateInvoice = () => {
                                                 containerClass={'mb-3'}
                                                 key="textarea"
                                                 value={memo}
-                                                onChange={(e) => setMemo(e.target.value)}
+                                                onChange={( e ) => setMemo( e.target.value )}
                                             />
                                         </Col>
                                     </Row>
@@ -356,13 +372,13 @@ const CreateInvoice = () => {
                                         <Button type="submit" className="waves-effect waves-light">
                                             Save
                                         </Button>
-                                        <Button type="button" className="waves-effect waves-light mx-2" onClick={handleRedirect}>
+                                        {/* <Button type="button" className="waves-effect waves-light mx-2" onClick={handleRedirect}>
                                             Generate Link
-                                        </Button>
+                                        </Button> */}
                                         <Button
                                             type="button"
                                             onClick={toggle}
-                                            className="waves-effect waves-light"
+                                            className="waves-effect waves-light mx-2"
                                             variant="outline-primary">
                                             Preview
                                         </Button>

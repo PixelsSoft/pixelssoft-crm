@@ -22,8 +22,10 @@ const FileUploader = (props: FileUploaderProps) => {
   const handleAcceptedFiles = (files: FileType[]) => {
     var allFiles = files;
 
+    const file = files[0]
     if (props.showPreview) {
       (files || []).map((file) =>
+
         Object.assign(file, {
           preview:
             file["type"].split("/")[0] === "image"
@@ -32,8 +34,11 @@ const FileUploader = (props: FileUploaderProps) => {
           formattedSize: formatBytes(file.size),
         })
       );
+
+
       allFiles = [...selectedFiles];
-      allFiles.push(...files);
+      allFiles.push(files[0]);
+
       setSelectedFiles(allFiles);
     }
 

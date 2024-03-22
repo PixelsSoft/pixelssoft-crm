@@ -1,7 +1,11 @@
+import axios from "axios";
 import { CONSTANTS } from "../../constants/constant";
 
-const AddProject = async (data, token) => {
-    const onSuccess = (data) => {
+const AddProject = async ( data, token ) => {
+    for ( var pair of data.entries() ) {
+        console.log( pair[0] + ', ' + pair[1] );
+    }
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -15,17 +19,18 @@ const AddProject = async (data, token) => {
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: data,
+        redirect: "follow"
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const GetProjects = async (token) => {
-    const onSuccess = (data) => {
+const GetProjects = async ( token ) => {
+    const onSuccess = ( data ) => {
         return data.data;
     };
 
@@ -41,14 +46,14 @@ const GetProjects = async (token) => {
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const GetProjectById = async (projectId, token) => {
-    const onSuccess = (data) => {
+const GetProjectById = async ( projectId, token ) => {
+    const onSuccess = ( data ) => {
         return data.data;
     };
 
@@ -64,14 +69,14 @@ const GetProjectById = async (projectId, token) => {
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project + '/' + projectId + '/' + CONSTANTS.API_URLS.edit, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project + '/' + projectId + '/' + CONSTANTS.API_URLS.edit, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const CreateMilestone = async (projectId, data, token) => {
-    const onSuccess = (data) => {
+const CreateMilestone = async ( projectId, data, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -86,17 +91,17 @@ const CreateMilestone = async (projectId, data, token) => {
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify( data )
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.projectMilestone + projectId, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.projectMilestone + projectId, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const DeleteMilestone = async (id, token) => {
-    const onSuccess = (data) => {
+const DeleteMilestone = async ( id, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -113,22 +118,22 @@ const DeleteMilestone = async (id, token) => {
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.milestone + '/' + id, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.milestone + '/' + id, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
 
-const GetMileById = async (projectId, token) => {
-    const onSuccess = (data) => {
+const GetMileById = async ( projectId, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
     const onFailure = error => {
         throw error;
     };
-    
+
     const options = {
         method: 'GET',
         headers: {
@@ -138,14 +143,14 @@ const GetMileById = async (projectId, token) => {
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.milestone + '/' + projectId + '/' + CONSTANTS.API_URLS.edit, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.milestone + '/' + projectId + '/' + CONSTANTS.API_URLS.edit, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const UpdateMile = async (projectId, data, token) => {
-    const onSuccess = (data) => {
+const UpdateMile = async ( projectId, data, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -160,17 +165,17 @@ const UpdateMile = async (projectId, data, token) => {
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify( data )
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.milestone + '/' + projectId, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.milestone + '/' + projectId, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const DeletProject = async (projectId, token) => {
-    const onSuccess = (data) => {
+const DeletProject = async ( projectId, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -187,14 +192,14 @@ const DeletProject = async (projectId, token) => {
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project + '/' + projectId, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project + '/' + projectId, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const UpdateProject = async (projectId, data, token) => {
-    const onSuccess = (data) => {
+const UpdateProject = async ( projectId, data, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -209,13 +214,13 @@ const UpdateProject = async (projectId, data, token) => {
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify( data )
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project + '/' + projectId, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project + '/' + projectId, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
 const ProjectService = {

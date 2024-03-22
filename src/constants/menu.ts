@@ -49,6 +49,34 @@ const MENU_ITEMS: MenuItemTypes[] = [
     //   },
     // ],
   },
+  {
+    key: "tracking",
+    label: "Tracking",
+    isTitle: false,
+    icon: "airplay",
+    url: "/",
+    badge: { variant: "success", text: "4" },
+    children: [
+      {
+        key: "my-team",
+        label: "My team",
+        url: "/apps/my-team",
+        parentKey: "tracking",
+      },
+      {
+        key: "screenShots",
+        label: "ScreenShots",
+        url: "/apps/screen-shots",
+        parentKey: "tracking",
+      },
+      {
+        key: "report",
+        label: "Report",
+        url: "/apps/report",
+        parentKey: "tracking",
+      },
+    ],
+  },
 
   {
     key: "target",
@@ -1090,6 +1118,42 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
     //     parentKey: "dashboard",
     //   },
     // ],
+  },
+  {
+    key: "tracking",
+    label: "Tracking",
+    isTitle: false,
+    icon: "airplay",
+    url: "/",
+    badge: { variant: "success", text: "4" },
+    children: [
+      {
+        key: "my-team",
+        label: "My team",
+        url: "/apps/my-team",
+        parentKey: "tracking",
+      },
+      {
+        key: "screenShots",
+        label: "ScreenShots",
+        url: "/apps/screen-shots",
+        parentKey: "tracking",
+      },
+      {
+        key: "report",
+        label: "Report",
+        url: "/apps/report",
+        parentKey: "tracking",
+      },
+    ],
+  },
+  {
+    key: "tracking",
+    label: "Tracking",
+    isTitle: false,
+    icon: "airplay",
+    url: "/",
+    badge: { variant: "success", text: "4" },
   },
   {
     key: "apps",
@@ -2134,6 +2198,42 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
     //     parentKey: "dashboard",
     //   },
     // ],
+  },
+  {
+    key: "tracking",
+    label: "Tracking",
+    isTitle: false,
+    icon: "airplay",
+    url: "/",
+    badge: { variant: "success", text: "4" },
+    children: [
+      {
+        key: "my-team",
+        label: "My team",
+        url: "/apps/my-team",
+        parentKey: "tracking",
+      },
+      {
+        key: "screenShots",
+        label: "ScreenShots",
+        url: "/apps/screen-shots",
+        parentKey: "tracking",
+      },
+      {
+        key: "report",
+        label: "Report",
+        url: "/apps/report",
+        parentKey: "tracking",
+      },
+    ],
+  },
+  {
+    key: "tracking",
+    label: "Tracking",
+    isTitle: false,
+    icon: "airplay",
+    url: "/",
+    badge: { variant: "success", text: "4" },
   },
   {
     key: "apps",
