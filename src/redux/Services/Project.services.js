@@ -2,9 +2,9 @@ import axios from "axios";
 import { CONSTANTS } from "../../constants/constant";
 
 const AddProject = async ( data, token ) => {
-    for ( var pair of data.entries() ) {
-        console.log( pair[0] + ', ' + pair[1] );
-    }
+    // for ( var pair of data.entries() ) {
+    //     console.log( pair[0] + ', ' + pair[1] );
+    // }
     const onSuccess = ( data ) => {
         return data;
     };
@@ -15,8 +15,8 @@ const AddProject = async ( data, token ) => {
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
         body: data,

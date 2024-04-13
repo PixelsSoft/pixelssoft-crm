@@ -31,6 +31,7 @@ import avatar8 from "../../../assets/images/users/user-1.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateProject } from "../../../redux/Slices/Project/Project";
 import { startLoading, stopLoading } from "../../../redux/Slices/utiltities/Utiltities";
+import { Link, useNavigate } from "react-router-dom";
 
 // interface MemberTypes {
 //   value: string;
@@ -39,6 +40,7 @@ import { startLoading, stopLoading } from "../../../redux/Slices/utiltities/Util
 // }
 
 const ProjectForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState( new Date() );
   const [endDate, setEndDate] = useState( new Date() );
@@ -52,9 +54,14 @@ const ProjectForm = () => {
 
   const [selectedTeamMembers, setSelectedTeamMembers] = useState( [] );
   const [selectedTeamMembersId, setSelectedTeamMembersId] = useState( [] );
-  console.log( "privacy=====>", prev )
 
-  const [base64Data, setBase64Data] = useState( null );
+  const removeFile = ( fileIndex ) => {
+    const newFiles = [...fileUpload];
+    newFiles.splice( fileIndex, 1 );
+    setFileUpload( newFiles );
+    // if (props.onFileUpload) props.onFileUpload(newFiles);
+  };
+
   /*
    *  add selected team members
    */
@@ -87,18 +94,18 @@ const ProjectForm = () => {
   }
   const addProject = async () => {
     try {
-      console.log( "uploading project", title )
-      // const data = {
-      //   project_privacy: prev,
-      //   project_name: title,
-      //   description: desc,
-      //   category_id: cat,
-      //   start_date: startDate,
-      //   end_date: endDate,
-      //   team_members: selectedTeamMembersId,
-      //   project_priority: priority,
-      //   fileName: fileUpload,
-      // }
+      // console.log( "uploading project", title )
+      // // const data = {
+      // //   project_privacy: prev,
+      // //   project_name: title,
+      // //   description: desc,
+      // //   category_id: cat,
+      // //   start_date: startDate,
+      // //   end_date: endDate,
+      // //   team_members: selectedTeamMembersId,
+      // //   project_priority: priority,
+      // //   fileName: fileUpload,
+      // // }
       const Form = new FormData()
       Form.append( "project_privacy", prev )
       Form.append( "project_name", title )
@@ -108,14 +115,18 @@ const ProjectForm = () => {
       Form.append( "end_date", endDate )
       Form.append( "team_members", selectedTeamMembersId )
       Form.append( "project_priority", priority )
-      // Form.append( "fileName[]", fileUpload[0] )
+      Form.append( "fileName[]", fileUpload[0] )
 
-      for ( let i = 0; i < fileUpload.length; i++ ) {
-        Form.append( "fileName[]", fileUpload[i], fileUpload[i].name );
-      }
+      // // for ( let i = 0; i < fileUpload.length; i++ ) {
+      // //   Form.append( "fileName[]", fileUpload[i], fileUpload[i].name );
+      // // }
       await dispatch( startLoading() )
       await dispatch( CreateProject( Form, token, reset ) )
       await dispatch( stopLoading() )
+      // const myHeaders = new Headers();
+      // myHeaders.append( "", "" );
+      // myHeaders.append( "Authorization", "Bearer 77|DlnLRqCxkxXC8vaMzhRExZDKAVSi21gAHYRsjdGK" );
+
 
     } catch ( error ) {
       console.log( "submit Foam error: " + error )
@@ -134,7 +145,7 @@ const ProjectForm = () => {
     formState: { errors },
   } = methods;
 
-  console.log( "base 64,", base64Data )
+
   const { token, user, category, loading, employee } = useSelector(
     ( state ) => ( {
       token: state.Auth.token,
@@ -145,9 +156,16 @@ const ProjectForm = () => {
     } )
   );
   const handleFileChange = ( event ) => {
-    console.log( "uploaded file", event )
+
+    console.log( "uploaded file", event.target.files[0] )
     try {
-      setFileUpload( event )
+      const newFiles = [...fileUpload];
+
+      if ( event.target.files ) {
+        const file = event.target.files[0];
+        newFiles.push( file )
+        setFileUpload( newFiles );
+      }
     } catch ( error ) {
       console.log( "error", error )
     }
@@ -341,13 +359,72 @@ const ProjectForm = () => {
                     <Col xl={6}>
                       <Form.Group className="my-3 mt-xl-0">
                         <Form.Label className="mb-0">File Uploads</Form.Label>
-
-                        <FileUploader
-
-
-                          onFileUpload={handleFileChange}
+                        <FormInput
+                          type="file"
+                          name="file"
+                          containerClass={'mb-3'}
+                          key="photo file"
+                          onChange={handleFileChange}
                         />
+
+                        {/* <FileUploader
+
+                          onChange={handleFileChange}
+                        // onFileUpload={handleFileChange}
+                        /> */}
                       </Form.Group>
+
+
+                      {( fileUpload || [] ).map( ( f, i ) => {
+                        return (
+                          <Card className="mt-1 mb-0 shadow-none border" key={i + "-file"}>
+                            <div className="p-2">
+                              <Row className="align-items-center">
+                                {f.preview && (
+                                  <Col className="col-auto">
+                                    <img
+                                      data-dz-thumbnail=""
+                                      className="avatar-sm rounded bg-light"
+                                      alt={f.name}
+                                      src={f.preview}
+                                    />
+                                  </Col>
+                                )}
+                                {!f.preview && (
+                                  <Col className="col-auto">
+                                    <div className="avatar-sm">
+                                      <span className="avatar-title bg-primary rounded">
+                                        {f.type.split( "/" )[0]}
+                                      </span>
+                                    </div>
+                                  </Col>
+                                )}
+                                <Col className="ps-0">
+                                  <Link to="#" className="text-muted fw-bold">
+                                    {f.name}
+                                  </Link>
+                                  <p className="mb-0">
+                                    <strong>{f.formattedSize}</strong>
+                                  </p>
+                                </Col>
+                                <Col className="text-end">
+                                  <Link
+                                    to="#"
+                                    className="btn btn-link btn-lg text-muted shadow-none"
+                                  >
+                                    <i
+                                      className="dripicons-cross"
+                                      onClick={() => removeFile( i )}
+                                    ></i>
+                                  </Link>
+                                </Col>
+                              </Row>
+                            </div>
+                          </Card>
+                        );
+                      } )}
+
+
 
                       <Form.Group className="mb-3">
                         <Form.Label>Team Members</Form.Label>
@@ -414,6 +491,7 @@ const ProjectForm = () => {
                       <Button
                         variant="light"
                         className="waves-effect waves-light m-1"
+                        onClick={() => navigate( -1 )}
                       >
                         <i className="fe-x me-1"></i> Cancel
                       </Button>

@@ -18,6 +18,7 @@ import avatar3 from "../../../../assets/images/users/user-8.jpg";
 import avatar4 from "../../../../assets/images/users/user-3.jpg";
 import avatar5 from "../../../../assets/images/users/user-4.jpg";
 import avatar6 from "../../../../assets/images/users/user-5.jpg";
+import Tasks from "../Tasks/Tasks";
 
 // export interface Project {
 //   id?: number;
@@ -317,7 +318,8 @@ const ProjectDetail = () => {
       id: 2,
       title: "Tasks",
       icon: "mdi mdi-account-circle",
-      function: <RenderCards />,
+      function: <Tasks />,
+      // function: <RenderCards />,
     },
     {
       id: 3,

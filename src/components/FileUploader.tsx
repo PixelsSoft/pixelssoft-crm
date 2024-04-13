@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Card } from "react-bootstrap";
 import Dropzone from "react-dropzone";
+import FormInput from "./FormInput";
 
 interface FileType extends File {
   preview?: string;
@@ -37,6 +38,7 @@ const FileUploader = (props: FileUploaderProps) => {
 
 
       allFiles = [...selectedFiles];
+
       allFiles.push(files[0]);
 
       setSelectedFiles(allFiles);
@@ -71,7 +73,17 @@ const FileUploader = (props: FileUploaderProps) => {
   return (
     <>
       <Dropzone
+        // label="Photo Upload"
+        // type="file"
+        // name="file"
+        // containerClass={'mb-3'}
+
+        // key="photo file"
+        // // accept="image/png, image/jpeg"
+
+
         {...props}
+        // onChange={(acceptedFiles) => handleAcceptedFiles(acceptedFiles)}
         onDrop={(acceptedFiles) => handleAcceptedFiles(acceptedFiles)}
       >
         {({ getRootProps, getInputProps }) => (

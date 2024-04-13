@@ -10,56 +10,57 @@ import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/U
 import { CONSTANTS } from '../../../../constants/constant';
 import { toast } from 'react-toastify';
 import Spinner from '../../../../components/Spinner';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import QuickAccess from '../../FileManager/QuickAccess';
 
 const EditEmployee = () => {
     const { employeeId } = useParams();
-   
+
     const { loading, token, roles, employee } = useSelector(
-        
-        (state) => ({
+
+        ( state ) => ( {
             loading: state.utiltities.loading,
             token: state.Auth.token,
             roles: state.Roles.roles,
             employee: state.Employees.singleEmployee
-        })
+        } )
     );
 
-    let entireStore = useSelector(state=>state)
-    console.log(entireStore,"entire store")
-    console.log(employeeId,"id",token,"token")
+    let entireStore = useSelector( state => state )
+    console.log( entireStore, "entire store" )
+    console.log( employeeId, "id", token, "token" )
 
-    console.log('employee', employee);
+    console.log( 'employee', employee );
 
-    const [fullName, setFullName] = useState(employee?.name);
-    const [fatherName, setFatherName] = useState(employee?.detail?.father_name);
-    const [email, setEmail] = useState(employee?.email);
-    const [companyProvideEmail, setCompanyProvideEmail] = useState(employee?.detail?.company_provided_email);
-    const [DOB, setDOB] = useState(employee?.detail?.dob);
-    const [phoneNumber, setPhoneNumber] = useState(employee?.detail?.phone_no);
-    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState(employee?.detail?.emergency_phone_no);
-    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState(employee?.detail?.emergency_phone_no_2);
-    const [joiningDate, setJoiningDate] = useState(employee?.detail?.joining_date);
-    const [department, setDepartment] = useState('');
-    const [salary, setSalary] = useState(employee?.detail?.salary);
-    const [profilePic, setProfilePic] = useState(employee?.detail?.profile_img);
-    const [contract, setContract] = useState(employee?.detail?.contract_upload);
-    const [CNIC, setCNIC] = useState(employee?.detail?.cnic_img);
-    const [CnicNo, setCnicNo] = useState(employee?.detail?.cnic_no);
-    const [CV, setCV] = useState(employee?.detail?.cv_upload);
-    const [multipleRoleSelection, setMultipleRoleSelection] = useState(employee?.roles);
-    // const [password, setPassword] = useState('');
-    // const [confirmPassword, setConfirmPassword] = useState('');
-    // const [accTitle, setAccTitle] = useState('');
-    // const [branchCode, setBranchCode] = useState('');
-    // const [bankAddress, setBankAddress] = useState('');
-    // const [accNo, setAccNo] = useState('');
-    // const [bankName, setBankName] = useState('');
-    // const [refName, setRefName] = useState('');
-    // const [refEmail, setRefEmail] = useState('');
-    // const [refPhoneNo, setRefPhoneNo] = useState('');
-    // const [refCnicNo, setRefCnicNo] = useState('');
-    // const [refCnicPic, setRefCnicPic] = useState(null);
+    const [fullName, setFullName] = useState( employee?.name );
+    const [fatherName, setFatherName] = useState( employee?.detail?.father_name );
+    const [email, setEmail] = useState( employee?.email );
+    const [companyProvideEmail, setCompanyProvideEmail] = useState( employee?.detail?.company_provided_email );
+    const [DOB, setDOB] = useState( employee?.detail?.dob );
+    const [phoneNumber, setPhoneNumber] = useState( employee?.detail?.phone_no );
+    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState( employee?.detail?.emergency_phone_no );
+    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState( employee?.detail?.emergency_phone_no_2 );
+    const [joiningDate, setJoiningDate] = useState( employee?.detail?.joining_date );
+    const [department, setDepartment] = useState( '' );
+    const [salary, setSalary] = useState( employee?.detail?.salary );
+    const [profilePic, setProfilePic] = useState( employee?.detail?.profile_img );
+    const [contract, setContract] = useState( employee?.detail?.contract_upload );
+    const [CNIC, setCNIC] = useState( employee?.detail?.cnic_img );
+    const [CnicNo, setCnicNo] = useState( employee?.detail?.cnic_no );
+    const [CV, setCV] = useState( employee?.detail?.cv_upload );
+    const [multipleRoleSelection, setMultipleRoleSelection] = useState( employee?.roles );
+    const [password, setPassword] = useState( '' );
+    const [confirmPassword, setConfirmPassword] = useState( '' );
+    const [accTitle, setAccTitle] = useState( employee?.bankdetail?.title );
+    const [branchCode, setBranchCode] = useState( employee?.bankdetail?.branch_code );
+    const [bankAddress, setBankAddress] = useState( employee?.bankdetail?.branch_address );
+    const [accNo, setAccNo] = useState( employee?.bankdetail?.number );
+    const [bankName, setBankName] = useState( employee?.bankdetail?.bank );
+    const [refName, setRefName] = useState( employee?.refdetail?.name );
+    const [refEmail, setRefEmail] = useState( employee?.refdetail?.email );
+    const [refPhoneNo, setRefPhoneNo] = useState( employee?.refdetail?.phone_no );
+    const [refCnicNo, setRefCnicNo] = useState( employee?.refdetail?.cnic_no );
+    const [refCnicPic, setRefCnicPic] = useState( null );
     const dispatch = useDispatch();
 
     // const reset = () => {
@@ -94,41 +95,41 @@ const EditEmployee = () => {
     //     setMultipleRoleSelection([])
     // }
 
-    const submit = async (e) => {
+    const submit = async ( e ) => {
         e.preventDefault();
-        dispatch(startLoading());
+        dispatch( startLoading() );
         let roles = [];
-        multipleRoleSelection.map(e => {
-            roles.push(e.name);
-        })
+        multipleRoleSelection.map( e => {
+            roles.push( e.name );
+        } )
 
         const params = new FormData();
-        params.append("name", fullName);
-        params.append("father_name", fatherName);
-        params.append("email", email);
-        params.append("company_provided_email", companyProvideEmail);
-        params.append("dob", DOB);
-        params.append("cnic_no", CnicNo);
-        params.append("phone_no", phoneNumber);
-        params.append("emergency_phone_no", emergencyPhoneNumber);
-        params.append("emergency_phone_no_2", emergencyPhoneNumber2);
-        params.append("joining_date", joiningDate);
-        if (CNIC !== null) {
-            params.append("cnic_img", CNIC);
+        params.append( "name", fullName );
+        params.append( "father_name", fatherName );
+        params.append( "email", email );
+        params.append( "company_provided_email", companyProvideEmail );
+        params.append( "dob", DOB );
+        params.append( "cnic_no", CnicNo );
+        params.append( "phone_no", phoneNumber );
+        params.append( "emergency_phone_no", emergencyPhoneNumber );
+        params.append( "emergency_phone_no_2", emergencyPhoneNumber2 );
+        params.append( "joining_date", joiningDate );
+        if ( CNIC !== null ) {
+            params.append( "cnic_img", CNIC );
         };
-        if (profilePic !== null) {
-            params.append("profile_img", profilePic);
+        if ( profilePic !== null ) {
+            params.append( "profile_img", profilePic );
         };
-        if (CV !== null) {
-            params.append("cv_upload", CV);
+        if ( CV !== null ) {
+            params.append( "cv_upload", CV );
         };
-        if (contract !== null) {
-            params.append("contract_upload", contract);
+        if ( contract !== null ) {
+            params.append( "contract_upload", contract );
         };
         // if (refCnicPic !== null) {
         //     params.append("reference_profile_img", refCnicPic);
         // };
-        params.append("salary", salary);
+        params.append( "salary", salary );
         // params.append("account_title", accTitle);
         // params.append("accound_number", accNo);
         // params.append("bank_name", bankName);
@@ -139,7 +140,7 @@ const EditEmployee = () => {
         // params.append("reference_phone_no", refPhoneNo);
         // params.append("password", password);
         // params.append("password_confirmation", confirmPassword);
-        params.append("roles", roles);
+        params.append( "roles", roles );
         // params.append("department_id", 1);
 
         // const options = {
@@ -161,7 +162,7 @@ const EditEmployee = () => {
         //         } else {
         //             toast.error(e?.message[0], { position: toast.POSITION.TOP_RIGHT });
         //         }
-        dispatch(stopLoading());
+        dispatch( stopLoading() );
         //     })
         //     .catch(err => {
         //         dispatch(stopLoading());
@@ -172,59 +173,59 @@ const EditEmployee = () => {
     };
 
     // Profile picture upload
-    const handleProfileFileChange = (event) => {
-        if (event.target.files) {
+    const handleProfileFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setProfilePic(file);
+            setProfilePic( file );
         }
     };
 
     // CNIC picture Upload
-    const handleCNICFileChange = (event) => {
-        if (event.target.files) {
+    const handleCNICFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setCNIC(file);
+            setCNIC( file );
         }
     };
 
     // Reference CNIC picture Upload
-    // const handleRefCNICFileChange = (event) => {
-    //     if (event.target.files) {
-    //         const file = event.target.files[0];
-    //         setRefCnicPic(file);
-    //     }
-    // };
+    const handleRefCNICFileChange = ( event ) => {
+        if ( event.target.files ) {
+            const file = event.target.files[0];
+            setRefCnicPic( file );
+        }
+    };
 
     // CV picture Upload
-    const handleCVFileChange = (event) => {
-        if (event.target.files) {
+    const handleCVFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setCV(file);
+            setCV( file );
         }
     };
 
     // Contract picture Upload
-    const handleContractFileChange = (event) => {
-        if (event.target.files) {
+    const handleContractFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setContract(file);
+            setContract( file );
         }
     };
 
     /////role selection/////
-    const onChangeRoleSelection = (selected) => {
-        setMultipleRoleSelection(selected);
+    const onChangeRoleSelection = ( selected ) => {
+        setMultipleRoleSelection( selected );
     };
 
     const getEmployee = async () => {
-        dispatch(startLoading());
-        await dispatch(GetEmployeeById(employeeId, token));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( GetEmployeeById( employeeId, token ) );
+        dispatch( stopLoading() );
     };
 
-    useEffect(() => {
+    useEffect( () => {
         getEmployee();
-    }, []);
+    }, [] );
 
     return loading ? (
         <div className='d-flex justify-content-center align-items-center'>
@@ -255,7 +256,7 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="text"
                                             value={fullName}
-                                            onChange={(e) => setFullName(e.target.value)}
+                                            onChange={( e ) => setFullName( e.target.value )}
                                         />
                                         <FormInput
                                             label="Email"
@@ -265,7 +266,7 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="email"
                                             value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={( e ) => setEmail( e.target.value )}
                                         />
                                         {/* <FormInput
                                             label="Password"
@@ -284,7 +285,7 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="date"
                                             value={DOB}
-                                            onChange={(e) => setDOB(e.target.value)}
+                                            onChange={( e ) => setDOB( e.target.value )}
                                         />
                                         <div className="mb-3">
                                             <label className="form-label">Phone Number with Area Code</label> <br />
@@ -310,7 +311,7 @@ const EditEmployee = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={phoneNumber}
-                                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                                onChange={( e ) => setPhoneNumber( e.target.value )}
                                             />
                                         </div>
                                         <div className="mb-3">
@@ -337,7 +338,7 @@ const EditEmployee = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={emergencyPhoneNumber}
-                                                onChange={(e) => setEmergencyPhoneNumber(e.target.value)}
+                                                onChange={( e ) => setEmergencyPhoneNumber( e.target.value )}
                                             />
                                         </div>
                                         <FormInput
@@ -347,7 +348,7 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="join date"
                                             value={joiningDate}
-                                            onChange={(e) => setJoiningDate(e.target.value)}
+                                            onChange={( e ) => setJoiningDate( e.target.value )}
                                         />
                                         <FormInput
                                             label="Cnic Upload"
@@ -358,6 +359,32 @@ const EditEmployee = () => {
                                             key="file"
                                             onChange={handleCNICFileChange}
                                         />
+                                        {employee?.detail?.cnic_img &&
+                                            <>
+                                                <label className="form-label">Uploaded CNIC</label> <br />
+
+                                                <Col xl={6} lg={12}>
+                                                    <Card className="m-1 shadow-none border">
+                                                        <div className="p-2">
+                                                            <Row className="align-items-center">
+                                                                <Col className="col-auto pe-0">
+                                                                    <div className="avatar-sm">
+                                                                        <span className="avatar-title bg-light text-secondary rounded">
+                                                                            <i className={"mdi mdi-folder-zip font-18"}></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Link target="_blank" to={employee?.detail?.cnic_img} className="text-muted fw-bold">
+                                                                        {"Uploaded CNIC"}
+                                                                    </Link>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Card>
+                                                </Col>
+                                            </>
+                                        }
                                         <FormInput
                                             label="CV Upload"
                                             type="file"
@@ -366,6 +393,32 @@ const EditEmployee = () => {
                                             onChange={handleCVFileChange}
                                             key="cv file"
                                         />
+                                        {employee?.detail?.cv_upload &&
+                                            <>
+                                                <label className="form-label">Uploaded CV </label> <br />
+
+                                                <Col xl={6} lg={12}>
+                                                    <Card className="m-1 shadow-none border">
+                                                        <div className="p-2">
+                                                            <Row className="align-items-center">
+                                                                <Col className="col-auto pe-0">
+                                                                    <div className="avatar-sm">
+                                                                        <span className="avatar-title bg-light text-secondary rounded">
+                                                                            <i className={"mdi mdi-folder-zip font-18"}></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Link target="_blank" to={employee?.detail?.cv_upload} className="text-muted fw-bold">
+                                                                        {"Uploaded CV"}
+                                                                    </Link>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Card>
+                                                </Col>
+                                            </>
+                                        }
                                         <FormInput
                                             label="Salary "
                                             type="number"
@@ -374,7 +427,7 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="Number"
                                             value={salary}
-                                            onChange={(e) => setSalary(e.target.valueAsNumber)}
+                                            onChange={( e ) => setSalary( e.target.valueAsNumber )}
                                         />
                                     </Col>
                                     <Col lg={6}>
@@ -386,7 +439,7 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="text"
                                             value={fatherName}
-                                            onChange={(e) => setFatherName(e.target.value)}
+                                            onChange={( e ) => setFatherName( e.target.value )}
                                         />
                                         <FormInput
                                             label="Company Provided Email"
@@ -396,7 +449,7 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="email"
                                             value={companyProvideEmail}
-                                            onChange={(e) => setCompanyProvideEmail(e.target.value)}
+                                            onChange={( e ) => setCompanyProvideEmail( e.target.value )}
                                         />
                                         {/* <FormInput
                                             label="Confirm Password"
@@ -431,7 +484,7 @@ const EditEmployee = () => {
                                                 placeholder="_____-_______-_"
                                                 className="form-control"
                                                 value={CnicNo}
-                                                onChange={(e) => setCnicNo(e.target.value)}
+                                                onChange={( e ) => setCnicNo( e.target.value )}
                                             />
                                         </div>
                                         <FormInput
@@ -442,7 +495,7 @@ const EditEmployee = () => {
                                             className="form-select"
                                             key="select"
                                             value={department}
-                                            onChange={(e) => setDepartment(e.target.value)}
+                                            onChange={( e ) => setDepartment( e.target.value )}
                                         >
                                             <option>Hr</option>
                                             <option>Accounts</option>
@@ -473,7 +526,7 @@ const EditEmployee = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={emergencyPhoneNumber2}
-                                                onChange={(e) => setEmergencyPhoneNumber2(e.target.value)}
+                                                onChange={( e ) => setEmergencyPhoneNumber2( e.target.value )}
                                             />
                                         </div>
                                         <div className="mb-3">
@@ -482,7 +535,7 @@ const EditEmployee = () => {
                                                 id="select3"
                                                 labelKey="name"
                                                 multiple
-                                                onChange={(e) => onChangeRoleSelection(e)}
+                                                onChange={( e ) => onChangeRoleSelection( e )}
                                                 options={roles}
                                                 placeholder="Choose a role"
                                                 selected={multipleRoleSelection}
@@ -497,6 +550,34 @@ const EditEmployee = () => {
                                             accept="image/png, image/jpeg"
                                             onChange={handleProfileFileChange}
                                         />
+                                        {employee?.detail?.profile_img &&
+                                            <>
+                                                <label className="form-label">Uploaded Photo</label> <br />
+
+                                                <Col xl={6} lg={12}>
+                                                    <Card className="m-1 shadow-none border">
+                                                        <div className="p-2">
+                                                            <Row className="align-items-center">
+                                                                <Col className="col-auto pe-0">
+                                                                    <div className="avatar-sm">
+                                                                        <span className="avatar-title bg-light text-secondary rounded">
+                                                                            <i className={"mdi mdi-folder-zip font-18"}></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Link target="_blank" to={employee?.detail?.profile_img} className="text-muted fw-bold">
+                                                                        {"Uploaded photo"}
+                                                                    </Link>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Card>
+                                                </Col>
+                                            </>
+                                        }
+
+
                                         <FormInput
                                             label="Contract Upload"
                                             type="file"
@@ -506,9 +587,36 @@ const EditEmployee = () => {
                                             accept=".pdf"
                                             onChange={handleContractFileChange}
                                         />
+                                        {employee?.detail?.contract_upload &&
+                                            <>
+                                                <label className="form-label">Uploaded Contract</label> <br />
+
+                                                <Col xl={6} lg={12}>
+                                                    <Card className="m-1 shadow-none border">
+                                                        <div className="p-2">
+                                                            <Row className="align-items-center">
+                                                                <Col className="col-auto pe-0">
+                                                                    <div className="avatar-sm">
+                                                                        <span className="avatar-title bg-light text-secondary rounded">
+                                                                            <i className={"mdi mdi-folder-zip font-18"}></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Link target="_blank" to={employee?.detail?.contract_upload} className="text-muted fw-bold">
+                                                                        {"Uploaded Contract"}
+                                                                    </Link>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Card>
+                                                </Col>
+                                            </>
+                                        }
+
                                     </Col>
                                 </Row>
-                                {/* <h4 className="header-title">Account Details</h4>
+                                <h4 className="header-title">Account Details</h4>
                                 <Row>
                                     <Col lg={6}>
                                         <FormInput
@@ -519,8 +627,8 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="acc text"
                                             value={accTitle}
-                                            onChange={(e) => {
-                                                setAccTitle(e.target.value);
+                                            onChange={( e ) => {
+                                                setAccTitle( e.target.value );
                                             }}
                                         />
                                         <FormInput
@@ -531,8 +639,8 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="Number"
                                             value={branchCode}
-                                            onChange={(e) => {
-                                                setBranchCode(e.target.value);
+                                            onChange={( e ) => {
+                                                setBranchCode( e.target.value );
                                             }}
                                         />
                                         <FormInput
@@ -543,8 +651,8 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="bank text"
                                             value={bankAddress}
-                                            onChange={(e) => {
-                                                setBankAddress(e.target.value);
+                                            onChange={( e ) => {
+                                                setBankAddress( e.target.value );
                                             }}
                                         />
                                     </Col>
@@ -557,8 +665,8 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="Number"
                                             value={accNo}
-                                            onChange={(e) => {
-                                                setAccNo(e.target.value);
+                                            onChange={( e ) => {
+                                                setAccNo( e.target.value );
                                             }}
                                         />
                                         <FormInput
@@ -569,8 +677,8 @@ const EditEmployee = () => {
                                             className="form-select"
                                             key="select"
                                             value={bankName}
-                                            onChange={(e) => {
-                                                setBankName(e.target.value);
+                                            onChange={( e ) => {
+                                                setBankName( e.target.value );
                                             }}
                                         >
                                             <option>Habib Bank Limited</option>
@@ -611,8 +719,8 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="name text"
                                             value={refName}
-                                            onChange={(e) => {
-                                                setRefName(e.target.value);
+                                            onChange={( e ) => {
+                                                setRefName( e.target.value );
                                             }}
                                         />
                                         <div className="mb-3">
@@ -639,8 +747,8 @@ const EditEmployee = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={refPhoneNo}
-                                                onChange={(e) => {
-                                                    setRefPhoneNo(e.target.value);
+                                                onChange={( e ) => {
+                                                    setRefPhoneNo( e.target.value );
                                                 }}
                                             />
                                         </div>
@@ -667,8 +775,8 @@ const EditEmployee = () => {
                                                 placeholder="_____-_______-_"
                                                 className="form-control"
                                                 value={refCnicNo}
-                                                onChange={(e) => {
-                                                    setRefCnicNo(e.target.value);
+                                                onChange={( e ) => {
+                                                    setRefCnicNo( e.target.value );
                                                 }}
                                             />
                                         </div>
@@ -682,8 +790,8 @@ const EditEmployee = () => {
                                             containerClass={'mb-3'}
                                             key="email"
                                             value={refEmail}
-                                            onChange={(e) => {
-                                                setRefEmail(e.target.value);
+                                            onChange={( e ) => {
+                                                setRefEmail( e.target.value );
                                             }}
                                         />
                                         <FormInput
@@ -694,8 +802,34 @@ const EditEmployee = () => {
                                             key="cnic file"
                                             onChange={handleRefCNICFileChange}
                                         />
+                                        {employee?.detail?.cnic_img &&
+                                            <>
+                                                <label className="form-label">Uploaded CNIC</label> <br />
+
+                                                <Col xl={6} lg={12}>
+                                                    <Card className="m-1 shadow-none border">
+                                                        <div className="p-2">
+                                                            <Row className="align-items-center">
+                                                                <Col className="col-auto pe-0">
+                                                                    <div className="avatar-sm">
+                                                                        <span className="avatar-title bg-light text-secondary rounded">
+                                                                            <i className={"mdi mdi-folder-zip font-18"}></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Link target="_blank" to={employee?.detail?.cnic_img} className="text-muted fw-bold">
+                                                                        {"Uploaded CNIC"}
+                                                                    </Link>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Card>
+                                                </Col>
+                                            </>
+                                        }
                                     </Col>
-                                </Row> */}
+                                </Row>
                                 <Button className='rounded-pill' type="submit">
                                     Submit
                                 </Button>

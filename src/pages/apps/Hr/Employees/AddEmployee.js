@@ -14,150 +14,150 @@ import utils from '../../../../utils/utils';
 import Select from "react-select";
 
 const List = () => {
-    const [fullName, setFullName] = useState('');
-    const [fatherName, setFatherName] = useState('');
-    const [email, setEmail] = useState('');
-    const [companyProvideEmail, setCompanyProvideEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [DOB, setDOB] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState('');
-    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState('');
-    const [joiningDate, setJoiningDate] = useState('');
-    const [department, setDepartment] = useState('');
-    const [salary, setSalary] = useState();
-    const [profilePic, setProfilePic] = useState(null);
-    const [contract, setContract] = useState(null);
-    const [CNIC, setCNIC] = useState(null);
-    const [CnicNo, setCnicNo] = useState('');
-    const [CV, setCV] = useState(null);
-    const [multipleRoleSelection, setMultipleRoleSelection] = useState([]);
-    const [accTitle, setAccTitle] = useState('');
-    const [branchCode, setBranchCode] = useState('');
-    const [bankAddress, setBankAddress] = useState('');
-    const [accNo, setAccNo] = useState('');
-    const [bankName, setBankName] = useState('');
-    const [refName, setRefName] = useState('');
-    const [refEmail, setRefEmail] = useState('');
-    const [refPhoneNo, setRefPhoneNo] = useState('');
-    const [refCnicNo, setRefCnicNo] = useState('');
-    const [refCnicPic, setRefCnicPic] = useState(null);
-    const [target, setTarget] = useState(0);
-    const [comm, setComm] = useState(0);
+    const [fullName, setFullName] = useState( 'taimoor' );
+    const [fatherName, setFatherName] = useState( 'khan' );
+    const [email, setEmail] = useState( 'taimoor@yopmail.com' );
+    const [companyProvideEmail, setCompanyProvideEmail] = useState( 'taimoor@yopmail.com' );
+    const [password, setPassword] = useState( 'Taimoor123' );
+    const [confirmPassword, setConfirmPassword] = useState( 'Taimoor123' );
+    const [DOB, setDOB] = useState( '' );
+    const [phoneNumber, setPhoneNumber] = useState( '923432333483' );
+    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState( '923432333483' );
+    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState( '923432333483' );
+    const [joiningDate, setJoiningDate] = useState( new Date() );
+    const [department, setDepartment] = useState( 'Hr' );
+    const [salary, setSalary] = useState( '10000' );
+    const [profilePic, setProfilePic] = useState( null );
+    const [contract, setContract] = useState( null );
+    const [CNIC, setCNIC] = useState( null );
+    const [CnicNo, setCnicNo] = useState( '' );
+    const [CV, setCV] = useState( null );
+    const [multipleRoleSelection, setMultipleRoleSelection] = useState( [] );
+    const [accTitle, setAccTitle] = useState( 'taimoor khan' );
+    const [branchCode, setBranchCode] = useState( '0231' );
+    const [bankAddress, setBankAddress] = useState( 'DHA' );
+    const [accNo, setAccNo] = useState( '12039891381' );
+    const [bankName, setBankName] = useState( '' );
+    const [refName, setRefName] = useState( 'taimoor' );
+    const [refEmail, setRefEmail] = useState( 'taimoor@yopmail.com' );
+    const [refPhoneNo, setRefPhoneNo] = useState( '923432333483' );
+    const [refCnicNo, setRefCnicNo] = useState( '4220120438949' );
+    const [refCnicPic, setRefCnicPic] = useState( null );
+    const [target, setTarget] = useState( 0 );
+    const [comm, setComm] = useState( 0 );
     // const [permissions,setPermissions]=useState([])
     const dispatch = useDispatch();
 
     const { loading, token, roles } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             loading: state.utiltities.loading,
             token: state.Auth.token,
             roles: state.Roles.roles
-        })
+        } )
     );
 
-    console.log(roles,"roles")
+    console.log( roles, "roles" )
 
     const reset = () => {
-        setFullName('')
-        setFatherName('')
-        setEmail('')
-        setCompanyProvideEmail('')
-        setPassword('')
-        setConfirmPassword('')
-        setDOB('')
-        setPhoneNumber('')
-        setEmergencyPhoneNumber('')
-        setEmergencyPhoneNumber2('')
-        setJoiningDate('')
-        setDepartment('')
-        setSalary('')
-        setProfilePic(null)
-        setContract(null)
-        setCNIC(null)
-        setCV(null)
-        setRefCnicPic(null)
-        setCnicNo('')
-        setAccTitle('')
-        setBranchCode('')
-        setBankAddress('')
-        setAccNo('')
-        setBankName('')
-        setRefName('')
-        setRefEmail('')
-        setRefPhoneNo('')
-        setRefCnicNo('')
-        setMultipleRoleSelection([])
+        setFullName( '' )
+        setFatherName( '' )
+        setEmail( '' )
+        setCompanyProvideEmail( '' )
+        setPassword( '' )
+        setConfirmPassword( '' )
+        setDOB( '' )
+        setPhoneNumber( '' )
+        setEmergencyPhoneNumber( '' )
+        setEmergencyPhoneNumber2( '' )
+        setJoiningDate( '' )
+        setDepartment( '' )
+        setSalary( '' )
+        setProfilePic( null )
+        setContract( null )
+        setCNIC( null )
+        setCV( null )
+        setRefCnicPic( null )
+        setCnicNo( '' )
+        setAccTitle( '' )
+        setBranchCode( '' )
+        setBankAddress( '' )
+        setAccNo( '' )
+        setBankName( '' )
+        setRefName( '' )
+        setRefEmail( '' )
+        setRefPhoneNo( '' )
+        setRefCnicNo( '' )
+        setMultipleRoleSelection( [] )
     }
 
-    const submit = async (e) => {
+    const submit = async ( e ) => {
         e.preventDefault();
-        dispatch(startLoading());
+        dispatch( startLoading() );
         // let roles = [];
         // multipleRoleSelection.map(e => {
         //     roles.push(e?.name);
         // })
 
-        if (!utils.validateEmail(email)) {
-            toast.error("Enter correct email", { position: toast.POSITION.TOP_RIGHT });
-            dispatch(stopLoading());
+        if ( !utils.validateEmail( email ) ) {
+            toast.error( "Enter correct email", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
             return
         }
-        if (!utils.validateEmail(refEmail)) {
-            toast.error("Enter correct reference email", { position: toast.POSITION.TOP_RIGHT });
-            dispatch(stopLoading());
+        if ( !utils.validateEmail( refEmail ) ) {
+            toast.error( "Enter correct reference email", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
             return
         }
-        if (!utils.validateEmail(companyProvideEmail)) {
-            toast.error("Enter correct company email", { position: toast.POSITION.TOP_RIGHT });
-            dispatch(stopLoading());
+        if ( !utils.validateEmail( companyProvideEmail ) ) {
+            toast.error( "Enter correct company email", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
             return
         }
-        if (password !== confirmPassword) {
-            toast.error("Password and confirm Password are not same", { position: toast.POSITION.TOP_RIGHT });
-            dispatch(stopLoading());
+        if ( password !== confirmPassword ) {
+            toast.error( "Password and confirm Password are not same", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
             return
         };
 
         const params = new FormData();
-        params.append("name", fullName);
-        params.append("father_name", fatherName);
-        params.append("email", email);
-        params.append("company_provided_email", companyProvideEmail);
-        params.append("dob", DOB);
-        params.append("cnic_no", CnicNo);
-        params.append("phone_no", phoneNumber);
-        params.append("emergency_phone_no", emergencyPhoneNumber);
-        params.append("emergency_phone_no_2", emergencyPhoneNumber2);
-        params.append("joining_date", joiningDate);
-        if (CNIC !== null) {
-            params.append("cnic_img", CNIC);
+        params.append( "name", fullName );
+        params.append( "father_name", fatherName );
+        params.append( "email", email );
+        params.append( "company_provided_email", companyProvideEmail );
+        params.append( "dob", DOB );
+        params.append( "cnic_no", CnicNo );
+        params.append( "phone_no", phoneNumber );
+        params.append( "emergency_phone_no", emergencyPhoneNumber );
+        params.append( "emergency_phone_no_2", emergencyPhoneNumber2 );
+        params.append( "joining_date", joiningDate );
+        if ( CNIC !== null ) {
+            params.append( "cnic_img", CNIC );
         };
-        if (profilePic !== null) {
-            params.append("profile_img", profilePic);
+        if ( profilePic !== null ) {
+            params.append( "profile_img", profilePic );
         };
-        if (CV !== null) {
-            params.append("cv_upload", CV);
+        if ( CV !== null ) {
+            params.append( "cv_upload", CV );
         };
-        if (contract !== null) {
-            params.append("contract_upload", contract);
+        if ( contract !== null ) {
+            params.append( "contract_upload", contract );
         };
-        if (refCnicPic !== null) {
-            params.append("reference_profile_img", refCnicPic);
+        if ( refCnicPic !== null ) {
+            params.append( "reference_profile_img", refCnicPic );
         };
-        params.append("salary", salary);
-        params.append("account_title", accTitle);
-        params.append("accound_number", accNo);
-        params.append("bank_name", bankName);
-        params.append("branch_address", branchCode);
-        params.append("reference_name", refName);
-        params.append("reference_email", refEmail);
-        params.append("reference_cnic_no", refCnicNo);
-        params.append("reference_phone_no", refPhoneNo);
-        params.append("password", password);
-        params.append("password_confirmation", confirmPassword);
-        params.append("roles", multipleRoleSelection);
-        params.append("department_id", 1);
+        params.append( "salary", salary );
+        params.append( "account_title", accTitle );
+        params.append( "accound_number", accNo );
+        params.append( "bank_name", bankName );
+        params.append( "branch_address", branchCode );
+        params.append( "reference_name", refName );
+        params.append( "reference_email", refEmail );
+        params.append( "reference_cnic_no", refCnicNo );
+        params.append( "reference_phone_no", refPhoneNo );
+        params.append( "password", password );
+        params.append( "password_confirmation", confirmPassword );
+        params.append( "roles", multipleRoleSelection );
+        params.append( "department_id", 1 );
 
         const options = {
             method: 'POST',
@@ -167,95 +167,97 @@ const List = () => {
             },
             body: params,
         };
-
-        await fetch(CONSTANTS.API_URLS.BASE + 'user/register', options)
-            .then(response => response.json())
-            .then(e => {
-                if (e.status === 200) {
-                    dispatch(GetEmployees(token));
-                    toast.success(e?.message, { position: toast.POSITION.TOP_RIGHT });
+        params.forEach( ( value, key ) => {
+            console.log( `${key}: ${value}` );
+        } );
+        await fetch( CONSTANTS.API_URLS.BASE + 'user/register', options )
+            .then( response => response.json() )
+            .then( e => {
+                if ( e.status === 200 ) {
+                    dispatch( GetEmployees( token ) );
+                    toast.success( e?.message, { position: toast.POSITION.TOP_RIGHT } );
                     reset();
                 } else {
-                    toast.error(e?.message[0], { position: toast.POSITION.TOP_RIGHT });
+                    toast.error( e?.message[0], { position: toast.POSITION.TOP_RIGHT } );
                 }
-                dispatch(stopLoading());
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log("err", err);
-            });
-        // await dispatch(AddEmployee(params, token));
-        dispatch(stopLoading());
+                dispatch( stopLoading() );
+            } )
+            .catch( err => {
+                dispatch( stopLoading() );
+                console.log( "err", err );
+            } );
+        // await dispatch( AddEmployee( params, token ) );
+        dispatch( stopLoading() );
     };
 
     // Profile picture upload
-    const handleProfileFileChange = (event) => {
-        if (event.target.files) {
+    const handleProfileFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setProfilePic(file);
+            setProfilePic( file );
         }
     };
 
-     // Handler for the Select component's onChange event
-  const handleSelectChange = (selectedOption) => {
-    // Extracting values from selected options and updating the state
-    const selectedValues = selectedOption ? selectedOption.map(option => option.value) : [];
-    setMultipleRoleSelection(selectedValues);
-  };
- // roles selection options 
-  const options = [
-    { value: "Hr", label: "Hr" },
-    { value: "Developer", label: "Developer" },
-    { value: "Lead", label: "Lead" },
-    { value: "Project Manager", label: "Project Manager" },
-    { value: "Sales Person", label: "Sales Person" },
-    { value: "Scraper", label: "Scraper" },
-    { value: "QA", label: "QA" },
-  ];
+    // Handler for the Select component's onChange event
+    const handleSelectChange = ( selectedOption ) => {
+        // Extracting values from selected options and updating the state
+        const selectedValues = selectedOption ? selectedOption.map( option => option.value ) : [];
+        setMultipleRoleSelection( selectedValues );
+    };
+    // roles selection options 
+    const options = [
+        { value: "Hr", label: "Hr" },
+        { value: "Developer", label: "Developer" },
+        { value: "Lead", label: "Lead" },
+        { value: "Project Manager", label: "Project Manager" },
+        { value: "Sales Person", label: "Sales Person" },
+        { value: "Scraper", label: "Scraper" },
+        { value: "QA", label: "QA" },
+    ];
 
     // CNIC picture Upload
-    const handleCNICFileChange = (event) => {
-        if (event.target.files) {
+    const handleCNICFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setCNIC(file);
+            setCNIC( file );
         }
     };
 
     // Reference CNIC picture Upload
-    const handleRefCNICFileChange = (event) => {
-        if (event.target.files) {
+    const handleRefCNICFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setRefCnicPic(file);
+            setRefCnicPic( file );
         }
     };
 
     // CV picture Upload
-    const handleCVFileChange = (event) => {
-        if (event.target.files) {
+    const handleCVFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setCV(file);
+            setCV( file );
         }
     };
     // Contract picture Upload
-    const handleContractFileChange = (event) => {
-        if (event.target.files) {
+    const handleContractFileChange = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setContract(file);
+            setContract( file );
         }
     };
 
     /////role selection/////
-   
 
-    const targetFunc = (e) => {
-        if (e.target.value >= 0) {
-            setTarget(e.target.value);
+
+    const targetFunc = ( e ) => {
+        if ( e.target.value >= 0 ) {
+            setTarget( e.target.value );
         }
     }
 
-    const comFunc = (e) => {
-        if (e.target.value >= 0) {
-            setComm(e.target.value)(e.target.value);
+    const comFunc = ( e ) => {
+        if ( e.target.value >= 0 ) {
+            setComm( e.target.value )( e.target.value );
         }
     }
 
@@ -288,7 +290,7 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             key="text"
                                             value={fullName}
-                                            onChange={(e) => setFullName(e.target.value)}
+                                            onChange={( e ) => setFullName( e.target.value )}
                                         />
                                         <FormInput
                                             label="Email"
@@ -298,7 +300,7 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             key="email"
                                             value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={( e ) => setEmail( e.target.value )}
                                         />
                                         <FormInput
                                             label="Password"
@@ -308,7 +310,7 @@ const List = () => {
                                             containerClass={'mb-3'}
                                             key="password"
                                             value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
+                                            onChange={( e ) => setPassword( e.target.value )}
                                         />
                                         <FormInput
                                             label="Date of Birth"
@@ -318,8 +320,8 @@ const List = () => {
 
                                             key="date"
                                             value={DOB}
-                                            onChange={(e) => {
-                                                setDOB(e.target.value)
+                                            onChange={( e ) => {
+                                                setDOB( e.target.value )
                                             }}
 
                                         />
@@ -347,7 +349,7 @@ const List = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={phoneNumber}
-                                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                                onChange={( e ) => setPhoneNumber( e.target.value )}
                                             />
                                         </div>
                                         <div className="mb-3">
@@ -375,8 +377,8 @@ const List = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={emergencyPhoneNumber}
-                                                onChange={(e) => {
-                                                    setEmergencyPhoneNumber(e.target.value)
+                                                onChange={( e ) => {
+                                                    setEmergencyPhoneNumber( e.target.value )
                                                 }}
                                             />
                                         </div>
@@ -389,8 +391,8 @@ const List = () => {
 
                                             key="join date"
                                             value={joiningDate}
-                                            onChange={(e) => {
-                                                setJoiningDate(e.target.value)
+                                            onChange={( e ) => {
+                                                setJoiningDate( e.target.value )
                                             }}
 
 
@@ -424,8 +426,8 @@ const List = () => {
 
                                             key="Salary"
                                             value={salary}
-                                            onChange={(e) => {
-                                                setSalary(e.target.valueAsNumber)
+                                            onChange={( e ) => {
+                                                setSalary( e.target.valueAsNumber )
                                             }}
 
 
@@ -442,8 +444,8 @@ const List = () => {
 
                                             key="text"
                                             value={fatherName}
-                                            onChange={(e) => {
-                                                setFatherName(e.target.value)
+                                            onChange={( e ) => {
+                                                setFatherName( e.target.value )
                                             }}
                                         />
                                         <FormInput
@@ -455,8 +457,8 @@ const List = () => {
 
                                             key="email"
                                             value={companyProvideEmail}
-                                            onChange={(e) => {
-                                                setCompanyProvideEmail(e.target.value)
+                                            onChange={( e ) => {
+                                                setCompanyProvideEmail( e.target.value )
                                             }}
 
 
@@ -471,8 +473,8 @@ const List = () => {
 
                                             key="password"
                                             value={confirmPassword}
-                                            onChange={(e) => {
-                                                setConfirmPassword(e.target.value)
+                                            onChange={( e ) => {
+                                                setConfirmPassword( e.target.value )
                                             }}
 
 
@@ -501,8 +503,8 @@ const List = () => {
                                                 placeholder="_____-_______-_"
                                                 className="form-control"
                                                 value={CnicNo}
-                                                onChange={(e) => {
-                                                    setCnicNo(e.target.value)
+                                                onChange={( e ) => {
+                                                    setCnicNo( e.target.value )
                                                 }}
                                             />
 
@@ -517,7 +519,7 @@ const List = () => {
 
                                             key="select"
                                             value={department}
-                                            onChange={(e) => setDepartment(e.target.value)}
+                                            onChange={( e ) => setDepartment( e.target.value )}
                                         >
                                             <option>Hr</option>
                                             <option>Accounts</option>
@@ -534,7 +536,7 @@ const List = () => {
                                                     containerClass={'mb-3'}
                                                     key="Targert"
                                                     value={target}
-                                                    onChange={(e) => targetFunc(e)}
+                                                    onChange={( e ) => targetFunc( e )}
                                                 />
                                                 <FormInput
                                                     label="Comission"
@@ -544,7 +546,7 @@ const List = () => {
                                                     containerClass={'mb-3'}
                                                     key="Comission"
                                                     value={comm}
-                                                    onChange={(e) => comFunc(e)}
+                                                    onChange={( e ) => comFunc( e )}
                                                 />
                                             </>
                                         ) : null}
@@ -574,21 +576,21 @@ const List = () => {
                                                 placeholder="(__) ____-____"
                                                 className="form-control"
                                                 value={emergencyPhoneNumber2}
-                                                onChange={(e) => {
-                                                    setEmergencyPhoneNumber2(e.target.value)
+                                                onChange={( e ) => {
+                                                    setEmergencyPhoneNumber2( e.target.value )
                                                 }}
                                             />
                                         </div>
 
                                         <div className="mb-3">
                                             <label className="form-label">Role</label> <br />
-                                                <Select
-                                                    isMulti={true}
-                                                    options={options}
-                                                    className="react-select react-select-container"
-                                                    classNamePrefix="react-select"
-                                                    onChange={handleSelectChange}
-                                                ></Select>
+                                            <Select
+                                                isMulti={true}
+                                                options={options}
+                                                className="react-select react-select-container"
+                                                classNamePrefix="react-select"
+                                                onChange={handleSelectChange}
+                                            ></Select>
                                             {/* <Typeahead
                                                 id="select3"
                                                 labelKey="name"
@@ -603,19 +605,19 @@ const List = () => {
 
                                         <div className="mb-3">
                                             <label className="form-label">Permisions</label>  <br />
-                                                <Select
-                                                    isMulti={true}
-                                                    options={[
-                                                        { value: "Read", label: "Read" },
-                                                        { value: "Write", label: "Write" },
-                                                        { value: "Update", label: "Update" },
-                                                        { value: "Delete", label: "Delete" },
-                                                        { value: "Read, Write, Update, Delete", label: "All" },
-                                                     
-                                                    ]}
-                                                    className="react-select react-select-container"
-                                                    classNamePrefix="react-select"
-                                                ></Select>
+                                            <Select
+                                                isMulti={true}
+                                                options={[
+                                                    { value: "Read", label: "Read" },
+                                                    { value: "Write", label: "Write" },
+                                                    { value: "Update", label: "Update" },
+                                                    { value: "Delete", label: "Delete" },
+                                                    { value: "Read, Write, Update, Delete", label: "All" },
+
+                                                ]}
+                                                className="react-select react-select-container"
+                                                classNamePrefix="react-select"
+                                            ></Select>
                                             {/* <Typeahead
                                                 id="select3"
                                                 labelKey="name"
@@ -666,8 +668,8 @@ const List = () => {
 
                                             key="acc text"
                                             value={accTitle}
-                                            onChange={(e) => {
-                                                setAccTitle(e.target.value);
+                                            onChange={( e ) => {
+                                                setAccTitle( e.target.value );
                                             }}
 
                                         />
@@ -680,8 +682,8 @@ const List = () => {
 
                                             key="Branch"
                                             value={branchCode}
-                                            onChange={(e) => {
-                                                setBranchCode(e.target.value);
+                                            onChange={( e ) => {
+                                                setBranchCode( e.target.value );
                                             }}
 
 
@@ -697,8 +699,8 @@ const List = () => {
 
 
                                             value={bankAddress}
-                                            onChange={(e) => {
-                                                setBankAddress(e.target.value);
+                                            onChange={( e ) => {
+                                                setBankAddress( e.target.value );
                                             }}
                                         />
 
@@ -714,8 +716,8 @@ const List = () => {
                                             key="Account"
 
                                             value={accNo}
-                                            onChange={(e) => {
-                                                setAccNo(e.target.value);
+                                            onChange={( e ) => {
+                                                setAccNo( e.target.value );
                                             }}
 
                                         />
@@ -728,8 +730,8 @@ const List = () => {
 
                                             key="select"
                                             value={bankName}
-                                            onChange={(e) => {
-                                                setBankName(e.target.value);
+                                            onChange={( e ) => {
+                                                setBankName( e.target.value );
                                             }}
                                         >
                                             <option>Habib Bank Limited</option>
@@ -773,8 +775,8 @@ const List = () => {
                                             key="name text"
 
                                             value={refName}
-                                            onChange={(e) => {
-                                                setRefName(e.target.value);
+                                            onChange={( e ) => {
+                                                setRefName( e.target.value );
                                             }}
 
                                         />
@@ -804,8 +806,8 @@ const List = () => {
                                                 className="form-control"
 
                                                 value={refPhoneNo}
-                                                onChange={(e) => {
-                                                    setRefPhoneNo(e.target.value);
+                                                onChange={( e ) => {
+                                                    setRefPhoneNo( e.target.value );
                                                 }}
                                             />
                                         </div>
@@ -832,8 +834,8 @@ const List = () => {
                                                 placeholder="_____-_______-_"
                                                 className="form-control"
                                                 value={refCnicNo}
-                                                onChange={(e) => {
-                                                    setRefCnicNo(e.target.value);
+                                                onChange={( e ) => {
+                                                    setRefCnicNo( e.target.value );
                                                 }}
                                             />
                                         </div>
@@ -850,8 +852,8 @@ const List = () => {
                                             key="email"
 
                                             value={refEmail}
-                                            onChange={(e) => {
-                                                setRefEmail(e.target.value);
+                                            onChange={( e ) => {
+                                                setRefEmail( e.target.value );
                                             }}
 
                                         />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -9,6 +9,7 @@ import {
   ProgressBar,
   OverlayTrigger,
   Tooltip,
+  Spinner,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
@@ -18,10 +19,13 @@ import PageTitle from "../../../components/PageTitle";
 
 // dummy data
 import { projects, ProjectsList } from "./data";
+import { useDispatch, useSelector } from "react-redux";
+import { startLoading, stopLoading } from "../../../redux/Slices/utiltities/Utiltities";
 
 // single project
-const SingleProject = (props) => {
+const SingleProject = ( props ) => {
   const project = props.project || {};
+  console.log( "project`", project )
 
   return (
     <Card className="project-box">
@@ -51,7 +55,7 @@ const SingleProject = (props) => {
         </Dropdown>
         <h4 className="mt-0">
           <Link to="/apps/projects/:id/details" className="text-dark">
-            {project.title}
+            {project?.project_name}
           </Link>
         </h4>
         <p className="text-muted text-uppercase">
@@ -89,12 +93,12 @@ const SingleProject = (props) => {
           </span>
         </p>
         <div className="avatar-group mb-3">
-          {(project.teamMembers || []).map((member, index) => {
+          {( project?.projectteam || [] ).map( ( member, index ) => {
             return (
               <OverlayTrigger
                 key={index}
                 placement="bottom"
-                overlay={<Tooltip id={member.name}>{member.name}</Tooltip>}
+                overlay={<Tooltip id={member?.user?.name}>{member?.user?.name}</Tooltip>}
               >
                 <Link to="#" className="avatar-group-item">
                   <img
@@ -105,7 +109,7 @@ const SingleProject = (props) => {
                 </Link>
               </OverlayTrigger>
             );
-          })}
+          } )}
         </div>
         <p className="mb-2 fw-semibold">
           Task completed:
@@ -124,68 +128,125 @@ const SingleProject = (props) => {
 };
 
 const Projects = () => {
+  const [projects, setprojects] = useState( [] )
+  const dispatch = useDispatch();
+
+
+  const { loading, token } = useSelector(
+
+    ( state ) => ( {
+      loading: state.utiltities.loading,
+      token: state.Auth.token,
+
+    } )
+  );
+
+  useEffect( () => {
+    getProject()
+  }, [] )
+  const getProject = async () => {
+    try {
+
+
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        redirect: "follow"
+      };
+      await dispatch( startLoading() )
+      await fetch( "https://crmupd.pixelssoft.com/api/project", requestOptions )
+        .then( ( response ) => response.json() )
+        .then( async ( result ) => {
+          const res = result
+          setprojects( res.data )
+
+          await dispatch( stopLoading() )
+        }
+        )
+        .catch( async ( error ) => {
+          console.error( error )
+          await dispatch( stopLoading() )
+        }
+        );
+
+    } catch ( error ) {
+      await dispatch( stopLoading() )
+
+      console.log( "failed to get project", error )
+    }
+
+  }
+
+
   return (
-    <>
-      <PageTitle
-        breadCrumbItems={[
-          { label: "Projects", path: "/apps/projects/list" },
-          { label: "Projects List", path: "/apps/projects/list", active: true },
-        ]}
-        title={"Projects List"}
-      />
+    loading ? (
+      <div className='d-flex justify-content-center align-items-center'>
+        <Spinner className="m-2" color={'primary'} />
+      </div>
+    ) :
+      <>
+        <PageTitle
+          breadCrumbItems={[
+            { label: "Projects", path: "/apps/projects/list" },
+            { label: "Projects List", path: "/apps/projects/list", active: true },
+          ]}
+          title={"Projects List"}
+        />
 
-      <Row className="mb-2">
-        <Col sm={4}>
-          <Link
-            to="/apps/projects/create"
-            className="btn btn-danger rounded-pill waves-effect waves-light mb-3"
-          >
-            <i className="mdi mdi-plus"></i> Create Project
-          </Link>
-        </Col>
-        <Col sm={8}>
-          <div className="text-sm-end">
-            <div className="btn-group mb-3">
-              <Button variant="primary">All</Button>
-            </div>
-            <ButtonGroup className="btn-group mb-3 ms-1">
-              <Button variant="light">Ongoing</Button>
-              <Button variant="light">Finished</Button>
-            </ButtonGroup>
-
-            <div className="btn-group mb-3 ms-2 d-none d-sm-inline-block">
-              <Button variant="dark">
-                <i className="mdi mdi-apps"></i>
-              </Button>
-            </div>
-            <div className="btn-group mb-3 d-none d-sm-inline-block">
-              <Button variant="link" className="text-dark">
-                <i className="mdi mdi-format-list-bulleted-type"></i>
-              </Button>
-            </div>
-          </div>
-        </Col>
-      </Row>
-
-      <Row>
-        {(projects || []).map((project, i) => {
-          return (
-            <Col lg={4} key={"proj-" + project.id}>
-              <SingleProject project={project} />
-            </Col>
-          );
-        })}
-      </Row>
-      <Row>
-        <Col>
-          <div className="text-center mb-3">
-            <Link to="#" className="text-danger">
-              <i className="mdi mdi-spin mdi-loading me-1"></i> Load more{" "}
+        <Row className="mb-2">
+          <Col sm={4}>
+            <Link
+              to="/apps/projects/create"
+              className="btn btn-danger rounded-pill waves-effect waves-light mb-3"
+            >
+              <i className="mdi mdi-plus"></i> Create Project
             </Link>
-          </div>
-        </Col>
-      </Row>
-    </>
+          </Col>
+          <Col sm={8}>
+            <div className="text-sm-end">
+              <div className="btn-group mb-3">
+                <Button variant="primary">All</Button>
+              </div>
+              <ButtonGroup className="btn-group mb-3 ms-1">
+                <Button variant="light">Ongoing</Button>
+                <Button variant="light">Finished</Button>
+              </ButtonGroup>
+
+              <div className="btn-group mb-3 ms-2 d-none d-sm-inline-block">
+                <Button variant="dark">
+                  <i className="mdi mdi-apps"></i>
+                </Button>
+              </div>
+              <div className="btn-group mb-3 d-none d-sm-inline-block">
+                <Button variant="link" className="text-dark">
+                  <i className="mdi mdi-format-list-bulleted-type"></i>
+                </Button>
+              </div>
+            </div>
+          </Col>
+        </Row>
+
+        <Row>
+          {( projects || [] ).map( ( project, i ) => {
+            return (
+              <Col lg={4} key={"proj-" + project.id}>
+                <SingleProject project={project} />
+              </Col>
+            );
+          } )}
+        </Row>
+        <Row>
+          <Col>
+            <div className="text-center mb-3">
+              <Link to="#" className="text-danger">
+                <i className="mdi mdi-spin mdi-loading me-1"></i> Load more{" "}
+              </Link>
+            </div>
+          </Col>
+        </Row>
+      </>
   );
 };
 
