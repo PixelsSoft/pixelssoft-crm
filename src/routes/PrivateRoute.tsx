@@ -13,21 +13,21 @@ import { RootState } from "../redux/store";
 const PrivateRoute = ({ component: Component, roles, ...rest }: any) => {
   const api = new APICore();
 
-
-  const { userAuthenticate, user } = useSelector(
+console.log("roles=================",roles)
+  const { token, user } = useSelector(
     (state: RootState) => ({
-      userAuthenticate: state.Auth.user,
+      token: state.Auth.token,
       user: state.Auth.user,
 
     })
   );
 
-  console.log("==========>", userAuthenticate)
+  console.log("==========>", token)
   return (
     <Route
       {...rest}
       render={(props: RouteProps) => {
-        if (!userAuthenticate) {
+        if (token===null) {
           // not logged in so redirect to login page with the return url
           return (
             <Navigate
@@ -41,12 +41,12 @@ const PrivateRoute = ({ component: Component, roles, ...rest }: any) => {
         }
 
         const loggedInUser = api.getLoggedInUser();
-
+        return <Navigate to={{ pathname: "/" }} />;
         // check if route is restricted by role
-        if (roles && roles.indexOf(loggedInUser.role) === -1) {
-          // role not authorised so redirect to login page
-          return <Navigate to={{ pathname: "/" }} />;
-        }
+        // if (roles && roles.indexOf(loggedInUser.role) === -1) {
+        //   // role not authorised so redirect to login page
+        //   return <Navigate to={{ pathname: "/" }} />;
+        // }
         // authorised so return component
         return <Component {...props} />;
       }}

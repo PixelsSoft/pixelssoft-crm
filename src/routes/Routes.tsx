@@ -82,7 +82,7 @@ const AllRoutes = (props: IRoutesProps) => {
               path={route.path}
               element={
                 //  ======================= // change when you register login
-                !token ? (
+                token ===null? (
                   <Navigate
                     to={{
                       pathname: "/auth/login",

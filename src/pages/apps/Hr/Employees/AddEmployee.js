@@ -29,6 +29,8 @@ const List = () => {
     const [salary, setSalary] = useState( '10000' );
     const [profilePic, setProfilePic] = useState( null );
     const [contract, setContract] = useState( null );
+    const [employmentType, setEmploymentType] = useState();
+
     const [CNIC, setCNIC] = useState( null );
     const [CnicNo, setCnicNo] = useState( '' );
     const [CV, setCV] = useState( null );
@@ -45,6 +47,7 @@ const List = () => {
     const [refCnicPic, setRefCnicPic] = useState( null );
     const [target, setTarget] = useState( 0 );
     const [comm, setComm] = useState( 0 );
+    const [status, setStatus] = useState( "onBoard" );
     // const [permissions,setPermissions]=useState([])
     const dispatch = useDispatch();
 
@@ -157,6 +160,8 @@ const List = () => {
         params.append( "password", password );
         params.append( "password_confirmation", confirmPassword );
         params.append( "roles", multipleRoleSelection );
+        params.append( "status", status );
+        params.append( "employmentType", employmentType );
         params.append( "department_id", 1 );
 
         const options = {
@@ -417,21 +422,40 @@ const List = () => {
 
 
                                         />
+
+
                                         <FormInput
-                                            label="Salary "
-                                            type="number"
-                                            name="number"
-                                            placeholder="Salary"
-                                            containerClass={'mb-3'}
+                                            label="Select Employment Type"
+                                            name="select"
+                                            type="select"
+                                            containerClass="mb-3"
+                                            className="form-select"
 
-                                            key="Salary"
-                                            value={salary}
-                                            onChange={( e ) => {
-                                                setSalary( e.target.valueAsNumber )
-                                            }}
+                                            key="select"
+                                            value={employmentType}
+                                            onChange={( e ) => setEmploymentType( e.target.value )}
+                                        >
+                                            <option>Regular</option>
+                                            <option>Contract_Base</option>
 
+                                        </FormInput>
+                                        {employmentType === "Regular" ? (
+                                            <>
+                                                <FormInput
+                                                    label="Salary "
+                                                    type="number"
+                                                    name="number"
+                                                    placeholder="Salary"
+                                                    containerClass={'mb-3'}
 
-                                        />
+                                                    key="Salary"
+                                                    value={salary}
+                                                    onChange={( e ) => {
+                                                        setSalary( e.target.valueAsNumber )
+                                                    }}
+                                                />
+                                            </>
+                                        ) : null}
                                     </Col>
                                     <Col lg={6}>
 
@@ -498,7 +522,6 @@ const List = () => {
                                                     /\d/,
                                                     '-',
                                                     /\d/,
-
                                                 ]}
                                                 placeholder="_____-_______-_"
                                                 className="form-control"

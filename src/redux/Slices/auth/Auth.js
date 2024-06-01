@@ -43,22 +43,23 @@ const initialState = {
 export const login = ( params ) => async ( dispatch ) => {
     try {
         const response = await authService.login( params );
-        await dispatch( loginUser( response?.data?.user ) );
-        await dispatch( userPermission( response?.data?.permission ) );
-        await dispatch( userToken( response?.data?.token ) );
-        await dispatch( GetEmployees( response?.data?.token ) );
-        await dispatch( GetCustomer( response?.data?.token ) );
-        await dispatch( GetInvoice( response?.data?.token ) );
-        await dispatch( GetProject( response?.data?.token ) );
-        await dispatch( GetPlatform( response?.data?.token ) );
-        await dispatch( GetCategory( response?.data?.token ) );
-        await dispatch( getRoles( response?.data?.token ) );
-        await dispatch( GetLead( response?.data?.token ) );
-        await dispatch( GetExpenseCategory( response?.data?.token ) );
-        await dispatch( GetExpense( response?.data?.token ) );
-        await dispatch( GetVenCat( response?.data?.token ) );
-        await dispatch( GetVendor( response?.data?.token ) );
-        await dispatch( GetVendorPayments( response?.data?.token ) );
+        // await dispatch( loginUser( response?.data?.user ) );
+        // await dispatch( userPermission( response?.data?.permission ) );
+
+        // await dispatch( GetEmployees( response?.data?.token ) );
+        // await dispatch( GetCustomer( response?.data?.token ) );
+        // await dispatch( GetInvoice( response?.data?.token ) );
+        // await dispatch( GetProject( response?.data?.token ) );
+        // await dispatch( GetPlatform( response?.data?.token ) );
+        // await dispatch( GetCategory( response?.data?.token ) );
+        // await dispatch( getRoles( response?.data?.token ) );
+        // await dispatch( GetLead( response?.data?.token ) );
+        // await dispatch( GetExpenseCategory( response?.data?.token ) );
+        // await dispatch( GetExpense( response?.data?.token ) );
+        // await dispatch( GetVenCat( response?.data?.token ) );
+        // await dispatch( GetVendor( response?.data?.token ) );
+        // await dispatch( GetVendorPayments( response?.data?.token ) );
+        console.log( "access_tokenaccess_token", response )
         toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
     } catch ( error ) {
         console.log( "error===========>", error )

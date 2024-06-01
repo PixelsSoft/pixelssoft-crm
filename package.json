@@ -1,7 +1,8 @@
 {
   "name": "react-template",
   "version": "1.0.0",
-  "private": true,
+  "proxy":"http://127.0.0.1:8000",
+  "private": false,
   "dependencies": {
     "@fullcalendar/bootstrap": "^5.8.0",
     "@fullcalendar/core": "^5.8.0",

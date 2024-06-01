@@ -1,7 +1,7 @@
 import { CONSTANTS } from "../../constants/constant";
 
-const login = (params) => {
-    const onSuccess = (data) => {
+const login = ( params ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -16,12 +16,12 @@ const login = (params) => {
         },
     };
 
-    return fetch(`${CONSTANTS.API_URLS.BASE}user/login?email=${params.email}&password=${params.password}`, options)
-        .then(response => {
+    return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, options )
+        .then( response => {
             return response.json();
-        })
-        .then(onSuccess())
-        .catch(error => onFailure(error));
+        } )
+        .then( onSuccess() )
+        .catch( error => onFailure( error ) );
 };
 
 const authService = {
