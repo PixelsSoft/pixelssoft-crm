@@ -1,8 +1,8 @@
 export const CONSTANTS = {
     API_URLS: {
         // BASE: "http://127.0.0.1:8000/api/",
-        // BASE: "http://127.0.0.1:8000/",
-        BASE: "https://crmupd.pixelssoft.com/api/",
+        BASE: "http://127.0.0.1:8000/",
+        // BASE: "https://crmupd.pixelssoft.com/api/",
         LOGIN: "user/login",
         ADD_Employeee: "user/register",
         getEmployee: 'user',

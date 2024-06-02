@@ -4,7 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 // import classNames from 'classnames';
 
 // actions
-import { showRightSidebar, changeSidebarType } from "../redux/Slices/layout/Layout";
+import {
+  showRightSidebar,
+  changeSidebarType,
+} from "../redux/Slices/layout/Layout";
 
 // store
 import { RootState, AppDispatch } from "../redux/store";
@@ -15,7 +18,7 @@ import { LayoutTypes, SideBarTypes } from "../constants/layout";
 // components
 import TopbarSearch from "../components/TopbarSearch";
 import MaximizeScreen from "../components/MaximizeScreen";
-import AppsDropdown from "../components/AppsDropdown/";
+import AppsDropdown from "../components/AppsDropdown";
 // import SearchDropdown from '../components/SearchDropdown';
 import LanguageDropdown from "../components/LanguageDropdown";
 import NotificationDropdown from "../components/NotificationDropdown";
@@ -226,30 +229,29 @@ const Topbar = ({
     leftSideBarType: state.Layout.leftSideBarType,
   }));
 
-
   /**
    * Toggle the leftmenu when having mobile screen
    */
   const handleLeftMenuCallBack = () => {
     if (width < 1140) {
-      if (leftSideBarType === 'full') {
+      if (leftSideBarType === "full") {
         showLeftSideBarBackdrop();
-        document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-      }
-      else {
+        document
+          .getElementsByTagName("html")[0]
+          .classList.add("sidebar-enable");
+      } else {
         dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       }
     } else if (leftSideBarType === "condensed") {
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
-    } else if (leftSideBarType === 'full') {
+    } else if (leftSideBarType === "full") {
       showLeftSideBarBackdrop();
       document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-    } else if (leftSideBarType === 'fullscreen') {
+    } else if (leftSideBarType === "fullscreen") {
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
       // showLeftSideBarBackdrop();
       document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-    }
-    else {
+    } else {
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED));
     }
   };
@@ -272,7 +274,9 @@ const Topbar = ({
     }
 
     backdrop.addEventListener("click", function (e) {
-      document.getElementsByTagName("html")[0].classList.remove("sidebar-enable");
+      document
+        .getElementsByTagName("html")[0]
+        .classList.remove("sidebar-enable");
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       hideLeftSideBarBackdrop();
     });
@@ -292,11 +296,9 @@ const Topbar = ({
   const handleRightSideBar = () => {
     dispatch(showRightSidebar());
   };
-  const { user } = useSelector(
-    (state: RootState) => ({
-      user: state.Auth.user,
-    })
-  );
+  const { user } = useSelector((state: RootState) => ({
+    user: state.Auth.user,
+  }));
 
   /**
    * Toggles the left sidebar width

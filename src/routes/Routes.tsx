@@ -21,7 +21,7 @@ import {
 } from "./index";
 // import { APICore } from "../helpers/api/apiCore";
 
-interface IRoutesProps { }
+interface IRoutesProps {}
 
 const AllRoutes = (props: IRoutesProps) => {
   const { layout } = useSelector((state: RootState) => ({
@@ -47,17 +47,12 @@ const AllRoutes = (props: IRoutesProps) => {
     }
     return layoutCls;
   };
- 
+
   let Layout = getLayout();
   // const api = new APICore();
-  const { token } = useSelector(
-    (state: RootState) => ({
-      userAuthenticate: state.Auth.user,
-      token: state.Auth.token
-    })
-  );
-
-  // console.log('accessToken', token);
+  const { token } = useSelector((state: RootState) => ({
+    token: state.Auth.token,
+  }));
 
   return (
     <React.Fragment>
@@ -82,7 +77,7 @@ const AllRoutes = (props: IRoutesProps) => {
               path={route.path}
               element={
                 //  ======================= // change when you register login
-                token ===null? (
+                token === null ? (
                   <Navigate
                     to={{
                       pathname: "/auth/login",

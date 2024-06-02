@@ -1,6 +1,6 @@
 import { CONSTANTS } from "../../constants/constant";
 
-const login = ( params ) => {
+const login = ( { email, password } ) => {
     const onSuccess = ( data ) => {
         return data;
     };
@@ -9,19 +9,27 @@ const login = ( params ) => {
         throw error;
     };
 
+
+    const formdata = new FormData();
+    formdata.append( "email", email );
+    formdata.append( "password", password );
     const options = {
         method: 'POST',
+        body: formdata,
         headers: {
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         },
     };
 
     return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, options )
-        .then( response => {
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
             return response.json();
         } )
-        .then( onSuccess() )
-        .catch( error => onFailure( error ) );
+        .then( onSuccess )
+        .catch( onFailure );
 };
 
 const authService = {

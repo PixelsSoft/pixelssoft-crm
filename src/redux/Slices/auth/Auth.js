@@ -7,7 +7,7 @@ import { GetInvoice } from "../Invoices/Invoices";
 import { GetProject } from "../Project/Project";
 import { GetPlatform } from "../Platform/platform";
 import { GetCategory } from "../Category/category";
-import { getRoles } from "../Roles/Roles";
+import { getRoles, userRoles } from "../Roles/Roles";
 import { GetLead } from "../Leads/leads";
 import { GetExpenseCategory } from "../ExpenseCategory/expenseCategory";
 import { GetExpense } from "../Expense/expense";
@@ -26,10 +26,9 @@ const initialState = {
         role: ""
 
     },
-
+    roles: [],
     permissions: null,
     token: null,
-    userAuthenticate: false,
     loading: false,
     error: null,
     passwordReset: null,
@@ -40,9 +39,17 @@ const initialState = {
 
 };
 
-export const login = ( params ) => async ( dispatch ) => {
+export const login = ( { email, password } ) => async ( dispatch ) => {
     try {
-        const response = await authService.login( params );
+        await authService.login( { email, password } ).then( async ( response ) => {
+            toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
+            await dispatch( userToken( response?.access_token ) )
+            await dispatch( loginUser( response?.data ) )
+            await dispatch( userRoles( response?.roles ) )
+        } ).catch( ( error ) => {
+            toast.error( error?.detail, { position: toast.POSITION.TOP_RIGHT } );
+
+        } );
         // await dispatch( loginUser( response?.data?.user ) );
         // await dispatch( userPermission( response?.data?.permission ) );
 
@@ -59,8 +66,7 @@ export const login = ( params ) => async ( dispatch ) => {
         // await dispatch( GetVenCat( response?.data?.token ) );
         // await dispatch( GetVendor( response?.data?.token ) );
         // await dispatch( GetVendorPayments( response?.data?.token ) );
-        console.log( "access_tokenaccess_token", response )
-        toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
+
     } catch ( error ) {
         console.log( "error===========>", error )
     };
@@ -68,7 +74,9 @@ export const login = ( params ) => async ( dispatch ) => {
 
 export const logout = () => async ( dispatch ) => {
     try {
-        dispatch( logoutUser() )
+        dispatch( logoutUser( '' ) )
+        dispatch( userRoles( null ) )
+        dispatch( userToken( null ) )
     } catch ( error ) {
         console.log( "error===========>", error )
     }
@@ -83,7 +91,9 @@ export const AuthSlice = createSlice( {
         },
         loginUser: ( state, action ) => {
             state.user = action.payload
-            state.userAuthenticate = true
+        },
+        userRoles: ( state, action ) => {
+            state.roles = action.payload
         },
         userToken: ( state, action ) => {
             state.token = action.payload

@@ -107,7 +107,10 @@ const VerticalLayout = ({ children }: VerticalLayoutProps) => {
   }, [topbarTheme]);
 
   useEffect(() => {
-    changeHTMLAttribute("data-menu-icon", showTwoToneIcons ? "twotones" : "default");
+    changeHTMLAttribute(
+      "data-menu-icon",
+      showTwoToneIcons ? "twotones" : "default"
+    );
   }, [showTwoToneIcons]);
 
   // useEffect(() => {
@@ -149,8 +152,6 @@ const VerticalLayout = ({ children }: VerticalLayoutProps) => {
               <Suspense fallback={loading()}>{children}</Suspense>
             </Container>
           </div>
-
-
         </div>
       </div>
       {isOpenRightSideBar && (

@@ -10,7 +10,6 @@ import Report from "../pages/apps/Reports/Report";
 import ViewEmployee from "../pages/apps/Hr/Employees/ViewEmployee";
 import EditEmployee from "../pages/apps/Hr/Employees/EditEmployee";
 
-
 // lazy load all the views
 
 // auth
@@ -22,7 +21,6 @@ const Register = React.lazy(() => import("../pages/auth/Register"));
 const SignInSignUp = React.lazy(() => import("../pages/auth/SignInSignUp"));
 const LockScreen = React.lazy(() => import("../pages/auth/LockScreen"));
 
-
 // landing
 const Landing = React.lazy(() => import("../pages/landing/"));
 
@@ -30,29 +28,66 @@ const Landing = React.lazy(() => import("../pages/landing/"));
 const Dashboard1 = React.lazy(() => import("../pages/dashboard/Dashboard1/"));
 
 // apps
-const Invoice = React.lazy(() => import("../pages/apps/Invoice/Invoices/Invoices"));
-const CreateInvoice = React.lazy(() => import("../pages/apps/Invoice/CreateInvoice/CreateInvoice"));
-const Employees = React.lazy(() => import("../pages/apps/Hr/Employees/Employees"));
-const AddEmployee = React.lazy(() => import("../pages/apps/Hr/Employees/AddEmployee"));
+const Invoice = React.lazy(
+  () => import("../pages/apps/Invoice/Invoices/Invoices")
+);
+const CreateInvoice = React.lazy(
+  () => import("../pages/apps/Invoice/CreateInvoice/CreateInvoice")
+);
+const Employees = React.lazy(
+  () => import("../pages/apps/Hr/Employees/Employees")
+);
+const AddEmployee = React.lazy(
+  () => import("../pages/apps/Hr/Employees/AddEmployee")
+);
 const Leads = React.lazy(() => import("../pages/apps/Leads/Leads"));
-const Customers = React.lazy(() => import("../pages/apps/Customers/List/Customers"));
-const Commissions = React.lazy(() => import("../pages/apps/Commissions/Commissions"));
-const AddCustomer = React.lazy(() => import("../pages/apps/Customers/CreateCustomer/CreateCustomer"));
-const CustomerProfile = React.lazy(() => import("../pages/apps/Customers/CustomerProfile/CustomerProfile"));
-const RolePermission = React.lazy(() => import("../pages/apps/Roles/RolesPermissions"));
-const ClientCard = React.lazy(() => import("../pages/apps/Customers/ClientCard/ClientCard"));
-const PortalProjects = React.lazy(() => import("../pages/apps/PortalProjects/PortalProjects"));
-const AddPortalProjects = React.lazy(() => import("../pages/apps/PortalProjects/AddPortalProjects"));
-const PortalProjectsProfile = React.lazy(() => import("../pages/apps/PortalProjects/PortalProjectsProfile"));
-const Management = React.lazy(() => import("../pages/apps/Management/Management"));
+const Customers = React.lazy(
+  () => import("../pages/apps/Customers/List/Customers")
+);
+const Commissions = React.lazy(
+  () => import("../pages/apps/Commissions/Commissions")
+);
+const AddCustomer = React.lazy(
+  () => import("../pages/apps/Customers/CreateCustomer/CreateCustomer")
+);
+const CustomerProfile = React.lazy(
+  () => import("../pages/apps/Customers/CustomerProfile/CustomerProfile")
+);
+const RolePermission = React.lazy(
+  () => import("../pages/apps/Roles/RolesPermissions")
+);
+const ClientCard = React.lazy(
+  () => import("../pages/apps/Customers/ClientCard/ClientCard")
+);
+const PortalProjects = React.lazy(
+  () => import("../pages/apps/PortalProjects/PortalProjects")
+);
+const AddPortalProjects = React.lazy(
+  () => import("../pages/apps/PortalProjects/AddPortalProjects")
+);
+const PortalProjectsProfile = React.lazy(
+  () => import("../pages/apps/PortalProjects/PortalProjectsProfile")
+);
+const Management = React.lazy(
+  () => import("../pages/apps/Management/Management")
+);
 const Target = React.lazy(() => import("../pages/apps/Target/Target"));
-const IndividualTarget = React.lazy(() => import("../pages/apps/Target/SinglePersonTarget"));
-const Expense = React.lazy(() => import("../pages/apps/Accounts/Expenses/Expenses"));
-const ExpenseCategory = React.lazy(() => import("../pages/apps/Accounts/Expenses/ExpenseCategory"));
+const IndividualTarget = React.lazy(
+  () => import("../pages/apps/Target/SinglePersonTarget")
+);
+const Expense = React.lazy(
+  () => import("../pages/apps/Accounts/Expenses/Expenses")
+);
+const ExpenseCategory = React.lazy(
+  () => import("../pages/apps/Accounts/Expenses/ExpenseCategory")
+);
 const Vendor = React.lazy(() => import("../pages/apps/Accounts/Vendor/Vendor"));
-const VendorCategory = React.lazy(() => import("../pages/apps/Accounts/Vendor/VendorCategory"));
-const VendorPayments = React.lazy(() => import("../pages/apps/Accounts/Vendor/Payment"));
-
+const VendorCategory = React.lazy(
+  () => import("../pages/apps/Accounts/Vendor/VendorCategory")
+);
+const VendorPayments = React.lazy(
+  () => import("../pages/apps/Accounts/Vendor/Payment")
+);
 
 // extra
 
@@ -188,8 +223,6 @@ const AdvancedTables = React.lazy(() => import("../pages/tables/Advanced"));
 const ApexChart = React.lazy(() => import("../pages/charts/Apex"));
 const ChartJs = React.lazy(() => import("../pages/charts/ChartJs"));
 
-
-
 export interface RoutesProps {
   path: RouteProps["path"];
   name?: string;
@@ -223,7 +256,6 @@ const TargetRoutes: RoutesProps = {
       element: <IndividualTarget />,
       route: PrivateRoute,
     },
-
   ],
 };
 // Leads
@@ -233,7 +265,6 @@ const LeadsRoutes: RoutesProps = {
   icon: "airplay",
   header: "Navigation",
   element: <Leads />,
-
 };
 //invoice Route
 const InvoiceRoutes: RoutesProps = {
@@ -403,7 +434,7 @@ const projectAppRoutes: RoutesProps = {
   path: "/apps/projects",
   name: "Projects",
   route: PrivateRoute,
-  roles: ["Admin"],
+  roles: ["string"],
   icon: "uil-briefcase",
   children: [
     {
@@ -493,7 +524,6 @@ const AccountsRoutes: RoutesProps = {
       element: <VendorPayments />,
       route: PrivateRoute,
     },
-
   ],
 };
 
@@ -533,8 +563,6 @@ const chatAppRoutes = {
   icon: "message-square",
   element: <ChatApp />,
 };
-
-
 
 const crmAppRoutes = {
   path: "/apps/crm",
@@ -621,8 +649,6 @@ const companiesAppRoutes = {
   icon: "activity",
   element: <Companies />,
 };
-
-
 
 const taskAppRoutes = {
   path: "/apps/tasks",
@@ -715,7 +741,7 @@ const appRoutes = [
   administartorRoutes,
   clientCardRoutes,
   portalProjects,
-  LeadProjects,
+  // LeadProjects,
   reportRoutes,
   AccountsRoutes,
   projectAppRoutes,
@@ -1123,7 +1149,6 @@ const uiRoutes = {
         },
       ],
     },
-
   ],
 };
 
@@ -1171,7 +1196,6 @@ const authRoutes: RoutesProps[] = [
     element: <Logout />,
     route: Route,
   },
-
 ];
 
 // public routes

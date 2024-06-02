@@ -18,56 +18,48 @@ import logoDark2 from "../../assets/images/logo-dark-2.png";
 import logoLight from "../../assets/images/logo-light.png";
 import logoLight2 from "../../assets/images/logo-light-2.png";
 
-interface SubMenus {
-  item: MenuItemTypes;
-  linkClassName?: string;
-  subMenuClassNames?: string;
-  activeMenuItems?: Array<string>;
-  toggleMenu?: (item: any, status: boolean) => void;
-  className?: string;
-}
 
-const MenuItemWithChildren = ({
+const MenuItemWithChildren = ( {
   item,
   linkClassName,
   subMenuClassNames,
   activeMenuItems,
   toggleMenu,
-}: SubMenus) => {
-  const [open, setOpen] = useState<boolean>(
-    activeMenuItems!.includes(item.key)
+} ) => {
+  const [open, setOpen] = useState(
+    activeMenuItems?.includes( item.key )
   );
   //
-  useEffect(() => {
-    setOpen(activeMenuItems!.includes(item.key));
-    
-  }, [activeMenuItems, item]);
+  useEffect( () => {
+    setOpen( activeMenuItems?.includes( item.key ) );
 
-  const toggleMenuItem = (e: any) => {
+  }, [activeMenuItems, item] );
+
+  const toggleMenuItem = ( e ) => {
     e.preventDefault();
     const status = !open;
-    setOpen(status);
-    if (toggleMenu) toggleMenu(item, status);
+    setOpen( status );
+    if ( toggleMenu ) toggleMenu( item, status );
     return false;
   };
 
   return (
     <>
       <li
-        className={classNames("menu-item", "nav-link-ref", {
+        className={classNames( "menu-item", "nav-link-ref", {
           "menuitem-active": open,
-        })}
+        } )}
       >
         <Link
           to="#"
           onClick={toggleMenuItem}
           data-menu-key={item.key}
           aria-expanded={open}
-          className={classNames("menu-link justify-content-between", linkClassName, {
-            "menuitem-active": activeMenuItems!.includes(item.key)
+          className={classNames( "menu-link justify-content-between", linkClassName, {
+            "menuitem-active": activeMenuItems?.includes( item.key )
               ? "active"
               : "",
-          })}
+          } )}
         >
           <span className="menu-text"> {item.label} </span>
           {!item.badge ? (
@@ -82,8 +74,8 @@ const MenuItemWithChildren = ({
         </Link>
         <Collapse in={open}>
           <div>
-            <ul className={classNames(subMenuClassNames)}>
-              {(item.children || []).map((child, i) => {
+            <ul className={classNames( subMenuClassNames )}>
+              {( item.children || [] ).map( ( child, i ) => {
                 return (
                   <React.Fragment key={i}>
                     {child.children ? (
@@ -92,7 +84,7 @@ const MenuItemWithChildren = ({
                         <MenuItemWithChildren
                           item={child}
                           linkClassName={
-                            activeMenuItems!.includes(child.key) ? "active" : ""
+                            activeMenuItems?.includes( child.key ) ? "active" : ""
                           }
                           activeMenuItems={activeMenuItems}
                           subMenuClassNames="sub-menu"
@@ -105,19 +97,19 @@ const MenuItemWithChildren = ({
                         <MenuItem
                           item={child}
                           className={
-                            activeMenuItems!.includes(child.key)
+                            activeMenuItems?.includes( child.key )
                               ? "menuitem-active"
                               : ""
                           }
                           linkClassName={
-                            activeMenuItems!.includes(child.key) ? "active" : ""
+                            activeMenuItems?.includes( child.key ) ? "active" : ""
                           }
                         />
                       </>
                     )}
                   </React.Fragment>
                 );
-              })}
+              } )}
             </ul>
           </div>
         </Collapse>
@@ -126,22 +118,22 @@ const MenuItemWithChildren = ({
   );
 };
 
-const MenuItem = ({ item, className, linkClassName }: SubMenus) => {
+const MenuItem = ( { item, className, linkClassName } ) => {
   return (
     <>
-      <li className={classNames("menu-item", className)}>
+      <li className={classNames( "menu-item", className )}>
         <MenuItemLink item={item} className={linkClassName} />
       </li>
     </>
   );
 };
 
-const MenuItemLink = ({ item, className }: SubMenus) => {
+const MenuItemLink = ( { item, className } ) => {
   return (
     <Link
-      to={item.url!}
+      to={item.url}
       target={item.target}
-      className={classNames("menu-link nav-link-ref justify-content-between", className)}
+      className={classNames( "menu-link nav-link-ref justify-content-between", className )}
       data-menu-key={item.key}
     >
       <span className="menu-text"> {item.label} </span>
@@ -154,23 +146,19 @@ const MenuItemLink = ({ item, className }: SubMenus) => {
   );
 };
 
-interface MainMenuProps {
-  menuItems: MenuItemTypes[];
-  toggleMenu: (item: MenuItemTypes, show: boolean) => void;
-  activeMenuItems: string[];
-}
 
-const MainMenu = ({
+
+const MainMenu = ( {
   menuItems,
   toggleMenu,
   activeMenuItems,
-}: MainMenuProps) => {
+} ) => {
   //
 
-  const { layoutType } = useSelector((state: RootState) => ({
+  const { layoutType } = useSelector( ( state ) => ( {
     layoutType: state.Layout.layoutType,
     leftSideBarType: state.Layout.leftSideBarType,
-  }));
+  } ) );
 
   return (
     <>
@@ -213,7 +201,7 @@ const MainMenu = ({
 
           <div id="two-col-menu" className="h-100 menuitem-active">
             <SimpleBar style={{ maxHeight: "100%" }}>
-              {(menuItems || []).map((menuItem, key) => {
+              {( menuItems || [] ).map( ( menuItem, key ) => {
                 const activeParent =
                   activeMenuItems &&
                   activeMenuItems.length &&
@@ -222,9 +210,9 @@ const MainMenu = ({
                 return (
                   <div
                     key={key}
-                    className={classNames("twocolumn-menu-item", {
+                    className={classNames( "twocolumn-menu-item", {
                       "d-block": activeParent,
-                    })}
+                    } )}
                     id={menuItem.key}
                   >
                     {/* <div className="title-box"> */}
@@ -232,7 +220,7 @@ const MainMenu = ({
                       {menuItem.isTitle && (
                         <li className="menu-title">{menuItem.label}</li>
                       )}
-                      {(menuItem.children || []).map((item, idx) => {
+                      {( menuItem.children || [] ).map( ( item, idx ) => {
                         return (
                           <React.Fragment key={idx}>
                             {item.children ? (
@@ -248,7 +236,7 @@ const MainMenu = ({
                                 item={item}
                                 linkClassName=""
                                 className={
-                                  activeMenuItems!.includes(item.key)
+                                  activeMenuItems?.includes( item.key )
                                     ? "menuitem-active"
                                     : ""
                                 }
@@ -256,12 +244,12 @@ const MainMenu = ({
                             )}
                           </React.Fragment>
                         );
-                      })}
+                      } )}
                     </ul>
                     {/* </div> */}
                   </div>
                 );
-              })}
+              } )}
             </SimpleBar>
           </div>
         </div>

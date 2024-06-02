@@ -1,25 +1,12 @@
-export interface MenuItemTypes {
-  key: string;
-  label: string;
-  isTitle?: boolean;
-  icon?: string;
-  url?: string;
-  badge?: {
-    variant: string;
-    text: string;
-  };
-  parentKey?: string;
-  target?: string;
-  children?: MenuItemTypes[];
-}
 
-const MENU_ITEMS: MenuItemTypes[] = [
+const MENU_ITEMS = [
   { key: "Apps", label: "Apps", isTitle: true },
   {
     key: "dashboards",
     label: "Dashboards",
     isTitle: false,
     icon: "airplay",
+    roles: ["strng"],
     url: "/",
     badge: { variant: "success", text: "4" },
     // children: [
@@ -1085,7 +1072,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
   },
 ];
 
-const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
+const HORIZONTAL_MENU_ITEMS = [
   {
     key: "dashboard",
     icon: "home",
@@ -2164,7 +2151,7 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
   },
 ];
 
-const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
+const TWO_COl_MENU_ITEMS = [
   {
     key: "dashboard",
     icon: "home",

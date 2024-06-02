@@ -10,50 +10,43 @@ import { findAllParent, findMenuItem } from "../helpers/menu";
 // constants
 import { MenuItemTypes } from "../constants/menu";
 
-interface SubMenus {
-  item: MenuItemTypes;
-  linkClassName?: string;
-  subMenuClassNames?: string;
-  activeMenuItems?: Array<string>;
-  toggleMenu?: (item: any, status: boolean) => void;
-  className?: string;
-}
 
-const MenuItemWithChildren = ({
+
+const MenuItemWithChildren = ( {
   item,
   linkClassName,
   subMenuClassNames,
   activeMenuItems,
   toggleMenu,
-}: SubMenus) => {
-  const [open, setOpen] = useState<boolean>(
-    activeMenuItems!.includes(item.key)
+} ) => {
+  const [open, setOpen] = useState(
+    activeMenuItems?.includes( item.key )
   );
   // ;
 
-  useEffect(() => {
-    setOpen(activeMenuItems!.includes(item.key));
-  }, [activeMenuItems, item]);
+  useEffect( () => {
+    setOpen( activeMenuItems?.includes( item.key ) );
+  }, [activeMenuItems, item] );
 
   const toggleMenuItem = () => {
     const status = !open;
-    setOpen(status);
-    if (toggleMenu) toggleMenu(item, status);
+    setOpen( status );
+    if ( toggleMenu ) toggleMenu( item, status );
     return false;
   };
 
   return (
-    <li className={classNames("menu-item", { "menuitem-active": open })}>
+    <li className={classNames( "menu-item", { "menuitem-active": open } )}>
       <Link
         to="#"
         onClick={toggleMenuItem}
         data-menu-key={item.key}
         aria-expanded={open}
-        className={classNames("menu-link", linkClassName, {
-          "menuitem-active": activeMenuItems!.includes(item.key)
+        className={classNames( "menu-link", linkClassName, {
+          "menuitem-active": activeMenuItems?.includes( item.key )
             ? "active"
             : "",
-        })}
+        } )}
       >
         {item.icon && (
           <span className="menu-icon">
@@ -73,8 +66,8 @@ const MenuItemWithChildren = ({
       </Link>
       <Collapse in={open}>
         <div>
-          <ul className={classNames(subMenuClassNames)}>
-            {(item.children || []).map((child, i) => {
+          <ul className={classNames( subMenuClassNames )}>
+            {( item.children || [] ).map( ( child, i ) => {
               return (
                 <React.Fragment key={i}>
                   {child.children ? (
@@ -83,7 +76,7 @@ const MenuItemWithChildren = ({
                       <MenuItemWithChildren
                         item={child}
                         linkClassName={
-                          activeMenuItems!.includes(child.key) ? "active" : ""
+                          activeMenuItems?.includes( child.key ) ? "active" : ""
                         }
                         activeMenuItems={activeMenuItems}
                         subMenuClassNames="sub-menu"
@@ -96,19 +89,19 @@ const MenuItemWithChildren = ({
                       <MenuItem
                         item={child}
                         className={
-                          activeMenuItems!.includes(child.key)
+                          activeMenuItems?.includes( child.key )
                             ? "menuitem-active"
                             : ""
                         }
                         linkClassName={
-                          activeMenuItems!.includes(child.key) ? "active" : ""
+                          activeMenuItems?.includes( child.key ) ? "active" : ""
                         }
                       />
                     </>
                   )}
                 </React.Fragment>
               );
-            })}
+            } )}
           </ul>
         </div>
       </Collapse>
@@ -116,20 +109,20 @@ const MenuItemWithChildren = ({
   );
 };
 
-const MenuItem = ({ item, className, linkClassName }: SubMenus) => {
+const MenuItem = ( { item, className, linkClassName } ) => {
   return (
-    <li className={classNames("menu-item", className)}>
+    <li className={classNames( "menu-item", className )}>
       <MenuItemLink item={item} className={linkClassName} />
     </li>
   );
 };
 
-const MenuItemLink = ({ item, className }: SubMenus) => {
+const MenuItemLink = ( { item, className } ) => {
   return (
     <Link
-      to={item.url!}
+      to={item?.url}
       target={item.target}
-      className={classNames("side-nav-link-ref menu-link", className)}
+      className={classNames( "side-nav-link-ref menu-link", className )}
       data-menu-key={item.key}
     >
       {item.icon && (
@@ -150,77 +143,80 @@ const MenuItemLink = ({ item, className }: SubMenus) => {
 /**
  * Renders the application menu
  */
-interface AppMenuProps {
-  menuItems: MenuItemTypes[];
-}
 
-const AppMenu = ({ menuItems }: AppMenuProps) => {
+const AppMenu = ( { menuItems } ) => {
   let location = useLocation();
 
-  const menuRef: any = useRef(null);
+  const menuRef = useRef( null );
 
-  const [activeMenuItems, setActiveMenuItems] = useState<Array<string>>([]);
+  const [activeMenuItems, setActiveMenuItems] = useState( [] );
 
   /*
    * toggle the menus
    */
-  const toggleMenu = (menuItem: MenuItemTypes, show: boolean) => {
-    if (show)
-      setActiveMenuItems([
+  const toggleMenu = ( menuItem, show ) => {
+    if ( show )
+      setActiveMenuItems( [
         menuItem["key"],
-        ...findAllParent(menuItems, menuItem),
-      ]);
+        ...findAllParent( menuItems, menuItem ),
+      ] );
   };
 
   /**
    * activate the menuitems
    */
-  const activeMenu = useCallback(() => {
-    const div = document.getElementById("main-side-menu");
+  const activeMenu = useCallback( () => {
+    const div = document.getElementById( "main-side-menu" );
     let matchingMenuItem = null;
     // ;
-    if (div) {
-      let items: any = div.getElementsByClassName("side-nav-link-ref");
-      for (let i = 0; i < items.length; ++i) {
-        let trimmedURL = location?.pathname?.replaceAll(process.env.PUBLIC_URL, "");
+    if ( div ) {
+      let items = div.getElementsByClassName( "side-nav-link-ref" );
+      for ( let i = 0; i < items.length; ++i ) {
+        let trimmedURL = location?.pathname?.replaceAll(
+          process.env.PUBLIC_URL,
+          ""
+        );
         // console.log(trimmedURL);
         // console.log("pathname",items[i].pathname.replaceAll(process.env.PUBLIC_URL, ""));
-        if (trimmedURL === items[i]?.pathname?.replaceAll(process.env.PUBLIC_URL, "")) {
+        if (
+          trimmedURL ===
+          items[i]?.pathname?.replaceAll( process.env.PUBLIC_URL, "" )
+        ) {
           matchingMenuItem = items[i];
           break;
         }
       }
 
-      if (matchingMenuItem) {
-        const mid = matchingMenuItem.getAttribute("data-menu-key");
-        const activeMt = findMenuItem(menuItems, mid);
-        if (activeMt) {
-          setActiveMenuItems([
+      if ( matchingMenuItem ) {
+        const mid = matchingMenuItem.getAttribute( "data-menu-key" );
+        const activeMt = findMenuItem( menuItems, mid );
+        if ( activeMt ) {
+          setActiveMenuItems( [
             activeMt["key"],
-            ...findAllParent(menuItems, activeMt),
-          ]);
+            ...findAllParent( menuItems, activeMt ),
+          ] );
         }
       }
     }
-  }, [location, menuItems]);
+  }, [location, menuItems] );
 
-  useEffect(() => {
+  useEffect( () => {
     activeMenu();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [] );
 
   return (
     <>
       <ul className="menu" ref={menuRef} id="main-side-menu">
-        {(menuItems || []).map((item, idx) => {
+        {( menuItems || [] ).map( ( item, idx ) => {
           //
           return (
             <React.Fragment key={idx}>
               {item.isTitle ? (
                 <li
-                  className={classNames("menu-title", {
+                  className={classNames( "menu-title", {
                     "mt-2": idx !== 0,
-                  })}
+                  } )}
                 >
                   {item.label}
                 </li>
@@ -239,7 +235,7 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
                       item={item}
                       linkClassName="menu-link"
                       className={
-                        activeMenuItems!.includes(item.key)
+                        activeMenuItems?.includes( item.key )
                           ? "menuitem-active"
                           : ""
                       }
@@ -249,7 +245,7 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
               )}
             </React.Fragment>
           );
-        })}
+        } )}
       </ul>
     </>
   );
