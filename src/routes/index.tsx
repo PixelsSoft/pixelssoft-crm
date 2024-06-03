@@ -765,6 +765,7 @@ const extrapagesRoutes = {
   path: "/pages",
   name: "Pages",
   icon: "package",
+  roles: ["Admin"],
   header: "Custom",
   children: [
     {
@@ -829,6 +830,7 @@ const uiRoutes = {
   path: "/ui",
   name: "Components",
   icon: "pocket",
+  roles: ["Admin"],
   header: "UI Elements",
   children: [
     {

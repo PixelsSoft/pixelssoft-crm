@@ -75,9 +75,11 @@ const AllRoutes = (props: IRoutesProps) => {
           {authProtectedFlattenRoutes.map((route, idx) => (
             <Route
               path={route.path}
+              // {...rest}
               element={
-                //  ======================= // change when you register login
-                token === null ? (
+                token !== null ? (
+                  <Layout {...props}>{route.element}</Layout>
+                ) : (
                   <Navigate
                     to={{
                       pathname: "/auth/login",
@@ -85,12 +87,29 @@ const AllRoutes = (props: IRoutesProps) => {
                       search: "next=" + route.path,
                     }}
                   />
-                ) : (
-                  <Layout {...props}>{route.element}</Layout>
+                  // <Redirect to="/login" />
                 )
               }
-              key={idx}
             />
+
+            // <Route
+            //   path={route.path}
+            //   element={
+            //     //  ======================= // change when you register login
+            //     token === null ? (
+            //       <Navigate
+            //         to={{
+            //           pathname: "/auth/login",
+            //           // hash: route.path,
+            //           search: "next=" + route.path,
+            //         }}
+            //       />
+            //     ) : (
+            //       <Layout {...props}>{route.element}</Layout>
+            //     )
+            //   }
+            //   key={idx}
+            // />
           ))}
         </Route>
       </Routes>

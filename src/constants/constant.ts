@@ -4,6 +4,7 @@ export const CONSTANTS = {
         BASE: "http://127.0.0.1:8000/",
         // BASE: "https://crmupd.pixelssoft.com/api/",
         LOGIN: "user/login",
+        PROFILE: "user/profile",
         ADD_Employeee: "user/register",
         getEmployee: 'user',
         deleteEmployee: `user/`,

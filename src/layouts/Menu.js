@@ -205,44 +205,57 @@ const AppMenu = ( { menuItems } ) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] );
 
+  const userRole = ['admin', "SuperAdmin"]
   return (
     <>
       <ul className="menu" ref={menuRef} id="main-side-menu">
         {( menuItems || [] ).map( ( item, idx ) => {
-          //
+
+          let hasRole = userRole.some( roleItem => item?.roles.includes( roleItem ) );
+
+
           return (
             <React.Fragment key={idx}>
-              {item.isTitle ? (
-                <li
-                  className={classNames( "menu-title", {
-                    "mt-2": idx !== 0,
-                  } )}
-                >
-                  {item.label}
-                </li>
-              ) : (
+              {hasRole === true &&
                 <>
-                  {item.children ? (
-                    <MenuItemWithChildren
-                      item={item}
-                      toggleMenu={toggleMenu}
-                      subMenuClassNames="sub-menu"
-                      activeMenuItems={activeMenuItems}
-                      linkClassName="menu-link"
-                    />
+                  {item.isTitle ? (
+                    <li
+                      className={classNames( "menu-title", {
+                        "mt-2": idx !== 0,
+                      } )}
+                    >
+                      {item.label}
+                    </li>
                   ) : (
-                    <MenuItem
-                      item={item}
-                      linkClassName="menu-link"
-                      className={
-                        activeMenuItems?.includes( item.key )
-                          ? "menuitem-active"
-                          : ""
-                      }
-                    />
-                  )}
+                    <>
+                      {item.children ? (
+                        <MenuItemWithChildren
+                          item={item}
+                          toggleMenu={toggleMenu}
+                          subMenuClassNames="sub-menu"
+                          activeMenuItems={activeMenuItems}
+                          linkClassName="menu-link"
+                        />
+                      ) : (
+                        <MenuItem
+                          item={item}
+                          linkClassName="menu-link"
+                          className={
+                            activeMenuItems?.includes( item.key )
+                              ? "menuitem-active"
+                              : ""
+                          }
+                        />
+                      )}
+                    </>
+                  )
+                  }
                 </>
-              )}
+
+
+              }
+
+
             </React.Fragment>
           );
         } )}

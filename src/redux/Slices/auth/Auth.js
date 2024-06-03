@@ -42,10 +42,18 @@ const initialState = {
 export const login = ( { email, password } ) => async ( dispatch ) => {
     try {
         await authService.login( { email, password } ).then( async ( response ) => {
-            toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
-            await dispatch( userToken( response?.access_token ) )
+            await dispatch( authService.getProfile( response?.access_token ).then( async ( response ) => {
+                // console.log( "response: ", response.data )
+
+            } ).catch( ( err ) =>
+                console.log( "error: ", err )
+            )
+            )
             await dispatch( loginUser( response?.data ) )
             await dispatch( userRoles( response?.roles ) )
+            toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
+            await dispatch( userToken( response?.access_token ) )
+
         } ).catch( ( error ) => {
             toast.error( error?.detail, { position: toast.POSITION.TOP_RIGHT } );
 

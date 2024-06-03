@@ -1,12 +1,12 @@
 
 const MENU_ITEMS = [
-  { key: "Apps", label: "Apps", isTitle: true },
+  { key: "Apps", label: "Apps", isTitle: true, roles: ["SuperAdmin"], },
   {
     key: "dashboards",
     label: "Dashboards",
     isTitle: false,
     icon: "airplay",
-    roles: ["strng"],
+    roles: ["SuperAdmin"],
     url: "/",
     badge: { variant: "success", text: "4" },
     // children: [
@@ -41,6 +41,7 @@ const MENU_ITEMS = [
     label: "Tracking",
     isTitle: false,
     icon: "airplay",
+    roles: ["SuperAdmin"],
     url: "/",
     badge: { variant: "success", text: "4" },
     children: [
@@ -69,6 +70,7 @@ const MENU_ITEMS = [
     key: "target",
     label: "Target",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "dollar-sign",
     url: "/apps/target",
   },
@@ -76,6 +78,7 @@ const MENU_ITEMS = [
     key: "invoice",
     label: "Invoice",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "book",
     children: [
       {
@@ -97,6 +100,7 @@ const MENU_ITEMS = [
     key: "commission",
     label: "Commissions",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "database",
     url: "/apps/commission",
   },
@@ -105,12 +109,14 @@ const MENU_ITEMS = [
     label: "Customers",
     isTitle: false,
     icon: "database",
+    roles: ["SuperAdmin"],
     url: "/apps/customers",
   },
   {
     key: "leads",
     label: "Leads",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "database",
     url: "/apps/leads",
   },
@@ -118,6 +124,7 @@ const MENU_ITEMS = [
     key: "portalProject",
     label: "Portal Projects",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "cast",
     url: "/apps/portalProjects",
   },
@@ -126,12 +133,14 @@ const MENU_ITEMS = [
     label: "Lead Projects",
     isTitle: false,
     icon: "server",
+    roles: ["SuperAdmin"],
     url: "/apps/leadProjects",
   },
   {
     key: "ClientCard",
     label: "Client Card",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "credit-card",
     url: "/apps/clientCard",
   },
@@ -139,6 +148,7 @@ const MENU_ITEMS = [
     key: "projects",
     label: "Projects",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "clipboard",
     url: "/apps/projects/list",
     // children: [
@@ -166,6 +176,7 @@ const MENU_ITEMS = [
     key: "hr",
     label: "Hr",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "users",
     children: [
       {
@@ -205,12 +216,14 @@ const MENU_ITEMS = [
     key: "report",
     label: "report",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "calendar",
     url: "/apps/report",
   },
   {
     key: "apps-chat",
     label: "Chat",
+    roles: ["SuperAdmin"],
     isTitle: false,
     icon: "message-square",
     url: "/apps/chat",
@@ -219,6 +232,7 @@ const MENU_ITEMS = [
     key: "apps-email",
     label: "Email",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "mail",
     children: [
       {
@@ -245,6 +259,7 @@ const MENU_ITEMS = [
     key: "administartor",
     label: "Administrator",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "mail",
     children: [
       // {
@@ -272,6 +287,7 @@ const MENU_ITEMS = [
     label: "Account",
     isTitle: false,
     icon: "mail",
+    roles: ["SuperAdmin"],
     children: [
       {
         key: "expense",
@@ -306,11 +322,12 @@ const MENU_ITEMS = [
     ],
   },
 
-  { key: "apps", label: "Extra pages", isTitle: true },
+  { key: "apps", label: "Extra pages", isTitle: true, roles: ["SuperAdmin"], },
   {
     key: "apps-calendar",
     label: "Calendar",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "calendar",
     url: "/apps/calendar",
   },
@@ -318,12 +335,14 @@ const MENU_ITEMS = [
     key: "apps-chat",
     label: "Chat",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "message-square",
     url: "/apps/chat",
   },
   {
     key: "apps-ecommerce",
     label: "Ecommerce",
+    roles: ["SuperAdmin"],
     isTitle: false,
     icon: "shopping-cart",
     children: [
@@ -394,7 +413,9 @@ const MENU_ITEMS = [
     label: "CRM",
     isTitle: false,
     icon: "users",
+    roles: ["SuperAdmin"],
     children: [
+
       {
         key: "crm-dashboard",
         label: "Dashboard",
@@ -431,6 +452,7 @@ const MENU_ITEMS = [
     key: "apps-email",
     label: "Email",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "mail",
     children: [
       {
@@ -457,6 +479,7 @@ const MENU_ITEMS = [
     key: "apps-social",
     label: "Social Feed",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "rss",
     url: "/apps/social-feed",
     badge: { variant: "pink", text: "Hot" },
@@ -464,6 +487,7 @@ const MENU_ITEMS = [
   {
     key: "apps-companies",
     label: "Companies",
+    roles: ["SuperAdmin"],
     isTitle: false,
     icon: "activity",
     url: "/apps/companies",
@@ -471,6 +495,7 @@ const MENU_ITEMS = [
   {
     key: "apps-projects",
     label: "Projects",
+    roles: ["SuperAdmin"],
     isTitle: false,
     icon: "briefcase",
     url: "/apps/projects/list",
@@ -499,6 +524,7 @@ const MENU_ITEMS = [
     key: "apps-tasks",
     label: "Tasks",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "clipboard",
     children: [
       {
@@ -524,6 +550,7 @@ const MENU_ITEMS = [
   {
     key: "apps-contacts",
     label: "Contacts",
+    roles: ["SuperAdmin"],
     isTitle: false,
     icon: "book",
     children: [
@@ -544,6 +571,7 @@ const MENU_ITEMS = [
   {
     key: "apps-tickets",
     label: "Tickets",
+    roles: ["SuperAdmin"],
     isTitle: false,
     icon: "aperture",
     children: [
@@ -564,15 +592,17 @@ const MENU_ITEMS = [
   {
     key: "apps-file-manager",
     label: "File Manager",
+    roles: ["SuperAdmin"],
     isTitle: false,
     icon: "folder-plus",
     url: "/apps/file-manager",
   },
-  { key: "custom", label: "Custom", isTitle: true },
+  { key: "custom", label: "Custom", isTitle: true, roles: ["SuperAdmin"], },
   {
     key: "extra-pages",
     label: "Extra Pages",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "package",
     children: [
       {
@@ -669,10 +699,11 @@ const MENU_ITEMS = [
       },
     ],
   },
-  { key: "components", label: "Components", isTitle: true },
+  { key: "components", label: "Components", isTitle: true, roles: ["SuperAdmin"], },
   {
     key: "base-ui",
     label: "Base UI",
+    roles: ["SuperAdmin"],
     isTitle: false,
     icon: "pocket",
     children: [
@@ -808,6 +839,7 @@ const MENU_ITEMS = [
     key: "extended-ui",
     label: "Extended UI",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "layers",
     badge: { variant: "info", text: "Hot" },
     children: [
@@ -860,12 +892,14 @@ const MENU_ITEMS = [
     label: "Widgets",
     isTitle: false,
     icon: "gift",
+    roles: ["SuperAdmin"],
     url: "/ui/widgets",
   },
   {
     key: "icons",
     label: "Icons",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "cpu",
     children: [
       {
@@ -922,6 +956,7 @@ const MENU_ITEMS = [
     key: "forms",
     label: "Forms",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "bookmark",
     children: [
       {
@@ -966,6 +1001,7 @@ const MENU_ITEMS = [
     key: "tables",
     label: "Tables",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "grid",
     children: [
       {
@@ -986,6 +1022,7 @@ const MENU_ITEMS = [
     key: "charts",
     label: "Charts",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "bar-chart-2",
     children: [
       {
@@ -1004,6 +1041,7 @@ const MENU_ITEMS = [
   },
   {
     key: "maps",
+    roles: ["SuperAdmin"],
     label: "Maps",
     isTitle: false,
     icon: "map",
@@ -1026,6 +1064,7 @@ const MENU_ITEMS = [
     key: "menu-levels",
     label: "Menu Levels",
     isTitle: false,
+    roles: ["SuperAdmin"],
     icon: "share-2",
     children: [
       {
