@@ -29,7 +29,7 @@ const List = () => {
     const [salary, setSalary] = useState( '10000' );
     const [profilePic, setProfilePic] = useState( null );
     const [contract, setContract] = useState( null );
-    const [employmentType, setEmploymentType] = useState();
+    const [employmentType, setEmploymentType] = useState( "Regular" );
 
     const [CNIC, setCNIC] = useState( null );
     const [CnicNo, setCnicNo] = useState( '' );
@@ -38,8 +38,11 @@ const List = () => {
     const [accTitle, setAccTitle] = useState( 'taimoor khan' );
     const [branchCode, setBranchCode] = useState( '0231' );
     const [bankAddress, setBankAddress] = useState( 'DHA' );
+
     const [accNo, setAccNo] = useState( '12039891381' );
     const [bankName, setBankName] = useState( '' );
+    const [designation, setDesignation] = useState( 'developer' );
+    const [commission, setcommission] = useState( "100" );
     const [refName, setRefName] = useState( 'taimoor' );
     const [refEmail, setRefEmail] = useState( 'taimoor@yopmail.com' );
     const [refPhoneNo, setRefPhoneNo] = useState( '923432333483' );
@@ -59,7 +62,6 @@ const List = () => {
         } )
     );
 
-    console.log( roles, "roles" )
 
     const reset = () => {
         setFullName( '' )
@@ -89,9 +91,12 @@ const List = () => {
         setRefName( '' )
         setRefEmail( '' )
         setRefPhoneNo( '' )
+        setcommission( 0 )
         setRefCnicNo( '' )
         setMultipleRoleSelection( [] )
+        setEmploymentType( "Regular" )
     }
+
 
     const submit = async ( e ) => {
         e.preventDefault();
@@ -121,17 +126,54 @@ const List = () => {
             dispatch( stopLoading() );
             return
         };
+        if ( DOB === '' ) {
+            toast.error( "DOB required", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
+            return
+        };
+        if ( CnicNo === '' ) {
+            toast.error( "CNIC No required", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
+            return
+        };
 
+        if ( CNIC === null ) {
+            toast.error( "CNIC required", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
+            return
+        };
+        if ( profilePic === null ) {
+            toast.error( "Profile picture", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
+            return
+        };
+        if ( CV === null ) {
+            toast.error( "CV required", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
+            return
+        };
+        if ( contract === null ) {
+            toast.error( "Contract required", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
+            return
+        };
+        if ( refCnicPic === null ) {
+            toast.error( "Ref CNIC required", { position: toast.POSITION.TOP_RIGHT } );
+            dispatch( stopLoading() );
+            return
+        };
         const params = new FormData();
         params.append( "name", fullName );
         params.append( "father_name", fatherName );
-        params.append( "email", email );
+        params.append( "email", companyProvideEmail );
         params.append( "company_provided_email", companyProvideEmail );
+        params.append( "personal_email", email );
         params.append( "dob", DOB );
         params.append( "cnic_no", CnicNo );
         params.append( "phone_no", phoneNumber );
         params.append( "emergency_phone_no", emergencyPhoneNumber );
         params.append( "emergency_phone_no_2", emergencyPhoneNumber2 );
+        params.append( "designation", designation );
         params.append( "joining_date", joiningDate );
         if ( CNIC !== null ) {
             params.append( "cnic_img", CNIC );
@@ -149,12 +191,15 @@ const List = () => {
             params.append( "reference_profile_img", refCnicPic );
         };
         params.append( "salary", salary );
-        params.append( "account_title", accTitle );
+        params.append( "commission", commission );
+        params.append( "target", target );
+        params.append( "title", accTitle );
         params.append( "accound_number", accNo );
         params.append( "bank_name", bankName );
-        params.append( "branch_address", branchCode );
+        params.append( "branch_code", branchCode );
+        params.append( "branch_address", bankAddress );
         params.append( "reference_name", refName );
-        params.append( "reference_email", refEmail );
+        params.append( "reference_name", refEmail );
         params.append( "reference_cnic_no", refCnicNo );
         params.append( "reference_phone_no", refPhoneNo );
         params.append( "password", password );
@@ -172,10 +217,10 @@ const List = () => {
             },
             body: params,
         };
-        params.forEach( ( value, key ) => {
-            console.log( `${key}: ${value}` );
-        } );
-        await fetch( CONSTANTS.API_URLS.BASE + 'user/register', options )
+        // params.forEach( ( value, key ) => {
+        //     console.log( `${key}: ${value}` );
+        // } );
+        await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.ADD_Employeee, options )
             .then( response => response.json() )
             .then( e => {
                 if ( e.status === 200 ) {
@@ -183,13 +228,14 @@ const List = () => {
                     toast.success( e?.message, { position: toast.POSITION.TOP_RIGHT } );
                     reset();
                 } else {
-                    toast.error( e?.message[0], { position: toast.POSITION.TOP_RIGHT } );
+                    console.log( e );
+                    toast.error( e?.detail, { position: toast.POSITION.TOP_RIGHT } );
                 }
                 dispatch( stopLoading() );
             } )
             .catch( err => {
                 dispatch( stopLoading() );
-                console.log( "err", err );
+                console.log( "err========", err );
             } );
         // await dispatch( AddEmployee( params, token ) );
         dispatch( stopLoading() );
@@ -215,7 +261,7 @@ const List = () => {
         { value: "Developer", label: "Developer" },
         { value: "Lead", label: "Lead" },
         { value: "Project Manager", label: "Project Manager" },
-        { value: "Sales Person", label: "Sales Person" },
+        { value: "Sales", label: "Sales" },
         { value: "Scraper", label: "Scraper" },
         { value: "QA", label: "QA" },
     ];
@@ -262,7 +308,8 @@ const List = () => {
 
     const comFunc = ( e ) => {
         if ( e.target.value >= 0 ) {
-            setComm( e.target.value )( e.target.value );
+            setcommission( e.target.value )
+
         }
     }
 
@@ -422,8 +469,6 @@ const List = () => {
 
 
                                         />
-
-
                                         <FormInput
                                             label="Select Employment Type"
                                             name="select"
@@ -439,6 +484,16 @@ const List = () => {
                                             <option>Contract_Base</option>
 
                                         </FormInput>
+                                        <FormInput
+                                            label="Designation"
+                                            placeholder="Designation"
+                                            containerClass={'mb-3'}
+                                            key="Designation"
+                                            value={designation}
+                                            onChange={( e ) => {
+                                                setDesignation( e.target.valueAsNumber )
+                                            }}
+                                        />
                                         {employmentType === "Regular" ? (
                                             <>
                                                 <FormInput
@@ -568,7 +623,7 @@ const List = () => {
                                                     placeholder="Comission"
                                                     containerClass={'mb-3'}
                                                     key="Comission"
-                                                    value={comm}
+                                                    value={commission}
                                                     onChange={( e ) => comFunc( e )}
                                                 />
                                             </>
@@ -614,43 +669,11 @@ const List = () => {
                                                 classNamePrefix="react-select"
                                                 onChange={handleSelectChange}
                                             ></Select>
-                                            {/* <Typeahead
-                                                id="select3"
-                                                labelKey="name"
-                                                multiple
-                                                onChange={(e) => onChangeRoleSelection(e)}
-                                               
-                                                placeholder="Choose a role"
-                                                selected={multipleRoleSelection}
-                                            /> */}
+
                                         </div>
 
 
-                                        <div className="mb-3">
-                                            <label className="form-label">Permisions</label>  <br />
-                                            <Select
-                                                isMulti={true}
-                                                options={[
-                                                    { value: "Read", label: "Read" },
-                                                    { value: "Write", label: "Write" },
-                                                    { value: "Update", label: "Update" },
-                                                    { value: "Delete", label: "Delete" },
-                                                    { value: "Read, Write, Update, Delete", label: "All" },
 
-                                                ]}
-                                                className="react-select react-select-container"
-                                                classNamePrefix="react-select"
-                                            ></Select>
-                                            {/* <Typeahead
-                                                id="select3"
-                                                labelKey="name"
-                                                multiple
-                                                onChange={(e) => onChangeRoleSelection(e)}
-                                               
-                                                placeholder="Choose a role"
-                                                selected={multipleRoleSelection}
-                                            /> */}
-                                        </div>
 
                                         <FormInput
                                             label="Photo Upload"

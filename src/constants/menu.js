@@ -70,7 +70,7 @@ const MENU_ITEMS = [
     key: "target",
     label: "Target",
     isTitle: false,
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Sale"],
     icon: "dollar-sign",
     url: "/apps/target",
   },
@@ -78,7 +78,7 @@ const MENU_ITEMS = [
     key: "invoice",
     label: "Invoice",
     isTitle: false,
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Sales"],
     icon: "book",
     children: [
       {
@@ -100,7 +100,7 @@ const MENU_ITEMS = [
     key: "commission",
     label: "Commissions",
     isTitle: false,
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Sales"],
     icon: "database",
     url: "/apps/commission",
   },
@@ -109,14 +109,14 @@ const MENU_ITEMS = [
     label: "Customers",
     isTitle: false,
     icon: "database",
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Sales"],
     url: "/apps/customers",
   },
   {
     key: "leads",
     label: "Leads",
     isTitle: false,
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Sales", "Scraper"],
     icon: "database",
     url: "/apps/leads",
   },
@@ -124,7 +124,7 @@ const MENU_ITEMS = [
     key: "portalProject",
     label: "Portal Projects",
     isTitle: false,
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Sales"],
     icon: "cast",
     url: "/apps/portalProjects",
   },
@@ -133,7 +133,7 @@ const MENU_ITEMS = [
     label: "Lead Projects",
     isTitle: false,
     icon: "server",
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Sales"],
     url: "/apps/leadProjects",
   },
   {
@@ -148,7 +148,7 @@ const MENU_ITEMS = [
     key: "projects",
     label: "Projects",
     isTitle: false,
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Sales", "Developer"],
     icon: "clipboard",
     url: "/apps/projects/list",
     // children: [
@@ -176,13 +176,14 @@ const MENU_ITEMS = [
     key: "hr",
     label: "Hr",
     isTitle: false,
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Hr"],
     icon: "users",
     children: [
       {
         key: "employees",
         label: "Employees",
         url: "/apps/hr/employees",
+
         parentKey: "hr",
       },
       {
@@ -223,7 +224,7 @@ const MENU_ITEMS = [
   {
     key: "apps-chat",
     label: "Chat",
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Hr", "Sales", "Developer", "Scraper"],
     isTitle: false,
     icon: "message-square",
     url: "/apps/chat",
@@ -232,7 +233,7 @@ const MENU_ITEMS = [
     key: "apps-email",
     label: "Email",
     isTitle: false,
-    roles: ["SuperAdmin"],
+    roles: ["SuperAdmin", "Hr", "Sales", "Developer", "Scraper"],
     icon: "mail",
     children: [
       {

@@ -11,28 +11,28 @@ import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Util
 
 export default function Management() {
     const dispatch = useDispatch();
-    const [responsiveModal, setResponsiveModal] = useState(false);
-    const [title, setTitle] = useState('');
-    const [desc, setDesc] = useState('');
-    const [openPlatform, setOpenPlatform] = useState(false);
-    const [platTitle, setPlatTitle] = useState('');
-    const [platDesc, setPlatDesc] = useState('');
+    const [responsiveModal, setResponsiveModal] = useState( false );
+    const [title, setTitle] = useState( '' );
+    const [desc, setDesc] = useState( '' );
+    const [openPlatform, setOpenPlatform] = useState( false );
+    const [platTitle, setPlatTitle] = useState( '' );
+    // const [platDesc, setPlatDesc] = useState( '' );
 
     const { category, token, platform, loading } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             category: state.Category.category,
             platform: state.Platform.platform,
             loading: state.utiltities.loading,
-        })
+        } )
     );
 
     const toggleResponsiveModal = () => {
-        setResponsiveModal(!responsiveModal);
+        setResponsiveModal( !responsiveModal );
     };
 
     const togglePlatformModal = () => {
-        setOpenPlatform(!openPlatform);
+        setOpenPlatform( !openPlatform );
     };
 
     const addCategory = async () => {
@@ -40,22 +40,25 @@ export default function Management() {
             title: title,
             description: desc
         };
-        dispatch(startLoading());
-        await dispatch(AddnewCategory(data, token));
+        dispatch( startLoading() );
+        await dispatch( AddnewCategory( data, token ) );
         toggleResponsiveModal();
-        dispatch(stopLoading());
+        dispatch( stopLoading() );
     };
 
     const addPlatform = async () => {
         const data = {
             title: platTitle,
-            description: platDesc
+            // description: platDesc
         };
+        const formdata = new FormData();
+        formdata.append( "title", platTitle );
+        console.log( "platTitle", platTitle )
 
-        dispatch(startLoading());
-        await dispatch(CreateNewPlatform(data, token));
+        dispatch( startLoading() );
+        await dispatch( CreateNewPlatform( formdata, token ) );
         togglePlatformModal();
-        dispatch(stopLoading());
+        dispatch( stopLoading() );
     };
 
     const tabContents = [
@@ -93,7 +96,7 @@ export default function Management() {
                 <Card.Body>
                     <Tab.Container defaultActiveKey="Category">
                         <Nav as="ul" variant="pills" justify className="navtab-bg" style={{ maxWidth: 300 }}>
-                            {(tabContents || []).map((tab, index) => {
+                            {( tabContents || [] ).map( ( tab, index ) => {
                                 return (
                                     <Nav.Item as="li" key={index}>
                                         <Nav.Link
@@ -104,15 +107,15 @@ export default function Management() {
                                         </Nav.Link>
                                     </Nav.Item>
                                 );
-                            })}
+                            } )}
                         </Nav>
 
                         <Tab.Content>
-                            {(tabContents || []).map((tab, index) => {
+                            {( tabContents || [] ).map( ( tab, index ) => {
                                 return (
                                     <Tab.Pane
                                         eventKey={tab.title}
-                                        id={String(tab.id)}
+                                        id={String( tab.id )}
                                         key={index}
                                     >
                                         <Row>
@@ -120,14 +123,14 @@ export default function Management() {
                                                 <Button className="btn btn-success mb-2" onClick={tab.function}>Add</Button>
                                             </Col>
                                         </Row>
-                                        {tab?.titles?.map(val => {
+                                        {tab?.titles?.map( val => {
                                             return (
                                                 <ButtonComp key={val?.id} id={val?.id} title={val?.title} plat={tab?.plat} />
                                             );
-                                        })}
+                                        } )}
                                     </Tab.Pane>
                                 );
-                            })}
+                            } )}
                         </Tab.Content>
                     </Tab.Container>
                 </Card.Body>
@@ -139,7 +142,7 @@ export default function Management() {
                 <Modal.Body className="p-4">
                     <FormInput
                         value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        onChange={( e ) => setTitle( e.target.value )}
                         label="Name"
                         type="text"
                         name="Name"
@@ -147,7 +150,7 @@ export default function Management() {
                         containerClass={'mb-3'}
                         key="title"
                     />
-                    <FormInput
+                    {/* <FormInput
                         value={desc}
                         onChange={(e) => setDesc(e.target.value)}
                         label="Name"
@@ -156,7 +159,7 @@ export default function Management() {
                         placeholder="Description"
                         containerClass={'mb-3'}
                         key="desc"
-                    />
+                    /> */}
                 </Modal.Body>
 
                 <Modal.Footer>
@@ -183,7 +186,7 @@ export default function Management() {
                 <Modal.Body className="p-4">
                     <FormInput
                         value={platTitle}
-                        onChange={(e) => setPlatTitle(e.target.value)}
+                        onChange={( e ) => setPlatTitle( e.target.value )}
                         label="Name"
                         type="text"
                         name="Name"
@@ -191,16 +194,16 @@ export default function Management() {
                         containerClass={'mb-3'}
                         key="title"
                     />
-                    <FormInput
+                    {/* <FormInput
                         value={platDesc}
-                        onChange={(e) => setPlatDesc(e.target.value)}
+                        onChange={( e ) => setPlatDesc( e.target.value )}
                         label="Name"
                         type="text"
                         name="Name"
                         placeholder="Description"
                         containerClass={'mb-3'}
                         key="desc"
-                    />
+                    /> */}
                 </Modal.Body>
 
                 <Modal.Footer>

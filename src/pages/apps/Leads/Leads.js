@@ -14,48 +14,48 @@ import utils from '../../../utils/utils';
 
 export default function Leads() {
     const dispatch = useDispatch();
-    const [visibleModal, setVisibleModal] = useState(false);
-    const [plat, setPlat] = useState('');
+    const [visibleModal, setVisibleModal] = useState( false );
+    const [plat, setPlat] = useState( '' );
     const [category, setCategory] = useState();
     const [name, setName] = useState();
     const [email, setEmail] = useState();
-    const [phone, setPhone] = useState('');
+    const [phone, setPhone] = useState( '' );
     const [note, setNote] = useState();
-    const [viewEdit, setViewEdit] = useState(false);
-    const [view, setView] = useState(false);
-    const [id, setId] = useState();
+    const [viewEdit, setViewEdit] = useState( false );
+    const [view, setView] = useState( false );
+    const [lead, setlead] = useState();
     const [detail, setDetail] = useState();
 
     const { token, platforms, loading, leads } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             loading: state.utiltities.loading,
             platforms: state.Platform.platform,
             leads: state.Leads.leads
-        })
+        } )
     );
-
+    console.log( "leads", leads )
     const toggleModal = () => {
-        setVisibleModal(!visibleModal);
+        setVisibleModal( !visibleModal );
     };
 
     const toggleView = () => {
-        setView(!view);
+        setView( !view );
     };
 
     /* action column render */
-    const ActionColumn = ({ row }) => {
+    const ActionColumn = ( { row } ) => {
         return (
             <React.Fragment>
-                <Link className="action-icon" onClick={() => openView(row)} >
+                <Link className="action-icon" onClick={() => openView( row )} >
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => openEdit(row.id)}>
+                <Link className="action-icon" onClick={() => openEdit( row )}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => deleteFunc(row.id)}>
+                <Link className="action-icon" onClick={() => deleteFunc( row.id )}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -63,27 +63,27 @@ export default function Leads() {
         );
     };
 
-    const openView = async (info) => {
-        setDetail(info);
-        setView(!view);
+    const openView = async ( info ) => {
+        setDetail( info );
+        setView( !view );
     };
 
-    const openEdit = async (leadId) => {
-        setId(leadId);
-        dispatch(startLoading());
-        await dispatch(GetLeadById(leadId, token));
-        dispatch(stopLoading());
-        setViewEdit(!viewEdit);
+    const openEdit = async ( row ) => {
+        setlead( row );
+        dispatch( startLoading() );
+        await dispatch( GetLeadById( row.id, token ) );
+        dispatch( stopLoading() );
+        setViewEdit( !viewEdit );
     }
 
     const closeEdit = () => {
-        setViewEdit(!viewEdit);
+        setViewEdit( !viewEdit );
     }
 
-    const deleteFunc = async (id) => {
-        dispatch(startLoading());
-        await dispatch(DeleteLead(id, token));
-        dispatch(stopLoading());
+    const deleteFunc = async ( id ) => {
+        dispatch( startLoading() );
+        await dispatch( DeleteLead( id, token ) );
+        dispatch( stopLoading() );
     }
 
     // /* status column render */
@@ -124,8 +124,18 @@ export default function Leads() {
             sort: false,
         },
         {
-            Header: 'Note',
-            accessor: 'note',
+            Header: 'description',
+            accessor: 'description',
+            sort: false,
+        },
+        {
+            Header: 'Platform',
+            accessor: 'platforms_title',
+            sort: false,
+        },
+        {
+            Header: 'submit by',
+            accessor: 'submit_by',
             sort: false,
         },
         {
@@ -143,7 +153,7 @@ export default function Leads() {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ({ row }) => <ActionColumn row={row.original} />,
+            Cell: ( { row } ) => <ActionColumn row={row.original} />,
         },
     ];
 
@@ -163,38 +173,40 @@ export default function Leads() {
     ];
 
     const reset = () => {
-        setName('');
-        setEmail('');
-        setPhone('');
-        setNote('');
+        setName( '' );
+        setEmail( '' );
+        setPhone( '' );
+        setNote( '' );
         setPlat();
-        setVisibleModal(!visibleModal);
+        setVisibleModal( !visibleModal );
     };
 
     const addnew = async () => {
-        if (name === undefined || plat === '' || plat === 'no Selected' || email === undefined || phone === undefined || note === undefined) {
-            toast.error("Enter all fields", { position: toast.POSITION.TOP_RIGHT });
+        if ( name === undefined || plat === '' || plat === 'no Selected' || email === undefined || phone === undefined || note === undefined ) {
+            toast.error( "Enter all fields", { position: toast.POSITION.TOP_RIGHT } );
             return;
         };
-        if (!utils.validateEmail(email)) {
-            toast.error("Enter correct Email", { position: toast.POSITION.TOP_RIGHT });
+        if ( !utils.validateEmail( email ) ) {
+            toast.error( "Enter correct Email", { position: toast.POSITION.TOP_RIGHT } );
             return;
         };
-        const data = {
-            name: name,
-            platform: plat,
-            email: email,
-            phone: phone,
-            note: note,
-        };
-        dispatch(startLoading());
-        await dispatch(AddLead(data, token, reset));
-        dispatch(stopLoading());
+
+        const formData = new FormData();
+        formData.append( "name", name )
+        formData.append( "platform_id", plat )
+        formData.append( "email", email )
+        formData.append( "email", email )
+        formData.append( "phone", phone )
+        formData.append( "description", note )
+        dispatch( startLoading() );
+        await dispatch( AddLead( formData, token, reset ) );
+        dispatch( stopLoading() );
+        toggleModal()
     };
 
-    const phoneFunc = (e) => {
-        if (e.target.value >= 0) {
-            setPhone(e.target.value);
+    const phoneFunc = ( e ) => {
+        if ( e.target.value >= 0 ) {
+            setPhone( e.target.value );
         }
     }
 
@@ -220,7 +232,7 @@ export default function Leads() {
                                     className="form-select"
                                     key="select"
                                     value={category}
-                                    onChange={(e) => setCategory(e.target.value)}
+                                    onChange={( e ) => setCategory( e.target.value )}
                                 >
                                     <option>No selected</option>
                                 </FormInput>
@@ -233,7 +245,7 @@ export default function Leads() {
                                     className="form-select"
                                     key="select"
                                     value={category}
-                                    onChange={(e) => setCategory(e.target.value)}
+                                    onChange={( e ) => setCategory( e.target.value )}
                                 >
                                     <option>No selected</option>
                                 </FormInput>
@@ -293,7 +305,7 @@ export default function Leads() {
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    onChange={( e ) => setName( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
@@ -302,7 +314,7 @@ export default function Leads() {
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={( e ) => setEmail( e.target.value )}
                                     type='email'
                                 />
                             </Form.Group>
@@ -315,7 +327,7 @@ export default function Leads() {
                                 <Form.Control
                                     type='number'
                                     value={phone}
-                                    onChange={(e) => phoneFunc(e)}
+                                    onChange={( e ) => phoneFunc( e )}
                                 />
                             </Form.Group>
                         </Col>
@@ -327,14 +339,18 @@ export default function Leads() {
                                 className="form-select"
                                 key="select"
                                 value={plat}
-                                onChange={(e) => setPlat(e.target.value)}
+                                onChange={( e ) => {
+
+                                    setPlat( e.target.value )
+                                }
+                                }
                             >
                                 <option>No selected</option>
-                                {platforms?.map(val => {
+                                {platforms?.map( val => {
                                     return (
                                         <option key={val.id} value={val.id}>{val.title}</option>
                                     );
-                                })}
+                                } )}
                             </FormInput>
                         </Col>
                     </Row>
@@ -345,7 +361,7 @@ export default function Leads() {
                         containerClass={'mb-3'}
                         key="textarea"
                         value={note}
-                        onChange={(e) => setNote(e.target.value)}
+                        onChange={( e ) => setNote( e.target.value )}
                     />
 
                 </Modal.Body>
@@ -404,7 +420,25 @@ export default function Leads() {
                                 <Form.Label>Platform</Form.Label>
                             </Row>
                             <Row>
-                                <Form.Label>{detail?.platform}</Form.Label>
+                                <Form.Label>{detail?.platforms_title}</Form.Label>
+                            </Row>
+                        </Col>
+                    </Row>
+                    <Row className='mb-3'>
+                        <Col>
+                            <Row>
+                                <Form.Label>Submit by</Form.Label>
+                            </Row>
+                            <Row>
+                                <Form.Label>{detail?.submit_by}</Form.Label>
+                            </Row>
+                        </Col>
+                        <Col>
+                            <Row>
+                                <Form.Label>Status</Form.Label>
+                            </Row>
+                            <Row>
+                                <Form.Label>{detail?.status}</Form.Label>
                             </Row>
                         </Col>
                     </Row>
@@ -414,7 +448,8 @@ export default function Leads() {
                                 <Form.Label>Note</Form.Label>
                             </Row>
                             <Row>
-                                <Form.Label>{detail?.note}</Form.Label>
+                                <Form.Label>{detail?.description
+                                }</Form.Label>
                             </Row>
                         </Col>
                     </Row>
@@ -429,7 +464,7 @@ export default function Leads() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <ViewLeadModal leadId={id} visibleModal={viewEdit} toggleModal={closeEdit} />
+            <ViewLeadModal lead={lead} visibleModal={viewEdit} toggleModal={closeEdit} />
         </>
     );
 };

@@ -25,28 +25,28 @@ const options = {
 const ViewEmployee = () => {
     const { employeeId } = useParams();
     const [numPages, setNumPages] = useState();
-    const [pageNumber, setPageNumber] = useState(1);
+    const [pageNumber, setPageNumber] = useState( 1 );
     const dispatch = useDispatch();
     const { loading, employee, token } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             loading: state.utiltities.loading,
             employee: state.Employees.singleEmployee,
             token: state.Auth.token,
-        })
+        } )
     );
-
+    console.log( employee )
     const getEmployee = async () => {
-        dispatch(startLoading());
-        await dispatch(GetEmployeeById(employeeId, token));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( GetEmployeeById( employeeId, token ) );
+        dispatch( stopLoading() );
     };
 
-    useEffect(() => {
+    useEffect( () => {
         getEmployee();
-    }, []);
+    }, [] );
 
-    function onDocumentLoadSuccess({ numPages }) {
-        setNumPages(numPages);
+    function onDocumentLoadSuccess( { numPages } ) {
+        setNumPages( numPages );
     }
 
     // console.log('EmployeeEditModal', employee);
@@ -64,7 +64,7 @@ const ViewEmployee = () => {
                 <Card.Body className="text-center">
                     <div>
                         <img
-                            src={employee?.detail?.profile_img}
+                            src={employee?.details[0]?.profile_img}
                             alt="profileImage"
                             className="rounded-circle avatar-xl img-thumbnail mb-2"
                         />
@@ -72,31 +72,31 @@ const ViewEmployee = () => {
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Full Name :</strong> <span className="ms-2">{employee?.name}</span>
+                                        <strong>Full Name :</strong> <span className="ms-2">{employee?.details[0]?.name}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Email :</strong> <span className="ms-2">{employee?.email}</span>
-                                    </p>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg={6}>
-                                    <p className="text-muted font-13" >
-                                        <strong>Father Name :</strong> <span className="ms-2">{employee?.detail?.father_name}</span>
-                                    </p>
-                                </Col>
-                                <Col lg={6}>
-                                    <p className="text-muted font-13" >
-                                        <strong>Emergy Number :</strong> <span className="ms-2">{employee?.detail?.emergency_phone_no} : {employee?.detail?.emergency_phone_no_2}</span>
+                                        <strong>Email :</strong> <span className="ms-2">{employee?.details[0]?.email}</span>
                                     </p>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Company Provided email :</strong> <span className="ms-2">{employee?.detail?.company_provided_email}</span>
+                                        <strong>Father Name :</strong> <span className="ms-2">{employee?.details[0]?.father_name}</span>
+                                    </p>
+                                </Col>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>Emergy Number :</strong> <span className="ms-2">{employee?.details[0]?.emergency_phone_no} : {employee?.details[0]?.emergency_phone_no_2}</span>
+                                    </p>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>Company Provided email :</strong> <span className="ms-2">{employee?.details[0]?.company_provided_email}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
@@ -108,36 +108,48 @@ const ViewEmployee = () => {
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>CNIC :</strong> <span className="ms-2">{employee?.detail?.cnic_no}</span>
+                                        <strong>CNIC :</strong> <span className="ms-2">{employee?.details[0]?.cnic_no}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
                                         <strong>Role :</strong>
-                                        {employee.roles.map(e => {
+                                        {/* {employee.roles.map(e => {
                                             return (
                                                 <span key={e.id} className="ms-2">{e?.name}</span>
                                             )
-                                        })}
+                                        })} */}
                                     </p>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Mobile no :</strong> <span className="ms-2">{employee?.detail?.phone_no}</span>
+                                        <strong>Mobile no :</strong> <span className="ms-2">{employee?.details[0]?.phone_no}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Joining Date :</strong> <span className="ms-2">{employee?.detail?.joining_date}</span>
+                                        <strong>Joining Date :</strong> <span className="ms-2">{employee?.details[0]?.joining_date}</span>
+                                    </p>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>Commission:</strong> <span className="ms-2">{employee?.details[0]?.commission}</span>
+                                    </p>
+                                </Col>
+                                <Col lg={6}>
+                                    <p className="text-muted font-13" >
+                                        <strong>target :</strong> <span className="ms-2">{employee?.details[0]?.target}</span>
                                     </p>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col lg={6}>
                                     <Document
-                                        file={employee?.detail?.cv_upload}
+                                        file={employee?.details[0]?.cv_upload}
                                         onLoadSuccess={onDocumentLoadSuccess}
                                         options={options}
                                     >
@@ -146,7 +158,7 @@ const ViewEmployee = () => {
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Salary :</strong> <span className="ms-2">{employee?.detail?.salary}</span>
+                                        <strong>Salary :</strong> <span className="ms-2">{employee?.details[0]?.salary}</span>
                                     </p>
                                 </Col>
                             </Row>

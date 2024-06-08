@@ -5,19 +5,19 @@ import { DeleteEmployee, GetEmployeeById } from '../redux/Slices/employee/Employ
 import EmployeeEditModal from './EmployeeEditModal';
 import { useNavigate } from 'react-router-dom';
 
-const ContactDetails = ({ contact }) => {
-    const { token } = useSelector(state => state.Auth);
+const ContactDetails = ( { contact } ) => {
+    const { token } = useSelector( state => state.Auth );
     const naviage = useNavigate();
     const dispatch = useDispatch();
-    const [editUserModal, setEditUserModal] = useState(false);
+    const [editUserModal, setEditUserModal] = useState( false );
 
     const toggleEditModal = () => {
-        setEditUserModal(!editUserModal);
-        dispatch(GetEmployeeById(contact.id, token));
+        setEditUserModal( !editUserModal );
+        dispatch( GetEmployeeById( contact?.id, token ) );
     };
 
     const deleteEmp = async () => {
-        dispatch(DeleteEmployee(contact.id, token));
+        dispatch( DeleteEmployee( contact?.id, token ) );
     };
 
     return (
@@ -29,15 +29,16 @@ const ContactDetails = ({ contact }) => {
                             <i className="mdi mdi-dots-vertical"></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => naviage(`/apps/hr/editEmployee/${contact.id}`)}>Edit</Dropdown.Item>
+                            <Dropdown.Item onClick={() => naviage( `/apps/hr/editEmployee/${contact?.user_id}`, )}>Edit</Dropdown.Item>
                             <Dropdown.Item onClick={deleteEmp}>Delete</Dropdown.Item>
-                            <Dropdown.Item onClick={() => naviage(`/apps/hr/viewEmployee/${contact.id}`)}>View Profile</Dropdown.Item>
+                            <Dropdown.Item onClick={() => naviage( `/apps/hr/viewEmployee/${contact?.id}` )}>View Profile</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     <div>
                         <img
-                            src={contact?.detail?.profile_img}
+                            src={contact?.profile_img}
                             alt="profileImage"
+                            style={{ width: "400px", height: "400px" }}
                             className="rounded-circle avatar-xl img-thumbnail mb-2"
                         />
                         {/* <p className="text-muted font-13 mb-3">{contact.shortDesc}</p> */}
@@ -51,7 +52,7 @@ const ContactDetails = ({ contact }) => {
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Email :</strong> <span className="ms-2">{contact.email}</span>
+                                        <strong>Email :</strong> <span className="ms-2">{contact?.personal_email}</span>
                                     </p>
                                 </Col>
 
@@ -60,7 +61,7 @@ const ContactDetails = ({ contact }) => {
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Company Provided email :</strong> <span className="ms-2">{contact?.detail?.company_provided_email}</span>
+                                        <strong>Company Provided email :</strong> <span className="ms-2">{contact?.company_provided_email}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
@@ -72,30 +73,30 @@ const ContactDetails = ({ contact }) => {
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>CNIC :</strong> <span className="ms-2">{contact?.detail?.cnic_no}</span>
+                                        <strong>CNIC :</strong> <span className="ms-2">{contact?.cnic_no}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
                                         <strong>Role :</strong>
-                                        {contact.roles.map((e, index)=> {
-                                            console.log("role kia hy akhir====>".e.names)
+                                        {/* {contact?.roles.map( ( e, index ) => {
+                                            console.log( "role kia hy akhir====>".e.names )
                                             return (
                                                 <span key={index} className="ms-2">{e?.name}</span>
                                             )
-                                        })}
+                                        } )} */}
                                     </p>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Mobile no :</strong> <span className="ms-2">{contact?.detail?.phone_no}</span>
+                                        <strong>Mobile no :</strong> <span className="ms-2">{contact?.phone_no}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Joining Date :</strong> <span className="ms-2">{contact?.detail?.joining_date}</span>
+                                        <strong>Joining Date :</strong> <span className="ms-2">{contact?.joining_date}</span>
                                     </p>
                                 </Col>
                             </Row>

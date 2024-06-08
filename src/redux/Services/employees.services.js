@@ -52,8 +52,9 @@ const getEmployeeRoles = async ( token ) => {
 };
 
 const getEmployee = async ( token ) => {
+
     const onSuccess = ( data ) => {
-        return data.data;
+        return data;
     };
 
     const onFailure = error => {
@@ -64,12 +65,17 @@ const getEmployee = async ( token ) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
         },
     };
 
-    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getEmployee, options )
-        .then( response => response.json() )
+    return fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getEmployee, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
         .then( onSuccess )
         .catch( onFailure )
 };
@@ -92,7 +98,12 @@ const DelteEmployee = async ( id, token ) => {
     };
 
     return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.deleteEmployee + id, options )
-        .then( response => response.json() )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
         .then( onSuccess )
         .catch( onFailure )
 };
@@ -114,32 +125,43 @@ const GetEmployeeId = async ( id, token ) => {
         },
     };
 
-    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getEmployee + '/' + id, options )
-        .then( response => response.json() )
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getEmployeeByid + '/' + id, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
         .then( onSuccess )
         .catch( onFailure )
 };
 
 const UpdateEmployee = async ( id, data, token ) => {
+
+    // console.log( "CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.UPDATE_EMPLOYEE + '/' + id", CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.UPDATE_EMPLOYEE + '/' + id )
     const onSuccess = ( data ) => {
-        return data.data;
+        return data;
     };
 
     const onFailure = error => {
         throw error;
     };
     const options = {
-        method: 'PUT',
+        method: 'POST',
         headers: {
-            'Content-Type': 'multipart/form-data',
-            'Accept': 'application/json',
+
             'Authorization': `Bearer ${token}`
         },
         body: data,
     };
 
-    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getEmployee + '/' + id, options )
-        .then( response => response.json() )
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.UPDATE_EMPLOYEE + '/' + id, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
         .then( onSuccess )
         .catch( onFailure )
 };

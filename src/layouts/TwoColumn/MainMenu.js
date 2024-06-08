@@ -147,6 +147,8 @@ const MenuItemLink = ( { item, className } ) => {
 };
 
 
+// console.log( "roles====", roles[0].role )
+
 
 const MainMenu = ( {
   menuItems,
@@ -155,11 +157,12 @@ const MainMenu = ( {
 } ) => {
   //
 
-  const { layoutType } = useSelector( ( state ) => ( {
+  const { layoutType, roles } = useSelector( ( state ) => ( {
     layoutType: state.Layout.layoutType,
     leftSideBarType: state.Layout.leftSideBarType,
+    roles: state.Roles.roles,
   } ) );
-
+  const role = roles[0].role.split( "," );
   return (
     <>
       {activeMenuItems && (
@@ -202,52 +205,66 @@ const MainMenu = ( {
           <div id="two-col-menu" className="h-100 menuitem-active">
             <SimpleBar style={{ maxHeight: "100%" }}>
               {( menuItems || [] ).map( ( menuItem, key ) => {
+
+                let hasRole
+                if ( menuItem?.roles !== undefined ) {
+                  hasRole = role.some( roleItem => menuItem?.roles.includes( roleItem ) );
+                }
+                else {
+                  hasRole = false
+                }
                 const activeParent =
                   activeMenuItems &&
                   activeMenuItems.length &&
                   activeMenuItems[activeMenuItems.length - 1] ===
                   menuItem["key"];
                 return (
-                  <div
-                    key={key}
-                    className={classNames( "twocolumn-menu-item", {
-                      "d-block": activeParent,
-                    } )}
-                    id={menuItem.key}
-                  >
-                    {/* <div className="title-box"> */}
-                    <ul className="menu">
-                      {menuItem.isTitle && (
-                        <li className="menu-title">{menuItem.label}</li>
-                      )}
-                      {( menuItem.children || [] ).map( ( item, idx ) => {
-                        return (
-                          <React.Fragment key={idx}>
-                            {item.children ? (
-                              <MenuItemWithChildren
-                                item={item}
-                                toggleMenu={toggleMenu}
-                                subMenuClassNames="sub-menu"
-                                activeMenuItems={activeMenuItems}
-                                linkClassName=""
-                              />
-                            ) : (
-                              <MenuItem
-                                item={item}
-                                linkClassName=""
-                                className={
-                                  activeMenuItems?.includes( item.key )
-                                    ? "menuitem-active"
-                                    : ""
-                                }
-                              />
-                            )}
-                          </React.Fragment>
-                        );
+                  <>{hasRole &&
+                    <div
+                      key={key}
+                      className={classNames( "twocolumn-menu-item", {
+                        "d-block": activeParent,
                       } )}
-                    </ul>
-                    {/* </div> */}
-                  </div>
+                      id={menuItem.key}
+                    >
+                      {/* <div className="title-box"> */}
+                      <ul className="menu">
+                        {menuItem.isTitle && (
+                          <li className="menu-title">{menuItem.label}</li>
+                        )}
+                        {( menuItem.children || [] ).map( ( item, idx ) => {
+                          return (
+                            <React.Fragment key={idx}>
+                              {item.children ? (
+                                <MenuItemWithChildren
+                                  item={item}
+                                  toggleMenu={toggleMenu}
+                                  subMenuClassNames="sub-menu"
+                                  activeMenuItems={activeMenuItems}
+                                  linkClassName=""
+                                />
+                              ) : (
+                                <MenuItem
+                                  item={item}
+                                  linkClassName=""
+                                  className={
+                                    activeMenuItems?.includes( item.key )
+                                      ? "menuitem-active"
+                                      : ""
+                                  }
+                                />
+                              )}
+                            </React.Fragment>
+                          );
+                        } )}
+                      </ul>
+                      {/* </div> */}
+                    </div>
+
+                  }
+
+                  </>
+
                 );
               } )}
             </SimpleBar>

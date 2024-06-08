@@ -6,15 +6,17 @@ import { FormInput } from '../../../../components';
 import ContactDetails from '../../../../components/ContactDetails';
 import Spinner from '../../../../components/Spinner';
 
+
 const List = () => {
     const navigate = useNavigate()
 
     const { loading, employee } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             loading: state.utiltities.loading,
             employee: state.Employees.employees,
-        })
+        } )
     );
+
 
     return loading ? (
         <div className='d-flex justify-content-center align-items-center'>
@@ -37,7 +39,7 @@ const List = () => {
                                 <Col md={4}>
                                     <div className="mt-3 mt-md-0">
                                         <Button variant="success" className="waves-effect waves-light" onClick={() => {
-                                            navigate("/apps/hr/AddEmployee")
+                                            navigate( "/apps/hr/AddEmployee" )
                                         }}>
                                             <i className="mdi mdi-plus-circle me-1"></i>
                                             Add Employee
@@ -67,15 +69,15 @@ const List = () => {
                     </Card>
                 </Col>
             </Row>
-            {employee !== undefined && employee !== null ? (
+            {employee !== undefined && employee !== null && employee.length > 0 ? (
                 <Row>
-                    {employee.map(user => {
+                    {employee.map( user => {
                         return (
                             <Col xl={6} md={6} key={user.id}>
                                 <ContactDetails contact={user} />
                             </Col>
                         );
-                    })}
+                    } )}
                 </Row>
             ) : null}
         </>

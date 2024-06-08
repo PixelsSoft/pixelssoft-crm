@@ -741,7 +741,7 @@ const appRoutes = [
   administartorRoutes,
   clientCardRoutes,
   portalProjects,
-  // LeadProjects,
+  LeadProjects,
   reportRoutes,
   AccountsRoutes,
   projectAppRoutes,
@@ -1268,7 +1268,7 @@ const authProtectedRoutes = [
   extrapagesRoutes,
   uiRoutes,
 ];
-const publicRoutes = [...authRoutes, ...otherPublicRoutes];
+const publicRoutes = [...authRoutes];
 
 const authProtectedFlattenRoutes = flattenRoutes([...authProtectedRoutes]);
 const publicProtectedFlattenRoutes = flattenRoutes([...publicRoutes]);

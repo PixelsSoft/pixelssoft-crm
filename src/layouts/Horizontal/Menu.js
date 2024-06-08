@@ -15,6 +15,7 @@ import { splitArray } from "../../utils";
 
 // custom hook
 import { useViewport } from "../../hooks/useViewPort";
+import { useSelector } from "react-redux";
 
 
 
@@ -267,34 +268,58 @@ const AppMenu = ( { menuItems } ) => {
   useEffect( () => {
     if ( topnavMenuItems && topnavMenuItems.length > 0 ) activeMenu();
   }, [activeMenu, topnavMenuItems] );
-
+  const { roles, token, loading } = useSelector(
+    ( state ) => ( {
+      roles: state.Roles.roles,
+      token: state.Auth.token,
+      loading: state.utiltities.loading,
+    } )
+  );
+  // console.log( "roles====", roles[0].role )
+  const role = roles[0].role.split( "," );
   return (
     <>
       <ul className="menu" ref={menuRef} id="main-side-menu">
         {( topnavMenuItems || [] ).map( ( item, idx ) => {
+
+          let hasRole
+          if ( item?.roles !== undefined ) {
+            hasRole = role.some( roleItem => item?.roles.includes( roleItem ) );
+          }
+          else {
+            hasRole = false
+          }
+
           return (
             <React.Fragment key={idx}>
-              {item.children ? (
-                <MenuItemWithChildren
-                  item={item}
-                  tag="li"
-                  className="menu-item"
-                  subMenuClassNames="dropdown-menu"
-                  activeMenuItems={activeMenuItems}
-                  linkClassName="nav-link"
-                  toggleMenu={toggleMenu}
-                />
-              ) : (
-                <MenuItem
-                  item={item}
-                  className={classNames( {
-                    "menuitem-active": activeMenuItems.includes( item.key ),
-                  } )}
-                  linkClassName={classNames( {
-                    "menuitem-active": activeMenuItems.includes( item.key ),
-                  } )}
-                />
-              )}
+              {hasRole === true && item?.roles !== undefined &&
+                <>
+                  {item.children ? (
+                    <MenuItemWithChildren
+                      item={item}
+                      tag="li"
+                      className="menu-item"
+                      subMenuClassNames="dropdown-menu"
+                      activeMenuItems={activeMenuItems}
+                      linkClassName="nav-link"
+                      toggleMenu={toggleMenu}
+                    />
+                  ) : (
+                    <MenuItem
+                      item={item}
+                      className={classNames( {
+                        "menuitem-active": activeMenuItems.includes( item.key ),
+                      } )}
+                      linkClassName={classNames( {
+                        "menuitem-active": activeMenuItems.includes( item.key ),
+                      } )}
+                    />
+                  )}
+                </>
+
+
+              }
+
             </React.Fragment>
           );
         } )}

@@ -9,6 +9,7 @@ import { findAllParent, findMenuItem } from "../helpers/menu";
 
 // constants
 import { MenuItemTypes } from "../constants/menu";
+import { useSelector } from "react-redux";
 
 
 
@@ -204,19 +205,27 @@ const AppMenu = ( { menuItems } ) => {
     activeMenu();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] );
-
-  const userRole = ['admin', "SuperAdmin"]
+  const { roles, token, loading } = useSelector(
+    ( state ) => ( {
+      roles: state.Roles.roles,
+      token: state.Auth.token,
+      loading: state.utiltities.loading,
+    } )
+  );
+  // console.log( "roles====", roles[0].role )
+  const role = roles[0].role.split( "," );
+  // console.log( "role", role )
+  // const roleExists = rolesArray.some( role => roles[0].role.includes( role.toLowerCase() ) );
+  const userRole = ['admin', "Hr"]
   return (
     <>
       <ul className="menu" ref={menuRef} id="main-side-menu">
         {( menuItems || [] ).map( ( item, idx ) => {
 
-          let hasRole = userRole.some( roleItem => item?.roles.includes( roleItem ) );
-
-
+          let hasRole = role.some( roleItem => item?.roles.includes( roleItem ) );
           return (
             <React.Fragment key={idx}>
-              {hasRole === true &&
+              {hasRole === true && item?.roles !== undefined &&
                 <>
                   {item.isTitle ? (
                     <li

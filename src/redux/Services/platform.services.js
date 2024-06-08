@@ -1,7 +1,7 @@
 import { CONSTANTS } from "../../constants/constant";
 
-const getPlatform = async (token) => {
-    const onSuccess = (data) => {
+const getPlatform = async ( token ) => {
+    const onSuccess = ( data ) => {
         return data.data;
     };
 
@@ -11,21 +11,26 @@ const getPlatform = async (token) => {
     const options = {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.platform, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.Get_Platform, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const newPlatform = async (data, token) => {
-    const onSuccess = (data) => {
-        return data.data;
+const newPlatform = async ( data, token ) => {
+    const onSuccess = ( data ) => {
+        return data;
     };
 
     const onFailure = error => {
@@ -34,21 +39,26 @@ const newPlatform = async (data, token) => {
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: data,
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.platform, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.platform, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const UpdatePlatform = async (id, data, token) => {
-    const onSuccess = (data) => {
+const UpdatePlatform = async ( data, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -56,23 +66,28 @@ const UpdatePlatform = async (id, data, token) => {
         throw error;
     };
     const options = {
-        method: 'PUT',
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: data,
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.platform + '/' + id, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.UpdatePlatform, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const DeletePlatform = async (id, token) => {
-    const onSuccess = (data) => {
+const DeletePlatform = async ( id, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -80,18 +95,23 @@ const DeletePlatform = async (id, token) => {
         throw error;
     };
     const options = {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.platform + '/' + id, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.deletePlatform + '/' + id, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
 const PlatformService = {

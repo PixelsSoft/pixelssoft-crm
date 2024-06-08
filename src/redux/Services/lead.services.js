@@ -1,7 +1,7 @@
 import { CONSTANTS } from "../../constants/constant";
 
-const AddLead = async (data, token) => {
-    const onSuccess = (data) => {
+const AddLead = async ( data, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -12,21 +12,79 @@ const AddLead = async (data, token) => {
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: data,
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.lead, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.AddLead, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const GetLead = async (token) => {
-    const onSuccess = ({ data }) => {
+const GetLead = async ( token ) => {
+    const onSuccess = ( { data } ) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+
+    const options = {
+        method: 'GET',
+        headers: {
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    };
+
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.lead, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
+};
+
+const DeleteLead = async ( leadId, token ) => {
+    const onSuccess = ( data ) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+
+    const options = {
+        method: 'POST',
+        headers: {
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    };
+
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.deleteLead + '/' + leadId, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
+};
+
+const GetLeadById = async ( leadId, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -43,14 +101,14 @@ const GetLead = async (token) => {
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.lead, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.lead + '/' + leadId + '/' + CONSTANTS.API_URLS.edit, options )
+        .then( response => response.json() )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const DeleteLead = async (leadId, token) => {
-    const onSuccess = (data) => {
+const EditLead = async ( data, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -59,67 +117,24 @@ const DeleteLead = async (leadId, token) => {
     };
 
     const options = {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
+        body: data,
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.lead + '/' + leadId, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
-};
-
-const GetLeadById = async (leadId, token) => {
-    const onSuccess = (data) => {
-        return data;
-    };
-
-    const onFailure = error => {
-        throw error;
-    };
-
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-    };
-
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.lead + '/' + leadId + '/' + CONSTANTS.API_URLS.edit, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
-};
-
-const EditLead = async (leadId, data, token) => {
-    const onSuccess = (data) => {
-        return data;
-    };
-
-    const onFailure = error => {
-        throw error;
-    };
-
-    const options = {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(data),
-    };
-
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.lead + '/' + leadId, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.editLead, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
 const LeadServices = {

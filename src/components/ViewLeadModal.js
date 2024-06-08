@@ -6,36 +6,44 @@ import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities
 import { EditLead } from '../redux/Slices/Leads/leads';
 import Spinner from './Spinner';
 
-const ViewLeadModal = ({ leadId, visibleModal, toggleModal }) => {
+const ViewLeadModal = ( { lead, visibleModal, toggleModal } ) => {
     const { token, platforms, loading, leads } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             loading: state.utiltities.loading,
             platforms: state.Platform.platform,
             leads: state.Leads.singleLead
-        })
+        } )
     );
 
     const dispatch = useDispatch();
-    const [plat, setPlat] = useState(leads?.platform?.id);
-    const [name, setName] = useState(leads?.name);
-    const [email, setEmail] = useState(leads?.email);
-    const [phone, setPhone] = useState(leads?.phone);
-    const [note, setNote] = useState(leads?.note);
+    const [plat, setPlat] = useState( lead?.platform_id );
+    const [name, setName] = useState( lead?.name );
+    const [email, setEmail] = useState( lead?.email );
+    const [phone, setPhone] = useState( lead?.phone );
+    const [status, setStatus] = useState( lead?.status );
+    const [description, setDescription] = useState( lead?.description );
 
+    const options = [
+        { value: "Pending", label: "Pending" },
+        { value: "Interested", label: "Interested" },
+        { value: "Closed", label: "Closed" },
+    ];
     const EditFunc = async () => {
-        const data = {
-            name: name,
-            platform: plat,
-            email: email,
-            phone: phone,
-            note: note,
-        };
-        dispatch(startLoading());
-        await dispatch(EditLead(leadId, data, token));
-        dispatch(stopLoading());
+        const formData = new FormData();
+        formData.append( "id", lead?.id )
+        formData.append( "name", name )
+        formData.append( "email", email )
+        formData.append( "phone", phone )
+        formData.append( "description", description )
+        formData.append( "platfoamId", plat )
+        formData.append( "status", status )
+        dispatch( startLoading() );
+        await dispatch( EditLead( formData, token ) );
+        dispatch( stopLoading() );
         toggleModal();
     };
+
 
     return loading ? (
         <div className='d-flex justify-content-center align-items-center'>
@@ -54,7 +62,7 @@ const ViewLeadModal = ({ leadId, visibleModal, toggleModal }) => {
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    onChange={( e ) => setName( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
@@ -63,7 +71,7 @@ const ViewLeadModal = ({ leadId, visibleModal, toggleModal }) => {
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={( e ) => setEmail( e.target.value )}
                                     type='email'
                                 />
                             </Form.Group>
@@ -75,7 +83,7 @@ const ViewLeadModal = ({ leadId, visibleModal, toggleModal }) => {
                                 <Form.Label>Phone No</Form.Label>
                                 <Form.Control
                                     value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
+                                    onChange={( e ) => setPhone( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
@@ -87,16 +95,38 @@ const ViewLeadModal = ({ leadId, visibleModal, toggleModal }) => {
                                 className="form-select"
                                 key="select"
                                 value={plat}
-                                onChange={(e) => {
-                                    setPlat(e.target.value);
+                                onChange={( e ) => {
+                                    setPlat( e.target.value );
                                 }}
                             >
                                 <option>no Selected</option>
-                                {platforms?.map(val => {
+                                {platforms?.map( val => {
                                     return (
                                         <option key={val.id} value={val.id}>{val.title}</option>
                                     );
-                                })}
+                                } )}
+                            </FormInput>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <FormInput
+                                label="Platform"
+                                name="select"
+                                type="select"
+                                className="form-select"
+                                key="select"
+                                value={status}
+                                onChange={( e ) => {
+                                    setStatus( e.target.value );
+                                }}
+                            >
+                                <option>no Selected</option>
+                                {options?.map( val => {
+                                    return (
+                                        <option key={val.value} value={val.id}>{val.label}</option>
+                                    );
+                                } )}
                             </FormInput>
                         </Col>
                     </Row>
@@ -106,8 +136,8 @@ const ViewLeadModal = ({ leadId, visibleModal, toggleModal }) => {
                         name="textarea"
                         containerClass={'mb-3'}
                         key="textarea"
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
+                        value={description}
+                        onChange={( e ) => setDescription( e.target.value )}
                     />
 
                 </Modal.Body>

@@ -12,31 +12,31 @@ import { Link } from 'react-router-dom';
 export default function ExpenseCategory() {
 
     const { category, token, loading } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             loading: state.utiltities.loading,
             category: state.ExpenseCategory.expenseCategory,
-        })
+        } )
     );
 
     const dispatch = useDispatch();
     const [title, setTitle] = useState();
     const [Des, setDes] = useState();
-    const [edit, setEdit] = useState(false);
+    const [edit, setEdit] = useState( false );
     const [id, setId] = useState();
 
-    const ActionColumn = ({ row }) => {
+    const ActionColumn = ( { row } ) => {
         return (
             <React.Fragment>
                 {/* <Link className="action-icon">
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link> */}
-                <Link className="action-icon" onClick={() => editCat(row)}>
+                <Link className="action-icon" onClick={() => editCat( row )}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => deleteCat(row)}>
+                <Link className="action-icon" onClick={() => deleteCat( row )}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -44,33 +44,34 @@ export default function ExpenseCategory() {
         );
     };
 
-    const deleteCat = async ({ id }) => {
-        dispatch(startLoading());
-        await dispatch(DeleteExpenseCategory(id, token));
-        dispatch(stopLoading());
+    const deleteCat = async ( { id } ) => {
+
+        dispatch( startLoading() );
+        await dispatch( DeleteExpenseCategory( id, token ) );
+        dispatch( stopLoading() );
     }
 
-    const editCat = async (row) => {
-        setId(row.id);
-        setTitle(row.name);
-        setDes(row.description);
-        setEdit(!edit);
+    const editCat = async ( row ) => {
+        setId( row.id );
+        setTitle( row.title );
+        setDes( row.description );
+        setEdit( !edit );
     };
 
     const close = () => {
         reset();
-        setEdit(!edit);
+        setEdit( !edit );
     };
 
     const columns = [
-        {
-            Header: 'Id',
-            accessor: 'id',
-            sort: true,
-        },
+        // {
+        //     Header: 'Id',
+        //     accessor: 'id',
+        //     sort: true,
+        // },
         {
             Header: 'Title',
-            accessor: 'name',
+            accessor: 'title',
             sort: false,
         },
         {
@@ -82,7 +83,7 @@ export default function ExpenseCategory() {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ({ row }) => <ActionColumn row={row.original} />,
+            Cell: ( { row } ) => <ActionColumn row={row.original} />,
         },
     ];
 
@@ -112,24 +113,27 @@ export default function ExpenseCategory() {
             name: title,
             description: Des,
         };
-        dispatch(startLoading());
-        await dispatch(EditExpenseCategory(id, data, token, reset));
-        dispatch(stopLoading());
+        const formdata = new FormData()
+        formdata.append( "id", id )
+        formdata.append( "title", title )
+        formdata.append( "description", Des )
+        dispatch( startLoading() );
+        await dispatch( EditExpenseCategory( formdata, token, reset ) );
+        dispatch( stopLoading() );
         close();
     };
 
     const addCat = async () => {
-        if (title === undefined || Des === undefined) {
-            toast.error("Enter all fields", { position: toast.POSITION.TOP_RIGHT });
+        if ( title === undefined || Des === undefined ) {
+            toast.error( "Enter all fields", { position: toast.POSITION.TOP_RIGHT } );
             return
         };
-        const data = {
-            name: title,
-            description: Des,
-        };
-        dispatch(startLoading());
-        await dispatch(AddExpenseCategory(data, token, reset));
-        dispatch(stopLoading());
+        const formData = new FormData()
+        formData.append( "title", title )
+        formData.append( "description", Des )
+        dispatch( startLoading() );
+        await dispatch( AddExpenseCategory( formData, token, reset ) );
+        dispatch( stopLoading() );
     };
 
     return loading ? (
@@ -154,7 +158,7 @@ export default function ExpenseCategory() {
                                     <Form.Label>Title</Form.Label>
                                     <Form.Control
                                         value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
+                                        onChange={( e ) => setTitle( e.target.value )}
                                     />
                                 </Form.Group>
                             </Col>
@@ -163,7 +167,7 @@ export default function ExpenseCategory() {
                                     <Form.Label>Description</Form.Label>
                                     <Form.Control
                                         value={Des}
-                                        onChange={(e) => setDes(e.target.value)}
+                                        onChange={( e ) => setDes( e.target.value )}
                                     />
                                 </Form.Group>
                             </Col>
