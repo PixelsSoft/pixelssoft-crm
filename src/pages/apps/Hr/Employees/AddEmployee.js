@@ -14,19 +14,19 @@ import utils from '../../../../utils/utils';
 import Select from "react-select";
 
 const List = () => {
-    const [fullName, setFullName] = useState( 'taimoor' );
-    const [fatherName, setFatherName] = useState( 'khan' );
-    const [email, setEmail] = useState( 'taimoor@yopmail.com' );
-    const [companyProvideEmail, setCompanyProvideEmail] = useState( 'taimoor@yopmail.com' );
-    const [password, setPassword] = useState( 'Taimoor123' );
-    const [confirmPassword, setConfirmPassword] = useState( 'Taimoor123' );
+    const [fullName, setFullName] = useState( 'Usama' );
+    const [fatherName, setFatherName] = useState( 'Nasir' );
+    const [email, setEmail] = useState( 'Usamanasir861@gmail.com' );
+    const [companyProvideEmail, setCompanyProvideEmail] = useState( 'usama@pixelssoft.com' );
+    const [password, setPassword] = useState( 'Usama123' );
+    const [confirmPassword, setConfirmPassword] = useState( 'Usama123' );
     const [DOB, setDOB] = useState( '' );
-    const [phoneNumber, setPhoneNumber] = useState( '923432333483' );
-    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState( '923432333483' );
-    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState( '923432333483' );
-    const [joiningDate, setJoiningDate] = useState( new Date() );
+    const [phoneNumber, setPhoneNumber] = useState( '923149352707' );
+    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState( '923122264505' );
+    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState( '923122264505' );
+    const [joiningDate, setJoiningDate] = useState( '' );
     const [department, setDepartment] = useState( 'Hr' );
-    const [salary, setSalary] = useState( '10000' );
+    const [salary, setSalary] = useState( '35000' );
     const [profilePic, setProfilePic] = useState( null );
     const [contract, setContract] = useState( null );
     const [employmentType, setEmploymentType] = useState( "Regular" );
@@ -35,19 +35,19 @@ const List = () => {
     const [CnicNo, setCnicNo] = useState( '' );
     const [CV, setCV] = useState( null );
     const [multipleRoleSelection, setMultipleRoleSelection] = useState( [] );
-    const [accTitle, setAccTitle] = useState( 'taimoor khan' );
-    const [branchCode, setBranchCode] = useState( '0231' );
-    const [bankAddress, setBankAddress] = useState( 'DHA' );
+    const [accTitle, setAccTitle] = useState( 'usama nasir' );
+    const [branchCode, setBranchCode] = useState( '75' );
+    const [bankAddress, setBankAddress] = useState( 'DHA Phase 2' );
 
-    const [accNo, setAccNo] = useState( '12039891381' );
+    const [accNo, setAccNo] = useState( '07103200001895' );
     const [bankName, setBankName] = useState( '' );
-    const [designation, setDesignation] = useState( 'developer' );
-    const [commission, setcommission] = useState( "100" );
+    const [designation, setDesignation] = useState( 'Hr' );
+    const [commission, setcommission] = useState( 0 );
     const [refName, setRefName] = useState( 'taimoor' );
-    const [refEmail, setRefEmail] = useState( 'taimoor@yopmail.com' );
+    const [refEmail, setRefEmail] = useState( 'Taimoorkhan311@gmail.com' );
     const [refPhoneNo, setRefPhoneNo] = useState( '923432333483' );
     const [refCnicNo, setRefCnicNo] = useState( '4220120438949' );
-    const [refCnicPic, setRefCnicPic] = useState( null );
+
     const [target, setTarget] = useState( 0 );
     const [comm, setComm] = useState( 0 );
     const [status, setStatus] = useState( "onBoard" );
@@ -81,7 +81,7 @@ const List = () => {
         setContract( null )
         setCNIC( null )
         setCV( null )
-        setRefCnicPic( null )
+
         setCnicNo( '' )
         setAccTitle( '' )
         setBranchCode( '' )
@@ -157,11 +157,7 @@ const List = () => {
             dispatch( stopLoading() );
             return
         };
-        if ( refCnicPic === null ) {
-            toast.error( "Ref CNIC required", { position: toast.POSITION.TOP_RIGHT } );
-            dispatch( stopLoading() );
-            return
-        };
+
         const params = new FormData();
         params.append( "name", fullName );
         params.append( "father_name", fatherName );
@@ -187,9 +183,7 @@ const List = () => {
         if ( contract !== null ) {
             params.append( "contract_upload", contract );
         };
-        if ( refCnicPic !== null ) {
-            params.append( "reference_profile_img", refCnicPic );
-        };
+
         params.append( "salary", salary );
         params.append( "commission", commission );
         params.append( "target", target );
@@ -226,7 +220,7 @@ const List = () => {
                 if ( e.status === 200 ) {
                     dispatch( GetEmployees( token ) );
                     toast.success( e?.message, { position: toast.POSITION.TOP_RIGHT } );
-                    reset();
+                    // reset();
                 } else {
                     console.log( e );
                     toast.error( e?.detail, { position: toast.POSITION.TOP_RIGHT } );
@@ -274,13 +268,7 @@ const List = () => {
         }
     };
 
-    // Reference CNIC picture Upload
-    const handleRefCNICFileChange = ( event ) => {
-        if ( event.target.files ) {
-            const file = event.target.files[0];
-            setRefCnicPic( file );
-        }
-    };
+
 
     // CV picture Upload
     const handleCVFileChange = ( event ) => {
@@ -491,7 +479,7 @@ const List = () => {
                                             key="Designation"
                                             value={designation}
                                             onChange={( e ) => {
-                                                setDesignation( e.target.valueAsNumber )
+                                                setDesignation( e.target.value )
                                             }}
                                         />
                                         {employmentType === "Regular" ? (
@@ -857,6 +845,24 @@ const List = () => {
                                                 }}
                                             />
                                         </div>
+
+                                    </Col>
+                                    <Col lg={6}>
+                                        <FormInput
+                                            label="Email"
+                                            type="email"
+                                            name="email"
+                                            placeholder="Email"
+                                            containerClass={'mb-3'}
+
+                                            key="email"
+
+                                            value={refEmail}
+                                            onChange={( e ) => {
+                                                setRefEmail( e.target.value );
+                                            }}
+
+                                        />
                                         <div className="mb-3">
                                             <label className="form-label">CNIC Number</label> <br />
                                             <MaskedInput
@@ -887,33 +893,7 @@ const List = () => {
                                         </div>
 
                                     </Col>
-                                    <Col lg={6}>
-                                        <FormInput
-                                            label="Email"
-                                            type="email"
-                                            name="email"
-                                            placeholder="Email"
-                                            containerClass={'mb-3'}
 
-                                            key="email"
-
-                                            value={refEmail}
-                                            onChange={( e ) => {
-                                                setRefEmail( e.target.value );
-                                            }}
-
-                                        />
-                                        <FormInput
-                                            label="CNIC Upload"
-                                            type="file"
-                                            name="file"
-                                            containerClass={'mb-3'}
-
-                                            key="cnic file"
-                                            onChange={handleRefCNICFileChange}
-
-                                        />
-                                    </Col>
                                 </Row>
 
                                 <Button className='rounded-pill'

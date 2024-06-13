@@ -19,7 +19,7 @@ const ContactDetails = ( { contact } ) => {
     const deleteEmp = async () => {
         dispatch( DeleteEmployee( contact?.id, token ) );
     };
-
+    console.log( contact )
     return (
         <>
             <Card>
@@ -79,6 +79,9 @@ const ContactDetails = ( { contact } ) => {
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
                                         <strong>Role :</strong>
+                                        <span>
+                                            {contact?.roles}
+                                        </span>
                                         {/* {contact?.roles.map( ( e, index ) => {
                                             console.log( "role kia hy akhir====>".e.names )
                                             return (

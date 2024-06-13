@@ -14,6 +14,7 @@ import Platforms from './Slices/Platform/platform';
 import Projects from './Slices/Project/Project';
 import Roles from './Slices/Roles/Roles';
 import leads from './Slices/Leads/leads';
+import Bids from './Slices/Bids/Bids';
 import ExpenseCategory from './Slices/ExpenseCategory/expenseCategory';
 import Expense from './Slices/Expense/expense';
 import VendorCategory from './Slices/VendorCategory/VendorCategory';
@@ -38,6 +39,7 @@ const reducer = combineReducers({
   Projects: Projects,
   Roles: Roles,
   Leads: leads,
+  Bids:Bids,
   ExpenseCategory: ExpenseCategory,
   Expense: Expense,
   VendorCategory: VendorCategory,

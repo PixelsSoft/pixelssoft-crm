@@ -40,6 +40,7 @@ const Employees = React.lazy(
 const AddEmployee = React.lazy(
   () => import("../pages/apps/Hr/Employees/AddEmployee")
 );
+const Bids = React.lazy(() => import("../pages/apps/bidding/bids"));
 const Leads = React.lazy(() => import("../pages/apps/Leads/Leads"));
 const Customers = React.lazy(
   () => import("../pages/apps/Customers/List/Customers")
@@ -257,6 +258,14 @@ const TargetRoutes: RoutesProps = {
       route: PrivateRoute,
     },
   ],
+};
+// Bids
+const bidsRoutes: RoutesProps = {
+  path: "/apps/biding",
+  name: "target",
+  icon: "airplay",
+  header: "Navigation",
+  element: <Bids />,
 };
 // Leads
 const LeadsRoutes: RoutesProps = {
@@ -736,6 +745,7 @@ const appRoutes = [
   InvoiceRoutes,
   commissionRoutes,
   customerRoutes,
+  bidsRoutes,
   LeadsRoutes,
   hrRoutes,
   administartorRoutes,
@@ -1264,6 +1274,7 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 // All routes
 const authProtectedRoutes = [
   dashboardRoutes,
+
   ...appRoutes,
   extrapagesRoutes,
   uiRoutes,

@@ -214,6 +214,7 @@ const AppMenu = ( { menuItems } ) => {
   );
   // console.log( "roles====", roles[0].role )
   const role = roles[0].role.split( "," );
+  // const role = ["Hr"]
   // console.log( "role", role )
   // const roleExists = rolesArray.some( role => roles[0].role.includes( role.toLowerCase() ) );
   const userRole = ['admin', "Hr"]

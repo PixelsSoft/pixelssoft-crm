@@ -14,6 +14,7 @@ import { GetExpense } from "../Expense/expense";
 import { GetVenCat } from "../VendorCategory/VendorCategory";
 import { GetVendor } from "../Vendor/Vendor";
 import { GetVendorPayments } from "../VendorPayment/VendorPayment";
+import { GetMonthBids, GetTodayBids } from "../Bids/Bids";
 
 const initialState = {
     user: {
@@ -54,6 +55,8 @@ export const login = ( { email, password } ) => async ( dispatch ) => {
             await dispatch( GetPlatform( response?.access_token ) );
             await dispatch( GetLead( response?.access_token ) );
             await dispatch( GetCategory( response?.access_token ) );
+            await dispatch( GetTodayBids( response?.access_token ) );
+            await dispatch( GetMonthBids( response?.access_token ) );
             await dispatch( GetExpenseCategory( response?.access_token ) );
             await dispatch( authService.getProfile( response?.access_token ).then( async ( res ) => {
 

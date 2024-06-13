@@ -1,7 +1,8 @@
 export const CONSTANTS = {
     API_URLS: {
         // BASE: "http://127.0.0.1:8000/api/",
-        BASE: "http://127.0.0.1:8000/",
+        BASE: "https://crm-backend-78e9.onrender.com/",
+        // BASE: "http://127.0.0.1:8000/",
         // BASE: "https://crmupd.pixelssoft.com/api/",
         LOGIN: "user/login",
         PROFILE: "user/profile",
@@ -24,6 +25,9 @@ export const CONSTANTS = {
         lead: 'lead',
         editLead: 'lead/update',
         AddLead: 'lead/add',
+        Addbids:"bids/add",
+        Todaybids:"bids/today",
+        Monthbids:"bids/month",
         deleteLead: 'lead/delete',
         expenseCategory: 'expense/category',
         expense: 'expense',

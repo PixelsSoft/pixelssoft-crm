@@ -113,6 +113,14 @@ const MENU_ITEMS = [
     url: "/apps/customers",
   },
   {
+    key: "biding",
+    label: "biding",
+    isTitle: false,
+    roles: ["SuperAdmin", "Sales"],
+    icon: "database",
+    url: "/apps/biding",
+  },
+  {
     key: "leads",
     label: "Leads",
     isTitle: false,

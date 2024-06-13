@@ -12,25 +12,26 @@ import { toast } from 'react-toastify';
 const AddPortalProjects = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [data, setData] = useState([]);
+    const [data, setData] = useState( [] );
     const [bidBy, setBidBy] = useState();
     const [perName, setPerName] = useState();
     const [platId, setPlatId] = useState();
     const [selectCat, setSelectCat] = useState();
     const [title, setTitle] = useState();
     const [desc, setDesc] = useState();
-    const [total, setTotal] = useState(0);
-    const [paidAm, setPaidAm] = useState(0);
+    const [total, setTotal] = useState( 0 );
+    const [paidAm, setPaidAm] = useState( 0 );
 
     const { token, category, platforms, employee, loading } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             category: state.Category.category,
             platforms: state.Platform.platform,
             employee: state.Employees.employees,
             loading: state.utiltities.loading,
-        })
+        } )
     );
+
 
     const reset = () => {
         setBidBy()
@@ -43,7 +44,7 @@ const AddPortalProjects = () => {
         setPaidAm()
     }
 
-    const onSubmit = async (e) => {
+    const onSubmit = async ( e ) => {
         e.preventDefault();
         const data = {
             title: title,
@@ -56,7 +57,7 @@ const AddPortalProjects = () => {
             total_amount: total,
             type: "portal"
         };
-        if (bidBy === undefined ||
+        if ( bidBy === undefined ||
             bidBy === 'Choose...' ||
             perName === 'Choose...' ||
             platId === 'Choose...' ||
@@ -68,36 +69,36 @@ const AddPortalProjects = () => {
             selectCat === undefined ||
             total === 0
         ) {
-            return toast.error('Enter all field', { position: toast.POSITION.TOP_RIGHT });
+            return toast.error( 'Enter all field', { position: toast.POSITION.TOP_RIGHT } );
         };
-        dispatch(startLoading());
-        await dispatch(CreateProject(data, token, reset));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( CreateProject( data, token, reset ) );
+        dispatch( stopLoading() );
     };
 
     const filterSales = () => {
-        if (employee.length > 0) {
-            const filteredArray = employee.filter((item) => item.roles.some((role) => role.name === "Sales"));
-            setData(filteredArray);
+        if ( employee.length > 0 ) {
+            const filteredArray = employee.filter( ( item ) => item.roles.some( ( role ) => role.name === "Sales" ) );
+            setData( filteredArray );
         };
     };
 
-    const PaidAmountFunc = (e) => {
-        console.log(e.target.value >= 0 && e.target.value <= total)
-        if (e.target.value >= 0 && e.target.value <= total) {
-            setPaidAm(e.target.value);
+    const PaidAmountFunc = ( e ) => {
+        console.log( e.target.value >= 0 && e.target.value <= total )
+        if ( e.target.value >= 0 && e.target.value <= total ) {
+            setPaidAm( e.target.value );
         }
     }
 
-    const totalFunc = (e) => {
-        if (e.target.value >= 0) {
-            setTotal(e.target.value);
+    const totalFunc = ( e ) => {
+        if ( e.target.value >= 0 ) {
+            setTotal( e.target.value );
         }
     }
 
-    useEffect(() => {
+    useEffect( () => {
         filterSales();
-    }, [employee]);
+    }, [employee] );
 
     return loading ? (
         <div className='d-flex justify-content-center align-items-center'>
@@ -130,25 +131,25 @@ const AddPortalProjects = () => {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Bidder Name</Form.Label>
-                                        <Form.Select onChange={(e) => setBidBy(e.target.value)}>
+                                        <Form.Select onChange={( e ) => setBidBy( e.target.value )}>
                                             <option>Choose...</option>
-                                            {data.map(val => {
+                                            {/* {data.map(val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.name}</option>
                                                 );
-                                            })}
+                                            })} */}
                                         </Form.Select>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Sale Person Name</Form.Label>
-                                        <Form.Select onChange={(e) => setPerName(e.target.value)}>
+                                        <Form.Select onChange={( e ) => setPerName( e.target.value )}>
                                             <option>Choose...</option>
-                                            {data.map(val => {
+                                            {/* {data.map( val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.name}</option>
                                                 );
-                                            })}
+                                            } )} */}
                                         </Form.Select>
                                     </Form.Group>
 
@@ -161,7 +162,7 @@ const AddPortalProjects = () => {
                                         <Form.Label>Project Title</Form.Label>
                                         <Form.Control
                                             value={title}
-                                            onChange={(e) => setTitle(e.target.value)}
+                                            onChange={( e ) => setTitle( e.target.value )}
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
@@ -169,7 +170,7 @@ const AddPortalProjects = () => {
                                         <Form.Control
                                             type='number'
                                             value={paidAm}
-                                            onChange={(e) => PaidAmountFunc(e)}
+                                            onChange={( e ) => PaidAmountFunc( e )}
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
@@ -177,7 +178,7 @@ const AddPortalProjects = () => {
                                         <Form.Control
                                             type='number'
                                             value={total}
-                                            onChange={(e) => totalFunc(e)}
+                                            onChange={( e ) => totalFunc( e )}
                                         />
                                     </Form.Group>
 
@@ -186,25 +187,25 @@ const AddPortalProjects = () => {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Platform</Form.Label>
-                                        <Form.Select onChange={(e) => setPlatId(e.target.value)}>
+                                        <Form.Select onChange={( e ) => setPlatId( e.target.value )}>
                                             <option>Choose...</option>
-                                            {platforms.map(val => {
+                                            {/* {platforms.map( val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.title}</option>
                                                 );
-                                            })}
+                                            } )} */}
                                         </Form.Select>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Project Category</Form.Label>
-                                        <Form.Select onChange={(e) => setSelectCat(e.target.value)}>
+                                        <Form.Select onChange={( e ) => setSelectCat( e.target.value )}>
                                             <option>Choose...</option>
-                                            {category.map(val => {
+                                            {/* {category.map( val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.title}</option>
                                                 );
-                                            })}
+                                            } )} */}
                                         </Form.Select>
                                     </Form.Group>
                                 </Row>
@@ -216,7 +217,7 @@ const AddPortalProjects = () => {
                                         containerClass={'mb-3'}
                                         key="textarea"
                                         value={desc}
-                                        onChange={(e) => setDesc(e.target.value)}
+                                        onChange={( e ) => setDesc( e.target.value )}
                                     />
                                 </Row>
 
@@ -226,7 +227,7 @@ const AddPortalProjects = () => {
                                             type="button"
                                             className="waves-effect waves-light"
                                             variant="outline-primary"
-                                            onClick={() => navigate('/apps/portalProjects')}
+                                            onClick={() => navigate( '/apps/portalProjects' )}
                                         >
                                             Cancel
                                         </Button>
