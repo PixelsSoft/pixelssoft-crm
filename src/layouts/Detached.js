@@ -3,36 +3,31 @@ import { useSelector, useDispatch } from "react-redux";
 import { Container } from "react-bootstrap";
 
 // actions
-import { changeSidebarType, toggleSidebarUserInfo } from "../redux/Slices/layout/Layout";
+import { changeSidebarType, toggleSidebarUserInfo } from "../redux/Slices/layout/Layout.js";
 
-// store
-import { RootState, AppDispatch } from "../redux/store";
 
 // constants
-import { LayoutTypes, SideBarTypes } from "../constants";
+import { LayoutTypes, SideBarTypes } from "../constants/index.js";
 
 // utils
-import { changeHTMLAttribute } from "../utils";
-import { useViewport } from "../hooks/useViewPort";
+import { changeHTMLAttribute } from "../utils/index.js";
+import { useViewport } from "../hooks/useViewPort.js";
 
 // code splitting and lazy loading
 // https://blog.logrocket.com/lazy-loading-components-in-react-16-6-6cea535c0b52
-const Topbar = React.lazy(() => import("./Topbar"));
-const LeftSidebar = React.lazy(() => import("./LeftSidebar"));
-
-const RightSidebar = React.lazy(() => import("./RightSidebar"));
+const Topbar = React.lazy( () => import( "./Topbar.js" ) );
+const LeftSidebar = React.lazy( () => import( "./LeftSidebar.js" ) );
+const RightSidebar = React.lazy( () => import( "./RightSidebar/index.js" ) );
 
 const loading = () => <div className="text-center"></div>;
 
-interface VerticalLayoutProps {
-  children?: any;
-}
 
-const DetachedLayout = ({ children }: VerticalLayoutProps) => {
-  const dispatch = useDispatch<AppDispatch>();
+
+const DetachedLayout = ( { children } ) => {
+  const dispatch = useDispatch();
   const { width } = useViewport();
 
-  const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
+  const [isMenuOpened, setIsMenuOpened] = useState( false );
 
   const {
     layoutColor,
@@ -44,7 +39,7 @@ const DetachedLayout = ({ children }: VerticalLayoutProps) => {
     showTwoToneIcons,
     // showSidebarUserInfo,
     isOpenRightSideBar,
-  } = useSelector((state: RootState) => ({
+  } = useSelector( ( state ) => ( {
     layoutColor: state.Layout.layoutColor,
     layoutWidth: state.Layout.layoutWidth,
     menuPosition: state.Layout.menuPosition,
@@ -54,60 +49,60 @@ const DetachedLayout = ({ children }: VerticalLayoutProps) => {
     showTwoToneIcons: state.Layout.showTwoToneIcons,
     showSidebarUserInfo: state.Layout.showSidebarUserInfo,
     isOpenRightSideBar: state.Layout.isOpenRightSideBar,
-  }));
+  } ) );
 
   /*
   layout defaults
   */
 
-  useEffect(() => {
-    if (width < 1140) {
-      dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
-      document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-    } else if (width >= 1140) {
-      dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
+  useEffect( () => {
+    if ( width < 1140 ) {
+      dispatch( changeSidebarType( SideBarTypes.LEFT_SIDEBAR_TYPE_FULL ) );
+      document.getElementsByTagName( "html" )[0].classList.add( "sidebar-enable" );
+    } else if ( width >= 1140 ) {
+      dispatch( changeSidebarType( SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT ) );
       document
-        .getElementsByTagName("html")[0]
-        .classList.remove("sidebar-enable");
+        .getElementsByTagName( "html" )[0]
+        .classList.remove( "sidebar-enable" );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width]);
+  }, [width] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-layout-mode", LayoutTypes.LAYOUT_DETACHED);
-    dispatch(toggleSidebarUserInfo(true));
-  }, [dispatch]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-layout-mode", LayoutTypes.LAYOUT_DETACHED );
+    dispatch( toggleSidebarUserInfo( true ) );
+  }, [dispatch] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-bs-theme", layoutColor);
-  }, [layoutColor]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-bs-theme", layoutColor );
+  }, [layoutColor] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-layout-width", layoutWidth);
-  }, [dispatch, layoutWidth]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-layout-width", layoutWidth );
+  }, [dispatch, layoutWidth] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-menu-position", menuPosition);
-  }, [menuPosition]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-menu-position", menuPosition );
+  }, [menuPosition] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-menu-color", leftSideBarTheme);
-  }, [leftSideBarTheme]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-menu-color", leftSideBarTheme );
+  }, [leftSideBarTheme] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-sidenav-size", leftSideBarType);
-  }, [leftSideBarType]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-sidenav-size", leftSideBarType );
+  }, [leftSideBarType] );
 
-  useEffect(() => {
+  useEffect( () => {
     changeHTMLAttribute(
       "data-menu-icon",
       showTwoToneIcons ? "twotones" : "default"
     );
-  }, [showTwoToneIcons]);
+  }, [showTwoToneIcons] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-topbar-color", topbarTheme);
-  }, [topbarTheme]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-topbar-color", topbarTheme );
+  }, [topbarTheme] );
 
   // useEffect(() => {
   //   changeHTMLAttribute('data-sidebar-user', showSidebarUserInfo);
@@ -117,12 +112,12 @@ const DetachedLayout = ({ children }: VerticalLayoutProps) => {
    * Open the menu when having mobile screen
    */
   const openMenu = () => {
-    setIsMenuOpened((prevState) => !prevState);
-    if (document.body) {
-      if (isMenuOpened) {
-        document.body.classList.add("sidebar-enable");
+    setIsMenuOpened( ( prevState ) => !prevState );
+    if ( document.body ) {
+      if ( isMenuOpened ) {
+        document.body.classList.add( "sidebar-enable" );
       } else {
-        document.body.classList.remove("sidebar-enable");
+        document.body.classList.remove( "sidebar-enable" );
       }
     }
   };

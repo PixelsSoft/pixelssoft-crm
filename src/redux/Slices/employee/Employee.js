@@ -69,12 +69,13 @@ export const GetEmployeeById = ( id, token ) => async ( dispatch ) => {
             } ).catch( ( err ) => {
                 console.log( "error===========>", err )
             } )
+            dispatch( SingleEmployee( response ) );
         } ).catch( ( err ) => {
             console.log( "error===========>", err )
         } )
         // const response = await EmployeeService.GetEmployeeId( id, token );
         // console.log( 'response', response );
-        // dispatch( SingleEmployee( response ) );
+
     } catch ( error ) {
         dispatch( stopLoading() )
         console.log( "error===========>", error )

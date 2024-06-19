@@ -151,6 +151,7 @@ const AppMenu = ( { menuItems } ) => {
   const menuRef = useRef( null );
 
   const [activeMenuItems, setActiveMenuItems] = useState( [] );
+  const [role, setRole] = useState( [] );
 
   /*
    * toggle the menus
@@ -200,11 +201,6 @@ const AppMenu = ( { menuItems } ) => {
       }
     }
   }, [location, menuItems] );
-
-  useEffect( () => {
-    activeMenu();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
   const { roles, token, loading } = useSelector(
     ( state ) => ( {
       roles: state.Roles.roles,
@@ -212,8 +208,15 @@ const AppMenu = ( { menuItems } ) => {
       loading: state.utiltities.loading,
     } )
   );
+  useEffect( () => {
+    activeMenu();
+    const role = roles[0].role.split( "," );
+    setRole( role )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [roles] );
+
   // console.log( "roles====", roles[0].role )
-  const role = roles[0].role.split( "," );
+
   // const role = ["Hr"]
   // console.log( "role", role )
   // const roleExists = rolesArray.some( role => roles[0].role.includes( role.toLowerCase() ) );
@@ -222,7 +225,6 @@ const AppMenu = ( { menuItems } ) => {
     <>
       <ul className="menu" ref={menuRef} id="main-side-menu">
         {( menuItems || [] ).map( ( item, idx ) => {
-
           let hasRole = role.some( roleItem => item?.roles.includes( roleItem ) );
           return (
             <React.Fragment key={idx}>

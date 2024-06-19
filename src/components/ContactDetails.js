@@ -11,6 +11,7 @@ const ContactDetails = ( { contact } ) => {
     const dispatch = useDispatch();
     const [editUserModal, setEditUserModal] = useState( false );
 
+
     const toggleEditModal = () => {
         setEditUserModal( !editUserModal );
         dispatch( GetEmployeeById( contact?.id, token ) );
@@ -38,7 +39,7 @@ const ContactDetails = ( { contact } ) => {
                         <img
                             src={contact?.profile_img}
                             alt="profileImage"
-                            style={{ width: "400px", height: "400px" }}
+                            style={{ width: "100px", height: "100px" }}
                             className="rounded-circle avatar-xl img-thumbnail mb-2"
                         />
                         {/* <p className="text-muted font-13 mb-3">{contact.shortDesc}</p> */}
@@ -78,9 +79,9 @@ const ContactDetails = ( { contact } ) => {
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Role :</strong>
+                                        <strong>Designation : </strong>
                                         <span>
-                                            {contact?.roles}
+                                            {contact?.designation}
                                         </span>
                                         {/* {contact?.roles.map( ( e, index ) => {
                                             console.log( "role kia hy akhir====>".e.names )

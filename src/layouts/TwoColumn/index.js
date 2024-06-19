@@ -18,18 +18,16 @@ import { useViewport } from "../../hooks/useViewPort";
 
 // code splitting and lazy loading
 // https://blog.logrocket.com/lazy-loading-components-in-react-16-6-6cea535c0b52
-const Topbar = React.lazy(() => import("../Topbar"));
-const LeftSidebar = React.lazy(() => import("./LeftSidebar"));
-const RightSidebar = React.lazy(() => import("../RightSidebar"));
+const Topbar = React.lazy( () => import( "../Topbar.js" ) );
+const LeftSidebar = React.lazy( () => import( "./LeftSidebar" ) );
+const RightSidebar = React.lazy( () => import( "../RightSidebar" ) );
 
 const loading = () => <div className="text-center"></div>;
 
-interface VerticalLayoutProps {
-  children?: any;
-}
 
-const TwoColumnLayout = ({ children }: VerticalLayoutProps) => {
-  const dispatch = useDispatch<AppDispatch>();
+
+const TwoColumnLayout = ( { children } ) => {
+  const dispatch = useDispatch();
   const { width } = useViewport();
 
   const {
@@ -42,7 +40,7 @@ const TwoColumnLayout = ({ children }: VerticalLayoutProps) => {
     topbarTheme,
     isOpenRightSideBar,
     showTwoToneIcons,
-  } = useSelector((state: RootState) => ({
+  } = useSelector( ( state ) => ( {
     layoutMode: state.Layout.layoutMode,
     twoColumnTheme: state.Layout.twoColumnTheme,
     layoutColor: state.Layout.layoutColor,
@@ -53,74 +51,74 @@ const TwoColumnLayout = ({ children }: VerticalLayoutProps) => {
     topbarTheme: state.Layout.topbarTheme,
     showTwoToneIcons: state.Layout.showTwoToneIcons,
     isOpenRightSideBar: state.Layout.isOpenRightSideBar,
-  }));
+  } ) );
 
-  const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
+  const [isMenuOpened, setIsMenuOpened] = useState < boolean > ( false );
 
   /*
    * layout defaults
    */
 
-  useEffect(() => {
-    if (window.outerWidth < 1140) {
-      dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
-    } else if (width >= 1140) {
-      dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
+  useEffect( () => {
+    if ( window.outerWidth < 1140 ) {
+      dispatch( changeSidebarType( SideBarTypes.LEFT_SIDEBAR_TYPE_FULL ) );
+    } else if ( width >= 1140 ) {
+      dispatch( changeSidebarType( SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT ) );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width]);
+  }, [width] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-layout", LayoutTypes.LAYOUT_TWO_COLUMN);
-  }, []);
+  useEffect( () => {
+    changeHTMLAttribute( "data-layout", LayoutTypes.LAYOUT_TWO_COLUMN );
+  }, [] );
 
   // useEffect(() => {
   //   changeHTMLAttribute('data-sidenav-layout', LayoutTypes.LAYOUT_TWO_COLUMN);
   //   dispatch(changeTopbarTheme(TopbarTheme.TOPBAR_THEME_LIGHT));
   // }, [dispatch]);
 
-  useEffect(() => {
-    changeHTMLAttribute("data-two-column-color", twoColumnTheme);
-  }, [twoColumnTheme]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-two-column-color", twoColumnTheme );
+  }, [twoColumnTheme] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-layout-mode", layoutMode);
-  }, [layoutMode]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-layout-mode", layoutMode );
+  }, [layoutMode] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-bs-theme", layoutColor);
-  }, [layoutColor]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-bs-theme", layoutColor );
+  }, [layoutColor] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-layout-width", layoutWidth);
-  }, [dispatch, layoutWidth]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-layout-width", layoutWidth );
+  }, [dispatch, layoutWidth] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-menu-color", leftSideBarTheme);
-  }, [leftSideBarTheme]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-menu-color", leftSideBarTheme );
+  }, [leftSideBarTheme] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-topbar-color", topbarTheme);
-  }, [topbarTheme]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-topbar-color", topbarTheme );
+  }, [topbarTheme] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-sidenav-size", leftSideBarType);
-  }, [leftSideBarType]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-sidenav-size", leftSideBarType );
+  }, [leftSideBarType] );
 
-  useEffect(() => {
-    changeHTMLAttribute("data-menu-icon", showTwoToneIcons ? "twotones" : "default");
-  }, [showTwoToneIcons]);
+  useEffect( () => {
+    changeHTMLAttribute( "data-menu-icon", showTwoToneIcons ? "twotones" : "default" );
+  }, [showTwoToneIcons] );
 
   /**
    * Open the menu when having mobile screen
    */
   const openMenu = () => {
-    setIsMenuOpened((prevState) => !prevState);
-    if (document.body) {
-      if (isMenuOpened) {
-        document.body.classList.add("sidebar-enable");
+    setIsMenuOpened( ( prevState ) => !prevState );
+    if ( document.body ) {
+      if ( isMenuOpened ) {
+        document.body.classList.add( "sidebar-enable" );
       } else {
-        document.body.classList.remove("sidebar-enable");
+        document.body.classList.remove( "sidebar-enable" );
       }
     }
   };

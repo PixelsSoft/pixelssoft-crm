@@ -12,53 +12,48 @@ import { AppDispatch, RootState } from "../../redux/store";
 // components
 import Chats from "../../components/Chats";
 import Tasks from "../../components/Tasks";
-import ThemeCustomizer from "../../components/ThemeCustomizer/";
+import ThemeCustomizer from "../../components/ThemeCustomizer";
 
 import { chats, tasks } from "./data";
 
-interface RightSideBarProps {
-  hideRightSidebar?: () => void;
-  title?: string;
-  children?: any;
-}
 
-const RightSideBar = (props: RightSideBarProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const rightBarNodeRef: any = useRef(null);
+const RightSideBar = ( props ) => {
+  const dispatch = useDispatch();
+  const rightBarNodeRef = useRef( null );
   const [showRightSideNav, setShowRightSideNav] =
-    useState<boolean>(rightBarNodeRef);
+    useState( rightBarNodeRef );
 
-  const { isOpenRightSideBar } = useSelector((state: RootState) => ({
+  const { isOpenRightSideBar } = useSelector( ( state ) => ( {
     isOpenRightSideBar: state.Layout.isOpenRightSideBar,
-  }));
+  } ) );
 
   /**
    * Handle the click anywhere in doc
    */
   const handleOtherClick = useCallback(
-    (e: any) => {
-      if (isOpenRightSideBar) {
+    ( e ) => {
+      if ( isOpenRightSideBar ) {
         if (
           rightBarNodeRef &&
           rightBarNodeRef.current &&
-          rightBarNodeRef.current.contains(e.target)
+          rightBarNodeRef.current.contains( e.target )
         ) {
           return;
         } else {
-          dispatch(hideRightSidebar());
-          setShowRightSideNav(false)
+          dispatch( hideRightSidebar() );
+          setShowRightSideNav( false )
         }
       }
     },
     [rightBarNodeRef, dispatch, isOpenRightSideBar]
   );
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleOtherClick, false);
+  useEffect( () => {
+    document.addEventListener( "mousedown", handleOtherClick, false );
     return () => {
-      document.removeEventListener("mousedown", handleOtherClick, false);
+      document.removeEventListener( "mousedown", handleOtherClick, false );
     };
-  }, [handleOtherClick]);
+  }, [handleOtherClick] );
 
   return (
     <React.Fragment>

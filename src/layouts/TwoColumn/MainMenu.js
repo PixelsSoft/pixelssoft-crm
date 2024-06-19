@@ -29,6 +29,7 @@ const MenuItemWithChildren = ( {
   const [open, setOpen] = useState(
     activeMenuItems?.includes( item.key )
   );
+
   //
   useEffect( () => {
     setOpen( activeMenuItems?.includes( item.key ) );
@@ -156,13 +157,19 @@ const MainMenu = ( {
   activeMenuItems,
 } ) => {
   //
-
+  const [role, setRole] = useState( [] );
   const { layoutType, roles } = useSelector( ( state ) => ( {
     layoutType: state.Layout.layoutType,
     leftSideBarType: state.Layout.leftSideBarType,
     roles: state.Roles.roles,
   } ) );
-  const role = roles[0].role.split( "," );
+  useEffect( () => {
+
+    const role = roles[0].role.split( "," );
+    setRole( role )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [roles] );
+
   return (
     <>
       {activeMenuItems && (

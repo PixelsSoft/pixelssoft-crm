@@ -76,12 +76,12 @@ const AddPortalProjects = () => {
         dispatch( stopLoading() );
     };
 
-    const filterSales = () => {
-        if ( employee.length > 0 ) {
-            const filteredArray = employee.filter( ( item ) => item.roles.some( ( role ) => role.name === "Sales" ) );
-            setData( filteredArray );
-        };
-    };
+    // const filterSales = () => {
+    //     if ( employee.length > 0 ) {
+    //         const filteredArray = employee.filter( ( item ) => item.roles.some( ( role ) => role.name === "Sales" ) );
+    //         setData( filteredArray );
+    //     };
+    // };
 
     const PaidAmountFunc = ( e ) => {
         console.log( e.target.value >= 0 && e.target.value <= total )
@@ -97,7 +97,7 @@ const AddPortalProjects = () => {
     }
 
     useEffect( () => {
-        filterSales();
+        // filterSales();
     }, [employee] );
 
     return loading ? (

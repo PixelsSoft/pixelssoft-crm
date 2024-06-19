@@ -91,8 +91,8 @@ const DelteEmployee = async ( id, token ) => {
     const options = {
         method: 'DELETE',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
     };
@@ -119,8 +119,8 @@ const GetEmployeeId = async ( id, token ) => {
     const options = {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
     };

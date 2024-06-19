@@ -1,7 +1,7 @@
 import { CONSTANTS } from "../../constants/constant";
 
-const getCategory = async (token) => {
-    const onSuccess = (data) => {
+const getCategory = async ( token ) => {
+    const onSuccess = ( data ) => {
         return data.data;
     };
 
@@ -12,20 +12,24 @@ const getCategory = async (token) => {
     const options = {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+
             'Authorization': `Bearer ${token}`
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getCategory, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getCategory, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const createCategory = async (data, token) => {
-    const onSuccess = (data) => {
+const createCategory = async ( data, token ) => {
+    const onSuccess = ( data ) => {
         return data.data;
     };
 
@@ -36,21 +40,26 @@ const createCategory = async (data, token) => {
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: data,
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getCategory, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getCategory, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const UpdateCategory = async (id, data, token) => {
-    const onSuccess = (data) => {
+const UpdateCategory = async ( id, data, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -61,21 +70,25 @@ const UpdateCategory = async (id, data, token) => {
     const options = {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: data,
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getCategory + '/' + id, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getCategory, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
-const DeleteCategory = async (id, token) => {
-    const onSuccess = (data) => {
+const DeleteCategory = async ( id, token ) => {
+    const onSuccess = ( data ) => {
         return data;
     };
 
@@ -86,16 +99,20 @@ const DeleteCategory = async (id, token) => {
     const options = {
         method: 'DELETE',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+
             'Authorization': `Bearer ${token}`
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getCategory + '/' + id, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.getCategory + '/' + id, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
 };
 
 const CategoryService = {

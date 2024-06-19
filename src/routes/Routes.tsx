@@ -10,7 +10,7 @@ import { RootState } from "../redux/store";
 
 // All layouts containers
 import DefaultLayout from "../layouts/Default";
-import VerticalLayout from "../layouts/Vertical";
+import VerticalLayout from "../layouts/Vertical.js";
 import DetachedLayout from "../layouts/Detached";
 import HorizontalLayout from "../layouts/Horizontal/";
 import TwoColumnLayout from "../layouts/TwoColumn/";

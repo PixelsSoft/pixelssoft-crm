@@ -5,7 +5,7 @@ import SimpleBar from "simplebar-react";
 import classNames from "classnames";
 
 //interface
-import { NotificationItem } from "../layouts/Topbar";
+import { NotificationItem } from "../layouts/Topbar.js";
 
 // notifiaction continer styles
 const notificationContainerStyle = {
@@ -17,25 +17,18 @@ const notificationShowContainerStyle = {
   maxHeight: "300px",
 };
 
-interface NotificationDropdownProps {
-  notifications: Array<NotificationItem>;
-}
 
-interface NotificationContainerStyle {
-  maxHeight?: string;
-  display?: string;
-}
 
-const NotificationDropdown = (props: NotificationDropdownProps) => {
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const [notificationContentStyle, setNotificationContentStyles] = useState<NotificationContainerStyle>(notificationContainerStyle);
+const NotificationDropdown = ( props ) => {
+  const [dropdownOpen, setDropdownOpen] = useState( false );
+  const [notificationContentStyle, setNotificationContentStyles] = useState( notificationContainerStyle );
   let notifications = props.notifications
 
   /*
    * toggle notification-dropdown
    */
   const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+    setDropdownOpen( !dropdownOpen );
     setNotificationContentStyles(
       notificationContentStyle === notificationContainerStyle
         ? notificationShowContainerStyle
@@ -43,8 +36,8 @@ const NotificationDropdown = (props: NotificationDropdownProps) => {
     );
   };
 
-  const handleClearNotification = (index: number) => {
-    notifications.splice(index, 1);
+  const handleClearNotification = ( index ) => {
+    notifications.splice( index, 1 );
   }
 
   return (
@@ -54,7 +47,7 @@ const NotificationDropdown = (props: NotificationDropdownProps) => {
         role="button"
         as="a"
         onClick={toggleDropdown}
-        className={classNames("nav-link waves-effect waves-light arrow-none notification-list", { show: dropdownOpen, })}
+        className={classNames( "nav-link waves-effect waves-light arrow-none notification-list", { show: dropdownOpen, } )}
       >
         <i className="fe-bell noti-icon font-22"></i>
         <span className="badge bg-danger rounded-circle noti-icon-badge">
@@ -77,12 +70,12 @@ const NotificationDropdown = (props: NotificationDropdownProps) => {
           </div>
           <SimpleBar className="px-1" style={notificationContentStyle}>
             <h5 className="text-muted font-13 fw-normal mt-2">Today</h5>
-            {(notifications || []).map((item, i) => {
+            {( notifications || [] ).map( ( item, i ) => {
               return (
                 <Link to="#" className="dropdown-item p-0 notify-item card unread-noti shadow-none mb-1" key={i + "-noti"}                >
                   {item.avatar ? (
                     <div className="card-body">
-                      <span className="float-end noti-close-btn text-muted" onClick={() => handleClearNotification(i)}>
+                      <span className="float-end noti-close-btn text-muted" onClick={() => handleClearNotification( i )}>
                         <i className="mdi mdi-close"></i>
                       </span>
                       <div className="d-flex align-items-center">
@@ -110,7 +103,7 @@ const NotificationDropdown = (props: NotificationDropdownProps) => {
                     </div>
                   ) : (
                     <div className="card-body">
-                      <span className="float-end noti-close-btn text-muted" onClick={() => handleClearNotification(i)}>
+                      <span className="float-end noti-close-btn text-muted" onClick={() => handleClearNotification( i )}>
                         <i className="mdi mdi-close" />
                       </span>
                       <div className={`notify-icon bg-${item.bgColor}`}>
@@ -126,7 +119,7 @@ const NotificationDropdown = (props: NotificationDropdownProps) => {
                   )}
                 </Link>
               );
-            })}
+            } )}
           </SimpleBar>
 
           <Link

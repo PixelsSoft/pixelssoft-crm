@@ -17,16 +17,7 @@ import { GetVendorPayments } from "../VendorPayment/VendorPayment";
 import { GetMonthBids, GetTodayBids } from "../Bids/Bids";
 
 const initialState = {
-    user: {
-        id: 1,
-        name: "",
-        email: "",
-        email_verified_at: null,
-        created_at: "",
-        updated_at: "",
-        role: ""
-
-    },
+    user: null,
     roles: [],
     permissions: null,
     token: null,

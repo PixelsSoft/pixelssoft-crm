@@ -35,17 +35,9 @@ import logoLight from "../assets/images/logo-light.png";
 import logoLight2 from "../assets/images/logo-light-2.png";
 import { useViewport } from "../hooks/useViewPort";
 
-export interface NotificationItem {
-  id: number;
-  text: string;
-  subText: string;
-  icon?: string;
-  avatar?: string;
-  bgColor?: string;
-}
 
 // get the notifications
-const Notifications: NotificationItem[] = [
+const Notifications = [
   {
     id: 1,
     text: "Cristina Pride",
@@ -205,87 +197,81 @@ const MegaMenuOptions = [
   },
 ];
 
-interface TopbarProps {
-  hideLogo?: boolean;
-  navCssClasses?: string;
-  openLeftMenuCallBack?: () => void;
-  topbarDark?: boolean;
-}
 
-const Topbar = ({
+const Topbar = ( {
   hideLogo,
   navCssClasses,
   openLeftMenuCallBack,
   topbarDark,
-}: TopbarProps) => {
-  const dispatch = useDispatch<AppDispatch>();
+} ) => {
+  const dispatch = useDispatch();
   const { width } = useViewport();
 
-  const navbarCssClasses: string = navCssClasses || "";
-  const containerCssClasses: string = !hideLogo ? "container-fluid" : "";
+  const navbarCssClasses = navCssClasses || "";
+  const containerCssClasses = !hideLogo ? "container-fluid" : "";
 
-  const { layoutType, leftSideBarType } = useSelector((state: RootState) => ({
+  const { layoutType, leftSideBarType } = useSelector( ( state ) => ( {
     layoutType: state.Layout.layoutType,
     leftSideBarType: state.Layout.leftSideBarType,
-  }));
+  } ) );
 
   /**
    * Toggle the leftmenu when having mobile screen
    */
   const handleLeftMenuCallBack = () => {
-    if (width < 1140) {
-      if (leftSideBarType === "full") {
+    if ( width < 1140 ) {
+      if ( leftSideBarType === "full" ) {
         showLeftSideBarBackdrop();
         document
-          .getElementsByTagName("html")[0]
-          .classList.add("sidebar-enable");
+          .getElementsByTagName( "html" )[0]
+          .classList.add( "sidebar-enable" );
       } else {
-        dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
+        dispatch( changeSidebarType( SideBarTypes.LEFT_SIDEBAR_TYPE_FULL ) );
       }
-    } else if (leftSideBarType === "condensed") {
-      dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
-    } else if (leftSideBarType === "full") {
+    } else if ( leftSideBarType === "condensed" ) {
+      dispatch( changeSidebarType( SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT ) );
+    } else if ( leftSideBarType === "full" ) {
       showLeftSideBarBackdrop();
-      document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-    } else if (leftSideBarType === "fullscreen") {
-      dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
+      document.getElementsByTagName( "html" )[0].classList.add( "sidebar-enable" );
+    } else if ( leftSideBarType === "fullscreen" ) {
+      dispatch( changeSidebarType( SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT ) );
       // showLeftSideBarBackdrop();
-      document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
+      document.getElementsByTagName( "html" )[0].classList.add( "sidebar-enable" );
     } else {
-      dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED));
+      dispatch( changeSidebarType( SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED ) );
     }
   };
 
   // create backdrop for leftsidebar
   function showLeftSideBarBackdrop() {
-    const backdrop = document.createElement("div");
+    const backdrop = document.createElement( "div" );
     backdrop.id = "custom-backdrop";
     backdrop.className = "offcanvas-backdrop fade show";
     // backdrop.style.zIndex = '999'
-    document.body.appendChild(backdrop);
+    document.body.appendChild( backdrop );
 
     if (
-      document.getElementsByTagName("html")[0]?.getAttribute("dir") !== "rtl"
+      document.getElementsByTagName( "html" )[0]?.getAttribute( "dir" ) !== "rtl"
     ) {
       document.body.style.overflow = "hidden";
-      if (width > 1140) {
+      if ( width > 1140 ) {
         document.body.style.paddingRight = "15px";
       }
     }
 
-    backdrop.addEventListener("click", function (e) {
+    backdrop.addEventListener( "click", function ( e ) {
       document
-        .getElementsByTagName("html")[0]
-        .classList.remove("sidebar-enable");
-      dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
+        .getElementsByTagName( "html" )[0]
+        .classList.remove( "sidebar-enable" );
+      dispatch( changeSidebarType( SideBarTypes.LEFT_SIDEBAR_TYPE_FULL ) );
       hideLeftSideBarBackdrop();
-    });
+    } );
   }
 
   function hideLeftSideBarBackdrop() {
-    var backdrop = document.getElementById("custom-backdrop");
-    if (backdrop) {
-      document.body.removeChild(backdrop);
+    var backdrop = document.getElementById( "custom-backdrop" );
+    if ( backdrop ) {
+      document.body.removeChild( backdrop );
       document.body.style.overflow = "visible";
     }
   }
@@ -294,11 +280,11 @@ const Topbar = ({
    * Toggles the right sidebar
    */
   const handleRightSideBar = () => {
-    dispatch(showRightSidebar());
+    dispatch( showRightSidebar() );
   };
-  const { user } = useSelector((state: RootState) => ({
+  const { user } = useSelector( ( state ) => ( {
     user: state.Auth.user,
-  }));
+  } ) );
 
   /**
    * Toggles the left sidebar width

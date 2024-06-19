@@ -219,6 +219,7 @@ const MegaMenu = ( { item, activeMenuItems } ) => {
 const AppMenu = ( { menuItems } ) => {
   let location = useLocation();
   const menuRef = useRef( null );
+  const [role, setRole] = useState( [] );
 
   const [topnavMenuItems] = useState( menuItems );
   const [activeMenuItems, setActiveMenuItems] = useState( [] );
@@ -275,8 +276,14 @@ const AppMenu = ( { menuItems } ) => {
       loading: state.utiltities.loading,
     } )
   );
+  useEffect( () => {
+    activeMenu();
+    const role = roles[0].role.split( "," );
+    setRole( role )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [roles] );
   // console.log( "roles====", roles[0].role )
-  const role = roles[0].role.split( "," );
+
   return (
     <>
       <ul className="menu" ref={menuRef} id="main-side-menu">

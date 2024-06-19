@@ -1,20 +1,14 @@
 // app constants
 import { SideBarTypes, LayoutWidth } from "../constants";
 
-interface ConfigTypes {
-  leftSideBarType:
-    | SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT
-    | SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED
-    | SideBarTypes.LEFT_SIDEBAR_TYPE_COMPACT;
-}
 
-const getLayoutConfigs = (layoutWidth: string | boolean | null) => {
+const getLayoutConfigs = ( layoutWidth ) => {
   // add property to change in particular layoutWidth
-  let config: ConfigTypes = {
+  let config = {
     leftSideBarType: SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT,
   };
 
-  switch (layoutWidth) {
+  switch ( layoutWidth ) {
     case LayoutWidth.LAYOUT_WIDTH_FLUID:
       config.leftSideBarType = SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT;
       break;
@@ -30,9 +24,9 @@ const getLayoutConfigs = (layoutWidth: string | boolean | null) => {
 /**
  * Changes the body attribute
  */
-const changeHTMLAttribute = (attribute: string, value: string): void => {
-  if (document.body)
-    document.getElementsByTagName("html")[0].setAttribute(attribute, value);
+const changeHTMLAttribute = ( attribute, value ) => {
+  if ( document.body )
+    document.getElementsByTagName( "html" )[0].setAttribute( attribute, value );
 };
 
 export { getLayoutConfigs, changeHTMLAttribute };

@@ -12,21 +12,23 @@ import { toast } from 'react-toastify';
 import Spinner from '../../../../components/Spinner';
 import utils from '../../../../utils/utils';
 import Select from "react-select";
+import { handleUpload } from '../../../../utils/FileUpload';
+import { Link } from 'react-router-dom';
 
 const List = () => {
-    const [fullName, setFullName] = useState( 'Usama' );
-    const [fatherName, setFatherName] = useState( 'Nasir' );
-    const [email, setEmail] = useState( 'Usamanasir861@gmail.com' );
-    const [companyProvideEmail, setCompanyProvideEmail] = useState( 'usama@pixelssoft.com' );
-    const [password, setPassword] = useState( 'Usama123' );
-    const [confirmPassword, setConfirmPassword] = useState( 'Usama123' );
+    const [fullName, setFullName] = useState( '' );
+    const [fatherName, setFatherName] = useState( '' );
+    const [email, setEmail] = useState( '' );
+    const [companyProvideEmail, setCompanyProvideEmail] = useState( '' );
+    const [password, setPassword] = useState( '' );
+    const [confirmPassword, setConfirmPassword] = useState( '' );
     const [DOB, setDOB] = useState( '' );
-    const [phoneNumber, setPhoneNumber] = useState( '923149352707' );
-    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState( '923122264505' );
-    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState( '923122264505' );
+    const [phoneNumber, setPhoneNumber] = useState( '' );
+    const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState( '' );
+    const [emergencyPhoneNumber2, setEmergencyPhoneNumber2] = useState( '' );
     const [joiningDate, setJoiningDate] = useState( '' );
-    const [department, setDepartment] = useState( 'Hr' );
-    const [salary, setSalary] = useState( '35000' );
+    const [department, setDepartment] = useState( '' );
+    const [salary, setSalary] = useState( '' );
     const [profilePic, setProfilePic] = useState( null );
     const [contract, setContract] = useState( null );
     const [employmentType, setEmploymentType] = useState( "Regular" );
@@ -35,18 +37,18 @@ const List = () => {
     const [CnicNo, setCnicNo] = useState( '' );
     const [CV, setCV] = useState( null );
     const [multipleRoleSelection, setMultipleRoleSelection] = useState( [] );
-    const [accTitle, setAccTitle] = useState( 'usama nasir' );
-    const [branchCode, setBranchCode] = useState( '75' );
-    const [bankAddress, setBankAddress] = useState( 'DHA Phase 2' );
+    const [accTitle, setAccTitle] = useState( '' );
+    const [branchCode, setBranchCode] = useState( '' );
+    const [bankAddress, setBankAddress] = useState( '' );
 
-    const [accNo, setAccNo] = useState( '07103200001895' );
+    const [accNo, setAccNo] = useState( '' );
     const [bankName, setBankName] = useState( '' );
-    const [designation, setDesignation] = useState( 'Hr' );
+    const [designation, setDesignation] = useState( '' );
     const [commission, setcommission] = useState( 0 );
-    const [refName, setRefName] = useState( 'taimoor' );
-    const [refEmail, setRefEmail] = useState( 'Taimoorkhan311@gmail.com' );
-    const [refPhoneNo, setRefPhoneNo] = useState( '923432333483' );
-    const [refCnicNo, setRefCnicNo] = useState( '4220120438949' );
+    const [refName, setRefName] = useState( '' );
+    const [refEmail, setRefEmail] = useState( '' );
+    const [refPhoneNo, setRefPhoneNo] = useState( '' );
+    const [refCnicNo, setRefCnicNo] = useState( '' );
 
     const [target, setTarget] = useState( 0 );
     const [comm, setComm] = useState( 0 );
@@ -189,11 +191,11 @@ const List = () => {
         params.append( "target", target );
         params.append( "title", accTitle );
         params.append( "accound_number", accNo );
-        params.append( "bank_name", bankName );
+        params.append( "bank", bankName );
         params.append( "branch_code", branchCode );
         params.append( "branch_address", bankAddress );
         params.append( "reference_name", refName );
-        params.append( "reference_name", refEmail );
+        params.append( "reference_email", refEmail );
         params.append( "reference_cnic_no", refCnicNo );
         params.append( "reference_phone_no", refPhoneNo );
         params.append( "password", password );
@@ -236,12 +238,16 @@ const List = () => {
     };
 
     // Profile picture upload
-    const handleProfileFileChange = ( event ) => {
+    const handleProfileFileChange = async ( event ) => {
         if ( event.target.files ) {
             const file = event.target.files[0];
-            setProfilePic( file );
+            await handleUpload( dispatch, file ).then( ( res ) => {
+                console.log( "profilePic", res )
+                setProfilePic( res );
+            } )
         }
     };
+
 
     // Handler for the Select component's onChange event
     const handleSelectChange = ( selectedOption ) => {
@@ -261,27 +267,37 @@ const List = () => {
     ];
 
     // CNIC picture Upload
-    const handleCNICFileChange = ( event ) => {
+    const handleCNICFileChange = async ( event ) => {
         if ( event.target.files ) {
             const file = event.target.files[0];
-            setCNIC( file );
+            await handleUpload( dispatch, file ).then( ( res ) => {
+                console.log( "CNIC upload complete", res )
+
+                setCNIC( res );
+            } )
         }
     };
 
-
-
     // CV picture Upload
-    const handleCVFileChange = ( event ) => {
+    const handleCVFileChange = async ( event ) => {
         if ( event.target.files ) {
             const file = event.target.files[0];
-            setCV( file );
+            await handleUpload( dispatch, file ).then( ( res ) => {
+                console.log( "CV upload complete", res )
+                setCV( res );
+            } )
         }
     };
     // Contract picture Upload
-    const handleContractFileChange = ( event ) => {
+    const handleContractFileChange = async ( event ) => {
         if ( event.target.files ) {
             const file = event.target.files[0];
-            setContract( file );
+            await handleUpload( dispatch, file ).then( ( res ) => {
+                console.log( "Contract upload complete", res )
+
+                setContract( res );
+            } )
+
         }
     };
 
@@ -446,6 +462,32 @@ const List = () => {
                                             key="file"
                                             onChange={handleCNICFileChange}
                                         />
+                                        {CNIC !== null &&
+                                            <>
+                                                <label className="form-label">CNIC</label> <br />
+
+                                                <Col xl={6} lg={12}>
+                                                    <Card className="m-1 shadow-none border">
+                                                        <div className="p-2">
+                                                            <Row className="align-items-center">
+                                                                <Col className="col-auto pe-0">
+                                                                    <div className="avatar-sm">
+                                                                        <span className="avatar-title bg-light text-secondary rounded">
+                                                                            <i className={"mdi mdi-folder-zip font-18"}></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Link target="_blank" to={CNIC} className="text-muted fw-bold">
+                                                                        {"CNIC"}
+                                                                    </Link>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Card>
+                                                </Col>
+                                            </>
+                                        }
                                         <FormInput
                                             label="CV Upload"
                                             type="file"
@@ -454,9 +496,33 @@ const List = () => {
 
                                             onChange={handleCVFileChange}
                                             key="cv file"
-
-
                                         />
+                                        {CV !== null &&
+                                            <>
+                                                <label className="form-label">CV</label> <br />
+
+                                                <Col xl={6} lg={12}>
+                                                    <Card className="m-1 shadow-none border">
+                                                        <div className="p-2">
+                                                            <Row className="align-items-center">
+                                                                <Col className="col-auto pe-0">
+                                                                    <div className="avatar-sm">
+                                                                        <span className="avatar-title bg-light text-secondary rounded">
+                                                                            <i className={"mdi mdi-folder-zip font-18"}></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Link target="_blank" to={CV} className="text-muted fw-bold">
+                                                                        {"CV"}
+                                                                    </Link>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Card>
+                                                </Col>
+                                            </>
+                                        }
                                         <FormInput
                                             label="Select Employment Type"
                                             name="select"
@@ -673,8 +739,33 @@ const List = () => {
                                             accept="image/png, image/jpeg"
 
                                             onChange={handleProfileFileChange}
-
                                         />
+                                        {profilePic !== null &&
+                                            <>
+                                                <label className="form-label">Profile pic</label> <br />
+
+                                                <Col xl={6} lg={12}>
+                                                    <Card className="m-1 shadow-none border">
+                                                        <div className="p-2">
+                                                            <Row className="align-items-center">
+                                                                <Col className="col-auto pe-0">
+                                                                    <div className="avatar-sm">
+                                                                        <span className="avatar-title bg-light text-secondary rounded">
+                                                                            <i className={"mdi mdi-folder-zip font-18"}></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Link target="_blank" to={profilePic} className="text-muted fw-bold">
+                                                                        {"Profile picture"}
+                                                                    </Link>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Card>
+                                                </Col>
+                                            </>
+                                        }
                                         <FormInput
                                             label="Contract Upload"
                                             type="file"
@@ -682,12 +773,36 @@ const List = () => {
                                             containerClass={'mb-3'}
 
                                             key="con file"
-
                                             accept=".pdf"
                                             onChange={handleContractFileChange}
 
                                         />
+                                        {contract !== null &&
+                                            <>
+                                                <label className="form-label">Contract</label> <br />
 
+                                                <Col xl={6} lg={12}>
+                                                    <Card className="m-1 shadow-none border">
+                                                        <div className="p-2">
+                                                            <Row className="align-items-center">
+                                                                <Col className="col-auto pe-0">
+                                                                    <div className="avatar-sm">
+                                                                        <span className="avatar-title bg-light text-secondary rounded">
+                                                                            <i className={"mdi mdi-folder-zip font-18"}></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Link target="_blank" to={contract} className="text-muted fw-bold">
+                                                                        {"contract"}
+                                                                    </Link>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Card>
+                                                </Col>
+                                            </>
+                                        }
                                     </Col>
                                 </Row>
                                 <h4 className="header-title">Account Details</h4>

@@ -36,21 +36,16 @@ export default function Management() {
     };
 
     const addCategory = async () => {
-        const data = {
-            title: title,
-            description: desc
-        };
+        const formdata = new FormData();
+        formdata.append( "title", title );
         dispatch( startLoading() );
-        await dispatch( AddnewCategory( data, token ) );
+        await dispatch( AddnewCategory( formdata, token ) );
         toggleResponsiveModal();
         dispatch( stopLoading() );
     };
 
     const addPlatform = async () => {
-        const data = {
-            title: platTitle,
-            // description: platDesc
-        };
+
         const formdata = new FormData();
         formdata.append( "title", platTitle );
         console.log( "platTitle", platTitle )

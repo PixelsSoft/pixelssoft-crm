@@ -48,13 +48,13 @@ const UserBox = () => {
     },
   ];
 
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [dropdownOpen, setDropdownOpen] = useState( false );
 
   /*
    * toggle dropdown
    */
   const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+    setDropdownOpen( !dropdownOpen );
   };
 
   return (
@@ -76,7 +76,7 @@ const UserBox = () => {
         </Dropdown.Toggle>
         <Dropdown.Menu className="user-pro-dropdown">
           <div onClick={toggleDropdown}>
-            {(ProfileMenus || []).map((item, index) => {
+            {( ProfileMenus || [] ).map( ( item, index ) => {
               return (
                 <Link
                   to={item.redirectTo}
@@ -87,7 +87,7 @@ const UserBox = () => {
                   <span>{item.label}</span>
                 </Link>
               );
-            })}
+            } )}
           </div>
         </Dropdown.Menu>
       </Dropdown>
@@ -111,42 +111,39 @@ const SideBarContent = () => {
   );
 };
 
-interface LeftSidebarProps {
-  isCondensed: boolean;
-  hideLogo?: boolean;
-}
 
-const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
-  const menuNodeRef: any = useRef(null);
 
-  const { layoutType } = useSelector((state: RootState) => ({
+const LeftSidebar = ( { isCondensed, hideLogo } ) => {
+  const menuNodeRef = useRef( null );
+
+  const { layoutType } = useSelector( ( state ) => ( {
     layoutType: state.Layout.layoutType,
     leftSideBarType: state.Layout.leftSideBarType,
-  }));
+  } ) );
 
   /**
    * Handle the click anywhere in doc
    */
-  const handleOtherClick = (e: any) => {
+  const handleOtherClick = ( e ) => {
     if (
       menuNodeRef &&
       menuNodeRef.current &&
-      menuNodeRef.current.contains(e.target)
+      menuNodeRef.current.contains( e.target )
     )
       return;
     // else hide the menubar
-    if (document.body) {
-      document.body.classList.remove("sidebar-enable");
+    if ( document.body ) {
+      document.body.classList.remove( "sidebar-enable" );
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleOtherClick, false);
+  useEffect( () => {
+    document.addEventListener( "mousedown", handleOtherClick, false );
 
     return () => {
-      document.removeEventListener("mousedown", handleOtherClick, false);
+      document.removeEventListener( "mousedown", handleOtherClick, false );
     };
-  }, []);
+  }, [] );
 
   return (
     <React.Fragment>
