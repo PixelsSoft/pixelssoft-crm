@@ -31,7 +31,7 @@ const HorizontalLayout = ( { children } ) => {
   const { width } = useViewport();
   //
 
-  const [isMenuOpened, setIsMenuOpened] = useState < boolean > ( false );
+  const [isMenuOpened, setIsMenuOpened] = useState( false );
 
   const {
     layoutColor,

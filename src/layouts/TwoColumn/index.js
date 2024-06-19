@@ -53,7 +53,7 @@ const TwoColumnLayout = ( { children } ) => {
     isOpenRightSideBar: state.Layout.isOpenRightSideBar,
   } ) );
 
-  const [isMenuOpened, setIsMenuOpened] = useState < boolean > ( false );
+  const [isMenuOpened, setIsMenuOpened] = useState( false );
 
   /*
    * layout defaults
