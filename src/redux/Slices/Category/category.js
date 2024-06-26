@@ -24,16 +24,14 @@ export const AddnewCategory = ( data, token ) => async ( dispatch ) => {
         } else {
             toast.error( response?.detail, { position: toast.POSITION.TOP_RIGHT } );
         };
-
-        toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
     } catch ( error ) {
         console.log( "AddnewCategory error===========>", error )
     };
 };
 
-export const UpdateCategory = ( id, data, token ) => async ( dispatch ) => {
+export const UpdateCategory = ( data, token ) => async ( dispatch ) => {
     try {
-        const response = await CategoryService.UpdateCategory( id, data, token );
+        const response = await CategoryService.UpdateCategory( data, token );
         if ( response.status === 200 ) {
             toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
 

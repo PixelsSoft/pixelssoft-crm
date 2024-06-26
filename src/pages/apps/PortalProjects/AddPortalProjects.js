@@ -3,24 +3,23 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTitle from '../../../components/PageTitle';
 import { FormInput } from '../../../components';
-import { CreateProject } from '../../../redux/Slices/Project/Project';
 import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { CreatePortalProject } from '../../../redux/Slices/PortalProject/PortalProject';
 
 const AddPortalProjects = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [data, setData] = useState( [] );
-    const [bidBy, setBidBy] = useState();
-    const [perName, setPerName] = useState();
+    const [perName, setPerName] = useState( '' );
     const [platId, setPlatId] = useState();
     const [selectCat, setSelectCat] = useState();
-    const [title, setTitle] = useState();
+    const [title, setTitle] = useState( '' );
     const [desc, setDesc] = useState();
     const [total, setTotal] = useState( 0 );
-    const [paidAm, setPaidAm] = useState( 0 );
+
 
     const { token, category, platforms, employee, loading } = useSelector(
         ( state ) => ( {
@@ -33,32 +32,29 @@ const AddPortalProjects = () => {
     );
 
 
+
     const reset = () => {
-        setBidBy()
         setPerName()
         setPlatId()
         setSelectCat()
         setTitle()
         setDesc()
         setTotal()
-        setPaidAm()
+
     }
 
     const onSubmit = async ( e ) => {
         e.preventDefault();
-        const data = {
-            title: title,
-            description: desc,
-            bid_by: bidBy,
-            closed_by: perName,
-            platform_id: platId,
-            category_id: selectCat,
-            paid_amount: paidAm,
-            total_amount: total,
-            type: "portal"
-        };
-        if ( bidBy === undefined ||
-            bidBy === 'Choose...' ||
+
+        const formData = new FormData();
+        formData.append( "title", title )
+        formData.append( "name", perName )
+        formData.append( "description", desc )
+        formData.append( "amount", total )
+        formData.append( "platform_id", platId )
+        formData.append( "category_id", selectCat )
+
+        if (
             perName === 'Choose...' ||
             platId === 'Choose...' ||
             selectCat === 'Choose...' ||
@@ -72,23 +68,22 @@ const AddPortalProjects = () => {
             return toast.error( 'Enter all field', { position: toast.POSITION.TOP_RIGHT } );
         };
         dispatch( startLoading() );
-        await dispatch( CreateProject( data, token, reset ) );
+        await dispatch( CreatePortalProject( formData, token, reset ) );
         dispatch( stopLoading() );
     };
 
-    // const filterSales = () => {
-    //     if ( employee.length > 0 ) {
-    //         const filteredArray = employee.filter( ( item ) => item.roles.some( ( role ) => role.name === "Sales" ) );
-    //         setData( filteredArray );
-    //     };
-    // };
 
-    const PaidAmountFunc = ( e ) => {
-        console.log( e.target.value >= 0 && e.target.value <= total )
-        if ( e.target.value >= 0 && e.target.value <= total ) {
-            setPaidAm( e.target.value );
+    const filterSales = () => {
+        if ( employee.length > 0 ) {
+            const filteredArray = employee.filter( ( item ) => {
+                // Convert comma-separated string to array
+                const rolesArray = item.roles[0]?.role.split( "," ).map( role => role.trim() );
+                // Check if the roles array includes "Sales"
+                return rolesArray && rolesArray.includes( "Sales" );
+            } );
+            setData( filteredArray );
         }
-    }
+    };
 
     const totalFunc = ( e ) => {
         if ( e.target.value >= 0 ) {
@@ -97,7 +92,7 @@ const AddPortalProjects = () => {
     }
 
     useEffect( () => {
-        // filterSales();
+        filterSales();
     }, [employee] );
 
     return loading ? (
@@ -129,27 +124,16 @@ const AddPortalProjects = () => {
                                     </Alert>
                                 )} */}
                                 <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Bidder Name</Form.Label>
-                                        <Form.Select onChange={( e ) => setBidBy( e.target.value )}>
-                                            <option>Choose...</option>
-                                            {/* {data.map(val => {
-                                                return (
-                                                    <option key={val.id} value={val.id}>{val.name}</option>
-                                                );
-                                            })} */}
-                                        </Form.Select>
-                                    </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Sale Person Name</Form.Label>
                                         <Form.Select onChange={( e ) => setPerName( e.target.value )}>
                                             <option>Choose...</option>
-                                            {/* {data.map( val => {
+                                            {data.map( val => {
                                                 return (
-                                                    <option key={val.id} value={val.id}>{val.name}</option>
+                                                    <option key={val.id} value={val.name}>{val.name}</option>
                                                 );
-                                            } )} */}
+                                            } )}
                                         </Form.Select>
                                     </Form.Group>
 
@@ -165,14 +149,7 @@ const AddPortalProjects = () => {
                                             onChange={( e ) => setTitle( e.target.value )}
                                         />
                                     </Form.Group>
-                                    <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Paid Amount</Form.Label>
-                                        <Form.Control
-                                            type='number'
-                                            value={paidAm}
-                                            onChange={( e ) => PaidAmountFunc( e )}
-                                        />
-                                    </Form.Group>
+
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Total Amount</Form.Label>
                                         <Form.Control
@@ -189,11 +166,11 @@ const AddPortalProjects = () => {
                                         <Form.Label>Platform</Form.Label>
                                         <Form.Select onChange={( e ) => setPlatId( e.target.value )}>
                                             <option>Choose...</option>
-                                            {/* {platforms.map( val => {
+                                            {platforms.map( val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.title}</option>
                                                 );
-                                            } )} */}
+                                            } )}
                                         </Form.Select>
                                     </Form.Group>
 
@@ -201,11 +178,11 @@ const AddPortalProjects = () => {
                                         <Form.Label>Project Category</Form.Label>
                                         <Form.Select onChange={( e ) => setSelectCat( e.target.value )}>
                                             <option>Choose...</option>
-                                            {/* {category.map( val => {
+                                            {category.map( val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.title}</option>
                                                 );
-                                            } )} */}
+                                            } )}
                                         </Form.Select>
                                     </Form.Group>
                                 </Row>
@@ -240,7 +217,7 @@ const AddPortalProjects = () => {
                             </Form>
                         </Card.Body>
                     </Card>
-                </Col>
+                </Col >
             </Row >
         </>
     );

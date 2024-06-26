@@ -27,7 +27,7 @@ export const AddExpenseCategory = ( data, token, reset ) => async ( dispatch ) =
 export const GetExpenseCategory = ( token ) => async ( dispatch ) => {
     try {
         const response = await ExpenseCategoryServices.GetExpenseCategory( token );
-        console.log( "response", response )
+
         dispatch( ExpenseCategory( response ) );
         return response;
     } catch ( error ) {

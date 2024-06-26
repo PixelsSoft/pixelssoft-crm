@@ -15,6 +15,8 @@ import { GetVenCat } from "../VendorCategory/VendorCategory";
 import { GetVendor } from "../Vendor/Vendor";
 import { GetVendorPayments } from "../VendorPayment/VendorPayment";
 import { GetMonthBids, GetTodayBids } from "../Bids/Bids";
+import { attendance, getAttendance } from "../attendance/Attendance";
+import { GetPortalProject } from "../PortalProject/PortalProject";
 
 const initialState = {
     user: null,
@@ -49,6 +51,9 @@ export const login = ( { email, password } ) => async ( dispatch ) => {
             await dispatch( GetTodayBids( response?.access_token ) );
             await dispatch( GetMonthBids( response?.access_token ) );
             await dispatch( GetExpenseCategory( response?.access_token ) );
+            await dispatch( attendance( response?.access_token ) );
+            await dispatch( GetPortalProject( response?.access_token ) );
+            await dispatch( GetProject( response?.access_token ) );
             await dispatch( authService.getProfile( response?.access_token ).then( async ( res ) => {
 
                 await dispatch( loginUser( res?.data ) )
@@ -82,7 +87,7 @@ export const login = ( { email, password } ) => async ( dispatch ) => {
         // await dispatch( GetEmployees( response?.data?.token ) );
         // await dispatch( GetCustomer( response?.data?.token ) );
         // await dispatch( GetInvoice( response?.data?.token ) );
-        // await dispatch( GetProject( response?.data?.token ) );
+
 
 
         // await dispatch( getRoles( response?.data?.token ) );

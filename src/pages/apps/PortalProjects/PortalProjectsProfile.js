@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
+import { Row, Col, Card, Button, Modal, Form, Dropdown, DropdownButton } from 'react-bootstrap';
 import PortalProjectsDetailCard from '../../../components/PortalProjectsDetailCard';
 import StatisticsWidget1 from '../../../components/StatisticsWidget1';
 import Table from '../../../components/Table';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormInput } from '../../../components';
-import { CreateMilestone, DeleMilestone, GetMilestoneById, GetProjectById } from '../../../redux/Slices/Project/Project';
+
 import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import { toast } from 'react-toastify';
 import EditMilestoneModal from '../../../components/EditMilestoneModal';
+import { CancelMilestone, CreateMilestone, DeleMilestone, GetMilestone, GetMilestoneById, GetPortalProjectById, ReleaseMilestone } from '../../../redux/Slices/PortalProject/PortalProject';
 
 
 const sizePerPageList = [
@@ -32,102 +33,119 @@ const sizePerPageList = [
 const CustomerProfile = () => {
     const { projectId } = useParams();
     const dispatch = useDispatch();
-    const [desc, setDesc] = useState('');
-    const [amount, setAmount] = useState('');
-    const [standard, setStandard] = useState(false);
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [status, setStatus] = useState('');
-    const [id, setId] = useState();
-    const [edit, setEdit] = useState(false);
+    const [title, setTitle] = useState( '' );
+    const [amount, setAmount] = useState( 0 );
+    const [totalPaidamount, setTotalPaiAmount] = useState( 0 );
+    const [Paidamount, setPaiAmount] = useState( 0 );
+    const [totalunPaidamount, setTotalUnPaiAmount] = useState( 0 );
+    const [unPaidamount, setUnPaiAmount] = useState( 0 );
+    const [standard, setStandard] = useState( false );
 
-    const { token, user, project, loading } = useSelector(
-        (state) => ({
+    const [data, setData] = useState();
+    const [edit, setEdit] = useState( false );
+
+    const { token, user, project, loading, milestones } = useSelector(
+        ( state ) => ( {
             token: state.Auth.token,
             user: state.Auth.user,
             category: state.Category.category,
-            project: state.Projects.proectById,
+            project: state.PortalProjects.proectById,
+            milestones: state.PortalProjects.milestones,
             loading: state.utiltities.loading,
-        })
+        } )
     );
 
     const reset = () => {
-        setDesc('')
-        setAmount('')
-        setStartDate('')
-        setEndDate('')
-        setStatus('')
+        setTitle( '' )
+        setAmount( '' )
+
     }
 
     const getProject = async () => {
-        dispatch(startLoading());
-        await dispatch(GetProjectById(projectId, token));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( GetPortalProjectById( projectId, token ) );
+        await dispatch( GetMilestone( projectId, token ) );
+        dispatch( stopLoading() );
     };
 
     const createMilestone = async () => {
-        const data = {
-            project_id: projectId,
-            user_id: user.id,
-            description: desc,
-            amount: amount,
-            status: status,
-            start_date: startDate,
-            end_date: endDate
-        };
-        if (desc === '' || amount === '' || startDate === '' || endDate === '' || status === '') {
-            toast.error('Enter all field', { position: toast.POSITION.TOP_RIGHT });
+        const formData = new FormData();
+        formData.append( "title", title )
+        formData.append( "amount", amount )
+        formData.append( "portal_project_id", projectId )
+        if ( title === '' || amount === '' ) {
+            toast.error( 'Enter all field', { position: toast.POSITION.TOP_RIGHT } );
             return
         };
-        dispatch(startLoading());
-        await dispatch(CreateMilestone(projectId, data, token, toggleModal));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( CreateMilestone( projectId, formData, token, toggleModal ) );
+        dispatch( stopLoading() );
     };
 
-    useEffect(() => {
+    useEffect( () => {
         getProject();
-    }, []);
+        let countRelease = 0;
+        let totalAmount = 0;
+        let countPending = 0;
+        let untotalAmount = 0;
+        milestones.forEach( item => {
+            // Check if status is "Release"
+            if ( item.status === "Release" ) {
+                // Increment count of "Release"
+                countRelease++;
+                setTotalPaiAmount( countRelease )
+
+                // Add amount to totalAmount (assuming amount is a string and needs conversion to number)
+                totalAmount += parseFloat( item.amount );
+                setPaiAmount( totalAmount )
+            }
+            if ( item.status === "Pending" ) {
+                // Increment count of "Release"
+                countPending++;
+                setTotalUnPaiAmount( countPending )
+
+                // Add amount to totalAmount (assuming amount is a string and needs conversion to number)
+                untotalAmount += parseFloat( item.amount );
+                setUnPaiAmount( untotalAmount )
+            }
+        } );
+    }, [] );
 
     const toggleModal = () => {
-        setStandard(!standard);
+        setStandard( !standard );
         reset();
     };
 
-    const amountFunc = (e) => {
-        if (e.target.value >= 0) {
-            setAmount(e.target.value)
+    const amountFunc = ( e ) => {
+        if ( e.target.value >= 0 ) {
+            setAmount( e.target.value )
         }
     }
 
-    const StartDateFuc = (e) => {
-        const selectedDate = new Date(e.target.value);
-        const today = new Date();
 
-        if (selectedDate < today) {
-            // setStartDate(new Date().toLocaleDateString());
-            toast.error('Start date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT });
-        } else {
-            setStartDate(e.target.value);
-        }
-    }
-
-    const EndDateFuc = (e) => {
-        const selectedDate = new Date(e.target.value);
-        const today = new Date();
-
-        if (selectedDate < today) {
-            // setEndDate(new Date().toLocaleDateString());
-            toast.error('End date cannot be older than today.', { position: toast.POSITION.TOP_RIGHT });
-        } else {
-            setEndDate(e.target.value);
-        }
-    }
 
     const columns = [
+
         {
-            Header: 'ID',
-            accessor: 'id',
-            sort: true,
+            Header: 'Title',
+            accessor: 'title',
+            sort: false,
+        },
+        {
+            Header: 'Created date',
+            accessor: 'Created_date',
+            sort: false,
+        },
+        {
+            Header: 'Release Date',
+            accessor: 'release_date',
+            sort: false,
+        },
+
+        {
+            Header: 'Amount',
+            accessor: 'amount',
+            sort: false,
         },
         {
             Header: 'Status',
@@ -135,67 +153,53 @@ const CustomerProfile = () => {
             sort: false,
         },
         {
-            Header: 'Start Date',
-            accessor: 'start_date',
+            Header: "Actions",
             sort: false,
-        },
-        {
-            Header: 'End Date',
-            accessor: 'end_date',
-            sort: false,
-        },
-        {
-            Header: 'Description',
-            accessor: 'description',
-            sort: false,
-        },
-        {
-            Header: 'Amount',
-            accessor: 'amount',
-            sort: false,
-        },
-        {
-            Header: "Action",
-            sort: false,
-            Cell: ({ row }) => <ActionColumn row={row} />,
+            Cell: ( { row } ) => <ActionColumn row={row} />,
         },
     ];
 
-    const ActionColumn = ({ row }) => {
+
+    const ActionColumn = ( { row } ) => {
+
         return (
-            <React.Fragment>
-                <Link to={`/apps/portalProjects/Profile/${row.original.id}`} className="action-icon">
-                    {" "}
-                    <i className="mdi mdi-eye"></i>
-                </Link>
-                <Link className="action-icon" onClick={() => toggleEditModal(row.original.id)}>
-                    {" "}
-                    <i className="mdi mdi-square-edit-outline"></i>
-                </Link>
-                <Link className="action-icon" onClick={() => del(row.original.id)}>
-                    {" "}
-                    <i className="mdi mdi-delete"></i>
-                </Link>
-            </React.Fragment >
+            <DropdownButton variant={'success'} id="dropdown-basic-button" title="Action">
+                <Dropdown.Item onClick={() => Release( row.original.id )}>Release</Dropdown.Item>
+                <Dropdown.Item onClick={() => cancel( row.original.id )}>Cancel</Dropdown.Item>
+                <Dropdown.Item onClick={() => toggleEditModal( row?.original )
+
+                }>Edit</Dropdown.Item>
+                <Dropdown.Item onClick={() => del( row.original.id )} >Delete</Dropdown.Item>
+            </DropdownButton>
         );
     };
 
-    const toggleEditModal = async (id) => {
-        setId(id);
-        dispatch(startLoading());
-        await dispatch(GetMilestoneById(id, token));
-        dispatch(stopLoading());
-        setEdit(!edit);
+    const toggleEditModal = async ( id ) => {
+
+        setData( id );
+        await dispatch( startLoading() );
+        await dispatch( stopLoading() );
+        setEdit( !edit );
     };
 
     const closeEditModal = () => {
-        setEdit(false)
+        setEdit( false )
     }
 
-    const del = async (id) => {
-        dispatch(startLoading());
-        await dispatch(DeleMilestone(id, token));
-        dispatch(stopLoading())
+    const del = async ( id ) => {
+        dispatch( startLoading() );
+        await dispatch( DeleMilestone( id, projectId, token ) );
+        dispatch( stopLoading() )
+    }
+    const cancel = async ( id ) => {
+        dispatch( startLoading() );
+        await dispatch( CancelMilestone( id, projectId, token ) );
+        dispatch( stopLoading() )
+    }
+    const Release = async ( id ) => {
+        dispatch( startLoading() );
+        await dispatch( ReleaseMilestone( id, projectId, token ) );
+        dispatch( stopLoading() )
     }
 
     return loading ? (
@@ -216,11 +220,12 @@ const CustomerProfile = () => {
                                                 // avatar: avatar,
                                                 description: `${project?.description}`,
                                                 title: `${project?.title}`,
-                                                SalesName: `${project?.closedby?.name}`,
-                                                BidderName: `${project?.bidby?.name}`,
-                                                Amount: `${project?.title}`,
-                                                platform: `${project?.platform?.title}`,
-                                                _createdAt: `${project?.title}`,
+                                                SalesName: `${project?.user?.name}`,
+                                                Amount: `${project?.amount}`,
+                                                platform: `${project?.platforms?.title}`,
+                                                category: `${project?.project_categories?.title}`,
+                                                _createdAt: `${project?.Created_date}`,
+                                                amount: `${project?.amount}`,
                                                 projectId: `${project.id}`,
                                             }}
                                         />
@@ -229,16 +234,16 @@ const CustomerProfile = () => {
                                         <StatisticsWidget1
                                             title="Total Paid Milestones"
                                             color={'#10c469'}
-                                            data={50}
-                                            stats={10}
-                                            subTitle="Paid today"
+                                            data={Paidamount}
+                                            stats={totalPaidamount}
+                                            subTitle="Paid "
                                         />
                                         <StatisticsWidget1
                                             title="Total Upaid Milestones"
                                             color={'#f05050'}
-                                            data={3}
-                                            stats={5}
-                                            subTitle="Unpaid today"
+                                            data={unPaidamount}
+                                            stats={totalunPaidamount}
+                                            subTitle="Unpaid "
                                         />
                                     </Col>
                                 </Row>
@@ -260,12 +265,13 @@ const CustomerProfile = () => {
                                     </Col>
 
                                 </Row>
-                                {project?.milestone !== undefined && project?.milestone !== null ? (
+                                {milestones !== undefined && milestones !== null ? (
                                     <Row>
-                                        {project?.milestone ? (
+                                        {milestones ? (
                                             <Table
                                                 columns={columns}
-                                                data={project?.milestone}
+                                                data={milestones}
+
                                                 pageSize={5}
                                                 sizePerPageList={sizePerPageList}
                                                 isSortable={true}
@@ -285,45 +291,17 @@ const CustomerProfile = () => {
                     <h4 className="modal-title">Create Milestone</h4>
                 </Modal.Header>
                 <Modal.Body>
-                    {/* <Row className="mb-3"> */}
-                    <div className="mb-3">
-                        <label className="form-label">Start Date</label> <br />
-                        <FormInput
-                            type="date"
-                            name="date"
-                            containerClass={'mb-3'}
-                            key="date"
-                            value={startDate}
-                            onChange={(e) => {
-                                // setStartDate(e.target.value)
-                                StartDateFuc(e)
-                            }}
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">End Date</label> <br />
-                        <FormInput
-                            type="date"
-                            name="date"
-                            containerClass={'mb-3'}
-                            key="date"
-                            value={endDate}
-                            onChange={(e) => {
-                                // setEndDate(e.target.value)
-                                EndDateFuc(e)
-                            }}
-                        />
-                    </div>
+
 
 
                     <FormInput
-                        label="Description"
+                        label="Title"
                         type="textarea"
                         name="textarea"
                         containerClass={'mb-3'}
                         key="textarea"
-                        value={desc}
-                        onChange={(e) => setDesc(e.target.value)}
+                        value={title}
+                        onChange={( e ) => setTitle( e.target.value )}
                     />
 
                     <Form.Group as={Col} controlId="formGridState">
@@ -331,18 +309,11 @@ const CustomerProfile = () => {
                         <Form.Control
                             value={amount}
                             type='number'
-                            onChange={(e) => amountFunc(e)}
+                            onChange={( e ) => amountFunc( e )}
                         />
                     </Form.Group>
 
-                    <Form.Group as={Col} controlId="formGridState">
-                        <Form.Label>Status</Form.Label>
-                        <Form.Select onChange={(e) => setStatus(e.target.value)}>
-                            <option value={"pending"}>Pending</option>
-                            <option value={"ongoing"}>Ongoing</option>
-                            <option value={"completed"}>Completed</option>
-                        </Form.Select>
-                    </Form.Group>
+
 
                     {/* </Row> */}
                 </Modal.Body>
@@ -355,7 +326,7 @@ const CustomerProfile = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <EditMilestoneModal projectId={projectId} id={id} edit={edit} closeEditModal={closeEditModal} />
+            <EditMilestoneModal projectId={projectId} data={data} edit={edit} closeEditModal={closeEditModal} />
         </>
     );
 };

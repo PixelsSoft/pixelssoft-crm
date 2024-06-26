@@ -21,11 +21,12 @@ import PageTitle from "../../../components/PageTitle";
 import { projects, ProjectsList } from "./data";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoading, stopLoading } from "../../../redux/Slices/utiltities/Utiltities";
+import { GetProject } from "../../../redux/Slices/Project/Project";
 
 // single project
 const SingleProject = ( props ) => {
   const project = props.project || {};
-  console.log( "project`", project )
+
 
   return (
     <Card className="project-box">
@@ -55,12 +56,12 @@ const SingleProject = ( props ) => {
         </Dropdown>
         <h4 className="mt-0">
           <Link to="/apps/projects/:id/details" className="text-dark">
-            {project?.project_name}
+            {project?.title}
           </Link>
         </h4>
         <p className="text-muted text-uppercase">
           <i className="mdi mdi-account-circle"></i>{" "}
-          <small>{project.companyName}</small>
+          <small>{project.description}</small>
         </p>
 
         <div
@@ -93,12 +94,13 @@ const SingleProject = ( props ) => {
           </span>
         </p>
         <div className="avatar-group mb-3">
-          {( project?.projectteam || [] ).map( ( member, index ) => {
+          {( project?.teams || [] ).map( ( member, index ) => {
+
             return (
               <OverlayTrigger
                 key={index}
                 placement="bottom"
-                overlay={<Tooltip id={member?.user?.name}>{member?.user?.name}</Tooltip>}
+                overlay={<Tooltip id={member?.name}>{member?.name}</Tooltip>}
               >
                 <Link to="#" className="avatar-group-item">
                   <img
@@ -132,52 +134,57 @@ const Projects = () => {
   const dispatch = useDispatch();
 
 
-  const { loading, token } = useSelector(
+  const { loading, token, project } = useSelector(
 
     ( state ) => ( {
       loading: state.utiltities.loading,
       token: state.Auth.token,
+      project: state.Projects.project
 
     } )
   );
 
-  useEffect( () => {
-    getProject()
-  }, [] )
   const getProject = async () => {
-    try {
-
-
-      const requestOptions = {
-        method: "GET",
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        redirect: "follow"
-      };
-      await dispatch( startLoading() )
-      await fetch( "https://crmupd.pixelssoft.com/api/project", requestOptions )
-        .then( ( response ) => response.json() )
-        .then( async ( result ) => {
-          const res = result
-          setprojects( res.data )
-
-          await dispatch( stopLoading() )
-        }
-        )
-        .catch( async ( error ) => {
-          console.error( error )
-          await dispatch( stopLoading() )
-        }
-        );
-
-    } catch ( error ) {
-      await dispatch( stopLoading() )
-
-      console.log( "failed to get project", error )
-    }
-
+    await dispatch( GetProject( token ) );
   }
+
+  useEffect( () => {
+    setprojects( project )
+  }, [] )
+  // const getProject = async () => {
+  //   try {
+
+
+  //     const requestOptions = {
+  //       method: "GET",
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`
+  //       },
+  //       redirect: "follow"
+  //     };
+  //     await dispatch( startLoading() )
+  //     await fetch( "https://crmupd.pixelssoft.com/api/project", requestOptions )
+  //       .then( ( response ) => response.json() )
+  //       .then( async ( result ) => {
+  //         const res = result
+  //         setprojects( res.data )
+
+  //         await dispatch( stopLoading() )
+  //       }
+  //       )
+  //       .catch( async ( error ) => {
+  //         console.error( error )
+  //         await dispatch( stopLoading() )
+  //       }
+  //       );
+
+  //   } catch ( error ) {
+  //     await dispatch( stopLoading() )
+
+  //     console.log( "failed to get project", error )
+  //   }
+
+  // }
 
 
   return (

@@ -23,15 +23,20 @@ const AddProject = async ( data, token ) => {
         redirect: "follow"
     };
 
-    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project, options )
-        .then( response => response.json() )
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.Createproject, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
         .then( onSuccess )
         .catch( onFailure )
 };
 
 const GetProjects = async ( token ) => {
     const onSuccess = ( data ) => {
-        return data.data;
+        return data;
     };
 
     const onFailure = error => {
@@ -40,8 +45,8 @@ const GetProjects = async ( token ) => {
     const options = {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
     };
@@ -87,14 +92,13 @@ const CreateMilestone = async ( projectId, data, token ) => {
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+
             'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify( data )
     };
 
-    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.projectMilestone + projectId, options )
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.projectMilestone, options )
         .then( response => response.json() )
         .then( onSuccess )
         .catch( onFailure )

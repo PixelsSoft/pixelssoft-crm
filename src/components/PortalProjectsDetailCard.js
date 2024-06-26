@@ -6,23 +6,23 @@ import EditPortalProject from './EditPortalProject';
 import { DeleteProject } from '../redux/Slices/Project/Project';
 import { useNavigate } from 'react-router-dom';
 
-const PortalProjectsDetailCard = ({ contact }) => {
+const PortalProjectsDetailCard = ( { contact } ) => {
     const { token, } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
-        })
+        } )
     );
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [editUserModal, setEditUserModal] = useState(false);
+    const [editUserModal, setEditUserModal] = useState( false );
 
-    const toggleEditModal = () => setEditUserModal(!editUserModal);
+    const toggleEditModal = () => setEditUserModal( !editUserModal );
 
     const del = async () => {
-        dispatch(startLoading());
-        await dispatch(DeleteProject(contact.projectId, token, navigate));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( DeleteProject( contact.projectId, token, navigate ) );
+        dispatch( stopLoading() );
     };
 
     return (
@@ -60,10 +60,16 @@ const PortalProjectsDetailCard = ({ contact }) => {
                             </p>
 
                             <p className="text-muted font-13">
-                                <strong>Bidder Name :</strong> <span className="ms-2">{contact.BidderName}</span>
+                                <strong>Project Category :</strong> <span className="ms-2">{contact.category}</span>
                             </p>
                             <p className="text-muted font-13">
                                 <strong>Sales Name :</strong> <span className="ms-2">{contact.SalesName}</span>
+                            </p>
+                            <p className="text-muted font-13">
+                                <strong>Amount  :</strong> <span className="ms-2">{contact.amount}</span>
+                            </p>
+                            <p className="text-muted font-13">
+                                <strong>Created at :</strong> <span className="ms-2">{contact._createdAt}</span>
                             </p>
 
                             <p className="text-muted font-13">

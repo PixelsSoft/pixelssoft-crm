@@ -8,6 +8,7 @@ import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import { DeleteProject } from '../../../redux/Slices/Project/Project';
 import EditPortalProject from '../../../components/EditPortalProject';
+import { DeletePortalProject } from '../../../redux/Slices/PortalProject/PortalProject';
 
 
 const sizePerPageList = [
@@ -31,34 +32,36 @@ export default function PortalProjects() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [id, setId] = useState();
-    const [editUserModal, setEditUserModal] = useState(false);
+    const [editUserModal, setEditUserModal] = useState( false );
 
     const { project, loading, token } = useSelector(
-        (state) => ({
-            project: state.Projects.project,
+        ( state ) => ( {
+            project: state.PortalProjects.project,
             loading: state.utiltities.loading,
             token: state.Auth.token,
-        })
+        } )
     );
 
-    const del = async (id) => {
-        dispatch(startLoading());
-        await dispatch(DeleteProject(id, token, navigate));
-        dispatch(stopLoading());
+
+    const del = async ( id ) => {
+        dispatch( startLoading() );
+        await dispatch( DeletePortalProject( id, token, navigate ) );
+        dispatch( stopLoading() );
     }
 
-    const ActionColumn = ({ row }) => {
+    const ActionColumn = ( { row } ) => {
+        console.log( row )
         return (
             <React.Fragment>
                 <Link to={`/apps/portalProjects/Profile/${row.original.id}`} className="action-icon">
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => toggleEditModal(row.original.id)}>
+                <Link className="action-icon" onClick={() => toggleEditModal( row.original.id )}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => del(row.original.id)}>
+                <Link className="action-icon" onClick={() => del( row.original.id )}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -66,13 +69,13 @@ export default function PortalProjects() {
         );
     };
 
-    const toggleEditModal = (id) => {
-        setId(id);
-        setEditUserModal(!editUserModal);
+    const toggleEditModal = ( id ) => {
+        setId( id );
+        setEditUserModal( !editUserModal );
     }
 
     const closeProject = () => {
-        setEditUserModal(!editUserModal);
+        setEditUserModal( !editUserModal );
     }
 
     const columns = [
@@ -82,30 +85,25 @@ export default function PortalProjects() {
             sort: true,
         },
         {
-            Header: 'bidder',
-            accessor: 'bidby.name',
-            sort: true,
-        },
-        {
             Header: 'Sales Person',
-            accessor: 'closedby.name',
-            sort: false,
-        },
-        {
-            Header: 'Paid Amount',
-            accessor: 'paid_amount',
+            accessor: 'user.name',
             sort: false,
         },
         {
             Header: 'Amount',
-            accessor: 'total_amount',
+            accessor: 'amount',
+            sort: false,
+        },
+        {
+            Header: 'Status',
+            accessor: 'status',
             sort: false,
         },
         {
             Header: "Action",
             accessor: "id",
             sort: false,
-            Cell: ({ row }) => <ActionColumn row={row} />,
+            Cell: ( { row } ) => <ActionColumn row={row} />,
         },
     ];
 
@@ -129,7 +127,7 @@ export default function PortalProjects() {
                                 <Col sm={4}>
                                     <Button
                                         onClick={() => {
-                                            navigate("/apps/portalProjects/addportalProject")
+                                            navigate( "/apps/portalProjects/addportalProject" )
                                         }}
                                         className="btn btn-danger mb-2">
                                         <i className="mdi mdi-plus-circle me-2"></i> Add Projects

@@ -8,7 +8,7 @@ import classNames from "classnames";
 // components
 import PageTitle from "../../../components/PageTitle";
 
-import Calendar from "./Calendar";
+import Calendar from "../../../components/Calendar";
 import AddEditEvent from "./AddEditEvent";
 
 // dummy data

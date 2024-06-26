@@ -30,7 +30,7 @@ const getCategory = async ( token ) => {
 
 const createCategory = async ( data, token ) => {
     const onSuccess = ( data ) => {
-        return data.data;
+        return data;
     };
 
     const onFailure = error => {
@@ -40,8 +40,6 @@ const createCategory = async ( data, token ) => {
     const options = {
         method: 'POST',
         headers: {
-            // 'Content-Type': 'application/json',
-            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
         body: data,
@@ -58,7 +56,7 @@ const createCategory = async ( data, token ) => {
         .catch( onFailure )
 };
 
-const UpdateCategory = async ( id, data, token ) => {
+const UpdateCategory = async ( data, token ) => {
     const onSuccess = ( data ) => {
         return data;
     };

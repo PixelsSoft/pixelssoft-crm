@@ -11,6 +11,7 @@ const initialState = {
 export const CreateProject = ( data, token, reset ) => async ( dispatch ) => {
     try {
         const response = await ProjectService.AddProject( data, token );
+
         if ( response?.status === 200 ) {
             toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
             reset();
@@ -27,7 +28,8 @@ export const CreateProject = ( data, token, reset ) => async ( dispatch ) => {
 export const GetProject = ( token ) => async ( dispatch ) => {
     try {
         const response = await ProjectService.GetProjects( token );
-        dispatch( Projects( response ) );
+
+        dispatch( Projects( response?.data ) );
     } catch ( error ) {
         console.log( "error===========>", error )
     };
@@ -44,64 +46,7 @@ export const GetProjectById = ( projectId, token ) => async ( dispatch ) => {
     };
 };
 
-export const CreateMilestone = ( projectId, data, token, toggleModal ) => async ( dispatch ) => {
-    try {
-        const response = await ProjectService.CreateMilestone( projectId, data, token );
-        if ( response?.status === 200 ) {
-            toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
-            toggleModal();
-            dispatch( GetProjectById( projectId, token ) )
-        } else {
-            toast.error( response?.message[0], { position: toast.POSITION.TOP_RIGHT } );
-        };
-    } catch ( error ) {
-        console.log( "error===========>", error )
-    };
-};
 
-export const DeleMilestone = ( projectId, token ) => async ( dispatch ) => {
-    try {
-        const response = await ProjectService.DeleteMilestone( projectId, token );
-        if ( response?.message === 'Milestone Deleted Successfully' ) {
-            toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
-            dispatch( GetProjectById( projectId, token ) )
-        } else {
-            toast.error( response?.message, { position: toast.POSITION.TOP_RIGHT } );
-        };
-    } catch ( error ) {
-        toast.error( error, { position: toast.POSITION.TOP_RIGHT } );
-        console.log( "error===========>", error )
-    };
-};
-
-export const GetMilestoneById = ( projectId, token ) => async ( dispatch ) => {
-    try {
-        if ( projectId ) {
-            const response = await ProjectService.GetMileById( projectId, token );
-            if ( response.status === 200 ) {
-                dispatch( SingleMilestone( response?.data ) );
-            };
-        }
-    } catch ( error ) {
-        console.log( "error===========>", error )
-        toast.error( error, { position: toast.POSITION.TOP_RIGHT } );
-    };
-};
-
-export const UpdateMilstone = ( projectId, id, data, token, toggleEditModal ) => async ( dispatch ) => {
-    try {
-        const response = await ProjectService.UpdateMile( id, data, token );
-        if ( response?.status === 200 ) {
-            toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
-            toggleEditModal();
-            dispatch( GetProjectById( projectId, token ) );
-        } else {
-            toast.error( response?.message, { position: toast.POSITION.TOP_RIGHT } );
-        };
-    } catch ( error ) {
-        console.log( "error===========>", error )
-    };
-};
 
 export const DeleteProject = ( projectId, token, navigate, lead ) => async ( dispatch ) => {
     try {

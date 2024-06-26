@@ -89,6 +89,9 @@ const VendorCategory = React.lazy(
 const VendorPayments = React.lazy(
   () => import("../pages/apps/Accounts/Vendor/Payment")
 );
+const MyAccount = React.lazy(
+  () => import("../pages/apps/Management/MyAccount")
+);
 
 // extra
 
@@ -553,6 +556,14 @@ const reportRoutes = {
   roles: ["Admin"],
   element: <Report />,
 };
+//Report Route
+const myAccount = {
+  path: "/apps/myaccount",
+  name: "My Account",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  element: <MyAccount />,
+};
 
 const calendarAppRoutes: RoutesProps = {
   path: "/apps/calendar",
@@ -755,7 +766,7 @@ const appRoutes = [
   reportRoutes,
   AccountsRoutes,
   projectAppRoutes,
-
+  myAccount,
   ////// extra route just for design ideas
   calendarAppRoutes,
   chatAppRoutes,

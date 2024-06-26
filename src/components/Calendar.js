@@ -7,35 +7,29 @@ import listPlugin from "@fullcalendar/list";
 import BootstrapTheme from "@fullcalendar/bootstrap";
 import { EventInput } from "@fullcalendar/core";
 
-interface CalendarProps {
-  onDateClick: (value: any) => void;
-  onEventClick: (value: any) => void;
-  onDrop: (value: any) => void;
-  onEventDrop: (value: any) => void;
-  events: EventInput[];
-}
 
-const Calendar = ({
+
+const Calendar = ( {
   onDateClick,
   onEventClick,
   onDrop,
   onEventDrop,
   events,
-}: CalendarProps) => {
+} ) => {
   /*
    * handle calendar methods
    */
-  const handleDateClick = (arg: any) => {
-    onDateClick(arg);
+  const handleDateClick = ( arg ) => {
+    onDateClick( arg );
   };
-  const handleEventClick = (arg: any) => {
-    onEventClick(arg);
+  const handleEventClick = ( arg ) => {
+    onEventClick( arg );
   };
-  const handleDrop = (arg: any) => {
-    onDrop(arg);
+  const handleDrop = ( arg ) => {
+    onDrop( arg );
   };
-  const handleEventDrop = (arg: any) => {
-    onEventDrop(arg);
+  const handleEventDrop = ( arg ) => {
+    onEventDrop( arg );
   };
 
   return (

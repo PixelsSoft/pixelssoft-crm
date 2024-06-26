@@ -129,7 +129,7 @@ export default function Management() {
                         </Tab.Content>
                     </Tab.Container>
                 </Card.Body>
-            </Card>
+            </Card >
             <Modal show={responsiveModal} onHide={toggleResponsiveModal}>
                 <Modal.Header closeButton>
                     <h4 className="modal-title">Add Category</h4>

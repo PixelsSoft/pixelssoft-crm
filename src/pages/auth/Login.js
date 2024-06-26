@@ -19,6 +19,7 @@ import {
   stopLoading,
 } from "../../redux/Slices/utiltities/Utiltities";
 import Spinner from "../../components/Spinner";
+import { toast } from "react-toastify";
 
 
 /* bottom links */
@@ -65,7 +66,10 @@ const Login = () => {
       email: email,
       password: password,
     };
+    if ( email === "" || password === "" ) {
+      return toast.error( "Please enter a Valid email or password", { position: toast.POSITION.TOP_RIGHT } );
 
+    }
     dispatch( startLoading() );
     await dispatch( login( { email, password } ) )
       .then( () => {

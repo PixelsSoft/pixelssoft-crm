@@ -32,7 +32,7 @@ const login = ( { email, password } ) => {
         .catch( onFailure );
 };
 const getProfile = ( token ) => {
-    console.log( "token", token );
+
     const onSuccess = ( data ) => {
         return data;
     };

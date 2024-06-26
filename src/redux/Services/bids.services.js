@@ -31,7 +31,7 @@ const Addbid = async ( data, token ) => {
 };
 
 const GetTodayBids = async ( token ) => {
-    console.log( "ye hy token add ka in today bis", token )
+
     const onSuccess = ( { data } ) => {
         return data;
     };

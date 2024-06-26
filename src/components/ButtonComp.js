@@ -27,18 +27,18 @@ const ButtonComp = ( { id, title, plat } ) => {
             await dispatch( UpdatePlatform( formData, token ) );
             dispatch( stopLoading() );
         } else {
-            const data = {
-                title: name
-            };
+            const formData = new FormData()
+            formData.append( "id", id )
+            formData.append( "title", name )
             dispatch( startLoading() );
-            await dispatch( UpdateCategory( id, data, token ) );
+            await dispatch( UpdateCategory( formData, token ) );
             dispatch( stopLoading() );
         };
         setEdit( !edit )
     };
 
     const deleteFunc = async () => {
-        console.log( "id", id )
+
         if ( plat === 1 ) {
             dispatch( startLoading() );
             await dispatch( DeletePlatform( id, token ) );

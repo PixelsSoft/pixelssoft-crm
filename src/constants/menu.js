@@ -330,7 +330,14 @@ const MENU_ITEMS = [
       },
     ],
   },
-
+  {
+    key: "myAccount",
+    label: "My Account",
+    isTitle: false,
+    roles: ["SuperAdmin", "Hr"],
+    icon: "calendar",
+    url: "/apps/myaccount",
+  },
   { key: "apps", label: "Extra pages", isTitle: true, roles: ["SuperAdmin"], },
   {
     key: "apps-calendar",

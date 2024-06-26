@@ -34,7 +34,8 @@ export default function Leads() {
             leads: state.Leads.leads
         } )
     );
-    console.log( "leads", leads )
+
+    console.log( detail )
     const toggleModal = () => {
         setVisibleModal( !visibleModal );
     };
@@ -130,12 +131,12 @@ export default function Leads() {
         },
         {
             Header: 'Platform',
-            accessor: 'platforms_title',
+            accessor: 'platforms.title',
             sort: false,
         },
         {
             Header: 'submit by',
-            accessor: 'submit_by',
+            accessor: 'user.name',
             sort: false,
         },
         {
@@ -420,7 +421,7 @@ export default function Leads() {
                                 <Form.Label>Platform</Form.Label>
                             </Row>
                             <Row>
-                                <Form.Label>{detail?.platforms_title}</Form.Label>
+                                <Form.Label>{detail?.platforms?.title}</Form.Label>
                             </Row>
                         </Col>
                     </Row>
@@ -430,7 +431,7 @@ export default function Leads() {
                                 <Form.Label>Submit by</Form.Label>
                             </Row>
                             <Row>
-                                <Form.Label>{detail?.submit_by}</Form.Label>
+                                <Form.Label>{detail?.user?.name}</Form.Label>
                             </Row>
                         </Col>
                         <Col>

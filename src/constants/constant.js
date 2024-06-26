@@ -1,8 +1,8 @@
 export const CONSTANTS = {
     API_URLS: {
         // BASE: "http://127.0.0.1:8000/api/",
-        BASE: "https://crm-backend-78e9.onrender.com/",
-        // BASE: "http://127.0.0.1:8000/",
+        // BASE: "https://crm-backend-78e9.onrender.com/",
+        BASE: "http://127.0.0.1:8000/",
         // BASE: "https://crmupd.pixelssoft.com/api/",
         LOGIN: "user/login",
         PROFILE: "user/profile",
@@ -20,8 +20,10 @@ export const CONSTANTS = {
         deletePlatform: 'platform/delete',
         Get_Platform: 'platform',
         project: 'project',
+        Createproject: 'project/create',
+        portal: 'portal',
         edit: 'edit',
-        projectMilestone: 'milestone?project=',
+        projectMilestone: 'milestone',
         lead: 'lead',
         editLead: 'lead/update',
         AddLead: 'lead/add',
@@ -35,5 +37,6 @@ export const CONSTANTS = {
         vendorCategory: 'vendor/category',
         vendor: 'vendor',
         vendorPayment: 'payment/vendor',
+        attendancePerMonth: 'attendance/month',
     }
 } 
