@@ -24,8 +24,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { CreateProject } from "../../../redux/Slices/Project/Project";
 import { startLoading, stopLoading } from "../../../redux/Slices/utiltities/Utiltities";
 import { Link, useNavigate } from "react-router-dom";
-import { handleUpload } from "../../../utils/FileUpload";
+import { getFileDetails, handleUpload } from "../../../utils/FileUpload";
 import Spinner from "../../../components/Spinner";
+import { toast } from "react-toastify";
 
 // interface MemberTypes {
 //   value: string;
@@ -38,12 +39,13 @@ const ProjectForm = () => {
   const dispatch = useDispatch();
 
   const [endDate, setEndDate] = useState( new Date() );
-  const [title, setTitle] = useState( 'dhjvhjdvhj' );
-  const [desc, setDesc] = useState( 'ddd' );
+  const [title, setTitle] = useState( '' );
+  const [desc, setDesc] = useState( '' );
   const [priority, setPriority] = useState( '' );
   const [cat, setCat] = useState( '' );
 
   const [fileUpload, setFileUpload] = useState( [] );
+  const [files, setFiles] = useState( [] );
 
   const [selectedTeamMembers, setSelectedTeamMembers] = useState( [] );
   const [selectedTeamMembersId, setSelectedTeamMembersId] = useState( [] );
@@ -82,31 +84,55 @@ const ProjectForm = () => {
     setPriority( '' )
     setSelectedTeamMembers( [] )
     setFileUpload( [] )
+    setFiles( [] )
 
   }
   const addProject = async () => {
     try {
-
+      await dispatch( startLoading() )
+      if ( title === '' ) {
+        toast.error( "Enter Title please", { position: toast.POSITION.TOP_RIGHT } );
+        dispatch( stopLoading() );
+        return
+      }
+      if ( desc === '' ) {
+        toast.error( "Enter Project Overview please", { position: toast.POSITION.TOP_RIGHT } );
+        dispatch( stopLoading() );
+        return
+      }
+      if ( cat === '' ) {
+        toast.error( "Select Project Category please", { position: toast.POSITION.TOP_RIGHT } );
+        dispatch( stopLoading() );
+        return
+      }
+      if ( priority === '' ) {
+        toast.error( "Select Project priority please", { position: toast.POSITION.TOP_RIGHT } );
+        dispatch( stopLoading() );
+        return
+      }
+      if ( selectedTeamMembersId.length === 0 ) {
+        toast.error( "Select Team member please", { position: toast.POSITION.TOP_RIGHT } );
+        dispatch( stopLoading() );
+        return
+      }
       const Form = new FormData()
       Form.append( "title", title )
       Form.append( "description", desc )
       Form.append( "projectType", cat )
       Form.append( "due_date", endDate )
-
-      Form.append( "teams", selectedTeamMembersId )
       Form.append( "priority", priority )
-      Form.append( "files", fileUpload )
+      Form.append( "status", "Ongoing" )
+      for ( let i = 0; i < fileUpload.length; i++ ) {
+        Form.append( "files", fileUpload[i] );
+      }
+      for ( let i = 0; i < selectedTeamMembersId.length; i++ ) {
+        Form.append( "teams", selectedTeamMembersId[i] );
+      }
 
-
-      // for ( let i = 0; i < fileUpload.length; i++ ) {
-      //   Form.append( "ffiles[]", fileUpload[i], fileUpload[i].name );
-      // }
-      await dispatch( startLoading() )
       await dispatch( CreateProject( Form, token, reset ) )
+
       await dispatch( stopLoading() )
-      // const myHeaders = new Headers();
-      // myHeaders.append( "", "" );
-      // myHeaders.append( "Authorization", "Bearer 77|DlnLRqCxkxXC8vaMzhRExZDKAVSi21gAHYRsjdGK" );
+      navigate( -1 );
 
 
     } catch ( error ) {
@@ -168,11 +194,14 @@ const ProjectForm = () => {
     try {
 
       const newFiles = [...fileUpload];
+      const newFilesData = [...files];
 
       if ( event.target.files ) {
         const file = event.target.files[0];
-        await handleUpload( dispatch, file ).then( ( res ) => {
-          console.log( "red", res )
+        await handleUpload( dispatch, file ).then( async ( res ) => {
+          const fileDetails = await getFileDetails( res );
+          newFilesData.push( fileDetails )
+          setFiles( newFilesData )
           newFiles.push( res )
           setFileUpload( newFiles )
         } ).catch( err => {
@@ -321,7 +350,7 @@ const ProjectForm = () => {
                     </Form.Group>
 
 
-                    {( fileUpload || [] ).map( ( f, i ) => {
+                    {/* {( fileUpload || [] ).map( ( f, i ) => {
 
                       return (
                         <Card className="mt-1 mb-0 shadow-none border" key={i + "-file"}>
@@ -360,10 +389,35 @@ const ProjectForm = () => {
                           </div>
                         </Card>
                       );
-                    } )}
-
-
-
+                    } )} */}
+                    {files.map( ( file, index ) => (
+                      <Card key={index} className="mb-1 shadow-none border">
+                        <div className="p-2">
+                          <Row className="align-items-center">
+                            <div className="col-auto">
+                              <div className="avatar-sm">
+                                <span className="avatar-title badge-soft-primary text-primary rounded">
+                                  {file?.fileFormat}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="col ps-0">
+                              <div className="text-muted fw-bold">
+                                {file?.fileName}
+                              </div>
+                              <p className="mb-0"> {file?.fileSize} MB</p>
+                            </div>
+                            <div className="col-auto">
+                              <Link to={file?.url} target="_blank"
+                                className="btn btn-link btn-lg text-muted"
+                              >
+                                <i className="dripicons-download"></i>
+                              </Link>
+                            </div>
+                          </Row>
+                        </div>
+                      </Card>
+                    ) )}
                     <Form.Group className="mb-3">
                       <Form.Label>Team Members</Form.Label>
                       <Typeahead

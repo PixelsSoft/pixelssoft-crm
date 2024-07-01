@@ -11,7 +11,7 @@ import {
   Tooltip,
   Spinner,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 // components
@@ -27,7 +27,7 @@ import { GetProject } from "../../../redux/Slices/Project/Project";
 const SingleProject = ( props ) => {
   const project = props.project || {};
 
-
+  const navigate = useNavigate();
   return (
     <Card className="project-box">
       <Card.Body>
@@ -55,30 +55,35 @@ const SingleProject = ( props ) => {
           </Dropdown.Menu>
         </Dropdown>
         <h4 className="mt-0">
-          <Link to="/apps/projects/:id/details" className="text-dark">
+          <Link
+            to={{
+              pathname: `/apps/projects/${project?.id}/details`,
+              state: { project }
+            }}
+            // onClick={navigate( `/apps/projects/${project?.id}/details`, { state: project } )}
+            className="text-dark">
             {project?.title}
           </Link>
         </h4>
         <p className="text-muted text-uppercase">
           <i className="mdi mdi-account-circle"></i>{" "}
-          <small>{project.description}</small>
+          <small>{project?.description}</small>
         </p>
-
         <div
           className={classNames(
             "badge",
             {
-              "bg-soft-success text-success": project.state === "Finished",
-              "bg-soft-secondary text-secondary": project.state === "Ongoing",
+              "bg-soft-success text-success": project?.status === "Finished",
+              "bg-soft-secondary text-secondary": project?.status === "Ongoing",
             },
             "mb-3"
           )}
         >
-          {project.state}
+          {project?.status}
         </div>
 
         <p className="text-muted font-13 mb-3 sp-line-2">
-          {project.shortDesc}...
+          {project?.description}...
           <Link to="#" className="fw-bold text-muted">
             view more
           </Link>
@@ -86,25 +91,29 @@ const SingleProject = ( props ) => {
         <p className="mb-1">
           <span className="pe-2 text-nowrap mb-2 d-inline-block">
             <i className="mdi mdi-format-list-bulleted-type text-muted me-1"></i>
-            <b>{project.totalTasks}</b> Tasks
+            <b>{project?.totalTasks}</b> Tasks
           </span>
           <span className="text-nowrap mb-2 d-inline-block">
             <i className="mdi mdi-comment-multiple-outline text-muted me-1"></i>
-            <b>{project.totalComments}</b> Comments
+            <b>{project?.totalComments}</b> Comments
           </span>
         </p>
         <div className="avatar-group mb-3">
-          {( project?.teams || [] ).map( ( member, index ) => {
-
+          {( project?.project_Teams || [] ).map( ( member, index ) => {
             return (
               <OverlayTrigger
                 key={index}
                 placement="bottom"
-                overlay={<Tooltip id={member?.name}>{member?.name}</Tooltip>}
+                overlay={<Tooltip
+                  id={member?.userDetails?.id}
+                >
+
+                  {member?.userDetails?.name}
+                </Tooltip>}
               >
                 <Link to="#" className="avatar-group-item">
                   <img
-                    src={member.image}
+                    src={member?.userDetails?.profile_img}
                     className="rounded-circle avatar-sm"
                     alt=""
                   />

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Row, Col, Card, Dropdown, Tab, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import Board from 'react-trello'
+import firebase from 'firebase/app';
+import 'firebase/storage';
 // components
 import PageTitle from "../../../../components/PageTitle";
 
@@ -12,74 +14,15 @@ import Comments from "./Comments";
 import ProgressChart from "./ProgressChart";
 import Files from "./Files";
 
-import avatar1 from "../../../../assets/images/users/user-6.jpg";
-import avatar2 from "../../../../assets/images/users/user-7.jpg";
-import avatar3 from "../../../../assets/images/users/user-8.jpg";
-import avatar4 from "../../../../assets/images/users/user-3.jpg";
-import avatar5 from "../../../../assets/images/users/user-4.jpg";
-import avatar6 from "../../../../assets/images/users/user-5.jpg";
-import Tasks from "../Tasks/Tasks";
 
-// export interface Project {
-//   id?: number;
-//   title?: string;
-//   state?: string;
-//   shortDesc?: string;
-//   totalTasks?: number;
-//   totalComments?: number;
-//   totalMembers: number;
-//   teamMembers?: {
-//     image: string;
-//     name: string;
-//   }[];
-//   startDate?: string;
-//   startTime?: string;
-//   endDate?: string;
-//   endTime?: string;
-//   totalBudget?: string;
-// }
+import Tasks from "../Tasks/Tasks";
+import moment from "moment";
+
 
 const ProjectDetail = () => {
-  const project = {
-    title: "App design and development",
-    shortDesc:
-      "This card has supporting text below as a natural lead-in to additional content is a little bit longer",
-    state: "Ongoing",
-    totalTasks: 81,
-    totalComments: 103,
-    totalMembers: 6,
-    startDate: "17 March 2019",
-    startTime: "1:00 PM",
-    endDate: "22 December 2019",
-    endTime: "1:00 PM",
-
-    teamMembers: [
-      {
-        name: "Mat Helme",
-        image: avatar1,
-      },
-      {
-        name: "Michael Zenaty",
-        image: avatar2,
-      },
-      {
-        name: "James Anderson",
-        image: avatar3,
-      },
-      {
-        name: "Mat Helme",
-        image: avatar5,
-      },
-      {
-        name: "Michael Zenaty",
-        image: avatar6,
-      },
-      {
-        name: "James Anderson",
-        image: avatar4,
-      },
-    ],
-  };
+  const location = useLocation();
+  const project = location.state;
+  console.log( "project", project )
 
   const RenderDetail = () => {
     return (
@@ -105,7 +48,7 @@ const ProjectDetail = () => {
             <Statistics
               icon="fe-users"
               variant="info"
-              stats="17"
+              stats={project?.project_Teams?.length || 0}
               description="Total Team Size"
             />
           </Col>
@@ -145,41 +88,31 @@ const ProjectDetail = () => {
                   </Dropdown.Menu>
                 </Dropdown>
 
-                <h3 className="mt-0 font-20">{project.title}</h3>
+                <h3 className="mt-0 font-20">{project?.title}</h3>
                 <div
                   className={classNames(
                     "badge",
                     {
-                      "bg-success": project.state === "Finished",
-                      "bg-secondary": project.state === "Ongoing",
-                      "bg-warning": project.state === "Planned",
+                      "bg-success": project?.state === "Finished",
+                      "bg-secondary": project?.state === "Ongoing",
+                      "bg-warning": project?.state === "Planned",
                     },
                     "text-light",
                     "mb-3"
                   )}
                 >
-                  {project.state}
+                  {project?.status}
                 </div>
 
                 <h5>Project Overview:</h5>
 
                 <p className="text-muted mb-2">
-                  With supporting text below as a natural lead-in to additional
-                  contenposuere erat a ante. Voluptates, illo, iste itaque
-                  voluptas corrupti ratione reprehenderit magni similique?
-                  Tempore, quos delectus asperiores libero voluptas quod
-                  perferendis! Voluptate, quod illo rerum? Lorem ipsum dolor sit
-                  amet.
+                  {project?.description
+                  }
                 </p>
 
-                <p className="text-muted mb-4">
-                  Voluptates, illo, iste itaque voluptas corrupti ratione
-                  reprehenderit magni similique? Tempore, quos delectus asperiores
-                  libero voluptas quod perferendis! Voluptate, quod illo rerum?
-                  Lorem ipsum dolor sit amet. With supporting text below as a
-                  natural lead-in to additional contenposuere erat a ante.
-                </p>
 
+                {/* 
                 <div className="mb-4">
                   <h5>Tags</h5>
                   <div className="text-uppercase">
@@ -196,15 +129,16 @@ const ProjectDetail = () => {
                       JQuery
                     </Link>
                   </div>
-                </div>
+                </div> */}
 
                 <Row>
                   <Col md={4}>
                     <div className="mb-4">
                       <h5>Start Date</h5>
                       <p>
-                        {project.startDate}{" "}
-                        <small className="text-muted">{project.startTime}</small>
+                        {moment( project?.create_date ).format( 'YYYY-MM-DD' )}
+                        {/* {project?.create_date}{" "} */}
+                        {/* <small className="text-muted">{project?.create_date}</small> */}
                       </p>
                     </div>
                   </Col>
@@ -212,13 +146,12 @@ const ProjectDetail = () => {
                     <div className="mb-4">
                       <h5>End Date</h5>
                       <p>
-                        {project.endDate}{" "}
-                        <small className="text-muted">{project.endTime}</small>
+                        {moment( project?.endDate ).format( 'YYYY-MM-DD' )}
                       </p>
                     </div>
                   </Col>
                 </Row>
-                <TeamMembers teamMembers={project.teamMembers} />
+                <TeamMembers teamMembers={project?.project_Teams} />
               </Card.Body>
             </Card>
             <Comments />
@@ -226,7 +159,7 @@ const ProjectDetail = () => {
 
           <Col xl={4} lg={6}>
             <ProgressChart />
-            <Files />
+            <Files documents={project?.projectDocuments} />
           </Col>
         </Row>
       </>

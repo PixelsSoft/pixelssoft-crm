@@ -443,18 +443,19 @@ const LeadProjects: RoutesProps = {
 
 // Project Routes
 const projectAppRoutes: RoutesProps = {
-  path: "/apps/projects",
+  path: "/apps/projects/list",
   name: "Projects",
   route: PrivateRoute,
   roles: ["string"],
   icon: "uil-briefcase",
+  element: <Projects />,
   children: [
-    {
-      path: "/apps/projects/list",
-      name: "List",
-      element: <Projects />,
-      route: PrivateRoute,
-    },
+    // {
+    //   path: "/apps/projects/list",
+    //   name: "Projects",
+    //   element: <Projects />,
+    //   route: PrivateRoute,
+    // },
     {
       path: "/apps/projects/:id/details",
       name: "Detail",

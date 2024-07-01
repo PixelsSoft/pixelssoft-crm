@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Row, Col, Card, Button, Modal, Form, Dropdown, DropdownButton } from 'react-bootstrap';
 import PortalProjectsDetailCard from '../../../components/PortalProjectsDetailCard';
 import StatisticsWidget1 from '../../../components/StatisticsWidget1';
 import Table from '../../../components/Table';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormInput } from '../../../components';
 
@@ -11,7 +11,7 @@ import Spinner from '../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import { toast } from 'react-toastify';
 import EditMilestoneModal from '../../../components/EditMilestoneModal';
-import { CancelMilestone, CreateMilestone, DeleMilestone, GetMilestone, GetMilestoneById, GetPortalProjectById, ReleaseMilestone } from '../../../redux/Slices/PortalProject/PortalProject';
+import { CancelMilestone, CreateMilestone, DeleMilestone, GetMilestone, GetPortalProjectById, ReleaseMilestone } from '../../../redux/Slices/PortalProject/PortalProject';
 
 
 const sizePerPageList = [
@@ -44,10 +44,9 @@ const CustomerProfile = () => {
     const [data, setData] = useState();
     const [edit, setEdit] = useState( false );
 
-    const { token, user, project, loading, milestones } = useSelector(
+    const { token, project, loading, milestones } = useSelector(
         ( state ) => ( {
             token: state.Auth.token,
-            user: state.Auth.user,
             category: state.Category.category,
             project: state.PortalProjects.proectById,
             milestones: state.PortalProjects.milestones,
@@ -58,32 +57,12 @@ const CustomerProfile = () => {
     const reset = () => {
         setTitle( '' )
         setAmount( '' )
-
     }
 
     const getProject = async () => {
         dispatch( startLoading() );
         await dispatch( GetPortalProjectById( projectId, token ) );
         await dispatch( GetMilestone( projectId, token ) );
-        dispatch( stopLoading() );
-    };
-
-    const createMilestone = async () => {
-        const formData = new FormData();
-        formData.append( "title", title )
-        formData.append( "amount", amount )
-        formData.append( "portal_project_id", projectId )
-        if ( title === '' || amount === '' ) {
-            toast.error( 'Enter all field', { position: toast.POSITION.TOP_RIGHT } );
-            return
-        };
-        dispatch( startLoading() );
-        await dispatch( CreateMilestone( projectId, formData, token, toggleModal ) );
-        dispatch( stopLoading() );
-    };
-
-    useEffect( () => {
-        getProject();
         let countRelease = 0;
         let totalAmount = 0;
         let countPending = 0;
@@ -109,6 +88,26 @@ const CustomerProfile = () => {
                 setUnPaiAmount( untotalAmount )
             }
         } );
+        dispatch( stopLoading() );
+    };
+
+    const createMilestone = async () => {
+        const formData = new FormData();
+        formData.append( "title", title )
+        formData.append( "amount", amount )
+        formData.append( "portal_project_id", projectId )
+        if ( title === '' || amount === '' ) {
+            toast.error( 'Enter all field', { position: toast.POSITION.TOP_RIGHT } );
+            return
+        };
+        dispatch( startLoading() );
+        await dispatch( CreateMilestone( projectId, formData, token, toggleModal ) );
+        dispatch( stopLoading() );
+    };
+
+    useEffect( () => {
+        getProject();
+
     }, [] );
 
     const toggleModal = () => {

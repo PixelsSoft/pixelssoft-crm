@@ -1,7 +1,8 @@
 
 import { storage } from "../firebase/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL, getMetadata } from 'firebase/storage';
 import { startLoading, stopLoading } from "../redux/Slices/utiltities/Utiltities";
+
 
 export const handleUpload = ( dispatch, file ) => {
     return new Promise( ( resolve, reject ) => {
@@ -30,7 +31,7 @@ export const handleUpload = ( dispatch, file ) => {
                             dispatch( stopLoading() );
                             resolve( downloadURL ); // Resolve the promise with the download URL
                             return downloadURL
-                            console.log( 'File available at', downloadURL );
+
                         } )
                         .catch( ( error ) => {
                             console.log( 'Failed to get download URL', error );
@@ -43,3 +44,37 @@ export const handleUpload = ( dispatch, file ) => {
         }
     } );
 };
+
+
+export const getFileDetails = ( fileURL ) => {
+
+    const storageRef = ref( storage, fileURL );
+
+    return getMetadata( storageRef )
+        .then( ( metadata ) => {
+            const fileSizeBytes = metadata.size; // File size in bytes
+            const fileSizeMB = fileSizeBytes / ( 1024 * 1024 ); // Convert bytes to megabytes
+            const fileSizeFormatted = fileSizeMB.toFixed( 2 ); // Round to 2 decimal places
+
+            const fileName = metadata.name; // File name
+            const fileFormat = getFileFormat( metadata.contentType ); // File format (based on content type)
+
+            return {
+                fileSize: fileSizeFormatted,
+                fileName,
+                fileFormat,
+                url: fileURL
+            };
+        } )
+        .catch( ( error ) => {
+            console.error( 'Error fetching file metadata:', error );
+            throw error; // Propagate the error to the caller
+        } );
+};
+
+// Helper function to get file format from content type
+const getFileFormat = ( contentType ) => {
+    const parts = contentType.split( '/' );
+    return parts[1]; // Return the format part of the content type (e.g., 'pdf' from 'application/pdf')
+};
+

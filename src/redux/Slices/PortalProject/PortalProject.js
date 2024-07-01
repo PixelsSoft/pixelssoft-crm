@@ -6,7 +6,7 @@ import ProtalProjectService from "../../Services/PortalProject.services";
 const initialState = {
     project: [],
     proectById: null,
-    milestones: null
+    milestones: []
 }
 
 export const CreatePortalProject = ( data, token, reset ) => async ( dispatch ) => {
