@@ -16,7 +16,24 @@ export const CreateProject = ( data, token, reset ) => async ( dispatch ) => {
             toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
             reset();
         } else {
-            toast.error( response?.message, { position: toast.POSITION.TOP_RIGHT } );
+            toast.error( response?.detail, { position: toast.POSITION.TOP_RIGHT } );
+            console.warn( "error", response )
+        };
+        dispatch( GetProject( token ) );
+    } catch ( error ) {
+        console.log( "error===========>", error )
+    };
+};
+export const CreateBoard = ( data, token, reset ) => async ( dispatch ) => {
+    try {
+        const response = await ProjectService.AddBoard( data, token );
+
+        if ( response?.status === 200 ) {
+            toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
+            reset();
+            dispatch( GetProject( token ) );
+        } else {
+            toast.error( response?.detail, { position: toast.POSITION.TOP_RIGHT } );
             console.warn( "error", response )
         };
         dispatch( GetProject( token ) );
@@ -52,15 +69,16 @@ export const DeleteProject = ( projectId, token, navigate, lead ) => async ( dis
     try {
         const response = await ProjectService.DeletProject( projectId, token );
         if ( response?.status === 200 ) {
+            
             toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
             if ( lead === 1 ) {
                 navigate( '/apps/leadProjects' );
             } else {
-                navigate( '/apps/portalProjects' );
+                navigate( 'apps/projects/list' );
             }
             dispatch( GetProject( token ) );
         } else {
-            toast.error( response?.message[0], { position: toast.POSITION.TOP_RIGHT } );
+            toast.error( response?.detail, { position: toast.POSITION.TOP_RIGHT } );
         };
     } catch ( error ) {
         console.log( "error===========>", error )

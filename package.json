@@ -4,6 +4,7 @@
   "proxy": "http://127.0.0.1:8000",
   "private": false,
   "dependencies": {
+    "@cyntler/react-doc-viewer": "^1.16.6",
     "@fullcalendar/bootstrap": "^5.8.0",
     "@fullcalendar/core": "^5.8.0",
     "@fullcalendar/daygrid": "^5.8.0",
@@ -44,7 +45,7 @@
     "react-countup": "^5.2.0",
     "react-datepicker": "^4.1.1",
     "react-dom": "^18.2.0",
-    "react-draft-wysiwyg": "^1.14.7",
+    "react-draft-wysiwyg": "^1.15.0",
     "react-dropzone": "^11.3.4",
     "react-hook-form": "^7.10.1",
     "react-i18next": "^11.11.1",

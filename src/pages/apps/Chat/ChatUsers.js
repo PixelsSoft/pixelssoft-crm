@@ -1,32 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 import classnames from "classnames";
 import SimpleBar from "simplebar-react";
+import {  ref, onValue } from 'firebase/database';
 
 // dummy data
 import { users, ChatUser } from "./data";
 
 import profilePic from "../../../assets/images/users/user-1.jpg";
+import { useSelector } from "react-redux";
+import { database } from "../../../firebase/firebase";
 
-interface ChatUsersProps {
-  onUserSelect: (value: ChatUser) => void;
-}
 
 // ChatUsers
-const ChatUsers = ({ onUserSelect }: ChatUsersProps) => {
-  const [user, setUser] = useState<ChatUser[]>([...users]);
-  const [selectedUser, setSelectedUser] = useState<ChatUser>(users[1]);
+const ChatUsers = ({ onUserSelect,onNewChat }) => {
+  const [user, setUser] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(users[1]);
+  const profile = useSelector((state) => ({
+    user: state.Auth.user,
+  }));
+  
+  const [chats, setChats] = useState([]);
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+      getList();
+      return () => {
+  
+      };
+  }, []); 
+
+  const getList = async () => {
+    const chatRef = ref(database, `ChatList/${profile?.user?.user_id.toString()}`);
+    onValue(chatRef, (dataSnapshot) => {
+        let list = [];
+        dataSnapshot.forEach((child) => {
+            list.push({
+                un_read_count: child.val()?.un_read_count,
+                id: child.val()?.id,
+                Last_message: child.val()?.Last_message,
+                name: child.val()?.name,
+                time: child.val()?.time,
+                profile_img: child.val()?.profile_img,
+            });
+        });
+        setList(list);
+
+    });
+}
+
+
+
+
+
+
 
   /**
    * Search the user
    * @param {*} text
    */
-  const search = (text: string) => {
+  const search = (text) => {
     setUser(
       text
         ? [...users].filter(
-            (u) => u.name!.toLowerCase().indexOf(text.toLowerCase()) >= 0
+            (u) => u?.name?.toLowerCase().indexOf(text.toLowerCase()) >= 0
           )
         : [...users]
     );
@@ -36,7 +74,7 @@ const ChatUsers = ({ onUserSelect }: ChatUsersProps) => {
    * Activates the user
    * @param {*} user
    */
-  const activateUser = (user: ChatUser) => {
+  const activateUser = (user) => {
     setSelectedUser(user);
     if (onUserSelect) {
       onUserSelect(user);
@@ -49,15 +87,17 @@ const ChatUsers = ({ onUserSelect }: ChatUsersProps) => {
         <Card.Body>
           <div className="d-flex align-items-start mb-3">
             <img
-              src={profilePic}
+              src={profile?.user?.profile_img}
               className="me-2 rounded-circle"
               height="42"
+              width="42" // Added this line to ensure a square aspect ratio
+              style={{ borderRadius: "50%" }}
               alt=""
             />
             <div className="w-100">
               <h5 className="mt-0 mb-0 font-15">
                 <Link to="#" className="text-reset">
-                  Geneva McKnight
+                  {profile?.user?.name}
                 </Link>
               </h5>
               <p className="mt-1 mb-0 text-muted font-14">
@@ -75,12 +115,18 @@ const ChatUsers = ({ onUserSelect }: ChatUsersProps) => {
                 type="text"
                 className="form-control form-control-light"
                 placeholder="People, groups & messages..."
-                onKeyUp={(e: any) => search(e.target.value)}
+                onKeyUp={(e) => search(e.target.value)}
               />
               <span className="mdi mdi-magnify"></span>
             </div>
           </form>
-
+          <Button
+            onClick={onNewChat}
+            variant={"success"}
+            className="waves-effect waves-light  "
+          >
+            New Chat
+          </Button>
           <h6 className="font-13 text-muted text-uppercase">Group Chats</h6>
           <div className="p-2">
             <Link to="#" className="text-reset mb-2 d-block">
@@ -98,13 +144,14 @@ const ChatUsers = ({ onUserSelect }: ChatUsersProps) => {
           <Row>
             <Col>
               <SimpleBar style={{ height: "375px", width: "100%" }}>
-                {(user || []).map((user, index) => {
+                {(list || []).map((user, index) => {
+                 
                   return (
                     <Link
                       to="#"
                       key={index}
                       className="text-body"
-                      onClick={(e: any) => {
+                      onClick={(e) => {
                         activateUser(user);
                       }}
                     >
@@ -119,24 +166,25 @@ const ChatUsers = ({ onUserSelect }: ChatUsersProps) => {
                         )}
                       >
                         <img
-                          src={user.avatar}
+                          src={user?.profile_img}
                           className="me-2 rounded-circle"
                           height="42"
-                          alt=""
+                          width="42"
+                          alt={user.name}
                         />
 
                         <div className="w-100">
                           <h5 className="mt-0 mb-0 font-14">
                             <span className="float-end text-muted fw-normal font-12">
-                              {user.lastMessageOn}
+                              {user?.Last_message}
                             </span>
                             {user.name}
                           </h5>
                           <p className="mt-1 mb-0 text-muted font-14">
                             <span className="w-25 float-end text-end">
-                              {user.totalUnread !== 0 && (
+                              {user.un_read_count !== "0" && (
                                 <span className="badge badge-soft-danger">
-                                  {user.totalUnread}
+                                  {user?.un_read_count}
                                 </span>
                               )}
                             </span>

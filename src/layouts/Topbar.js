@@ -275,7 +275,6 @@ const Topbar = ( {
       document.body.style.overflow = "visible";
     }
   }
-
   /**
    * Toggles the right sidebar
    */
@@ -285,6 +284,7 @@ const Topbar = ( {
   const { user } = useSelector( ( state ) => ( {
     user: state.Auth.user,
   } ) );
+  
 
   /**
    * Toggles the left sidebar width
@@ -374,9 +374,9 @@ const Topbar = ( {
             </li>
             <li className="dropdown">
               <ProfileDropdown
-                profilePic={profilePic}
+                profilePic={user?.profile_img}
                 menuItems={ProfileMenus}
-                username={user.name}
+                username={user?.name}
                 userTitle={"Founder"}
               />
             </li>

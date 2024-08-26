@@ -211,7 +211,7 @@ const AppMenu = ( { menuItems } ) => {
   useEffect( () => {
     activeMenu();
     const role = roles[0].role.split( "," );
-    setRole( role )
+    setRole( role||[] )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roles] );
 

@@ -102,6 +102,18 @@ export const login = ( { email, password } ) => async ( dispatch ) => {
         console.log( "error===========>", error )
     };
 };
+export const SearchUser = (  search, token  ) => async ( dispatch ) => {
+  try {
+    
+   const response= await authService.searchUser(search, token  )
+
+    return response
+  } catch (error) {
+    
+    throw error;
+  }
+       
+};
 
 export const logout = () => async ( dispatch ) => {
     try {

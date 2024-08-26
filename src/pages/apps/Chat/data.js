@@ -8,32 +8,11 @@ import avatar7 from "../../../assets/images/users/user-7.jpg";
 import avatar8 from "../../../assets/images/users/user-8.jpg";
 import avatar9 from "../../../assets/images/users/user-9.jpg";
 
-export interface ChatUser {
-  id?: number;
-  name?: string;
-  avatar?: string;
-  lastMessage?: string;
-  totalUnread?: number;
-  lastMessageOn?: string;
-  email?: string;
-  phone?: string;
-  location?: string;
-  languages?: string;
-  groups: string;
-}
 
-export interface ChatMessage {
-  id: number;
-  from: ChatUser;
-  to: ChatUser;
-  message: {
-    type: string;
-    value: any;
-  };
-  sendOn?: string;
-}
 
-const users: ChatUser[] = [
+
+
+const users = [
   {
     id: 1,
     name: "Brandon Smith",
@@ -140,7 +119,7 @@ const users: ChatUser[] = [
   },
 ];
 
-const messages: ChatMessage[] = [];
+const messages= [];
 
 const defaultTo = {
   id: 9,

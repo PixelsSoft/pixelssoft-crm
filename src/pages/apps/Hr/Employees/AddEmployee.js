@@ -228,6 +228,7 @@ const List = () => {
                     toast.error( e?.detail, { position: toast.POSITION.TOP_RIGHT } );
                 }
                 dispatch( stopLoading() );
+                reset()
             } )
             .catch( err => {
                 dispatch( stopLoading() );
