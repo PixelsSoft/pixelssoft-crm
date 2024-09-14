@@ -7,45 +7,45 @@ import { toast } from 'react-toastify'
 import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities'
 import Spinner from './Spinner'
 
-const CustomerEditModal = ({ profileId, editUserModal, toggleClose }) => {
+const CustomerEditModal = ( { profileId, editUserModal, toggleClose } ) => {
     const dispatch = useDispatch();
 
     const { token, SingleCustomer, plat, category, loading } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             SingleCustomer: state.Customer.singleCustomer,
             plat: state.Platform.platform,
             category: state.Category.category,
             loading: state.utiltities.loading,
-        })
+        } )
     );
 
-    const [name, setName] = useState(SingleCustomer?.name);
-    const [email, setEmail] = useState(SingleCustomer?.email);
-    const [phone, setPhone] = useState(SingleCustomer?.phone);
-    const [title, setTitle] = useState(SingleCustomer?.project_title);
-    const [paidAm, setPaidAm] = useState(SingleCustomer?.paid_amount);
-    const [total, setTotal] = useState(SingleCustomer?.total_amount);
-    const [platform, setPlatform] = useState(SingleCustomer?.platform)
-    const [salePerson, setSalePerson] = useState(SingleCustomer?.category_id);
+    const [name, setName] = useState( SingleCustomer?.name );
+    const [email, setEmail] = useState( SingleCustomer?.email );
+    const [phone, setPhone] = useState( SingleCustomer?.phone );
+    const [title, setTitle] = useState( SingleCustomer?.project_title );
+    const [paidAm, setPaidAm] = useState( SingleCustomer?.paid_amount );
+    const [total, setTotal] = useState( SingleCustomer?.total_amount );
+    const [platform, setPlatform] = useState( SingleCustomer?.platform )
+    const [salePerson, setSalePerson] = useState( SingleCustomer?.category_id );
 
     const getSingleProfile = async () => {
         // dispatch(startLoading());
-        await dispatch(GetSingleCustomer(profileId, token));
+        await dispatch( GetSingleCustomer( profileId, token ) );
         // dispatch(stopLoading());
     };
 
-    const update = async (e) => {
+    const update = async ( e ) => {
         // e.preventDefault();
 
-        if (!email) {
-            return toast.error('Enter Email', { position: toast.POSITION.TOP_RIGHT });
+        if ( !email ) {
+            return toast.error( 'Enter Email', { position: toast.POSITION.TOP_RIGHT } );
         };
-        if (!platform) {
-            return toast.error('Select Platform', { position: toast.POSITION.TOP_RIGHT });
+        if ( !platform ) {
+            return toast.error( 'Select Platform', { position: toast.POSITION.TOP_RIGHT } );
         };
-        if (!salePerson) {
-            return toast.error('Select Project Category', { position: toast.POSITION.TOP_RIGHT });
+        if ( !salePerson ) {
+            return toast.error( 'Select Project Category', { position: toast.POSITION.TOP_RIGHT } );
         };
 
         const data = {
@@ -58,27 +58,27 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleClose }) => {
             platform: platform,
             category_id: salePerson
         };
-        dispatch(startLoading());
-        await dispatch(UpdateCustomerAPI(profileId, data, token, toggleClose));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( UpdateCustomerAPI( profileId, data, token, toggleClose ) );
+        dispatch( stopLoading() );
     }
 
-    const selectPlat = (e) => {
+    const selectPlat = ( e ) => {
         e.preventDefault();
-        setPlatform(e.target.value);
+        setPlatform( e.target.value );
     };
 
-    const changeCat = (e) => {
+    const changeCat = ( e ) => {
         e.preventDefault();
-        setSalePerson(e.target.value);
+        setSalePerson( e.target.value );
     };
 
-    useEffect(() => {
+    useEffect( () => {
         getSingleProfile();
-    }, []);
+    }, [] );
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
@@ -94,7 +94,7 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleClose }) => {
                     placeholder="Enter name"
                     containerClass={'mb-3'}
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={( e ) => setName( e.target.value )}
                 />
 
                 <FormInput
@@ -104,7 +104,7 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleClose }) => {
                     placeholder="Enter Email"
                     containerClass={'mb-3'}
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={( e ) => setEmail( e.target.value )}
                 />
 
                 <FormInput
@@ -114,7 +114,7 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleClose }) => {
                     placeholder="Enter Project Title"
                     containerClass={'mb-3'}
                     value={title}
-                    onChange={(e => setTitle(e.target.value))}
+                    onChange={( e => setTitle( e.target.value ) )}
                 />
 
                 <FormInput
@@ -124,7 +124,7 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleClose }) => {
                     placeholder="Enter Paid Amount"
                     containerClass={'mb-3'}
                     value={paidAm}
-                    onChange={e => setPaidAm(e.target.value)}
+                    onChange={e => setPaidAm( e.target.value )}
                 />
 
                 <FormInput
@@ -134,32 +134,32 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleClose }) => {
                     placeholder="Enter Total Amount"
                     containerClass={'mb-3'}
                     value={total}
-                    onChange={e => setTotal(e.target.value)}
+                    onChange={e => setTotal( e.target.value )}
                 />
 
                 <Form.Group as={Col} controlId="formGridState">
                     <Form.Label>Platform</Form.Label>
-                    <Form.Select onChange={(e) => selectPlat(e)}>
+                    <Form.Select onChange={( e ) => selectPlat( e )}>
                         <option>Choose...</option>
-                        {plat.map(val => {
+                        {plat.map( val => {
                             return (
                                 <option key={val.id}>{val.title}</option>
                             );
-                        })}
+                        } )}
                     </Form.Select>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridState">
                     <Form.Label>Project Category</Form.Label>
                     <Form.Select
-                        onChange={(e) => changeCat(e)}
+                        onChange={( e ) => changeCat( e )}
                     >
                         <option>Choose...</option>
-                        {category.map(val => {
+                        {category.map( val => {
                             return (
                                 <option key={val.id} value={val.id}>{val.title}</option>
                             );
-                        })}
+                        } )}
                     </Form.Select>
                 </Form.Group>
                 <FormInput
@@ -169,7 +169,7 @@ const CustomerEditModal = ({ profileId, editUserModal, toggleClose }) => {
                     placeholder="Enter Phone #"
                     containerClass={'mb-3'}
                     value={phone}
-                    onChange={e => setPhone(e.target.value)}
+                    onChange={e => setPhone( e.target.value )}
                 />
                 <Button variant="dark" className="waves-effect waves-light me-1" type="submit" onClick={() => update()}>
                     Update

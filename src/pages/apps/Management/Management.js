@@ -40,6 +40,7 @@ export default function Management() {
         formdata.append( "title", title );
         dispatch( startLoading() );
         await dispatch( AddnewCategory( formdata, token ) );
+        setTitle( '' )
         toggleResponsiveModal();
         dispatch( stopLoading() );
     };
@@ -53,6 +54,7 @@ export default function Management() {
         dispatch( startLoading() );
         await dispatch( CreateNewPlatform( formdata, token ) );
         togglePlatformModal();
+        setPlatTitle( '' )
         dispatch( stopLoading() );
     };
 

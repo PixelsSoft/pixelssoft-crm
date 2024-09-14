@@ -87,6 +87,15 @@ const tasks: TaskTypes[] = [
     dueDate: "Jul 10, 2019",
   },
   {
+    id: 7,
+    title: "Ubold - Landing page and UI Kit",
+    description: "Your awesome text goes here. Your awesome text goes here.",
+    status: "hoga bhai",
+    priority: "Medium",
+    userAvatar: [avatar1, avatar3],
+    dueDate: "Jul 10, 2019",
+  },
+  {
     id: 8,
     title: "Ubold 3.0 - Scoping",
     description:

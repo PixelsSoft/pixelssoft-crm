@@ -48,7 +48,7 @@ const AddPortalProjects = () => {
 
         const formData = new FormData();
         formData.append( "title", title )
-        formData.append( "name", perName )
+
         formData.append( "description", desc )
         formData.append( "amount", total )
         formData.append( "platform_id", platId )
@@ -58,7 +58,6 @@ const AddPortalProjects = () => {
             perName === 'Choose...' ||
             platId === 'Choose...' ||
             selectCat === 'Choose...' ||
-            perName === undefined ||
             title === undefined ||
             desc === undefined ||
             platId === undefined ||
@@ -69,6 +68,7 @@ const AddPortalProjects = () => {
         };
         dispatch( startLoading() );
         await dispatch( CreatePortalProject( formData, token, reset ) );
+        navigate( -1 )
         dispatch( stopLoading() );
     };
 
@@ -123,7 +123,7 @@ const AddPortalProjects = () => {
                                         {data.message}
                                     </Alert>
                                 )} */}
-                                <Row className="mb-3">
+                                {/* <Row className="mb-3">
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Sale Person Name</Form.Label>
@@ -138,7 +138,7 @@ const AddPortalProjects = () => {
                                     </Form.Group>
 
 
-                                </Row>
+                                </Row> */}
 
 
                                 <Row className="mb-3">

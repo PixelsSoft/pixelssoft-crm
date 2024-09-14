@@ -122,17 +122,39 @@ const ProjectForm = () => {
       Form.append( "due_date", endDate )
       Form.append( "priority", priority )
       Form.append( "status", "Ongoing" )
-      for ( let i = 0; i < fileUpload.length; i++ ) {
-        Form.append( "files", fileUpload[i] );
+
+
+      // if ( fileUpload.length > 0 ) {
+      //   Form.append( "files", fileUpload.join( "," ) ); 
+      // }
+      // Handle file uploads
+      if ( files.length > 0 ) {
+        const fileUploadPromises = files.map( file => handleUpload( dispatch, file ) );
+
+        try {
+          // Wait for all file uploads to complete
+          const uploadedFiles = await Promise.all( fileUploadPromises );
+
+          // Join file URLs with a comma and append to FormData
+          const fileUrlsString = uploadedFiles.join( "," );
+          Form.append( "files", fileUrlsString );
+          // Optionally, update fileUpload state here
+          setFileUpload( uploadedFiles );  // If you need to use fileUpload later
+        } catch ( uploadError ) {
+          console.error( "File upload error: ", uploadError );
+          toast.error( "Failed to upload files", { position: toast.POSITION.TOP_RIGHT } );
+          return;
+        }
       }
+
       for ( let i = 0; i < selectedTeamMembersId.length; i++ ) {
         Form.append( "teams", selectedTeamMembersId[i] );
       }
 
       await dispatch( CreateProject( Form, token, reset ) )
+      navigate( -1 );
 
       await dispatch( stopLoading() )
-      navigate( -1 );
 
 
     } catch ( error ) {
@@ -141,16 +163,6 @@ const ProjectForm = () => {
   }
 
 
-  /*
-   * form methods
-   */
-  const methods = useForm( { resolver: schemaResolver } );
-  const {
-    handleSubmit,
-    register,
-    control,
-    formState: { errors },
-  } = methods;
 
 
   const { token, user, category, loading, employee } = useSelector(
@@ -162,7 +174,7 @@ const ProjectForm = () => {
       employee: state.Employees.employees,
     } )
   );
- 
+
   const extractFilename = ( url ) => {
     // Split the URL by "/"
     const parts = url.split( "/" );
@@ -191,9 +203,10 @@ const ProjectForm = () => {
 
     return fileExtension;
   };
+
+
   const handleFileChange = async ( event ) => {
     try {
-
       const newFiles = [...fileUpload];
       const newFilesData = [...files];
 
@@ -218,7 +231,7 @@ const ProjectForm = () => {
 
 
   return loading ? (
-    <div className='d-flex justify-content-center align-items-center'>
+    <div className='d-flex justify-content-center align-items-center vh-100'>
       <Spinner className="m-2" color={'primary'} />
     </div>
   ) : (
@@ -239,119 +252,118 @@ const ProjectForm = () => {
         <Col>
           <Card>
             <Card.Body>
-              <form onSubmit={handleSubmit( () => { } )}>
-                <Row>
-                  <Col xl={6}>
+              {/* <form onSubmit={handleSubmit( () => { } )}> */}
+              <Row>
+                <Col xl={6}>
+                  <FormInput
+                    name="name"
+                    label="Project Name"
+                    placeholder="Enter project name"
+                    containerClass={"mb-3"}
+
+                    key="name"
+                    value={title}
+                    onChange={( e ) => setTitle( e.target.value )}
+
+                  />
+
+                  <FormInput
+                    name="overview"
+                    label="Project Overview"
+                    placeholder="Enter some brief about project.."
+                    type="textarea"
+                    rows="5"
+                    containerClass={"mb-3"}
+
+                    value={desc}
+                    onChange={( e ) => setDesc( e.target.value )}
+                    key="overview"
+
+                  />
+
+                  <div className="mb-3">
+                    <label className="form-label">Project Category</label>
+                    <br />
+                    {category !== null && category !== undefined
+                      &&
+                      category.map( ( e, index ) => {
+
+                        return (
+                          <div className="form-check form-check-inline">
+                            <input
+                              type="radio"
+                              id="customRadio1"
+                              name="projectCategory"
+                              className="form-check-input"
+                              value={e?.id}
+                              onChange={( e ) => setCat( e.target.value )}
+
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="customRadio1"
+                            >
+                              {e?.title}
+                            </label>
+                          </div>
+                        )
+                      } )
+                    }
+
+                  </div>
+
+                  <Row>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <Form.Label>Due Date</Form.Label>
+                        <HyperDatepicker
+                          hideAddon
+                          value={endDate}
+                          onChange={( date ) => setEndDate( date )}
+                        />
+                      </div>
+                    </Col>
+                    <Col lg={6}>
+                      <div className="mb-3 mt-3 mt-xl-0">
+                        <Form.Label >Project Priority</Form.Label>
+                        <Typeahead
+                          id="select3"
+                          multiple={false}
+                          onChange={( e ) => setPriority( e[0].label )}
+                          options={[
+                            { id: 1, value: "MD", label: "Medium" },
+                            { id: 2, value: "HI", label: "High" },
+                            { id: 3, value: "LW", label: "Low" },
+                          ]}
+                          placeholder="Select Project Priority..."
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+
+                </Col>
+                <Col xl={6}>
+                  <div className="my-3 mt-xl-0">
+                    {/* <Form.Label className="mb-0">File Uploads</Form.Label>
                     <FormInput
-                      name="name"
-                      label="Project Name"
-                      placeholder="Enter project name"
-                      containerClass={"mb-3"}
-                      register={register}
-                      key="name"
-                      value={title}
-                      onChange={( e ) => setTitle( e.target.value )}
-                      errors={errors}
-                      control={control}
+                      type="file"
+                      name="file"
+                      containerClass={'mb-3'}
+                      key="photo file"
+                      onChange={handleFileChange}
+                    /> */}
+
+                    <FileUploader
+
+                      // onChange={handleFileChange}
+                      // onFileUpload={handleFileChange}
+                      onFileUpload={( file ) => { setFiles( file ) }}
                     />
-
-                    <FormInput
-                      name="overview"
-                      label="Project Overview"
-                      placeholder="Enter some brief about project.."
-                      type="textarea"
-                      rows="5"
-                      containerClass={"mb-3"}
-                      register={register}
-                      value={desc}
-                      onChange={( e ) => setDesc( e.target.value )}
-                      key="overview"
-                      errors={errors}
-                      control={control}
-                    />
-
-                    <div className="mb-3">
-                      <label className="form-label">Project Category</label>
-                      <br />
-                      {category !== null && category !== undefined
-                        &&
-                        category.map( ( e, index ) => {
-
-                          return (
-                            <div className="form-check form-check-inline">
-                              <input
-                                type="radio"
-                                id="customRadio1"
-                                name="projectCategory"
-                                className="form-check-input"
-                                value={e?.id}
-                                onChange={( e ) => setCat( e.target.value )}
-
-                              />
-                              <label
-                                className="form-check-label"
-                                htmlFor="customRadio1"
-                              >
-                                {e?.title}
-                              </label>
-                            </div>
-                          )
-                        } )
-                      }
-
-                    </div>
-
-                    <Row>
-
-                      <Col lg={6}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Due Date</Form.Label>
-                          <HyperDatepicker
-                            hideAddon
-                            value={endDate}
-                            onChange={( date ) => setEndDate( date )}
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col lg={6}>
-                        <Form.Group className="mb-3 mt-3 mt-xl-0">
-                          <Form.Label>Project Priority</Form.Label>
-                          <Typeahead
-                            id="select3"
-                            multiple={false}
-                            onChange={( e ) => setPriority( e[0].label )}
-                            options={[
-                              { id: 1, value: "MD", label: "Medium" },
-                              { id: 2, value: "HI", label: "High" },
-                              { id: 3, value: "LW", label: "Low" },
-                            ]}
-                            placeholder="Select Project Priority..."
-                          />
-                        </Form.Group>
-                      </Col>
-                    </Row>
-
-                  </Col>
-                  <Col xl={6}>
-                    <Form.Group className="my-3 mt-xl-0">
-                      <Form.Label className="mb-0">File Uploads</Form.Label>
-                      <FormInput
-                        type="file"
-                        name="file"
-                        containerClass={'mb-3'}
-                        key="photo file"
-                        onChange={handleFileChange}
-                      />
-
-                      {/* <FileUploader
-
-                          onChange={handleFileChange}
-                        // onFileUpload={handleFileChange}
-                        /> */}
-                    </Form.Group>
+                  </div>
 
 
-                    {/* {( fileUpload || [] ).map( ( f, i ) => {
+                  {/* {( fileUpload || [] ).map( ( f, i ) => {
 
                       return (
                         <Card className="mt-1 mb-0 shadow-none border" key={i + "-file"}>
@@ -391,106 +403,106 @@ const ProjectForm = () => {
                         </Card>
                       );
                     } )} */}
-                    {files.map( ( file, index ) => (
-                      <Card key={index} className="mb-1 shadow-none border">
-                        <div className="p-2">
-                          <Row className="align-items-center">
-                            <div className="col-auto">
-                              <div className="avatar-sm">
-                                <span className="avatar-title badge-soft-primary text-primary rounded">
-                                  {file?.fileFormat}
-                                </span>
-                              </div>
+                  {/* {files.map( ( file, index ) => (
+                    <Card key={index} className="mb-1 shadow-none border">
+                      <div className="p-2">
+                        <Row className="align-items-center">
+                          <div className="col-auto">
+                            <div className="avatar-sm">
+                              <span className="avatar-title badge-soft-primary text-primary rounded">
+                                {file?.fileFormat}
+                              </span>
                             </div>
-                            <div className="col ps-0">
-                              <div className="text-muted fw-bold">
-                                {file?.fileName}
-                              </div>
-                              <p className="mb-0"> {file?.fileSize} MB</p>
+                          </div>
+                          <div className="col ps-0">
+                            <div className="text-muted fw-bold">
+                              {file?.fileName}
                             </div>
-                            <div className="col-auto">
-                              <Link to={file?.url} target="_blank"
-                                className="btn btn-link btn-lg text-muted"
-                              >
-                                <i className="dripicons-download"></i>
-                              </Link>
-                            </div>
-                          </Row>
-                        </div>
-                      </Card>
-                    ) )}
-                    <Form.Group className="mb-3">
-                      <Form.Label>Team Members</Form.Label>
-                      <Typeahead
-                        id="select3"
-                        labelKey="name"
-                        multiple={true}
-                        options={employee}
-                        placeholder="select Team Member..."
-                        onChange={selectTeamMembers}
-                      />
-                      <div className="mt-2">
-                        {( selectedTeamMembers || [] ).map( ( member, index ) => {
-
-                          return (
-                            <OverlayTrigger
-                              key={index}
-                              placement="top"
-                              overlay={
-                                <Tooltip id={member.name}>
-                                  {member?.name}
-                                </Tooltip>
-                              }
+                            <p className="mb-0"> {file?.fileSize} MB</p>
+                          </div>
+                          <div className="col-auto">
+                            <Link to={file?.url} target="_blank"
+                              className="btn btn-link btn-lg text-muted"
                             >
-                              {/* <a
+                              <i className="dripicons-download"></i>
+                            </Link>
+                          </div>
+                        </Row>
+                      </div>
+                    </Card>
+                  ) )} */}
+                  <Form.Group className="mb-3">
+                    <Form.Label>Team Members</Form.Label>
+                    <Typeahead
+                      id="select3"
+                      labelKey="name"
+                      multiple={true}
+                      options={employee}
+                      placeholder="select Team Member..."
+                      onChange={selectTeamMembers}
+                    />
+                    <div className="mt-2">
+                      {( selectedTeamMembers || [] ).map( ( member, index ) => {
+
+                        return (
+                          <OverlayTrigger
+                            key={index}
+                            placement="top"
+                            overlay={
+                              <Tooltip id={member.name}>
+                                {member?.name}
+                              </Tooltip>
+                            }
+                          >
+                            {/* <a
                                 href="/"
                                 title={member.name}
                                 data-original-title="James Anderson"
                                 className="d-inline-block me-1"
                               > */}
 
-                              <label
-                                className="form-check-label"
-                              >
-                                {member?.name}{" ,"}
-                              </label>
+                            <label
+                              className="form-check-label"
+                            >
+                              {member?.name}{" ,"}
+                            </label>
 
 
-                              {/* <img
+                            {/* <img
                                   src={member.image}
                                   className="rounded-circle avatar-xs"
                                   alt="friend"
                                 /> */}
-                              {/* </a> */}
-                            </OverlayTrigger>
-                          );
-                        } )}
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
+                            {/* </a> */}
+                          </OverlayTrigger>
+                        );
+                      } )}
+                    </div>
+                  </Form.Group>
+                </Col>
+              </Row>
 
-                <Row className="mt-2">
-                  <Col className="text-center">
-                    <Button
-                      onClick={() => {
-                        addProject()
-                      }}
-                      variant="success"
-                      className="waves-effect waves-light m-1"
-                    >
-                      <i className="fe-check-circle me-1"></i> Create
-                    </Button>
-                    <Button
-                      variant="light"
-                      className="waves-effect waves-light m-1"
-                      onClick={() => navigate( -1 )}
-                    >
-                      <i className="fe-x me-1"></i> Cancel
-                    </Button>
-                  </Col>
-                </Row>
-              </form>
+              <Row className="mt-2">
+                <Col className="text-center">
+                  <Button
+                    onClick={() => {
+                      addProject()
+                    }}
+                    variant="success"
+                    className="waves-effect waves-light m-1"
+                  >
+                    <i className="fe-check-circle me-1"></i> Create
+                  </Button>
+                  <Button
+                    variant="light"
+                    className="waves-effect waves-light m-1"
+                    onClick={() => navigate( -1 )}
+                  >
+                    <i className="fe-x me-1"></i> Cancel
+                  </Button>
+                </Col>
+              </Row>
+              {/* </form> */}
             </Card.Body>
           </Card>
         </Col>

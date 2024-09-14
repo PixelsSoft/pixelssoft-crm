@@ -2,21 +2,21 @@ import Spinner from './Spinner'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux';
 
-const ViewExpense = ({ show, setShow }) => {
+const ViewExpense = ( { show, setShow } ) => {
     const { loading, singleExpense } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             loading: state.utiltities.loading,
             singleExpense: state.Expense.singleExpense,
-        })
+        } )
     );
 
     return loading ? (
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center vh-100' >
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
-        <Modal show={show} onHide={() => setShow(!show)} dialogClassName="" size="lg" scrollable={false}>
-            <Modal.Header onHide={() => setShow(!show)} closeButton>
+        <Modal show={show} onHide={() => setShow( !show )} dialogClassName="" size="lg" scrollable={false}>
+            <Modal.Header onHide={() => setShow( !show )} closeButton>
                 <h4 className="modal-title">Receipt Preview</h4>
             </Modal.Header>
             <Modal.Body className="text-black px-3" style={{ width: '794px', height: '500px', position: 'relative' }}>
@@ -66,7 +66,7 @@ const ViewExpense = ({ show, setShow }) => {
                 </Row>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="light" onClick={() => setShow(!show)}>
+                <Button variant="light" onClick={() => setShow( !show )}>
                     Close
                 </Button>
             </Modal.Footer>

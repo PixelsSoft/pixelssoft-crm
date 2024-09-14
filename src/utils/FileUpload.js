@@ -73,8 +73,8 @@ export const getFileDetails = ( fileURL ) => {
 };
 
 // Helper function to get file format from content type
-const getFileFormat = ( contentType ) => {
+export const getFileFormat = ( contentType ) => {
     const parts = contentType.split( '/' );
-    return parts[1]; // Return the format part of the content type (e.g., 'pdf' from 'application/pdf')
+    return parts[1];
 };
 

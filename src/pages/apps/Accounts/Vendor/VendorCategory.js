@@ -13,22 +13,22 @@ import { Link } from 'react-router-dom';
 
 export default function VendorCategory() {
     const dispatch = useDispatch();
-    const [title, setTitle] = useState('');
-    const [Des, setDes] = useState('');
-    const [edit, setEdit] = useState(false);
+    const [title, setTitle] = useState( '' );
+    const [Des, setDes] = useState( '' );
+    const [edit, setEdit] = useState( false );
     const [id, setId] = useState();
 
-    const { token, loading, vendorCategory } = useSelector((state) => ({
+    const { token, loading, vendorCategory } = useSelector( ( state ) => ( {
         token: state.Auth.token,
         loading: state.utiltities.loading,
         vendorCategory: state.VendorCategory.venCat,
-    }));
+    } ) );
 
     const reset = () => {
-        setTitle('');
-        setDes('');
+        setTitle( '' );
+        setDes( '' );
         setId();
-        setEdit(false);
+        setEdit( false );
     };
 
     const addVendorCategory = async () => {
@@ -36,23 +36,23 @@ export default function VendorCategory() {
             name: title,
             description: Des
         };
-        if (title === '' || Des === '') {
-            return toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
+        if ( title === '' || Des === '' ) {
+            return toast.error( 'Enter all fields', { position: toast.POSITION.TOP_RIGHT } );
         };
-        dispatch(startLoading());
-        await dispatch(AddVenCat(data, token, reset));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( AddVenCat( data, token, reset ) );
+        dispatch( stopLoading() );
     };
 
-    const ActionColumn = ({ data }) => {
+    const ActionColumn = ( { data } ) => {
         const { name, description, id } = data;
         return (
             <React.Fragment>
-                <Link className="action-icon" onClick={() => editFunc(name, description, id)}>
+                <Link className="action-icon" onClick={() => editFunc( name, description, id )}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => deleteFunc(id)}>
+                <Link className="action-icon" onClick={() => deleteFunc( id )}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -60,17 +60,17 @@ export default function VendorCategory() {
         );
     };
 
-    const deleteFunc = async (id) => {
-        dispatch(startLoading())
-        await dispatch(DeleVenCat(id, token));
-        dispatch(stopLoading());
+    const deleteFunc = async ( id ) => {
+        dispatch( startLoading() )
+        await dispatch( DeleVenCat( id, token ) );
+        dispatch( stopLoading() );
     }
 
-    const editFunc = (name, description, id) => {
-        setTitle(name);
-        setDes(description);
-        setId(id)
-        setEdit(!edit);
+    const editFunc = ( name, description, id ) => {
+        setTitle( name );
+        setDes( description );
+        setId( id )
+        setEdit( !edit );
     }
 
     const columns = [
@@ -88,7 +88,7 @@ export default function VendorCategory() {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ({ row }) => <ActionColumn data={row.original} />,
+            Cell: ( { row } ) => <ActionColumn data={row.original} />,
         },
     ];
 
@@ -113,21 +113,21 @@ export default function VendorCategory() {
             name: title,
             description: Des
         };
-        if (title === '' || Des === '') {
-            return toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
+        if ( title === '' || Des === '' ) {
+            return toast.error( 'Enter all fields', { position: toast.POSITION.TOP_RIGHT } );
         };
-        dispatch(startLoading())
-        await dispatch(UpdateVenCat(id, data, token, reset))
-        dispatch(stopLoading());
+        dispatch( startLoading() )
+        await dispatch( UpdateVenCat( id, data, token, reset ) )
+        dispatch( stopLoading() );
     }
 
     const cancelEdit = async () => {
-        setEdit(false);
+        setEdit( false );
         reset()
     }
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
@@ -146,7 +146,7 @@ export default function VendorCategory() {
                                     <Form.Label>Title</Form.Label>
                                     <Form.Control
                                         value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
+                                        onChange={( e ) => setTitle( e.target.value )}
                                     />
                                 </Form.Group>
                             </Col>
@@ -155,7 +155,7 @@ export default function VendorCategory() {
                                     <Form.Label>Description</Form.Label>
                                     <Form.Control
                                         value={Des}
-                                        onChange={(e) => setDes(e.target.value)}
+                                        onChange={( e ) => setDes( e.target.value )}
                                     />
                                 </Form.Group>
                             </Col>

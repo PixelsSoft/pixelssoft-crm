@@ -13,27 +13,27 @@ import EditVendorModal from '../../../../components/EditVendorModal';
 
 
 export default function Vendor() {
-    const { token, loading, vendors } = useSelector((state) => ({
+    const { token, loading, vendors } = useSelector( ( state ) => ( {
         token: state.Auth.token,
         loading: state.utiltities.loading,
         vendors: state.Vendor.vendors
-    }));
+    } ) );
 
     const dispatch = useDispatch();
-    const [visibleModal, setVisibleModal] = useState(false);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [editModal, setEditModal] = useState(false);
+    const [visibleModal, setVisibleModal] = useState( false );
+    const [name, setName] = useState( '' );
+    const [email, setEmail] = useState( '' );
+    const [phone, setPhone] = useState( '' );
+    const [editModal, setEditModal] = useState( false );
     const [detail, setDetail] = useState();
 
     const toggleModal = () => {
-        setVisibleModal(!visibleModal);
+        setVisibleModal( !visibleModal );
     };
 
     const closeEdit = () => {
         setDetail()
-        setEditModal(!editModal);
+        setEditModal( !editModal );
     };
 
     const columns = [
@@ -56,19 +56,19 @@ export default function Vendor() {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ({ row }) => <ActionColumn data={row.original} />,
+            Cell: ( { row } ) => <ActionColumn data={row.original} />,
         },
     ];
 
-    const ActionColumn = ({ data }) => {
+    const ActionColumn = ( { data } ) => {
         const { id } = data;
         return (
             <React.Fragment>
-                <Link className="action-icon" onClick={() => editFunc(data)}>
+                <Link className="action-icon" onClick={() => editFunc( data )}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => deleteFunc(id)}>
+                <Link className="action-icon" onClick={() => deleteFunc( id )}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -76,15 +76,15 @@ export default function Vendor() {
         );
     };
 
-    const deleteFunc = async (id) => {
-        dispatch(startLoading());
-        await dispatch(DeleVendor(id, token));
-        dispatch(stopLoading())
+    const deleteFunc = async ( id ) => {
+        dispatch( startLoading() );
+        await dispatch( DeleVendor( id, token ) );
+        dispatch( stopLoading() )
     }
 
-    const editFunc = (data) => {
-        setDetail(data);
-        setEditModal(!editModal);
+    const editFunc = ( data ) => {
+        setDetail( data );
+        setEditModal( !editModal );
     }
 
     const sizePerPageList = [
@@ -104,36 +104,36 @@ export default function Vendor() {
     ];
 
     const reset = () => {
-        setName('');
-        setEmail('');
-        setPhone('');
+        setName( '' );
+        setEmail( '' );
+        setPhone( '' );
     }
 
     const addVendor = async () => {
-        if (name === '' || email === '' || phone === '') {
-            return toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
+        if ( name === '' || email === '' || phone === '' ) {
+            return toast.error( 'Enter all fields', { position: toast.POSITION.TOP_RIGHT } );
         }
-        if (!utils.validateEmail(email)) {
-            return toast.error('Enter correct email', { position: toast.POSITION.TOP_RIGHT });
+        if ( !utils.validateEmail( email ) ) {
+            return toast.error( 'Enter correct email', { position: toast.POSITION.TOP_RIGHT } );
         }
         const data = {
             name: name,
             email: email,
             phone: phone,
         };
-        dispatch(startLoading());
-        await dispatch(AddVendor(data, token, reset));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( AddVendor( data, token, reset ) );
+        dispatch( stopLoading() );
     }
 
-    const phoneFunc = (e) => {
-        if (e.target.value > 0) {
-            setPhone(e.target.value)
+    const phoneFunc = ( e ) => {
+        if ( e.target.value > 0 ) {
+            setPhone( e.target.value )
         }
     }
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
@@ -184,7 +184,7 @@ export default function Vendor() {
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    onChange={( e ) => setName( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
@@ -193,7 +193,7 @@ export default function Vendor() {
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={( e ) => setEmail( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
@@ -205,7 +205,7 @@ export default function Vendor() {
                                 <Form.Control
                                     value={phone}
                                     type='number'
-                                    onChange={(e) => phoneFunc(e)}
+                                    onChange={( e ) => phoneFunc( e )}
                                 />
                             </Form.Group>
                         </Col>

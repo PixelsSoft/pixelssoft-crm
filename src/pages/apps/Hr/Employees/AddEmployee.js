@@ -243,7 +243,6 @@ const List = () => {
         if ( event.target.files ) {
             const file = event.target.files[0];
             await handleUpload( dispatch, file ).then( ( res ) => {
-                console.log( "profilePic", res )
                 setProfilePic( res );
             } )
         }

@@ -3,21 +3,21 @@ import PSLogo from '../assets/images/logo-dark.png';
 import { useSelector } from 'react-redux';
 import Spinner from './Spinner';
 
-const ViewInvoiceModal = ({ show, setShow, componentRef }) => {
+const ViewInvoiceModal = ( { show, setShow, componentRef } ) => {
     const { loading, singleInvoice } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             loading: state.utiltities.loading,
             singleInvoice: state.Invoices.singleInvoice,
-        })
+        } )
     );
 
     return loading ? (
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
-        <Modal show={show} onHide={() => setShow(!show)} dialogClassName="" size="lg" scrollable={false}>
-            <Modal.Header onHide={() => setShow(!show)} closeButton>
+        <Modal show={show} onHide={() => setShow( !show )} dialogClassName="" size="lg" scrollable={false}>
+            <Modal.Header onHide={() => setShow( !show )} closeButton>
                 <h4 className="modal-title">Receipt Preview</h4>
             </Modal.Header>
 
@@ -119,7 +119,7 @@ const ViewInvoiceModal = ({ show, setShow, componentRef }) => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="light" onClick={() => setShow(!show)}>
+                <Button variant="light" onClick={() => setShow( !show )}>
                     Close
                 </Button>{' '}
                 {/* <Button onClick={handlePrint}>Print</Button> */}

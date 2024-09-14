@@ -6,24 +6,24 @@ import { UpdateInvoice } from '../redux/Slices/Invoices/Invoices';
 import FormInput from './FormInput';
 import Spinner from './Spinner';
 
-const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, }) => {
+const UpdateInvoiceModal = ( { id, previewModal, setPreviewModal, toggleClose, } ) => {
     const { token, loading, singleInvoice } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             loading: state.utiltities.loading,
             singleInvoice: state.Invoices.singleInvoice,
-        })
+        } )
     );
 
     const dispatch = useDispatch();
-    const [currency, setCurrency] = useState(singleInvoice?.currency_code);
-    const [projectName, setProjectName] = useState(singleInvoice?.title);
-    const [invoiceDate, setInvoiceDate] = useState(singleInvoice?.invoice_date);
-    const [dueDate, setDueDate] = useState(singleInvoice?.due_date);
-    const [price, setPrice] = useState(singleInvoice?.price);
-    const [quantity, setQuantity] = useState(singleInvoice?.quantity);
-    const [description, setDescription] = useState(singleInvoice?.description);
-    const [memo, setMemo] = useState(singleInvoice?.notes);
+    const [currency, setCurrency] = useState( singleInvoice?.currency_code );
+    const [projectName, setProjectName] = useState( singleInvoice?.title );
+    const [invoiceDate, setInvoiceDate] = useState( singleInvoice?.invoice_date );
+    const [dueDate, setDueDate] = useState( singleInvoice?.due_date );
+    const [price, setPrice] = useState( singleInvoice?.price );
+    const [quantity, setQuantity] = useState( singleInvoice?.quantity );
+    const [description, setDescription] = useState( singleInvoice?.description );
+    const [memo, setMemo] = useState( singleInvoice?.notes );
     const componentRef = useRef();
 
     const update = async () => {
@@ -39,26 +39,26 @@ const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, })
             notes: memo,
         };
 
-        dispatch(startLoading())
-        await dispatch(UpdateInvoice(id, data, token));
-        dispatch(stopLoading())
-        setPreviewModal(!previewModal);
+        dispatch( startLoading() )
+        await dispatch( UpdateInvoice( id, data, token ) );
+        dispatch( stopLoading() )
+        setPreviewModal( !previewModal );
     }
 
-    const changeQuant = (e) => {
-        if (e.target.value >= 1) {
-            setQuantity(parseInt(e.target.value))
+    const changeQuant = ( e ) => {
+        if ( e.target.value >= 1 ) {
+            setQuantity( parseInt( e.target.value ) )
         };
     };
 
-    const changePrice = (e) => {
-        if (e.target.value >= 1) {
-            setPrice(parseInt(e.target.value))
+    const changePrice = ( e ) => {
+        if ( e.target.value >= 1 ) {
+            setPrice( parseInt( e.target.value ) )
         };
     };
 
     return loading ? (
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
@@ -76,7 +76,7 @@ const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, })
                         <Form.Label>Currency</Form.Label>
                         <Form.Select
                             value={currency}
-                            onChange={(e) => setCurrency(e.target.value)}
+                            onChange={( e ) => setCurrency( e.target.value )}
                         >
                             <option value={undefined}>Choose...</option>
                             <option value="PKR">Pakistani Rupee (PKR)</option>
@@ -93,7 +93,7 @@ const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, })
                         <Form.Control
                             type="date"
                             value={invoiceDate}
-                            onChange={(e) => setInvoiceDate(e.target.value)}
+                            onChange={( e ) => setInvoiceDate( e.target.value )}
                         />
                     </Form.Group>
 
@@ -102,7 +102,7 @@ const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, })
                         <Form.Control
                             type="date"
                             value={dueDate}
-                            onChange={(e) => setDueDate(e.target.value)}
+                            onChange={( e ) => setDueDate( e.target.value )}
                         />
                     </Form.Group>
                 </Row>
@@ -122,21 +122,21 @@ const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, })
                                 <td>
                                     <Form.Control
                                         value={projectName}
-                                        onChange={(e) => setProjectName(e.target.value)}
+                                        onChange={( e ) => setProjectName( e.target.value )}
                                     />
                                 </td>
                                 <td>
                                     <Form.Control
                                         type="number"
                                         value={quantity}
-                                        onChange={(e) => changeQuant(e)}
+                                        onChange={( e ) => changeQuant( e )}
                                     />
                                 </td>
                                 <td>
                                     <Form.Control
                                         type="number"
                                         value={price}
-                                        onChange={(e) => changePrice(e)}
+                                        onChange={( e ) => changePrice( e )}
                                     />
                                 </td>
                                 <td>${quantity * price}</td>
@@ -152,7 +152,7 @@ const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, })
                                 containerClass={'mb-3'}
                                 key="textarea"
                                 value={description}
-                                onChange={(e) => setDescription(e.target.value)}
+                                onChange={( e ) => setDescription( e.target.value )}
                             />
                         </Col>
                         <Col>
@@ -163,7 +163,7 @@ const UpdateInvoiceModal = ({ id, previewModal, setPreviewModal, toggleClose, })
                                 containerClass={'mb-3'}
                                 key="textarea"
                                 value={memo}
-                                onChange={(e) => setMemo(e.target.value)}
+                                onChange={( e ) => setMemo( e.target.value )}
                             />
                         </Col>
                     </Row>

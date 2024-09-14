@@ -15,18 +15,18 @@ import ViewExpense from '../../../../components/ViewExpense';
 
 export default function Expenses() {
     const { expenseCategory, token, expenses, loading } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             loading: state.utiltities.loading,
             expenseCategory: state.ExpenseCategory.expenseCategory,
             expenses: state.Expense.expense,
-        })
+        } )
     );
 
     const dispatch = useDispatch();
-    const [visibleModal, setVisibleModal] = useState(false);
-    const [openView, setOpenView] = useState(false);
-    const [exModal, setExModal] = useState(false);
+    const [visibleModal, setVisibleModal] = useState( false );
+    const [openView, setOpenView] = useState( false );
+    const [exModal, setExModal] = useState( false );
     const [title, setTitle] = useState();
     const [amount, setAmount] = useState();
     const [date, setDate] = useState();
@@ -37,22 +37,22 @@ export default function Expenses() {
     const [pay, setPay] = useState();
 
     const toggleModal = () => {
-        setVisibleModal(!visibleModal);
+        setVisibleModal( !visibleModal );
     };
 
     /* action column render */
-    const ActionColumn = ({ projectId }) => {
+    const ActionColumn = ( { projectId } ) => {
         return (
             <React.Fragment>
-                <Link className="action-icon" onClick={() => ViewExpenseFunc(projectId)}>
+                <Link className="action-icon" onClick={() => ViewExpenseFunc( projectId )}>
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => editEx(projectId)}>
+                <Link className="action-icon" onClick={() => editEx( projectId )}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => deleteExpense(projectId)}>
+                <Link className="action-icon" onClick={() => deleteExpense( projectId )}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -60,29 +60,29 @@ export default function Expenses() {
         );
     };
 
-    const ViewExpenseFunc = async (id) => {
-        dispatch(startLoading())
-        await dispatch(GetExpenseById(id, token));
-        dispatch(stopLoading());
-        setOpenView(!openView);
+    const ViewExpenseFunc = async ( id ) => {
+        dispatch( startLoading() )
+        await dispatch( GetExpenseById( id, token ) );
+        dispatch( stopLoading() );
+        setOpenView( !openView );
     };
-    dispatch(stopLoading());
+    dispatch( stopLoading() );
 
-    const deleteExpense = async (id) => {
-        dispatch(startLoading())
-        await dispatch(DeleteExpense(id, token));
-        dispatch(stopLoading());
+    const deleteExpense = async ( id ) => {
+        dispatch( startLoading() )
+        await dispatch( DeleteExpense( id, token ) );
+        dispatch( stopLoading() );
     };
 
-    const editEx = async (id) => {
-        dispatch(startLoading());
-        await dispatch(GetExpenseById(id, token));
-        dispatch(stopLoading());
-        setExModal(!exModal);
+    const editEx = async ( id ) => {
+        dispatch( startLoading() );
+        await dispatch( GetExpenseById( id, token ) );
+        dispatch( stopLoading() );
+        setExModal( !exModal );
     };
 
     const toggleEdit = () => {
-        setExModal(!exModal);
+        setExModal( !exModal );
     };
 
     const columns = [
@@ -115,7 +115,7 @@ export default function Expenses() {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ({ row }) => <ActionColumn projectId={row.original.id} />,
+            Cell: ( { row } ) => <ActionColumn projectId={row.original.id} />,
         },
     ];
 
@@ -134,30 +134,30 @@ export default function Expenses() {
         },
     ];
 
-    const HandleFileUpload = (event) => {
-        if (event.target.files) {
+    const HandleFileUpload = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setFile(file);
+            setFile( file );
         }
     };
 
     const addExpense = async () => {
-        if (inDate === undefined || title === undefined || amount === undefined || catId === undefined || pay === undefined || file === undefined) {
-            toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
+        if ( inDate === undefined || title === undefined || amount === undefined || catId === undefined || pay === undefined || file === undefined ) {
+            toast.error( 'Enter all fields', { position: toast.POSITION.TOP_RIGHT } );
             return;
         };
         const formData = new FormData();
-        formData.append('invoice_date', inDate);
-        formData.append('title', title);
-        formData.append('amount', amount);
-        formData.append('expense_category_id', catId);
-        formData.append('pay_by', pay);
-        formData.append('file', file);
-        dispatch(startLoading());
+        formData.append( 'invoice_date', inDate );
+        formData.append( 'title', title );
+        formData.append( 'amount', amount );
+        formData.append( 'expense_category_id', catId );
+        formData.append( 'pay_by', pay );
+        formData.append( 'file', file );
+        dispatch( startLoading() );
 
         var myHeaders = new Headers();
-        myHeaders.append("Accept", "application/json");
-        myHeaders.append("Authorization", `Bearer ${token}`);
+        myHeaders.append( "Accept", "application/json" );
+        myHeaders.append( "Authorization", `Bearer ${token}` );
 
         const options = {
             method: 'POST',
@@ -165,26 +165,26 @@ export default function Expenses() {
             body: formData,
         };
 
-        await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.expense, options)
-            .then(response => response.json())
-            .then((e) => {
-                dispatch(stopLoading());
-                if (e?.status === 200) {
-                    toast.success(e?.message, { position: toast.POSITION.TOP_RIGHT });
-                    dispatch(GetExpense(token));
+        await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.expense, options )
+            .then( response => response.json() )
+            .then( ( e ) => {
+                dispatch( stopLoading() );
+                if ( e?.status === 200 ) {
+                    toast.success( e?.message, { position: toast.POSITION.TOP_RIGHT } );
+                    dispatch( GetExpense( token ) );
                     reset();
                     return
                 } else {
-                    toast.error(e?.message[0], { position: toast.POSITION.TOP_RIGHT });
+                    toast.error( e?.message[0], { position: toast.POSITION.TOP_RIGHT } );
                     return;
                 };
-            })
-            .catch(err => {
-                dispatch(stopLoading());
-                console.log('addExpense err', err);
-                toast.error(err, { position: toast.POSITION.TOP_RIGHT });
-            });
-
+            } )
+            .catch( err => {
+                dispatch( stopLoading() );
+                console.log( 'addExpense err', err );
+                toast.error( err, { position: toast.POSITION.TOP_RIGHT } );
+            } );
+        toggleModal()
         // await dispatch(AddExpense(formData, token, reset));
     };
 
@@ -198,7 +198,7 @@ export default function Expenses() {
     };
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
@@ -216,7 +216,7 @@ export default function Expenses() {
                                     <Form.Control
                                         type="date"
                                         value={date}
-                                        onChange={(e) => setDate(e.target.value)}
+                                        onChange={( e ) => setDate( e.target.value )}
                                     />
                                 </Form.Group>
                             </Col>
@@ -226,7 +226,7 @@ export default function Expenses() {
                                     <Form.Control
                                         type="date"
                                         value={date}
-                                        onChange={(e) => setDate(e.target.value)}
+                                        onChange={( e ) => setDate( e.target.value )}
                                     />
                                 </Form.Group>
                             </Col>
@@ -238,8 +238,8 @@ export default function Expenses() {
                                     className="form-select"
                                     key="select"
                                     value={category}
-                                    onChange={(e) => {
-                                        setCategory(e.target.value);
+                                    onChange={( e ) => {
+                                        setCategory( e.target.value );
                                     }}
                                 >
                                     <option>no Selected</option>
@@ -301,7 +301,7 @@ export default function Expenses() {
                                 <Form.Control
                                     type="date"
                                     value={inDate}
-                                    onChange={(e) => setInDate(e.target.value)}
+                                    onChange={( e ) => setInDate( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
@@ -310,7 +310,7 @@ export default function Expenses() {
                                 <Form.Label>Title</Form.Label>
                                 <Form.Control
                                     value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
+                                    onChange={( e ) => setTitle( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
@@ -321,7 +321,7 @@ export default function Expenses() {
                                 <Form.Label>Amount</Form.Label>
                                 <Form.Control
                                     value={amount}
-                                    onChange={(e) => setAmount(e.target.value)}
+                                    onChange={( e ) => setAmount( e.target.value )}
                                     type='number'
                                 />
                             </Form.Group>
@@ -334,14 +334,14 @@ export default function Expenses() {
                                 className="form-select"
                                 key="select"
                                 value={catId}
-                                onChange={(e) => setCatId(e.target.value)}
+                                onChange={( e ) => setCatId( e.target.value )}
                             >
                                 <option>no Selected</option>
-                                {expenseCategory?.map(val => {
+                                {expenseCategory?.map( val => {
                                     return (
-                                        <option key={val.id} value={val.id}>{val.name}</option>
+                                        <option key={val.id} value={val.id}>{val.title}</option>
                                     );
-                                })}
+                                } )}
                             </FormInput>
                         </Col>
                     </Row>
@@ -354,7 +354,7 @@ export default function Expenses() {
                                 className="form-select"
                                 key="select"
                                 value={pay}
-                                onChange={(e) => setPay(e.target.value)}
+                                onChange={( e ) => setPay( e.target.value )}
                             >
                                 <option>Cash</option>
                                 <option>Online</option>

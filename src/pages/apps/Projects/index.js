@@ -30,14 +30,14 @@ import {
 } from "../../../redux/Slices/Project/Project";
 
 // single project
-const SingleProject = (props) => {
+const SingleProject = ( props ) => {
   const project = props.project || {};
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
 
 
-  const { token } = useSelector((state) => ({
+  const { token } = useSelector( ( state ) => ( {
     token: state.Auth.token,
-  }));
+  } ) );
 
   const navigate = useNavigate();
   return (
@@ -56,9 +56,9 @@ const SingleProject = (props) => {
               <i className="mdi mdi-pencil me-1"></i>Edit
             </Dropdown.Item>
             <Dropdown.Item
-          
-              onClick={async() => {
-               await dispatch( DeleteProject(project?.id, token, navigate));
+
+              onClick={async () => {
+                await dispatch( DeleteProject( project?.id, token, navigate ) );
               }}
             >
               <i className="mdi mdi-delete me-1"></i>Delete
@@ -72,15 +72,16 @@ const SingleProject = (props) => {
           </Dropdown.Menu>
         </Dropdown>
         <h4 className="mt-0">
-        <Link
-  to={{
-    pathname: `/apps/projects/${project?.id}/details`,
-    state: { project }, // pass project data here
-  }}
-  className="text-dark"
->
-  {project?.title}
-</Link>
+          <Link
+            to={{
+              pathname: `/apps/projects/${project?.id}/details`,
+              state: { project }, // pass project data here
+            }}
+
+            className="text-dark"
+          >
+            {project?.title}
+          </Link>
         </h4>
         <p className="text-muted text-uppercase">
           <i className="mdi mdi-account-circle"></i>{" "}
@@ -116,7 +117,7 @@ const SingleProject = (props) => {
           </span>
         </p>
         <div className="avatar-group mb-3">
-          {(project?.project_Teams || []).map((member, index) => {
+          {( project?.project_Teams || [] ).map( ( member, index ) => {
             return (
               <OverlayTrigger
                 key={index}
@@ -136,7 +137,7 @@ const SingleProject = (props) => {
                 </Link>
               </OverlayTrigger>
             );
-          })}
+          } )}
         </div>
         <p className="mb-2 fw-semibold">
           Task completed:
@@ -155,23 +156,21 @@ const SingleProject = (props) => {
 };
 
 const Projects = () => {
-  const [projects, setprojects] = useState([]);
+  const [projects, setprojects] = useState( [] );
   const dispatch = useDispatch();
 
-  const { loading, token, project } = useSelector((state) => ({
+  const { loading, token, project } = useSelector( ( state ) => ( {
     loading: state.utiltities.loading,
     token: state.Auth.token,
     project: state.Projects.project,
-  }));
+  } ) );
 
 
   const getProject = async () => {
-    await dispatch(GetProject(token));
+    await dispatch( GetProject( token ) );
   };
 
-  useEffect(() => {
-    setprojects(project);
-  }, []);
+
   // const getProject = async () => {
   //   try {
 
@@ -254,13 +253,13 @@ const Projects = () => {
       </Row>
 
       <Row>
-        {(projects || []).map((project, i) => {
+        {( project || [] ).map( ( project, i ) => {
           return (
             <Col lg={4} key={"proj-" + project.id}>
               <SingleProject project={project} />
             </Col>
           );
-        })}
+        } )}
       </Row>
       <Row>
         <Col>

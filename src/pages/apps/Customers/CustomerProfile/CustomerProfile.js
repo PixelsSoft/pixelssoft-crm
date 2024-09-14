@@ -72,25 +72,25 @@ const CustomerProfile = () => {
     const dispatch = useDispatch();
 
     const { loading, token, SingleCustomer } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             loading: state.utiltities.loading,
             token: state.Auth.token,
             SingleCustomer: state.Customer.singleCustomer
-        })
+        } )
     );
 
     const getSingleProfile = async () => {
-        dispatch(startLoading());
-        dispatch(GetSingleCustomer(profileId, token));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        dispatch( GetSingleCustomer( profileId, token ) );
+        dispatch( stopLoading() );
     };
 
-    useEffect(() => {
+    useEffect( () => {
         getSingleProfile();
-    }, [profileId]);
+    }, [profileId] );
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (

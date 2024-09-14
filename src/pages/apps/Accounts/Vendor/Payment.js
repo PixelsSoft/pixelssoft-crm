@@ -12,46 +12,46 @@ import { AddVendorPayment, DeleVendorPayment, GetVendorById } from '../../../../
 import EditVendorPaymentModal from '../../../../components/EditVendorPaymentModal';
 
 export default function Payments() {
-    const { vendorPay, token, loading, vendors, vendorCategory } = useSelector((state) => ({
+    const { vendorPay, token, loading, vendors, vendorCategory } = useSelector( ( state ) => ( {
         token: state.Auth.token,
         loading: state.utiltities.loading,
         vendors: state.Vendor.vendors,
         vendorCategory: state.VendorCategory.venCat,
         vendorPay: state.VendorPayment.vendorPayments,
-    }));
+    } ) );
 
     const dispatch = useDispatch();
-    const [visibleModal, setVisibleModal] = useState(false);
-    const [title, setTitle] = useState('');
-    const [desc, setDesc] = useState('');
-    const [amount, setAmount] = useState('');
-    const [date, setDate] = useState('');
-    const [category, setCategory] = useState('');
-    const [file, setFile] = useState('');
-    const [vendorId, setVendorId] = useState('')
-    const [vendorCatId, setVendorCatId] = useState('')
-    const [edit, setEdit] = useState(false);
+    const [visibleModal, setVisibleModal] = useState( false );
+    const [title, setTitle] = useState( '' );
+    const [desc, setDesc] = useState( '' );
+    const [amount, setAmount] = useState( '' );
+    const [date, setDate] = useState( '' );
+    const [category, setCategory] = useState( '' );
+    const [file, setFile] = useState( '' );
+    const [vendorId, setVendorId] = useState( '' )
+    const [vendorCatId, setVendorCatId] = useState( '' )
+    const [edit, setEdit] = useState( false );
     const [id, setId] = useState();
 
     const reset = () => {
-        setTitle('');
-        setDesc('');
-        setAmount('');
-        setDate('');
-        setCategory('');
-        setFile('');
-        setVendorId('');
-        setVendorCatId('');
-        setVisibleModal(false);
+        setTitle( '' );
+        setDesc( '' );
+        setAmount( '' );
+        setDate( '' );
+        setCategory( '' );
+        setFile( '' );
+        setVendorId( '' );
+        setVendorCatId( '' );
+        setVisibleModal( false );
         setId()
     }
 
     const toggleModal = () => {
-        setVisibleModal(!visibleModal);
+        setVisibleModal( !visibleModal );
     };
 
     const toggleClose = () => {
-        setEdit(false);
+        setEdit( false );
         setId();
     }
 
@@ -90,19 +90,19 @@ export default function Payments() {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ({ row }) => <ActionColumn data={row.original} />,
+            Cell: ( { row } ) => <ActionColumn data={row.original} />,
         },
     ];
 
-    const ActionColumn = ({ data }) => {
+    const ActionColumn = ( { data } ) => {
         const { id } = data;
         return (
             <React.Fragment>
-                <Link className="action-icon" onClick={() => editFunc(id)}>
+                <Link className="action-icon" onClick={() => editFunc( id )}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => deleteFunc(id)}>
+                <Link className="action-icon" onClick={() => deleteFunc( id )}>
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
@@ -110,18 +110,18 @@ export default function Payments() {
         );
     };
 
-    const editFunc = async (id) => {
-        dispatch(startLoading());
-        await dispatch(GetVendorById(id, token));
-        setEdit(true);
-        setId(id);
-        dispatch(stopLoading());
+    const editFunc = async ( id ) => {
+        dispatch( startLoading() );
+        await dispatch( GetVendorById( id, token ) );
+        setEdit( true );
+        setId( id );
+        dispatch( stopLoading() );
     }
 
-    const deleteFunc = async (id) => {
-        dispatch(startLoading());
-        await dispatch(DeleVendorPayment(id, token));
-        dispatch(stopLoading());
+    const deleteFunc = async ( id ) => {
+        dispatch( startLoading() );
+        await dispatch( DeleVendorPayment( id, token ) );
+        dispatch( stopLoading() );
     }
 
     const sizePerPageList = [
@@ -140,10 +140,10 @@ export default function Payments() {
 
     ];
 
-    const HandleFileUpload = (event) => {
-        if (event.target.files) {
+    const HandleFileUpload = ( event ) => {
+        if ( event.target.files ) {
             const file = event.target.files[0];
-            setFile(file);
+            setFile( file );
         }
     };
 
@@ -159,7 +159,7 @@ export default function Payments() {
             vendorId === '' ||
             vendorId === 'no Selected'
         ) {
-            return toast.error('Enter all fields', { position: toast.POSITION.TOP_RIGHT });
+            return toast.error( 'Enter all fields', { position: toast.POSITION.TOP_RIGHT } );
         }
         const data = {
             date: date,
@@ -170,19 +170,19 @@ export default function Payments() {
             amount: amount,
             file: file,
         }
-        dispatch(startLoading());
-        await dispatch(AddVendorPayment(data, token, reset));
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( AddVendorPayment( data, token, reset ) );
+        dispatch( stopLoading() );
     }
 
-    const numFunc = (e) => {
-        if (e.target.value > 0) {
-            setAmount(e.target.value);
+    const numFunc = ( e ) => {
+        if ( e.target.value > 0 ) {
+            setAmount( e.target.value );
         }
     }
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
@@ -202,8 +202,8 @@ export default function Payments() {
                                     className="form-select"
                                     key="select"
                                     value={category}
-                                    onChange={(e) => {
-                                        setCategory(e.target.value);
+                                    onChange={( e ) => {
+                                        setCategory( e.target.value );
                                     }}
                                 >
                                     <option>no Selected</option>
@@ -215,7 +215,7 @@ export default function Payments() {
                                     <Form.Control
                                         type="date"
                                         value={date}
-                                        onChange={(e) => setDate(e.target.value)}
+                                        onChange={( e ) => setDate( e.target.value )}
                                     />
                                 </Form.Group>
                             </Col>
@@ -225,7 +225,7 @@ export default function Payments() {
                                     <Form.Control
                                         type="date"
                                         value={date}
-                                        onChange={(e) => setDate(e.target.value)}
+                                        onChange={( e ) => setDate( e.target.value )}
                                     />
                                 </Form.Group>
                             </Col>
@@ -237,8 +237,8 @@ export default function Payments() {
                                     className="form-select"
                                     key="select"
                                     value={category}
-                                    onChange={(e) => {
-                                        setCategory(e.target.value);
+                                    onChange={( e ) => {
+                                        setCategory( e.target.value );
                                     }}
                                 >
                                     <option>no Selected</option>
@@ -303,7 +303,7 @@ export default function Payments() {
                                 <Form.Control
                                     type="date"
                                     value={date}
-                                    onChange={(e) => setDate(e.target.value)}
+                                    onChange={( e ) => setDate( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
@@ -315,16 +315,16 @@ export default function Payments() {
                                 className="form-select"
                                 key="select"
                                 value={vendorId}
-                                onChange={(e) => {
-                                    setVendorId(e.target.value);
+                                onChange={( e ) => {
+                                    setVendorId( e.target.value );
                                 }}
                             >
                                 <option>no Selected</option>
-                                {vendors?.map(val => {
+                                {vendors?.map( val => {
                                     return (
                                         <option value={val?.id} key={val?.id}>{val?.name}</option>
                                     )
-                                })}
+                                } )}
                             </FormInput>
                         </Col>
 
@@ -335,7 +335,7 @@ export default function Payments() {
                                 <Form.Label>Title</Form.Label>
                                 <Form.Control
                                     value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
+                                    onChange={( e ) => setTitle( e.target.value )}
                                 />
                             </Form.Group>
                         </Col>
@@ -345,7 +345,7 @@ export default function Payments() {
                                 <Form.Control
                                     value={amount}
                                     type='number'
-                                    onChange={(e) => numFunc(e)}
+                                    onChange={( e ) => numFunc( e )}
                                 />
                             </Form.Group>
                         </Col>
@@ -357,16 +357,16 @@ export default function Payments() {
                                 className="form-select"
                                 key="select"
                                 value={vendorCatId}
-                                onChange={(e) => {
-                                    setVendorCatId(e.target.value);
+                                onChange={( e ) => {
+                                    setVendorCatId( e.target.value );
                                 }}
                             >
                                 <option>no Selected</option>
-                                {vendorCategory?.map(val => {
+                                {vendorCategory?.map( val => {
                                     return (
                                         <option value={val?.id} key={val?.id}>{val?.name}</option>
                                     )
-                                })}
+                                } )}
                             </FormInput>
                         </Col>
                     </Row>
@@ -377,7 +377,7 @@ export default function Payments() {
                         containerClass={'mb-3'}
                         key="textarea"
                         value={desc}
-                        onChange={(e) => setDesc(e.target.value)}
+                        onChange={( e ) => setDesc( e.target.value )}
                     />
                     <Col>
                         <Form.Group as={Col} controlId="formGridPassword">

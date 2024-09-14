@@ -20,7 +20,7 @@ export const AddnewCategory = ( data, token ) => async ( dispatch ) => {
         const response = await CategoryService.createCategory( data, token );
         if ( response.status === 200 ) {
             toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
-            dispatch( GetCategory( token ) );
+            await dispatch( GetCategory( token ) );
         } else {
             toast.error( response?.detail, { position: toast.POSITION.TOP_RIGHT } );
         };

@@ -46,7 +46,7 @@ const ViewLeadModal = ( { lead, visibleModal, toggleModal } ) => {
 
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (

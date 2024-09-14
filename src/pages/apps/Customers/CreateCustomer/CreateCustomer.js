@@ -12,51 +12,51 @@ import utils from '../../../../utils/utils';
 const CreateCustomer = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const [email, setEmail] = useState('');
-    const [fullName, setFullName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [title, setTitle] = useState('');
-    const [paidAm, setPaidAm] = useState(0);
-    const [total, setTotal] = useState(0);
-    const [platform, setPlatform] = useState('');
-    const [salePerson, setSalePerson] = useState('');
+    const [email, setEmail] = useState( '' );
+    const [fullName, setFullName] = useState( '' );
+    const [phoneNumber, setPhoneNumber] = useState( '' );
+    const [title, setTitle] = useState( '' );
+    const [paidAm, setPaidAm] = useState( 0 );
+    const [total, setTotal] = useState( 0 );
+    const [platform, setPlatform] = useState( '' );
+    const [salePerson, setSalePerson] = useState( '' );
 
     const reset = () => {
-        setEmail('');
-        setFullName('');
-        setPhoneNumber('');
-        setTitle('');
-        setPlatform('');
-        setSalePerson('');
-        setPaidAm(0);
-        setTotal(0);
+        setEmail( '' );
+        setFullName( '' );
+        setPhoneNumber( '' );
+        setTitle( '' );
+        setPlatform( '' );
+        setSalePerson( '' );
+        setPaidAm( 0 );
+        setTotal( 0 );
     }
 
     const { token, user, category, plat, loading } = useSelector(
-        (state) => ({
+        ( state ) => ( {
             token: state.Auth.token,
             user: state.Auth,
             category: state.Category.category,
             plat: state.Platform.platform,
             loading: state.utiltities.loading,
-        })
+        } )
     );
 
-    const onSubmit = async (e) => {
+    const onSubmit = async ( e ) => {
         e.preventDefault();
 
-        if (!email) {
-            return toast.error('Enter Email', { position: toast.POSITION.TOP_RIGHT });
+        if ( !email ) {
+            return toast.error( 'Enter Email', { position: toast.POSITION.TOP_RIGHT } );
         };
-        if (!platform) {
-            return toast.error('Select Platform', { position: toast.POSITION.TOP_RIGHT });
+        if ( !platform ) {
+            return toast.error( 'Select Platform', { position: toast.POSITION.TOP_RIGHT } );
         };
-        if (!salePerson) {
-            return toast.error('Select Project Category', { position: toast.POSITION.TOP_RIGHT });
+        if ( !salePerson ) {
+            return toast.error( 'Select Project Category', { position: toast.POSITION.TOP_RIGHT } );
         };
 
-        if (!utils.validateEmail(email)) {
-            return toast.error('Enter correct email', { position: toast.POSITION.TOP_RIGHT });
+        if ( !utils.validateEmail( email ) ) {
+            return toast.error( 'Enter correct email', { position: toast.POSITION.TOP_RIGHT } );
         };
 
         const data = {
@@ -65,46 +65,46 @@ const CreateCustomer = () => {
             name: fullName,
             phone: phoneNumber,
             project_title: title,
-            paid_amount: JSON.parse(paidAm),
-            total_amount: JSON.parse(total),
+            paid_amount: JSON.parse( paidAm ),
+            total_amount: JSON.parse( total ),
             platform: platform,
             category_id: salePerson
         };
-        dispatch(startLoading());
-        await dispatch(CreateCustomerAPI(data, token, reset))
-        dispatch(stopLoading());
+        dispatch( startLoading() );
+        await dispatch( CreateCustomerAPI( data, token, reset ) )
+        dispatch( stopLoading() );
     };
 
-    const selectPlat = (e) => {
+    const selectPlat = ( e ) => {
         e.preventDefault();
-        setPlatform(e.target.value);
+        setPlatform( e.target.value );
     };
 
-    const changeCat = (e) => {
+    const changeCat = ( e ) => {
         e.preventDefault();
-        setSalePerson(e.target.value);
+        setSalePerson( e.target.value );
     };
 
-    const phoneFunc = (e) => {
-        if (e.target.value >= 0) {
-            setPhoneNumber(e.target.value);
+    const phoneFunc = ( e ) => {
+        if ( e.target.value >= 0 ) {
+            setPhoneNumber( e.target.value );
         }
     }
 
-    const paidFunc = (e) => {
-        if (e.target.value >= 0 && e.target.value <= total) {
-            setPaidAm(e.target.value);
+    const paidFunc = ( e ) => {
+        if ( e.target.value >= 0 && e.target.value <= total ) {
+            setPaidAm( e.target.value );
         }
     }
 
-    const totalFunc = (e) => {
-        if (e.target.value >= 0) {
-            setTotal(e.target.value);
+    const totalFunc = ( e ) => {
+        if ( e.target.value >= 0 ) {
+            setTotal( e.target.value );
         }
     }
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (
@@ -138,13 +138,13 @@ const CreateCustomer = () => {
                                             type="text"
                                             placeholder="Email"
                                             value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={( e ) => setEmail( e.target.value )}
                                         />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridPassword">
                                         <Form.Label>Full Name</Form.Label>
-                                        <Form.Control value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                                        <Form.Control value={fullName} onChange={( e ) => setFullName( e.target.value )} />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
@@ -152,7 +152,7 @@ const CreateCustomer = () => {
                                         <Form.Control
                                             type='number'
                                             value={phoneNumber}
-                                            onChange={(e) => phoneFunc(e)}
+                                            onChange={( e ) => phoneFunc( e )}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -163,7 +163,7 @@ const CreateCustomer = () => {
                                         <Form.Label>Project Title</Form.Label>
                                         <Form.Control
                                             value={title}
-                                            onChange={(e) => setTitle(e.target.value)}
+                                            onChange={( e ) => setTitle( e.target.value )}
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
@@ -171,7 +171,7 @@ const CreateCustomer = () => {
                                         <Form.Control
                                             type='number'
                                             value={paidAm}
-                                            onChange={(e) => paidFunc(e)}
+                                            onChange={( e ) => paidFunc( e )}
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
@@ -179,7 +179,7 @@ const CreateCustomer = () => {
                                         <Form.Control
                                             type='number'
                                             value={total}
-                                            onChange={(e) => totalFunc(e)}
+                                            onChange={( e ) => totalFunc( e )}
                                         />
                                     </Form.Group>
 
@@ -188,27 +188,27 @@ const CreateCustomer = () => {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Platform</Form.Label>
-                                        <Form.Select onChange={(e) => selectPlat(e)}>
+                                        <Form.Select onChange={( e ) => selectPlat( e )}>
                                             <option>Choose...</option>
-                                            {plat.map(val => {
+                                            {plat.map( val => {
                                                 return (
                                                     <option key={val.id}>{val.title}</option>
                                                 );
-                                            })}
+                                            } )}
                                         </Form.Select>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridState">
                                         <Form.Label>Project Category</Form.Label>
                                         <Form.Select
-                                            onChange={(e) => changeCat(e)}
+                                            onChange={( e ) => changeCat( e )}
                                         >
                                             <option>Choose...</option>
-                                            {category.map(val => {
+                                            {category.map( val => {
                                                 return (
                                                     <option key={val.id} value={val.id}>{val.title}</option>
                                                 );
-                                            })}
+                                            } )}
                                         </Form.Select>
                                     </Form.Group>
                                 </Row>
@@ -219,7 +219,7 @@ const CreateCustomer = () => {
                                             type="button"
                                             className="waves-effect waves-light"
                                             variant="outline-primary"
-                                            onClick={() => navigate('/apps/customers')}
+                                            onClick={() => navigate( '/apps/customers' )}
                                         >
                                             Cancel
                                         </Button>

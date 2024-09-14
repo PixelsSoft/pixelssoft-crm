@@ -13,14 +13,14 @@ import RevenueHistory from "./RevenueHistory";
 import { balances, revenueHistory } from "./data";
 
 const Dashboard1 = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState( new Date() );
 
   /*
    * handle date change
    */
-  const onDateChange = (date: Date) => {
-    if (date) {
-      setSelectedDate(date);
+  const onDateChange = ( date ) => {
+    if ( date ) {
+      setSelectedDate( date );
     }
   };
 
@@ -35,8 +35,8 @@ const Dashboard1 = () => {
                   <HyperDatepicker
                     value={selectedDate}
                     inputClass="border"
-                    onChange={(date) => {
-                      onDateChange(date);
+                    onChange={( date ) => {
+                      onDateChange( date );
                     }}
                   />
                 </div>
