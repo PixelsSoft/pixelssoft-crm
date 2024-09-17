@@ -27,13 +27,13 @@ import { tasks, TaskTypes } from "../../Tasks/Board/data";
 
 import { useDispatch, useSelector } from "react-redux";
 import { CreateBoard, CreateTask, DeleteBoard, DeleteTask, DropTask, EditBoard, EditTask, GetBoard } from "../../../../redux/Slices/Project/Project";
-import { startLoading, stopLoading } from "../../../../redux/Slices/utiltities/Utiltities";
+
 import Spinner from "../../../../components/Spinner";
 
 const Tasks = ( props ) => {
   const { data } = props
-  const { loading, token, Boards } = useSelector( ( state ) => ( {
-    loading: state.utiltities.loading,
+  const {  token, Boards } = useSelector( ( state ) => ( {
+   
     token: state.Auth.token,
     Boards: state.Projects.Boards,
   } ) );
@@ -86,6 +86,7 @@ const Tasks = ( props ) => {
   const [newBoardModal, setNewBoardModal] = useState( false );
   const [editTask, setEditTask] = useState( false );
   const [editBoard, setEditBoard] = useState( false );
+  const [loading, setLoading] = useState( false );
 
 
 
@@ -109,7 +110,8 @@ const Tasks = ( props ) => {
 
   const handleNewBoard = async () => {
     try {
-      dispatch( startLoading() )
+      setLoading(true)
+
 
       const formdata = new FormData()
       formdata.append( "id", data?.id )
@@ -127,11 +129,12 @@ const Tasks = ( props ) => {
       setBoardDes( "" )
       setBoardTitle( "" )
       setNewBoardModal( false );
-      dispatch( stopLoading() )
+      setLoading(false)
+
 
 
     } catch ( error ) {
-      dispatch( stopLoading() )
+      setLoading(false)
 
 
     }
@@ -141,20 +144,23 @@ const Tasks = ( props ) => {
   // ================================================================delete board================================================
   const onDeleteBoard = async ( id ) => {
     try {
-      dispatch( startLoading() )
+     
+      setLoading(true)
 
       await dispatch( DeleteBoard( token, id, data?.id ) )
-      dispatch( stopLoading() )
+      setLoading(false)
+
 
     } catch ( error ) {
-      dispatch( stopLoading() )
+      setLoading(false)
 
     }
   }
   // ================================================================delete board================================================
   const onEditBoard = async ( board ) => {
     try {
-      dispatch( startLoading() )
+      setLoading(true)
+
 
       setEditBoard( true )
       setBoardTitle( board?.title )
@@ -162,10 +168,10 @@ const Tasks = ( props ) => {
       setSelectedBoardId( board?.id )
       toggleNewBoardModal()
       // await dispatch( DeleteBoard( token, id, data?.id ) )
-      dispatch( stopLoading() )
+      setLoading(false)
 
     } catch ( error ) {
-      dispatch( stopLoading() )
+      setLoading(false)
 
     }
   }
@@ -175,7 +181,8 @@ const Tasks = ( props ) => {
   const onDragEnd = async ( result ) => {
 
     try {
-      dispatch( startLoading() )
+      setLoading(true)
+
 
       const { source, destination } = result;
       const boardId = Number( source?.droppableId );
@@ -188,10 +195,10 @@ const Tasks = ( props ) => {
       formData.append( 'BoardId', destination?.droppableId );
       formData.append( 'taskId', taskId );
       await dispatch( DropTask( formData, token, data?.id ) )
-      dispatch( stopLoading() )
+      setLoading(false)
 
     } catch ( error ) {
-      dispatch( stopLoading() )
+      setLoading(false)
 
     }
 
@@ -201,7 +208,8 @@ const Tasks = ( props ) => {
   const onEditTask = async ( task ) => {
 
     try {
-      dispatch( startLoading() )
+      setLoading(true)
+
 
       setEditTask( true )
       setselectedTaskId( task.id );
@@ -211,10 +219,10 @@ const Tasks = ( props ) => {
       // setEditorState( task?.desciption )
       setPriority( task?.priority )
       toggleNewTaskModal()
-      dispatch( stopLoading() )
+      setLoading(false)
 
     } catch ( error ) {
-      dispatch( stopLoading() )
+      setLoading(false)
 
     }
   }
@@ -225,8 +233,7 @@ const Tasks = ( props ) => {
 
   const handleNewTask = async () => {
     try {
-      dispatch( startLoading() )
-
+      setLoading(true)
       const contentState = editorState.getCurrentContent();
       const rawContent = convertToRaw( contentState );
       const html = draftToHtml( rawContent );
@@ -253,10 +260,10 @@ const Tasks = ( props ) => {
       setDueDate( new Date() )
 
       setNewTaskModal( false );
-      dispatch( stopLoading() )
+      setLoading(false)
 
     } catch ( error ) {
-      dispatch( stopLoading() )
+      setLoading(false)
 
     }
 
@@ -265,13 +272,14 @@ const Tasks = ( props ) => {
   // ================================================================delete Task================================================
   const onDeleteTask = async ( id ) => {
     try {
-      dispatch( startLoading() )
+      setLoading(true)
+
 
       await dispatch( DeleteTask( token, id, data?.id ) )
-      dispatch( stopLoading() )
+      setLoading(false)
 
     } catch ( error ) {
-      dispatch( stopLoading() )
+      setLoading(false)
 
     }
   }
@@ -299,7 +307,7 @@ const Tasks = ( props ) => {
 
       <Row>
         <DragDropContext onDragEnd={onDragEnd}>
-          {Boards.map( ( board ) => (
+          {(Boards||[]).map( ( board ) => (
             <Droppable key={board.id} droppableId={board.id.toString()}>
               {( provided, snapshot ) => (
                 <Col lg={4} ref={provided.innerRef}>

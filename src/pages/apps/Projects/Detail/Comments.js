@@ -99,7 +99,7 @@ const Comments = ( props ) => {
             </div>
 
             <div className="mt-2">
-              {( commnents ).map( ( item ) => {
+              {( commnents ||[]).map( ( item ) => {
 
                 return (
                   <>
