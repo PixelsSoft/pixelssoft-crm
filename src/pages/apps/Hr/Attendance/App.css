@@ -1,0 +1,34 @@
+Add hover effect for table row
+.table-row-hover:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Add custom colors for statuses */
+  .text-success {
+    color: green !important;
+  }
+  
+  .text-danger {
+    color: red !important;
+  }
+  
+  .text-primary {
+    color: blue !important;
+  }
+  
+  /* Animation */
+  .animate {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  

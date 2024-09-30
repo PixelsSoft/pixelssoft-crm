@@ -26,6 +26,8 @@ const Landing = React.lazy(() => import("../pages/landing/"));
 
 // dashboard
 const Dashboard1 = React.lazy(() => import("../pages/dashboard/Dashboard1/"));
+const TrackingMyteam = React.lazy(() => import("../pages/apps/Tracking/MyTeam/index"));
+const TrackingMember = React.lazy(() => import("../pages/apps/Tracking/Member/index"));
 
 // apps
 const Invoice = React.lazy(
@@ -39,6 +41,9 @@ const Employees = React.lazy(
 );
 const AddEmployee = React.lazy(
   () => import("../pages/apps/Hr/Employees/AddEmployee")
+);
+const Attendance = React.lazy(
+  () => import("../pages/apps/Hr/Attendance/Attendance")
 );
 const Bids = React.lazy(() => import("../pages/apps/bidding/bids"));
 const Leads = React.lazy(() => import("../pages/apps/Leads/Leads"));
@@ -247,6 +252,23 @@ const dashboardRoutes: RoutesProps = {
   element: <Dashboard1 />,
 };
 // Target
+const TrackingRoutes: RoutesProps = {
+  path: "/apps/myTeam",
+      name: "myTeam",
+  icon: "airplay",
+  header: "Navigation",
+  element: <TrackingMyteam />,
+  children: [
+    
+    {
+      path: "/apps/myTeam/:id",
+      name: "myTeam",
+      element: <TrackingMember />,
+      route: PrivateRoute,
+    },
+  ],
+};
+// Target
 const TargetRoutes: RoutesProps = {
   path: "/apps/target",
   name: "target",
@@ -378,6 +400,12 @@ const hrRoutes: RoutesProps = {
       path: "/apps/hr/editEmployee/:employeeId",
       name: "Edit Employee",
       element: <EditEmployee />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/hr/Attendance",
+      name: "Attendance",
+      element: <Attendance />,
       route: PrivateRoute,
     },
   ],
@@ -754,6 +782,7 @@ const fileAppRoutes = {
 
 const appRoutes = [
   TargetRoutes,
+  TrackingRoutes,
   InvoiceRoutes,
   commissionRoutes,
   customerRoutes,

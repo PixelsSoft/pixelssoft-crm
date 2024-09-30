@@ -48,7 +48,7 @@ const MENU_ITEMS = [
       {
         key: "my-team",
         label: "My team",
-        url: "/apps/my-team",
+        url: "/apps/myteam",
         parentKey: "tracking",
       },
       {
