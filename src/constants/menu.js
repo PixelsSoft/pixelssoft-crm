@@ -259,6 +259,12 @@ const MENU_ITEMS = [
       //   parentKey: "administartor",
       // },
       {
+        key: "emailSetup",
+        label: "Email Setup",
+        url: "/apps/administartor/emailSetup",
+        parentKey: "administartor",
+      },
+      {
         key: "rolePermission",
         label: "Role Permission",
         url: "/apps/administartor/rolePermission",
@@ -279,6 +285,12 @@ const MENU_ITEMS = [
     icon: "mail",
     roles: ["SuperAdmin"],
     children: [
+      {
+        key: "bankAccount",
+        label: "Bank Account",
+        url: "/apps/account/bankAccount",
+        parentKey: "account",
+      },
       {
         key: "expense",
         label: "Expense",

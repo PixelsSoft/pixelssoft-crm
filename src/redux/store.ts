@@ -22,6 +22,7 @@ import Expense from './Slices/Expense/expense';
 import VendorCategory from './Slices/VendorCategory/VendorCategory';
 import Vendor from './Slices/Vendor/Vendor';
 import VendorPayment from './Slices/VendorPayment/VendorPayment';
+import Banks from './Slices/Bank/banks';
 
 const persistConfig = {
   key: 'root',
@@ -47,7 +48,8 @@ const reducer = combineReducers({
   VendorCategory: VendorCategory,
   Vendor: Vendor,
   VendorPayment: VendorPayment,
-  PortalProjects:PortalProjects
+  PortalProjects:PortalProjects,
+  Banks:Banks
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

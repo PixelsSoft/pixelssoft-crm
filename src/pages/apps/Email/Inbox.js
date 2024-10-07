@@ -21,7 +21,7 @@ import LeftBar from "./LeftBar";
 import { emails as mails } from "./data";
 
 // emails list
-const EmailsList = (props: { emails: EmailItems[] }) => {
+const EmailsList = (props) => {
   const emails = props.emails || [];
 
   return (
@@ -71,30 +71,19 @@ const EmailsList = (props: { emails: EmailItems[] }) => {
   );
 };
 
-interface EmailItems {
-  id: number;
-  from_name: string;
-  from_email: string;
-  subject: string;
-  teaser: string;
-  number_of_reply: number;
-  is_important: boolean;
-  is_read: boolean;
-  time: string;
-  date: string;
-}
+
 
 // Inbox
 const Inbox = () => {
-  const [emails, setEmails] = useState<Array<EmailItems>>(mails.slice(0, 20));
-  const [totalEmails] = useState<number>(mails.length);
-  const [pageSize] = useState<number>(20);
-  const [page, setPage] = useState<number>(1);
-  const [startIndex, setStartIndex] = useState<number>(1);
-  const [endIndex, setEndIndex] = useState<number>(20);
-  const [totalPages] = useState<number>(mails.length / 20);
-  const [totalUnreadEmails] = useState<number>(
-    mails.filter((e: any) => e.is_read === false).length
+  const [emails, setEmails] = useState(mails.slice(0, 20));
+  const [totalEmails] = useState(mails.length);
+  const [pageSize] = useState(20);
+  const [page, setPage] = useState(1);
+  const [startIndex, setStartIndex] = useState(1);
+  const [endIndex, setEndIndex] = useState(20);
+  const [totalPages] = useState(mails.length / 20);
+  const [totalUnreadEmails] = useState(
+    mails.filter((e) => e.is_read === false).length
   );
 
   /**
@@ -138,7 +127,7 @@ const Inbox = () => {
    * Shows the starred emails only
    */
   const showStarredEmails = () => {
-    setEmails(mails.filter((e: any) => e.is_important).slice(0, 20));
+    setEmails(mails.filter((e) => e.is_important).slice(0, 20));
   };
 
   return (

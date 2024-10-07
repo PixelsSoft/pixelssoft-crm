@@ -81,6 +81,9 @@ const Target = React.lazy(() => import("../pages/apps/Target/Target"));
 const IndividualTarget = React.lazy(
   () => import("../pages/apps/Target/SinglePersonTarget")
 );
+const BankAccount = React.lazy(
+  () => import("../pages/apps/Accounts/Bank/index")
+);
 const Expense = React.lazy(
   () => import("../pages/apps/Accounts/Expenses/Expenses")
 );
@@ -96,6 +99,12 @@ const VendorPayments = React.lazy(
 );
 const MyAccount = React.lazy(
   () => import("../pages/apps/Management/MyAccount")
+);
+const EmailSetup = React.lazy(
+  () => import("../pages/apps/EmailSetup/EmailSetup")
+);
+const EmailList = React.lazy(
+  () => import("../pages/apps/EmailSetup/List")
 );
 
 // extra
@@ -514,6 +523,24 @@ const administartorRoutes: RoutesProps = {
     //   route: PrivateRoute,
     // },
     {
+      path: "/apps/administartor/emailSetup",
+      name: "Email Setup",
+      element: <EmailSetup />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/administartor/emailSetup/:id",
+      name: "Emails",
+      element: <EmailList />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/apps/administartor/emailSetup/:employeeId",
+      name: "Email Setup",
+      element: <EmailSetup />,
+      route: PrivateRoute,
+    },
+    {
       path: "/apps/administartor/rolePermission",
       name: "Role Permission",
       element: <RolePermission />,
@@ -535,6 +562,13 @@ const AccountsRoutes: RoutesProps = {
   roles: ["Admin"],
   icon: "mail",
   children: [
+    {
+      name: "bankAccount",
+   element:<BankAccount/>,
+      path: "/apps/account/bankAccount",
+      route: PrivateRoute,
+     
+    },
     {
       path: "/apps/account/expense",
       name: "expense",

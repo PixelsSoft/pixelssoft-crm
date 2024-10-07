@@ -34,8 +34,8 @@ export default function Leads() {
             leads: state.Leads.leads
         } )
     );
+console.log(leads)
 
-    console.log( detail )
     const toggleModal = () => {
         setVisibleModal( !visibleModal );
     };

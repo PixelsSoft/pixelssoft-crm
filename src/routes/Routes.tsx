@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // layout constants
 import { LayoutTypes } from "../constants/layout";
@@ -19,11 +19,13 @@ import {
   authProtectedFlattenRoutes,
   publicProtectedFlattenRoutes,
 } from "./index";
+import { stopLoading } from "../redux/Slices/utiltities/Utiltities";
 // import { APICore } from "../helpers/api/apiCore";
 
 interface IRoutesProps {}
 
 const AllRoutes = (props: IRoutesProps) => {
+  const dispatch=useDispatch()
   const { layout } = useSelector((state: RootState) => ({
     layout: state.Layout,
   }));
@@ -53,6 +55,10 @@ const AllRoutes = (props: IRoutesProps) => {
   const { token } = useSelector((state: RootState) => ({
     token: state.Auth.token,
   }));
+
+  useEffect(() => {
+    dispatch( stopLoading() );
+  }, []);
 
   return (
     <React.Fragment>

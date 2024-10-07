@@ -20,24 +20,23 @@ const ContactDetails = ( { contact } ) => {
     const deleteEmp = async () => {
         dispatch( DeleteEmployee( contact?.id, token ) );
     };
-    console.log( contact )
     return (
         <>
             <Card>
-                <Card.Body className="text-center">
+                <Card.Body className="text-center" >
                     <Dropdown className="float-end" align="end">
                         <Dropdown.Toggle as="a" className="cursor-pointer card-drop">
                             <i className="mdi mdi-dots-vertical"></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => naviage( `/apps/hr/editEmployee/${contact?.user_id}`, )}>Edit</Dropdown.Item>
+                            <Dropdown.Item onClick={() => naviage( `/apps/hr/editEmployee/${contact?.id}`, )}>Edit</Dropdown.Item>
                             <Dropdown.Item onClick={deleteEmp}>Delete</Dropdown.Item>
                             <Dropdown.Item onClick={() => naviage( `/apps/hr/viewEmployee/${contact?.id}` )}>View Profile</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     <div>
                         <img
-                            src={contact?.profile_img}
+                            src={contact?.details[0]?.profile_img}
                             alt="profileImage"
                             style={{ width: "100px", height: "100px" }}
                             className="rounded-circle avatar-xl img-thumbnail mb-2"
@@ -53,7 +52,7 @@ const ContactDetails = ( { contact } ) => {
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Email :</strong> <span className="ms-2">{contact?.personal_email}</span>
+                                        <strong>Email :</strong> <span className="ms-2">{contact?.details[0]?.personal_email}</span>
                                     </p>
                                 </Col>
 
@@ -62,7 +61,7 @@ const ContactDetails = ( { contact } ) => {
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Company Provided email :</strong> <span className="ms-2">{contact?.company_provided_email}</span>
+                                        <strong>Company Provided email :</strong> <span className="ms-2">{contact?.details[0]?.company_provided_email}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
@@ -74,14 +73,14 @@ const ContactDetails = ( { contact } ) => {
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>CNIC :</strong> <span className="ms-2">{contact?.cnic_no}</span>
+                                        <strong>CNIC :</strong> <span className="ms-2">{contact?.details[0]?.cnic_no}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
                                         <strong>Designation : </strong>
                                         <span>
-                                            {contact?.designation}
+                                            {contact?.details[0]?.designation}
                                         </span>
                                         {/* {contact?.roles.map( ( e, index ) => {
                                             console.log( "role kia hy akhir====>".e.names )
@@ -95,12 +94,12 @@ const ContactDetails = ( { contact } ) => {
                             <Row>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Mobile no :</strong> <span className="ms-2">{contact?.phone_no}</span>
+                                        <strong>Mobile no :</strong> <span className="ms-2">{contact?.details[0]?.phone_no}</span>
                                     </p>
                                 </Col>
                                 <Col lg={6}>
                                     <p className="text-muted font-13" >
-                                        <strong>Joining Date :</strong> <span className="ms-2">{contact?.joining_date}</span>
+                                        <strong>Joining Date :</strong> <span className="ms-2">{contact?.details[0]?.joining_date}</span>
                                     </p>
                                 </Col>
                             </Row>

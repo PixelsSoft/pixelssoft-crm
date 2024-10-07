@@ -17,6 +17,7 @@ import { GetVendorPayments } from "../VendorPayment/VendorPayment";
 import { GetMonthBids, GetTodayBids } from "../Bids/Bids";
 import { attendance, getAttendance } from "../attendance/Attendance";
 import { GetPortalProject } from "../PortalProject/PortalProject";
+import { GetBanks } from "../Bank/banks";
 
 const initialState = {
     user: null,
@@ -54,6 +55,7 @@ export const login = ( { email, password } ) => async ( dispatch ) => {
             await dispatch( attendance( response?.access_token ) );
             await dispatch( GetPortalProject( response?.access_token ) );
             await dispatch( GetProject( response?.access_token ) );
+            await dispatch( GetBanks( response?.access_token ) );
             await dispatch( authService.getProfile( response?.access_token ).then( async ( res ) => {
 
                 await dispatch( loginUser( res?.data ) )
