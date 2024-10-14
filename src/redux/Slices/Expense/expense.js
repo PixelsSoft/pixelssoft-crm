@@ -7,20 +7,20 @@ const initialState = {
     singleExpense: null
 };
 
-export const AddExpense = (data, token, reset) => async (dispatch) => {
+export const AddExpense = (data, token) => async (dispatch) => {
     try {
         const response = await ExpenseServices.AddExpense(data, token);
         console.log(response);
         if (response.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
-            reset();
+  
             dispatch(GetExpense(token));
         } else {
-            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+            toast.error(response?.detail, { position: toast.POSITION.TOP_RIGHT });
         };
         return response;
     } catch (error) {
-        toast.error(error, { position: toast.POSITION.TOP_RIGHT });
+        toast.error(error?.detail, { position: toast.POSITION.TOP_RIGHT });
         console.log("AddExpense error===========>", error)
     };
 };
@@ -62,20 +62,20 @@ export const GetExpenseById = (id, token) => async (dispatch) => {
     };
 };
 
-export const EditExpense = (id, data, token, reset) => async (dispatch) => {
+export const EditExpense = (id, data, token) => async (dispatch) => {
     try {
         const response = await ExpenseServices.EditExpense(id, data, token);
         if (response.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             dispatch(GetExpense(token));
-            reset();
+        
         } else {
-            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+            toast.error(response?.detail, { position: toast.POSITION.TOP_RIGHT });
         };
         return response;
     } catch (error) {
         console.log("EditExpense error===========>", error)
-        toast.error(error, { position: toast.POSITION.TOP_RIGHT });
+        toast.error(error?.detail, { position: toast.POSITION.TOP_RIGHT });
     };
 };
 

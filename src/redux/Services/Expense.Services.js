@@ -1,7 +1,7 @@
 import { CONSTANTS } from "../../constants/constant";
 
 const AddExpense = async (data, token) => {
-    console.log('AddExpense', data, token)
+   
     const onSuccess = (data) => {
         return data;
     };
@@ -13,17 +13,22 @@ const AddExpense = async (data, token) => {
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'multipart/form-data',
-            'Accept': 'multipart/form-data',
+            // 'Content-Type': 'multipart/form-data',
+            // 'Accept': 'multipart/form-data',
             'Authorization': `Bearer ${token}`
         },
         body: data,
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.expense, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.AddExpense, options)
+    .then( ( response ) => {
+        if ( !response.ok ) {
+            return response.json().then( onFailure );
+        }
+        return response.json();
+    } )
+    .then( onSuccess )
+    .catch( onFailure );
 };
 
 const GetExpense = async (token) => {
@@ -44,10 +49,15 @@ const GetExpense = async (token) => {
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.expense, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.GetExpense, options)
+    .then( ( response ) => {
+        if ( !response.ok ) {
+            return response.json().then( onFailure );
+        }
+        return response.json();
+    } )
+    .then( onSuccess )
+    .catch( onFailure );
 };
 
 const DeleteExpense = async (exId, token) => {
@@ -68,10 +78,15 @@ const DeleteExpense = async (exId, token) => {
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.expense + '/' + exId, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.DeleteExpense  + exId, options)
+    .then( ( response ) => {
+        if ( !response.ok ) {
+            return response.json().then( onFailure );
+        }
+        return response.json();
+    } )
+    .then( onSuccess )
+    .catch( onFailure );
 };
 
 
@@ -94,9 +109,14 @@ const GetExpenseById = async (exId, token) => {
     };
 
     return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.expense + '/' + exId + '/' + CONSTANTS.API_URLS.edit, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    .then( ( response ) => {
+        if ( !response.ok ) {
+            return response.json().then( onFailure );
+        }
+        return response.json();
+    } )
+    .then( onSuccess )
+    .catch( onFailure );
 };
 
 const EditExpense = async (exId, data, token) => {
@@ -118,10 +138,15 @@ const EditExpense = async (exId, data, token) => {
         body: data,
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.expense + '/' + exId, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.UpdateExpense  + exId, options)
+    .then( ( response ) => {
+        if ( !response.ok ) {
+            return response.json().then( onFailure );
+        }
+        return response.json();
+    } )
+    .then( onSuccess )
+    .catch( onFailure );
 };
 
 const ExpenseServices = {
