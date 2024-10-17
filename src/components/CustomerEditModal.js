@@ -6,76 +6,62 @@ import { GetSingleCustomer, UpdateCustomerAPI } from '../redux/Slices/Customer/c
 import { toast } from 'react-toastify'
 import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities'
 import Spinner from './Spinner'
-
+import {CountryList} from '../../src/pages/apps/Customers/List/data'
 const CustomerEditModal = ( { profileId, editUserModal, toggleClose } ) => {
     const dispatch = useDispatch();
 
-    const { token, SingleCustomer, plat, category, loading } = useSelector(
+    const { token, plat, category, loading } = useSelector(
         ( state ) => ( {
             token: state.Auth.token,
-            SingleCustomer: state.Customer.singleCustomer,
+      
             plat: state.Platform.platform,
             category: state.Category.category,
             loading: state.utiltities.loading,
         } )
     );
 
-    const [name, setName] = useState( SingleCustomer?.name );
-    const [email, setEmail] = useState( SingleCustomer?.email );
-    const [phone, setPhone] = useState( SingleCustomer?.phone );
-    const [title, setTitle] = useState( SingleCustomer?.project_title );
-    const [paidAm, setPaidAm] = useState( SingleCustomer?.paid_amount );
-    const [total, setTotal] = useState( SingleCustomer?.total_amount );
-    const [platform, setPlatform] = useState( SingleCustomer?.platform )
-    const [salePerson, setSalePerson] = useState( SingleCustomer?.category_id );
+  
 
-    const getSingleProfile = async () => {
-        // dispatch(startLoading());
-        await dispatch( GetSingleCustomer( profileId, token ) );
-        // dispatch(stopLoading());
-    };
 
-    const update = async ( e ) => {
+   
+    const [country, setCountry] = useState(profileId?.country);
+    const [address, setAddress] = useState(profileId?.address);
+    const [name, setName] = useState( profileId?.full_name );
+    const [email, setEmail] = useState( profileId?.email );
+    const [phone, setPhone] = useState( profileId?.phone );
+
+    const [paidAm, setPaidAm] = useState( profileId?.paid_amount );
+ 
+
+
+    const 
+    update = async ( e ) => {
         // e.preventDefault();
 
         if ( !email ) {
             return toast.error( 'Enter Email', { position: toast.POSITION.TOP_RIGHT } );
         };
-        if ( !platform ) {
-            return toast.error( 'Select Platform', { position: toast.POSITION.TOP_RIGHT } );
-        };
-        if ( !salePerson ) {
-            return toast.error( 'Select Project Category', { position: toast.POSITION.TOP_RIGHT } );
-        };
-
-        const data = {
-            email: email,
-            name: name,
-            phone: phone,
-            project_title: title,
-            paid_amount: paidAm,
-            total_amount: total,
-            platform: platform,
-            category_id: salePerson
-        };
+        
+        const formData = new FormData();
+        
+        formData.append( 'email', email );
+        formData.append( 'full_name', name );
+        formData.append( 'phone', phone );
+        formData.append( 'address', address );
+        formData.append( 'paid_amount', paidAm );
+        formData.append( 'country', country );
+     
         dispatch( startLoading() );
-        await dispatch( UpdateCustomerAPI( profileId, data, token, toggleClose ) );
+        await dispatch( UpdateCustomerAPI( profileId?.customer_id, formData, token, toggleClose ) );
+ 
+
         dispatch( stopLoading() );
     }
 
-    const selectPlat = ( e ) => {
-        e.preventDefault();
-        setPlatform( e.target.value );
-    };
 
-    const changeCat = ( e ) => {
-        e.preventDefault();
-        setSalePerson( e.target.value );
-    };
 
-    useEffect( () => {
-        getSingleProfile();
-    }, [] );
+   
+
 
     return loading ? (
         <div className='d-flex justify-content-center align-items-center vh-100'>
@@ -107,15 +93,7 @@ const CustomerEditModal = ( { profileId, editUserModal, toggleClose } ) => {
                     onChange={( e ) => setEmail( e.target.value )}
                 />
 
-                <FormInput
-                    label={'Project Title'}
-                    type="text"
-                    name="company"
-                    placeholder="Enter Project Title"
-                    containerClass={'mb-3'}
-                    value={title}
-                    onChange={( e => setTitle( e.target.value ) )}
-                />
+             
 
                 <FormInput
                     label={'Paid Amount'}
@@ -127,50 +105,47 @@ const CustomerEditModal = ( { profileId, editUserModal, toggleClose } ) => {
                     onChange={e => setPaidAm( e.target.value )}
                 />
 
-                <FormInput
-                    label={'Total'}
-                    type="number"
-                    name="total"
-                    placeholder="Enter Total Amount"
-                    containerClass={'mb-3'}
-                    value={total}
-                    onChange={e => setTotal( e.target.value )}
-                />
+            
 
-                <Form.Group as={Col} controlId="formGridState">
-                    <Form.Label>Platform</Form.Label>
-                    <Form.Select onChange={( e ) => selectPlat( e )}>
-                        <option>Choose...</option>
-                        {plat.map( val => {
-                            return (
-                                <option key={val.id}>{val.title}</option>
-                            );
-                        } )}
-                    </Form.Select>
-                </Form.Group>
+             
 
-                <Form.Group as={Col} controlId="formGridState">
-                    <Form.Label>Project Category</Form.Label>
-                    <Form.Select
-                        onChange={( e ) => changeCat( e )}
-                    >
-                        <option>Choose...</option>
-                        {category.map( val => {
-                            return (
-                                <option key={val.id} value={val.id}>{val.title}</option>
-                            );
-                        } )}
-                    </Form.Select>
-                </Form.Group>
+               
                 <FormInput
                     label={'Phone #'}
-                    type="text"
+                   type="number"
                     name="phone"
                     placeholder="Enter Phone #"
                     containerClass={'mb-3'}
                     value={phone}
                     onChange={e => setPhone( e.target.value )}
                 />
+                  <FormInput
+                    label={'Address #'}
+                    type="text"
+                    name="phone"
+                    placeholder="Enter Address #"
+                    containerClass={'mb-3'}
+                    value={address}
+                    onChange={e => setAddress( e.target.value )}
+                />
+                  <FormInput
+                                label="Country"
+                                name="select"
+                                type="select"
+                                className="form-select"
+                                containerClass={'mb-3'}
+                                key="select"
+                                value={country}
+                                onChange={( e ) => setCountry( e.target.value )}
+                            >
+                                <option>no Selected</option>
+                                {CountryList?.map( val => {
+                                    return (
+                                        <option key={val.id} value={val.name}> {val.name} </option>
+                                    );
+                                } )}
+                            </FormInput>
+              
                 <Button variant="dark" className="waves-effect waves-light me-1" type="submit" onClick={() => update()}>
                     Update
                 </Button>

@@ -18,12 +18,18 @@ const getCustomer = async (token) => {
     };
 
     return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.customer, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    .then( ( response ) => {
+        if ( !response.ok ) {
+            return response.json().then( onFailure );
+        }
+        return response.json();
+    } )
+    .then( onSuccess )
+    .catch( onFailure );
 };
 
 const AddCustomer = async (data, token) => {
+
     const onSuccess = (data) => {
         return data;
     };
@@ -34,20 +40,26 @@ const AddCustomer = async (data, token) => {
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: data
     };
 
     return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.customer, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    .then( ( response ) => {
+        if ( !response.ok ) {
+            return response.json().then( onFailure );
+        }
+        return response.json();
+    } )
+    .then( onSuccess )
+    .catch( onFailure );
 };
 
 const DeleteCustomer = async (id, token) => {
+    console.log("id",id)
     const onSuccess = (data) => {
         return data;
     };
@@ -64,10 +76,15 @@ const DeleteCustomer = async (id, token) => {
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.customer + '/' + id, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.customer  + id, options)
+    .then( ( response ) => {
+        if ( !response.ok ) {
+            return response.json().then( onFailure );
+        }
+        return response.json();
+    } )
+    .then( onSuccess )
+    .catch( onFailure );
 };
 
 const SingleCustomer = async (profileId, token) => {
@@ -87,13 +104,19 @@ const SingleCustomer = async (profileId, token) => {
         },
     };
 
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.customer + '/' + profileId + '/' + CONSTANTS.API_URLS.edit, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.customer + profileId , options)
+    .then( ( response ) => {
+        if ( !response.ok ) {
+            return response.json().then( onFailure );
+        }
+        return response.json();
+    } )
+    .then( onSuccess )
+    .catch( onFailure );
 };
 
 const UpdateCustomer = async (profileId, data, token) => {
+   
     const onSuccess = (data) => {
         return data;
     };
@@ -105,17 +128,22 @@ const UpdateCustomer = async (profileId, data, token) => {
     const options = {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: data,
     };
     
-    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.customer + '/' + profileId, options)
-        .then(response => response.json())
-        .then(onSuccess)
-        .catch(onFailure)
+    return await fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.customer + profileId, options)
+    .then( ( response ) => {
+        if ( !response.ok ) {
+            return response.json().then( onFailure );
+        }
+        return response.json();
+    } )
+    .then( onSuccess )
+    .catch( onFailure );
 };
 
 const CustomerService = {

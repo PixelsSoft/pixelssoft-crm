@@ -10,6 +10,7 @@ const initialState = {
 export const GetCustomer = (token) => async (dispatch) => {
     try {
         const response = await CustomerService.getCustomer(token);
+        console.log("GetCustomer",response)
         dispatch(Customer(response));
     } catch (error) {
         console.log("error===========>", error)
@@ -28,49 +29,53 @@ export const GetSingleCustomer = (profileId, token) => async (dispatch) => {
 export const DeleteCustomer = (id, token, navigate) => async (dispatch) => {
     try {
         const response = await CustomerService.DeleteCustomer(id, token);
-        if (response.message === "Customer Deleted Successfully") {
+        if (response.message === 200) {
             toast.success(response.message, { position: toast.POSITION.TOP_RIGHT });
             navigate('/apps/customers');
             dispatch(GetCustomer(token));
             return;
         } else {
-            toast.error(response.message[0], { position: toast.POSITION.TOP_RIGHT });
+            toast.error(response.detail, { position: toast.POSITION.TOP_RIGHT });
             return;
         };
     } catch (error) {
-        console.log("error===========>", error)
+        console.log("error===========>", error?.detail)
     };
 };
 
 export const CreateCustomerAPI = (data, token, reset) => async (dispatch) => {
     try {
+
         const response = await CustomerService.AddCustomer(data, token);
-        if (response?.message === "Customer Created Successfully") {
+        console.log("response",response)
+        if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             dispatch(GetCustomer(token));
             reset();
             return;
         } else {
-            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+            toast.error(response?.detail, { position: toast.POSITION.TOP_RIGHT });
             return;
         };
     } catch (error) {
-        console.log("error===========>", error)
+        toast.error(error?.detail, { position: toast.POSITION.TOP_RIGHT });
     };
 };
 
 export const UpdateCustomerAPI = (profileId, data, token, toggleClose) => async (dispatch) => {
     try {
         const response = await CustomerService.UpdateCustomer(profileId, data, token);
-        if (response?.message === 'Customer Updated Successfully') {
+        console.log(response)
+        if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             toggleClose();
             dispatch(GetCustomer(token));
         } else {
-            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+            toast.error(response?.detail, { position: toast.POSITION.TOP_RIGHT });
         };
     } catch (error) {
-        console.log("error===========>", error)
+        toast.error(error?.detail, { position: toast.POSITION.TOP_RIGHT });
+
     };
 };
 

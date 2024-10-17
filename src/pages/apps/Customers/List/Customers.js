@@ -12,7 +12,7 @@ import CustomerEditModal from '../../../../components/CustomerEditModal';
 const Customers = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [id, setId] = useState();
+    const [item, setItem] = useState();
     const [editUserModal, setEditUserModal] = useState(false);
 
     const { customer, loading, token } = useSelector(
@@ -22,6 +22,7 @@ const Customers = () => {
             token: state.Auth.token,
         })
     );
+
 
     const sizePerPageList = [
         {
@@ -48,8 +49,8 @@ const Customers = () => {
         dispatch(stopLoading());
     };
 
-    const toggleEditModal = (id) => {
-        setId(id);
+    const toggleEditModal = (id,item) => {
+        setItem(item);
         setEditUserModal(!editUserModal);
     }
 
@@ -57,14 +58,15 @@ const Customers = () => {
         setEditUserModal(!editUserModal);
     };
 
-    const ActionColumn = ({ projectId }) => {
+    const ActionColumn = ( {projectId,item} ) => {
+        
         return (
             <React.Fragment>
                 <Link to={`/apps/customer/customerProfile/${projectId}`} className="action-icon">
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => toggleEditModal(projectId)}>
+                <Link className="action-icon" onClick={() => toggleEditModal(projectId,item)}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
@@ -78,12 +80,12 @@ const Customers = () => {
     const columns = [
         {
             Header: 'ID',
-            accessor: 'id',
+            accessor: 'customer_id',
             sort: true,
         },
         {
             Header: 'Name',
-            accessor: 'name',
+            accessor: 'full_name',
             sort: true,
         },
         {
@@ -97,18 +99,8 @@ const Customers = () => {
             sort: false,
         },
         {
-            Header: 'Platform',
-            accessor: 'platform',
-            sort: false,
-        },
-        {
-            Header: 'Project Title',
-            accessor: 'project_title',
-            sort: false,
-        },
-        {
-            Header: 'Total Amount',
-            accessor: 'total_amount',
+            Header: 'Country',
+            accessor: 'country',
             sort: false,
         },
         {
@@ -116,11 +108,12 @@ const Customers = () => {
             accessor: 'paid_amount',
             sort: false,
         },
+       
         {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ({ row }) => <ActionColumn projectId={row.original.id} />,
+            Cell: ({ row }) => <ActionColumn item={row?.original} projectId={row.original.customer_id} />,
         },
     ];
 
@@ -181,9 +174,9 @@ const Customers = () => {
                     </Card>
                 </Col>
             </Row>
-            {editUserModal ? (
-                <CustomerEditModal profileId={id} editUserModal={editUserModal} toggleClose={toggleClose} />
-            ) : null}
+            {editUserModal && (
+                <CustomerEditModal profileId={item} editUserModal={editUserModal} toggleClose={toggleClose} />
+            ) }
         </>
     );
 };

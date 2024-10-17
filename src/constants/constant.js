@@ -16,7 +16,7 @@ export const CONSTANTS = {
         role: "role",
         getInvoice: 'invoice',
         getCategory: 'category',
-        customer: 'customer',
+        customer: 'customer/',
         platform: 'platform/add',
         UpdatePlatform: 'platform/update',
         deletePlatform: 'platform/delete',

@@ -8,28 +8,30 @@ import Spinner from '../../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import { useNavigate } from 'react-router-dom';
 import utils from '../../../../utils/utils';
+import { FormInput } from '../../../../components';
+import {CountryList} from '../List/data'
 
 const CreateCustomer = () => {
     const navigate = useNavigate();
+ 
     const dispatch = useDispatch()
     const [email, setEmail] = useState( '' );
     const [fullName, setFullName] = useState( '' );
     const [phoneNumber, setPhoneNumber] = useState( '' );
-    const [title, setTitle] = useState( '' );
     const [paidAm, setPaidAm] = useState( 0 );
-    const [total, setTotal] = useState( 0 );
-    const [platform, setPlatform] = useState( '' );
-    const [salePerson, setSalePerson] = useState( '' );
+   
+    const [country, setCountry] = useState('');
+    const [address, setAddress] = useState('');
+
 
     const reset = () => {
         setEmail( '' );
         setFullName( '' );
         setPhoneNumber( '' );
-        setTitle( '' );
-        setPlatform( '' );
-        setSalePerson( '' );
         setPaidAm( 0 );
-        setTotal( 0 );
+        setAddress('')
+        setCountry('')
+
     }
 
     const { token, user, category, plat, loading } = useSelector(
@@ -45,45 +47,31 @@ const CreateCustomer = () => {
     const onSubmit = async ( e ) => {
         e.preventDefault();
 
-        if ( !email ) {
-            return toast.error( 'Enter Email', { position: toast.POSITION.TOP_RIGHT } );
+        if ( email === "" || fullName==="" || phoneNumber ===""|| paidAm==="" || country===''
+         ) {
+            return toast.error( 'Enter All Field please', { position: toast.POSITION.TOP_RIGHT } );
         };
-        if ( !platform ) {
-            return toast.error( 'Select Platform', { position: toast.POSITION.TOP_RIGHT } );
-        };
-        if ( !salePerson ) {
-            return toast.error( 'Select Project Category', { position: toast.POSITION.TOP_RIGHT } );
-        };
+     
 
         if ( !utils.validateEmail( email ) ) {
             return toast.error( 'Enter correct email', { position: toast.POSITION.TOP_RIGHT } );
         };
-
-        const data = {
-            created_by: user.id,
-            email: email,
-            name: fullName,
-            phone: phoneNumber,
-            project_title: title,
-            paid_amount: JSON.parse( paidAm ),
-            total_amount: JSON.parse( total ),
-            platform: platform,
-            category_id: salePerson
-        };
+        const formData = new FormData();
+        formData.append( 'email', email );
+        formData.append( 'full_name', fullName );
+        formData.append( 'phone', phoneNumber );
+        formData.append( 'address', address );
+        formData.append( 'paid_amount', paidAm );
+        formData.append( 'country', country );
+     
+      
         dispatch( startLoading() );
-        await dispatch( CreateCustomerAPI( data, token, reset ) )
+        await dispatch( CreateCustomerAPI( formData, token, reset ) )
+        navigate(-1);
         dispatch( stopLoading() );
     };
 
-    const selectPlat = ( e ) => {
-        e.preventDefault();
-        setPlatform( e.target.value );
-    };
 
-    const changeCat = ( e ) => {
-        e.preventDefault();
-        setSalePerson( e.target.value );
-    };
 
     const phoneFunc = ( e ) => {
         if ( e.target.value >= 0 ) {
@@ -92,16 +80,12 @@ const CreateCustomer = () => {
     }
 
     const paidFunc = ( e ) => {
-        if ( e.target.value >= 0 && e.target.value <= total ) {
+        if ( e.target.value >= 0  ) {
             setPaidAm( e.target.value );
         }
     }
 
-    const totalFunc = ( e ) => {
-        if ( e.target.value >= 0 ) {
-            setTotal( e.target.value );
-        }
-    }
+
 
     return loading ? (
         <div className='d-flex justify-content-center align-items-center vh-100'>
@@ -160,10 +144,10 @@ const CreateCustomer = () => {
 
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Project Title</Form.Label>
+                                        <Form.Label>Address</Form.Label>
                                         <Form.Control
-                                            value={title}
-                                            onChange={( e ) => setTitle( e.target.value )}
+                                            value={address}
+                                            onChange={( e ) => setAddress( e.target.value )}
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridState">
@@ -174,45 +158,26 @@ const CreateCustomer = () => {
                                             onChange={( e ) => paidFunc( e )}
                                         />
                                     </Form.Group>
-                                    <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Total Amount</Form.Label>
-                                        <Form.Control
-                                            type='number'
-                                            value={total}
-                                            onChange={( e ) => totalFunc( e )}
-                                        />
-                                    </Form.Group>
+                                    <FormInput
+                                label="Country"
+                                name="select"
+                                type="select"
+                                className="form-select"
+                                key="select"
+                                value={country}
+                                onChange={( e ) => setCountry( e.target.value )}
+                            >
+                                <option>no Selected</option>
+                                {CountryList?.map( val => {
+                                    return (
+                                        <option key={val.id} value={val.name}> {val.name} </option>
+                                    );
+                                } )}
+                            </FormInput>
 
                                 </Row>
 
-                                <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Platform</Form.Label>
-                                        <Form.Select onChange={( e ) => selectPlat( e )}>
-                                            <option>Choose...</option>
-                                            {plat.map( val => {
-                                                return (
-                                                    <option key={val.id}>{val.title}</option>
-                                                );
-                                            } )}
-                                        </Form.Select>
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formGridState">
-                                        <Form.Label>Project Category</Form.Label>
-                                        <Form.Select
-                                            onChange={( e ) => changeCat( e )}
-                                        >
-                                            <option>Choose...</option>
-                                            {category.map( val => {
-                                                return (
-                                                    <option key={val.id} value={val.id}>{val.title}</option>
-                                                );
-                                            } )}
-                                        </Form.Select>
-                                    </Form.Group>
-                                </Row>
-
+                      
                                 <Row>
                                     <Col>
                                         <Button
