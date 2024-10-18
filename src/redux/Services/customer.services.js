@@ -59,7 +59,7 @@ const AddCustomer = async (data, token) => {
 };
 
 const DeleteCustomer = async (id, token) => {
-    console.log("id",id)
+
     const onSuccess = (data) => {
         return data;
     };

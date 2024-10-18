@@ -14,7 +14,7 @@ export const CONSTANTS = {
         getEmployeeByid: 'user/user',
         deleteEmployee: `user/delete/`,
         role: "role",
-        getInvoice: 'invoice',
+        getInvoice: 'invoice/',
         getCategory: 'category',
         customer: 'customer/',
         platform: 'platform/add',

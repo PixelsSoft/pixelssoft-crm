@@ -10,7 +10,6 @@ const initialState = {
 export const GetCustomer = (token) => async (dispatch) => {
     try {
         const response = await CustomerService.getCustomer(token);
-        console.log("GetCustomer",response)
         dispatch(Customer(response));
     } catch (error) {
         console.log("error===========>", error)
@@ -29,7 +28,7 @@ export const GetSingleCustomer = (profileId, token) => async (dispatch) => {
 export const DeleteCustomer = (id, token, navigate) => async (dispatch) => {
     try {
         const response = await CustomerService.DeleteCustomer(id, token);
-        if (response.message === 200) {
+        if (response.status === 200) {
             toast.success(response.message, { position: toast.POSITION.TOP_RIGHT });
             navigate('/apps/customers');
             dispatch(GetCustomer(token));

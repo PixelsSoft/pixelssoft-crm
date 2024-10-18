@@ -16,7 +16,7 @@ const UpdateInvoiceModal = ( { id, previewModal, setPreviewModal, toggleClose, }
     );
 
     const dispatch = useDispatch();
-    const [currency, setCurrency] = useState( singleInvoice?.currency_code );
+    const [currency, setCurrency] = useState( singleInvoice?.currency );
     const [projectName, setProjectName] = useState( singleInvoice?.title );
     const [invoiceDate, setInvoiceDate] = useState( singleInvoice?.invoice_date );
     const [dueDate, setDueDate] = useState( singleInvoice?.due_date );
@@ -28,19 +28,22 @@ const UpdateInvoiceModal = ( { id, previewModal, setPreviewModal, toggleClose, }
 
     const update = async () => {
 
-        const data = {
-            invoice_date: invoiceDate,
-            due_date: dueDate,
-            title: projectName,
-            quantity: quantity,
-            price: price,
-            currency_code: currency,
-            description: description,
-            notes: memo,
-        };
+    
+    const fromDate = new FormData();
+    fromDate.append("title", projectName);
+    fromDate.append("description", description);
+    fromDate.append("invoice_date", invoiceDate);
+    fromDate.append("due_date", dueDate);
+    fromDate.append("price", price);
+    fromDate.append("quantity", quantity);
+    fromDate.append("notes", memo);
+    fromDate.append("currency", currency);
+    fromDate.append("customer_email", singleInvoice?.customer?.email);
+    
+    
 
         dispatch( startLoading() )
-        await dispatch( UpdateInvoice( id, data, token ) );
+        await dispatch( UpdateInvoice( id, fromDate, token ) );
         dispatch( stopLoading() )
         setPreviewModal( !previewModal );
     }

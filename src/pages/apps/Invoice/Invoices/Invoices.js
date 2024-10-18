@@ -19,7 +19,7 @@ const Invoices = () => {
             loading: state.utiltities.loading,
         })
     );
-console.log("invoice====>",invoice)
+    
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -39,18 +39,19 @@ console.log("invoice====>",invoice)
             <React.Fragment>
                 <span
                     className={classNames("badge", {
-                        "badge-soft-success": status !== null,
-                        "badge-soft-danger": status === null,
+                        "badge-soft-success": status !== "unPaid",
+                        "badge-soft-danger": status === "unPaid",
                     })}
                 >
-                    {status === null ? 'Unpaid' : 'Paid'}
+                    {status}
                 </span>
             </React.Fragment>
         );
     };
 
     /* action column render */
-    const ActionColumn = ({ projectId }) => {
+    const ActionColumn = ({ item,projectId }) => {
+
         return (
             <React.Fragment>
                 <Link to="#" className="action-icon" onClick={() => viewInvoice(projectId)}>
@@ -82,7 +83,12 @@ console.log("invoice====>",invoice)
         },
         {
             Header: 'Creator',
-            accessor: 'creator.name',
+            accessor: 'user.name',
+            sort: false,
+        },
+        {
+            Header: 'Client',
+            accessor: 'customer.full_name',
             sort: false,
         },
         {
@@ -106,13 +112,13 @@ console.log("invoice====>",invoice)
             Header: "Status",
             accessor: "status",
             sort: true,
-            Cell: ({ row }) => <StatusColumn status={row.original.paid_at} />,
+            Cell: ({ row }) => <StatusColumn status={row.original.status} />,
         },
         {
             Header: "Action",
             accessor: "action",
             sort: false,
-            Cell: ({ row }) => <ActionColumn projectId={row.original.id} />,
+            Cell: ({ row }) => <ActionColumn item={row.original} projectId={row.original.invoice_id} />,
         },
     ];
 
