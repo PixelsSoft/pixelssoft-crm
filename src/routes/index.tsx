@@ -529,7 +529,7 @@ const administartorRoutes: RoutesProps = {
       route: PrivateRoute,
     },
     {
-      path: "/apps/administartor/emailSetup/:id",
+      path: "/apps/administartor/emailSetup/:employeeId",
       name: "Emails",
       element: <EmailList />,
       route: PrivateRoute,

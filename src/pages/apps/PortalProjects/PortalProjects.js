@@ -50,7 +50,6 @@ export default function PortalProjects() {
     }
 
     const ActionColumn = ( { row } ) => {
-        console.log( row )
         return (
             <React.Fragment>
                 <Link to={`/apps/portalProjects/Profile/${row.original.id}`} className="action-icon">

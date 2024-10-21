@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CreateNewRole, DeleteRole, UpdateRole } from '../../../redux/Slices/Roles/Roles';
 import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Utiltities';
 import Spinner from '../../../components/Spinner';
+import { AddMail, DeleteMail, EditMail } from '../../../redux/Slices/usermail/UserMail';
+import utils from '../../../utils/utils';
+import { toast } from 'react-toastify';
 
 export default function EmailSetup() {
     const { employeeId } = useParams();
@@ -20,12 +23,14 @@ export default function EmailSetup() {
     const [openView, setOpenView] = useState(false);
     const [viewName, setViewName] = useState('');
 
-    const { roles, token, loading ,employee} = useSelector(
+    const { roles, token, loading ,employee,Mails} = useSelector(
         (state) => ({
             roles: state.Roles.roles,
             token: state.Auth.token,
             loading: state.utiltities.loading,
             employee: state.Employees.employees,
+            Mails: state.Mails.Mails,
+          
 
         })
     );
@@ -38,16 +43,21 @@ export default function EmailSetup() {
         setResponsiveModal(!responsiveModal);
     };
 
-    const openEdit = ({ id, name }) => {
+    const openEdit = ({ id, email,password }) => {
+        console.log("email",email)
         setEditModal(!editModal);
         setId(id);
-        setEmail(name);
+
+        setEmail(email);
+        setPassword(password);
     };
 
     const closeEdit = () => {
         setEditModal(!editModal);
         setId();
         setEmail('')
+
+        setPassword('');
     }
     const closeView = (pro) => {
         setViewName(pro?.name)
@@ -55,13 +65,15 @@ export default function EmailSetup() {
     };
 
     const delRole = async ({ id }) => {
+ 
         dispatch(startLoading());
-        await dispatch(DeleteRole(id, token));
+        await dispatch(DeleteMail(id, token));
         dispatch(stopLoading());
     }
 
     /* action column render */
     const ActionColumn = ({ projectId }) => {
+    
         return (
             <React.Fragment>
                 {/* <Link className="action-icon" onClick={() => closeView(projectId)}>
@@ -80,19 +92,15 @@ export default function EmailSetup() {
         );
     };
     const columns = [
-        {
-            Header: 'ID',
-            accessor: 'id',
-            sort: true,
-        },
+     
         {
             Header: 'Email',
-            accessor: 'name',
+            accessor: 'email',
             sort: false,
         },
         {
             Header: 'Password',
-            accessor: 'details?.company_provided_email',
+            accessor: 'password',
             sort: false,
         },
         {
@@ -123,21 +131,38 @@ export default function EmailSetup() {
     ];
 
     const addRole = async () => {
-        const data = {
-            name: email
-        };
+        if (!utils.validateEmail(email)) {
+            toast.error("Enter correct email", {
+              position: toast.POSITION.TOP_RIGHT,
+            });
+            dispatch(stopLoading());
+            return;
+          }
+        const formData=new FormData()
+
+        formData.append("user_id",employeeId)
+        formData.append("email",email)
+        formData.append("password",password)
         dispatch(startLoading());
-        await dispatch(CreateNewRole(data, token));
+        await dispatch(AddMail(formData, token));
         dispatch(stopLoading());
         toggleResponsiveModal();
     };
 
     const updateRole = async () => {
-        const data = {
-            name: email
-        };
+        if (!utils.validateEmail(email)) {
+            toast.error("Enter correct email", {
+              position: toast.POSITION.TOP_RIGHT,
+            });
+            dispatch(stopLoading());
+            return;
+          }
+        const formData=new FormData()
+        formData.append("user_mail_id",id)
+        formData.append("email",email)
+        formData.append("password",password)
         dispatch(startLoading());
-        await dispatch(UpdateRole(id, data, token));
+        await dispatch(EditMail(id, formData, token));
         closeEdit();
         dispatch(stopLoading());
     };
@@ -177,10 +202,10 @@ export default function EmailSetup() {
                                     </div>
                                 </Col>
                             </Row>
-                            {employee !== undefined && employee !== null ? (
+                            {Mails !== undefined && Mails !== null ? (
                                 <Table
                                     columns={columns}
-                                    data={employee}
+                                    data={Mails}
                                     pageSize={10}
                                     sizePerPageList={sizePerPageList}
                                     isSortable={true}

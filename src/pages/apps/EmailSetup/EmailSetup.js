@@ -17,12 +17,14 @@ export default function EmailSetup() {
   }));
 
   /* action column render */
-  const ActionColumn = ({ projectId }) => {
+  const ActionColumn = ({ employeeId }) => {
+    console.log("projectId",employeeId)
     return (
       <React.Fragment>
         <Link
           className="action-icon"
-          to={"/apps/administartor/emailSetup/5"}
+          // to={"/apps/administartor/emailSetup/${employeeId}"}
+          to={`/apps/administartor/emailSetup/${employeeId}`}
           // onClick={() => closeView(projectId)}
         >
           {" "}
@@ -51,7 +53,7 @@ export default function EmailSetup() {
       Header: "Action",
       accessor: "action",
       sort: false,
-      Cell: ({ row }) => <ActionColumn projectId={row.original} />,
+      Cell: ({ row }) => <ActionColumn employeeId={row.original.id} />,
     },
   ];
 

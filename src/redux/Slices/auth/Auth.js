@@ -58,6 +58,7 @@ export const login = ( { email, password } ) => async ( dispatch ) => {
             await dispatch( GetBanks( response?.access_token ) );
             await dispatch( GetCustomer( response?.access_token ) );
             await dispatch( GetExpense( response?.access_token ) );
+            await dispatch( GetInvoice( response?.access_token ) );
             await dispatch( authService.getProfile( response?.access_token ).then( async ( res ) => {
 
                 await dispatch( loginUser( res?.data ) )

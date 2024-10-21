@@ -54,5 +54,8 @@ export const CONSTANTS = {
         vendor: 'vendor',
         vendorPayment: 'payment/vendor',
         attendancePerMonth: 'attendance/month',
+        UserMailAdd: 'userMails/add',
+        UserMail: 'userMails/',
+
     }
 } 
