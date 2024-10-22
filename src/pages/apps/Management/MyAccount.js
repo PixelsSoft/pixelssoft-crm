@@ -18,7 +18,7 @@ export default function MyAccount() {
             token: state.Auth.token,
         } )
     );
-    console.log( "token", token )
+
     useEffect( () => {
         dispatch( attendance( token ) )
     }, [] )

@@ -18,6 +18,7 @@ import { GetMonthBids, GetTodayBids } from "../Bids/Bids";
 import { attendance, getAttendance } from "../attendance/Attendance";
 import { GetPortalProject } from "../PortalProject/PortalProject";
 import { GetBanks } from "../Bank/banks";
+import { GetMails } from "../usermail/UserMail";
 
 const initialState = {
     user: null,
@@ -59,6 +60,8 @@ export const login = ( { email, password } ) => async ( dispatch ) => {
             await dispatch( GetCustomer( response?.access_token ) );
             await dispatch( GetExpense( response?.access_token ) );
             await dispatch( GetInvoice( response?.access_token ) );
+            await dispatch( GetMails( response?.access_token ) );
+         
             await dispatch( authService.getProfile( response?.access_token ).then( async ( res ) => {
 
                 await dispatch( loginUser( res?.data ) )
