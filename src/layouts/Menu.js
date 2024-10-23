@@ -19,11 +19,19 @@ const MenuItemWithChildren = ( {
   subMenuClassNames,
   activeMenuItems,
   toggleMenu,
+ 
 } ) => {
   const [open, setOpen] = useState(
     activeMenuItems?.includes( item.key )
   );
   // ;
+  const { Mails } = useSelector(
+    ( state ) => ( {
+      Mails: state.Mails.Mails,
+     
+    } )
+  );
+
 
   useEffect( () => {
     setOpen( activeMenuItems?.includes( item.key ) );
@@ -67,6 +75,27 @@ const MenuItemWithChildren = ( {
       </Link>
       <Collapse in={open}>
         <div>
+        {item?.label==="Email" ?
+        
+                      <>
+                {Mails.map((item,child)=>{
+                  return(
+                    <MailItem
+                    item={item}
+                    className={
+                      activeMenuItems?.includes( child.key )
+                        ? "menuitem-active"
+                        : ""
+                    }
+                    linkClassName={
+                      activeMenuItems?.includes( child.key ) ? "active" : ""
+                    }
+                  />
+                  )
+                })}
+                    
+                      </>
+        :<>
           <ul className={classNames( subMenuClassNames )}>
             {( item.children || [] ).map( ( child, i ) => {
               return (
@@ -87,23 +116,30 @@ const MenuItemWithChildren = ( {
                   ) : (
                     <>
                       {/* child */}
+                     
                       <MenuItem
-                        item={child}
-                        className={
-                          activeMenuItems?.includes( child.key )
-                            ? "menuitem-active"
-                            : ""
-                        }
-                        linkClassName={
-                          activeMenuItems?.includes( child.key ) ? "active" : ""
-                        }
-                      />
+                      item={child}
+                      className={
+                        activeMenuItems?.includes( child.key )
+                          ? "menuitem-active"
+                          : ""
+                      }
+                      linkClassName={
+                        activeMenuItems?.includes( child.key ) ? "active" : ""
+                      }
+                    />
+                    
+                     
                     </>
                   )}
                 </React.Fragment>
               );
             } )}
           </ul>
+        </>
+        }
+
+         
         </div>
       </Collapse>
     </li>
@@ -117,6 +153,37 @@ const MenuItem = ( { item, className, linkClassName } ) => {
     </li>
   );
 };
+const MailItem = ( { item, className, linkClassName } ) => {
+  return (
+    <li className={classNames( "menu-item", className )}>
+      <EmailItemLink item={item} className={linkClassName} />
+    </li>
+  );
+};
+const EmailItemLink = ( { item, className } ) => {
+
+  return (
+    <Link
+      to={item?.url}
+      target={item.target}
+      className={classNames( "side-nav-link-ref menu-link", className )}
+      data-menu-key={item.key}
+    >
+     
+        <span className="menu-icon">
+          <FeatherIcon icon={"mail"} />{" "}
+        </span>
+      
+      <span className="menu-text" style={{fontSize:12}}> {item?.email} </span>
+      {item.badge && (
+        <span className={`badge bg-${item.badge.variant} `}>
+          {item.badge.text}
+        </span>
+      )}
+    </Link>
+  );
+};
+
 
 const MenuItemLink = ( { item, className } ) => {
   return (
@@ -201,16 +268,18 @@ const AppMenu = ( { menuItems } ) => {
       }
     }
   }, [location, menuItems] );
-  const { roles, token, loading } = useSelector(
+  const { roles, token, loading,Mails } = useSelector(
     ( state ) => ( {
       roles: state.Roles.roles,
       token: state.Auth.token,
       loading: state.utiltities.loading,
     } )
   );
+
+
   useEffect( () => {
     activeMenu();
-    const role = roles[0].role.split( "," );
+    const role = roles[0]?.role?.split( "," );
     setRole( role||[] )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roles] );
@@ -242,6 +311,7 @@ const AppMenu = ( { menuItems } ) => {
                     <>
                       {item.children ? (
                         <MenuItemWithChildren
+                     
                           item={item}
                           toggleMenu={toggleMenu}
                           subMenuClassNames="sub-menu"
@@ -249,6 +319,7 @@ const AppMenu = ( { menuItems } ) => {
                           linkClassName="menu-link"
                         />
                       ) : (
+                  
                         <MenuItem
                           item={item}
                           linkClassName="menu-link"

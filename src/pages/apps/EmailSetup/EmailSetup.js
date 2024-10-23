@@ -9,13 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../../components/Spinner";
 
 export default function EmailSetup() {
-  const { roles, token, loading, employee } = useSelector((state) => ({
+  const { roles, token, loading, employee ,Mails} = useSelector((state) => ({
     roles: state.Roles.roles,
     token: state.Auth.token,
     loading: state.utiltities.loading,
     employee: state.Employees.employees,
+    Mails: state.Mails.Mails,
   }));
-
+  
   /* action column render */
   const ActionColumn = ({ employeeId }) => {
     console.log("projectId",employeeId)

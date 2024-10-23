@@ -21,25 +21,14 @@ import { emails } from "./data";
 
 import avatarImg from "../../../assets/images/users/user-2.jpg";
 
-interface EmailItems {
-  avatar: string;
-  subject: string;
-  from_name: string;
-  from_email: string;
-  recieved_on: string;
-  attachments: [
-    { id: number; name: string; size: string; ext: string },
-    { id: number; name: string; size: string; ext: string },
-    { id: number; name: string; size: string; ext: string }
-  ];
-}
+
 
 // EmailDetail
 const EmailDetail = () => {
-  const [totalUnreadEmails] = useState<number>(
-    emails.filter((e: any) => e.is_read === false).length
+  const [totalUnreadEmails] = useState(
+    emails.filter((e) => e.is_read === false).length
   );
-  const [email] = useState<EmailItems>({
+  const [email] = useState({
     avatar: avatarImg,
     subject: "Your elite author Graphic Optimization reward is ready!",
     from_name: "Steven Smith",
@@ -78,7 +67,7 @@ const EmailDetail = () => {
               </div>
 
               <div className="inbox-rightbar">
-                <ButtonGroup className="me-1">
+                {/* <ButtonGroup className="me-1">
                   <OverlayTrigger
                     placement="bottom"
                     overlay={<Tooltip id="archived">Archived</Tooltip>}
@@ -146,7 +135,7 @@ const EmailDetail = () => {
                     <Dropdown.Item>Add Star</Dropdown.Item>
                     <Dropdown.Item>Mute</Dropdown.Item>
                   </Dropdown.Menu>
-                </Dropdown>
+                </Dropdown> */}
 
                 <div className="mt-4">
                   <h5 className="font-18">

@@ -159,7 +159,7 @@ const Inbox = () => {
                 />
               </div>
               <div className="inbox-rightbar">
-                <ButtonGroup className="me-1">
+                {/* <ButtonGroup className="me-1">
                   <OverlayTrigger
                     placement="bottom"
                     overlay={<Tooltip id="archived">Archived</Tooltip>}
@@ -227,7 +227,7 @@ const Inbox = () => {
                     <Dropdown.Item>Add Star</Dropdown.Item>
                     <Dropdown.Item>Mute</Dropdown.Item>
                   </Dropdown.Menu>
-                </Dropdown>
+                </Dropdown> */}
 
                 <div className="mt-3">
                   <EmailsList emails={emails} />

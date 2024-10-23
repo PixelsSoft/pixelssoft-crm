@@ -22,12 +22,12 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 // components
 import PageTitle from "../../../components/PageTitle";
-import { VerticalForm, FormInput } from "../../../components/";
+import { VerticalForm, FormInput } from "../../../components";
 
 import LeftBar from "./LeftBar";
 
 const Compose = () => {
-  const [editorState, setEditorState] = useState<any>();
+  const [editorState, setEditorState] = useState();
 
   useEffect(() => {
     const html =

@@ -1,18 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-interface LeftBarProps {
-  totalUnreadEmails?: number;
-  showAllEmails?: () => void;
-  showStarredEmails?: () => void;
-}
+
 
 // left side panel
 const LeftBar = ({
   totalUnreadEmails,
   showAllEmails,
   showStarredEmails,
-}: LeftBarProps) => {
+}) => {
   return (
     <>
       <div className="mail-list mt-4">
@@ -22,20 +18,20 @@ const LeftBar = ({
             {totalUnreadEmails}
           </span>
         </Link>
-        <Link to="#" onClick={showStarredEmails}>
+        {/* <Link to="#" onClick={showStarredEmails}>
           <i className="dripicons-star me-2"></i>Starred
-        </Link>
-        <Link to="#">
+        </Link> */}
+        {/* <Link to="#">
           <i className="dripicons-clock me-2"></i>Snoozed
-        </Link>
-        <Link to="#">
+        </Link> */}
+        {/* <Link to="#">
           <i className="dripicons-document me-2"></i>Draft
           <span className="badge badge-soft-info float-end ms-2">32</span>
-        </Link>
+        </Link> */}
         <Link to="#">
           <i className="dripicons-exit me-2"></i>Sent Mail
         </Link>
-        <Link to="#">
+        {/* <Link to="#">
           <i className="dripicons-trash me-2"></i>Trash
         </Link>
         <Link to="#">
@@ -43,10 +39,10 @@ const LeftBar = ({
         </Link>
         <Link to="#">
           <i className="dripicons-warning me-2"></i>Spam
-        </Link>
+        </Link> */}
       </div>
 
-      <h6 className="mt-4">Labels</h6>
+      {/* <h6 className="mt-4">Labels</h6>
 
       <div className="list-group b-0 mail-list">
         <Link to="#" className="list-group-item border-0">
@@ -64,7 +60,7 @@ const LeftBar = ({
         <Link to="#" className="list-group-item border-0">
           <i className="mdi mdi-circle text-success me-2"></i>Family
         </Link>
-      </div>
+      </div> */}
     </>
   );
 };

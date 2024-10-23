@@ -35,7 +35,7 @@ export default function EmailSetup() {
         })
     );
 
-    
+
     /**
      * Show/hide the modal
      */

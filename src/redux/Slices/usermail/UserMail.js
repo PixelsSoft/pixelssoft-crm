@@ -28,6 +28,7 @@ export const AddMail = ( data, token ) => async ( dispatch ) => {
 export const GetMails = ( token ) => async ( dispatch ) => {
     try {
         const response = await UserMailServices.GetMail( token );
+       
         dispatch( Mails( response ) );
         return response;
     } catch ( error ) {
@@ -56,6 +57,18 @@ export const GetMailById = ( leadId, token ) => async ( dispatch ) => {
         const response = await UserMailServices.GetMailById( leadId, token );
         if ( response.status === 200 ) {
             dispatch( SingleMail( response.data ) );
+        };
+        return response;
+    } catch ( error ) {
+        console.log( "GetLeadById error===========>", error )
+        toast.error( error, { position: toast.POSITION.TOP_RIGHT } );
+    };
+};
+export const GetUserMail = ( leadId, token ) => async ( dispatch ) => {
+    try {
+        const response = await UserMailServices.GetMailById( leadId, token );
+        if ( response.status === 200 ) {
+            dispatch( Mails( response) );
         };
         return response;
     } catch ( error ) {
