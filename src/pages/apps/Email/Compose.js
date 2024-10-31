@@ -53,7 +53,7 @@ const Compose = () => {
    * @param {*} event
    * @param {*} values
    */
-  const handleEmailSave = (event: any, values: any) => {
+  const handleEmailSave = (event, values) => {
     const body = draftToHtml(convertToRaw(editorState.getCurrentContent()));
     console.log({ ...values, body });
   };
@@ -61,7 +61,7 @@ const Compose = () => {
   /**
    * On editor body change
    */
-  const onEditorStateChange = (editorStates: any) => {
+  const onEditorStateChange = (editorStates) => {
     setEditorState(editorStates);
   };
 

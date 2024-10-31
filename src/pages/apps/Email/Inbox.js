@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import {
   Row,
   Col,
@@ -9,6 +9,7 @@ import {
   Button,
   OverlayTrigger,
   Tooltip,
+
 } from "react-bootstrap";
 import classNames from "classnames";
 
@@ -19,6 +20,9 @@ import LeftBar from "./LeftBar";
 
 // dafault data
 import { emails as mails } from "./data";
+import { useDispatch, useSelector } from "react-redux";
+import { GetEmail } from "../../../redux/Slices/Emails/Emails";
+import Spinner from "../../../components/Spinner";
 
 // emails list
 const EmailsList = (props) => {
@@ -75,17 +79,43 @@ const EmailsList = (props) => {
 
 // Inbox
 const Inbox = () => {
+  const {id}=useParams()
+
   const [emails, setEmails] = useState(mails.slice(0, 20));
   const [totalEmails] = useState(mails.length);
+  const dispatch=useDispatch()
   const [pageSize] = useState(20);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const [startIndex, setStartIndex] = useState(1);
   const [endIndex, setEndIndex] = useState(20);
   const [totalPages] = useState(mails.length / 20);
   const [totalUnreadEmails] = useState(
     mails.filter((e) => e.is_read === false).length
   );
+  const {  token, } = useSelector(
+    ( state ) => ( {
+        token: state.Auth.token,
+    } )
+);
 
+
+const getEmails=async()=>{
+  try {
+    setLoading(true)
+
+    const response=await dispatch(GetEmail(id,token))
+    setLoading(false)
+
+  } catch (error) {
+    console.log("error",error)
+    setLoading(false)
+    
+  }
+}
+useEffect(() => {
+  getEmails()
+}, [])
   /**
    * Gets the next page
    */
@@ -158,118 +188,127 @@ const Inbox = () => {
                   showStarredEmails={showStarredEmails}
                 />
               </div>
+              {loading ?
+              <>
+               <div className='d-flex justify-content-center align-items-center'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+              </>
+              :
               <div className="inbox-rightbar">
-                {/* <ButtonGroup className="me-1">
-                  <OverlayTrigger
-                    placement="bottom"
-                    overlay={<Tooltip id="archived">Archived</Tooltip>}
-                  >
-                    <Button variant="light" className="btn-sm waves-effect">
-                      <i className="mdi mdi-archive font-18"></i>
-                    </Button>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="bottom"
-                    overlay={<Tooltip id="spam">Spam</Tooltip>}
-                  >
-                    <Button variant="light" className="btn-sm waves-effect">
-                      <i className="mdi mdi-alert-octagon font-18"></i>
-                    </Button>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    key="bottm"
-                    placement="bottom"
-                    overlay={<Tooltip id="delete">Delete</Tooltip>}
-                  >
-                    <Button variant="light" className="btn-sm waves-effect">
-                      <i className="mdi mdi-delete-variant font-18"></i>
-                    </Button>
-                  </OverlayTrigger>
-                </ButtonGroup>
+              {/* <ButtonGroup className="me-1">
+                <OverlayTrigger
+                  placement="bottom"
+                  overlay={<Tooltip id="archived">Archived</Tooltip>}
+                >
+                  <Button variant="light" className="btn-sm waves-effect">
+                    <i className="mdi mdi-archive font-18"></i>
+                  </Button>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="bottom"
+                  overlay={<Tooltip id="spam">Spam</Tooltip>}
+                >
+                  <Button variant="light" className="btn-sm waves-effect">
+                    <i className="mdi mdi-alert-octagon font-18"></i>
+                  </Button>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  key="bottm"
+                  placement="bottom"
+                  overlay={<Tooltip id="delete">Delete</Tooltip>}
+                >
+                  <Button variant="light" className="btn-sm waves-effect">
+                    <i className="mdi mdi-delete-variant font-18"></i>
+                  </Button>
+                </OverlayTrigger>
+              </ButtonGroup>
 
-                <Dropdown className="btn-group me-1">
-                  <Dropdown.Toggle className="btn btn-light btn-sm waves-effect">
-                    <i className="mdi mdi-folder font-18"></i>{" "}
-                    <i className="mdi mdi-chevron-down"></i>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <span className="dropdown-header">Move to:</span>
-                    <Dropdown.Item>Social</Dropdown.Item>
-                    <Dropdown.Item>Promotions</Dropdown.Item>
-                    <Dropdown.Item>Updates</Dropdown.Item>
-                    <Dropdown.Item>Forums</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+              <Dropdown className="btn-group me-1">
+                <Dropdown.Toggle className="btn btn-light btn-sm waves-effect">
+                  <i className="mdi mdi-folder font-18"></i>{" "}
+                  <i className="mdi mdi-chevron-down"></i>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <span className="dropdown-header">Move to:</span>
+                  <Dropdown.Item>Social</Dropdown.Item>
+                  <Dropdown.Item>Promotions</Dropdown.Item>
+                  <Dropdown.Item>Updates</Dropdown.Item>
+                  <Dropdown.Item>Forums</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
 
-                <Dropdown className="btn-group me-1">
-                  <Dropdown.Toggle className="btn btn-light btn-sm waves-effect">
-                    <i className="mdi mdi-label font-18"></i>{" "}
-                    <i className="mdi mdi-chevron-down"></i>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <span className="dropdown-header">Label as:</span>
-                    <Dropdown.Item>Social</Dropdown.Item>
-                    <Dropdown.Item>Promotions</Dropdown.Item>
-                    <Dropdown.Item>Updates</Dropdown.Item>
-                    <Dropdown.Item>Forums</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+              <Dropdown className="btn-group me-1">
+                <Dropdown.Toggle className="btn btn-light btn-sm waves-effect">
+                  <i className="mdi mdi-label font-18"></i>{" "}
+                  <i className="mdi mdi-chevron-down"></i>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <span className="dropdown-header">Label as:</span>
+                  <Dropdown.Item>Social</Dropdown.Item>
+                  <Dropdown.Item>Promotions</Dropdown.Item>
+                  <Dropdown.Item>Updates</Dropdown.Item>
+                  <Dropdown.Item>Forums</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
 
-                <Dropdown className="btn-group me-1">
-                  <Dropdown.Toggle className="btn btn-light btn-sm waves-effect">
-                    <i className="mdi mdi-dots-horizontal font-18"></i> More{" "}
-                    <i className="mdi mdi-chevron-down"></i>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <span className="dropdown-header">More Options :</span>
-                    <Dropdown.Item>Mark as Unread</Dropdown.Item>
-                    <Dropdown.Item>Add to Tasks</Dropdown.Item>
-                    <Dropdown.Item>Add Star</Dropdown.Item>
-                    <Dropdown.Item>Mute</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown> */}
+              <Dropdown className="btn-group me-1">
+                <Dropdown.Toggle className="btn btn-light btn-sm waves-effect">
+                  <i className="mdi mdi-dots-horizontal font-18"></i> More{" "}
+                  <i className="mdi mdi-chevron-down"></i>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <span className="dropdown-header">More Options :</span>
+                  <Dropdown.Item>Mark as Unread</Dropdown.Item>
+                  <Dropdown.Item>Add to Tasks</Dropdown.Item>
+                  <Dropdown.Item>Add Star</Dropdown.Item>
+                  <Dropdown.Item>Mute</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown> */}
 
-                <div className="mt-3">
-                  <EmailsList emails={emails} />
-                </div>
-
-                <Row>
-                  <Col sm={7} className="mt-1">
-                    Showing {startIndex} - {endIndex} of {totalEmails}
-                  </Col>
-                  <Col sm={5}>
-                    <ButtonGroup className="float-end">
-                      {page === 1 ? (
-                        <Button variant="light" className="btn-sm" disabled>
-                          <i className="mdi mdi-chevron-left"></i>
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="info"
-                          className="btn-sm"
-                          onClick={getPrevPage}
-                        >
-                          <i className="mdi mdi-chevron-left"></i>
-                        </Button>
-                      )}
-
-                      {page < totalPages ? (
-                        <Button
-                          variant="info"
-                          className="btn-sm"
-                          onClick={getNextPage}
-                        >
-                          <i className="mdi mdi-chevron-right"></i>
-                        </Button>
-                      ) : (
-                        <Button variant="light" className="btn-sm" disabled>
-                          <i className="mdi mdi-chevron-right"></i>
-                        </Button>
-                      )}
-                    </ButtonGroup>
-                  </Col>
-                </Row>
+              <div className="mt-3">
+                <EmailsList emails={emails} />
               </div>
+
+              <Row>
+                <Col sm={7} className="mt-1">
+                  Showing {startIndex} - {endIndex} of {totalEmails}
+                </Col>
+                <Col sm={5}>
+                  <ButtonGroup className="float-end">
+                    {page === 1 ? (
+                      <Button variant="light" className="btn-sm" disabled>
+                        <i className="mdi mdi-chevron-left"></i>
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="info"
+                        className="btn-sm"
+                        onClick={getPrevPage}
+                      >
+                        <i className="mdi mdi-chevron-left"></i>
+                      </Button>
+                    )}
+
+                    {page < totalPages ? (
+                      <Button
+                        variant="info"
+                        className="btn-sm"
+                        onClick={getNextPage}
+                      >
+                        <i className="mdi mdi-chevron-right"></i>
+                      </Button>
+                    ) : (
+                      <Button variant="light" className="btn-sm" disabled>
+                        <i className="mdi mdi-chevron-right"></i>
+                      </Button>
+                    )}
+                  </ButtonGroup>
+                </Col>
+              </Row>
+            </div>
+              }
+         
 
               <div className="clearfix"></div>
             </Card.Body>

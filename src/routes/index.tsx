@@ -695,19 +695,19 @@ const emailAppRoutes = {
   icon: "mail",
   children: [
     {
-      path: "/apps/email/inbox",
+      path: "/apps/email/inbox/:id",
       name: "Inbox",
       element: <Inbox />,
       route: PrivateRoute,
     },
     {
-      path: "/apps/email/details",
+      path: "/apps/email/details/:id",
       name: "Email Details",
       element: <EmailDetail />,
       route: PrivateRoute,
     },
     {
-      path: "/apps/email/compose",
+      path: "/apps/email/compose/:id",
       name: "Compose Email",
       element: <EmailCompose />,
       route: PrivateRoute,

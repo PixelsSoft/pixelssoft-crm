@@ -163,8 +163,9 @@ const MailItem = ( { item, className, linkClassName } ) => {
 const EmailItemLink = ( { item, className } ) => {
 
   return (
+
     <Link
-      to={item?.url}
+      to={`/apps/email/inbox/${item.id}`}
       target={item.target}
       className={classNames( "side-nav-link-ref menu-link", className )}
       data-menu-key={item.key}

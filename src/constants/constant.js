@@ -56,6 +56,9 @@ export const CONSTANTS = {
         attendancePerMonth: 'attendance/month',
         UserMailAdd: 'userMails/add',
         UserMail: 'userMails/',
+        GetEmail:"MailServices/emails/",
+        GetSendEmail:"MailServices/emails/sent/",
+        SendEmail:"MailServices/send-email/"
 
     }
 } 
