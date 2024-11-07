@@ -1,7 +1,7 @@
 import { CONSTANTS } from "../../constants/constant";
 
 const GetEmails= async (id, token) => {
-   
+
     const onSuccess = (data) => {
         return data;
     };

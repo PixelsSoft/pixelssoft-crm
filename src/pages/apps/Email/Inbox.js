@@ -23,6 +23,7 @@ import { emails as mails } from "./data";
 import { useDispatch, useSelector } from "react-redux";
 import { GetEmail } from "../../../redux/Slices/Emails/Emails";
 import Spinner from "../../../components/Spinner";
+import moment from "moment";
 
 // emails list
 const EmailsList = (props) => {
@@ -32,6 +33,7 @@ const EmailsList = (props) => {
     <>
       <ul className="message-list">
         {(emails || []).map((email, idx) => {
+          console.log("email======>",email)
           return (
             <li className={classNames({ unread: !email.is_read })} key={idx}>
               <div className="col-mail col-mail-1">
@@ -54,7 +56,7 @@ const EmailsList = (props) => {
                   })}
                 ></span>
                 <Link to="/apps/email/details" className="title">
-                  {email.from_name}
+                  {email.from_}
                   {email.number_of_reply > 1 && (
                     <span> ({email.number_of_reply})</span>
                   )}
@@ -65,7 +67,7 @@ const EmailsList = (props) => {
                   {email.subject} &nbsp;&ndash;&nbsp;
                   <span className="teaser">{email.teaser}</span>
                 </Link>
-                <div className="date">{email.time}</div>
+                <div className="date">{moment(email.date).format("DD/MM/YYYY")} </div>
               </div>
             </li>
           );
@@ -81,8 +83,8 @@ const EmailsList = (props) => {
 const Inbox = () => {
   const {id}=useParams()
 
-  const [emails, setEmails] = useState(mails.slice(0, 20));
-  const [totalEmails] = useState(mails.length);
+  const [emails, setEmails] = useState(mails);
+  const [totalEmails,setTotalEmails] = useState(mails.length);
   const dispatch=useDispatch()
   const [pageSize] = useState(20);
   const [page, setPage] = useState(1);
@@ -105,6 +107,9 @@ const getEmails=async()=>{
     setLoading(true)
 
     const response=await dispatch(GetEmail(id,token))
+    
+    setEmails(response)
+    setTotalEmails(emails?.length)
     setLoading(false)
 
   } catch (error) {
