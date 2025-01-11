@@ -11,6 +11,7 @@ import { AddLead, DeleteLead, GetLeadById } from '../../../redux/Slices/Leads/le
 import { toast } from 'react-toastify';
 import ViewLeadModal from '../../../components/ViewLeadModal';
 import utils from '../../../utils/utils';
+import classNames from 'classnames';
 
 export default function Leads() {
     const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export default function Leads() {
             leads: state.Leads.leads
         } )
     );
-console.log(leads)
+
 
     const toggleModal = () => {
         setVisibleModal( !visibleModal );
@@ -87,21 +88,22 @@ console.log(leads)
         dispatch( stopLoading() );
     }
 
-    // /* status column render */
-    // const StatusColumn = ({ row }) => {
-    //     return (
-    //         <React.Fragment>
-    //             <span
-    //                 className={classNames("badge", {
-    //                     "bg-soft-success text-success": row.original.status === "Active",
-    //                     "bg-soft-danger text-danger": row.original.status === "Blocked",
-    //                 })}
-    //             >
-    //                 {row.original.status}
-    //             </span>
-    //         </React.Fragment>
-    //     );
-    // };
+    /* status column render */
+    const StatusColumn = ({ row }) => {
+        return (
+            <React.Fragment>
+                <span
+                    className={classNames("badge", {
+                        "bg-soft-success text-success": row.original.status === "Paid",
+                        "bg-soft-danger text-danger": row.original.status === "pending",
+                        "bg-soft-danger text-danger": row.original.status === "inActive",
+                    })}
+                >
+                    {row.original.status}
+                </span>
+            </React.Fragment>
+        );
+    };
 
     const columns = [
         {
@@ -143,6 +145,7 @@ console.log(leads)
             Header: 'Status',
             accessor: 'status',
             sort: false,
+            Cell: StatusColumn,
         },
         // {
         //     Header: 'Respond',
@@ -212,7 +215,7 @@ console.log(leads)
     }
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center vh-100'>
             <Spinner className="m-2" color={'primary'} />
         </div>
     ) : (

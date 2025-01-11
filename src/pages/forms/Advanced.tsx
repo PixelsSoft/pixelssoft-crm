@@ -144,6 +144,7 @@ const DatePickers = () => {
             <div className="mb-3">
               <label className="form-label">Single Date</label> <br />
               <HyperDatepicker
+           
                 hideAddon={true}
                 value={selectedDate}
                 onChange={(date) => {

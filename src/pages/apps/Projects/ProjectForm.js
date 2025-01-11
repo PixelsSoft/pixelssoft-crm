@@ -87,83 +87,157 @@ const ProjectForm = () => {
     setFiles( [] )
 
   }
+  // const addProject = async () => {
+  //   try {
+  //     await dispatch( startLoading() )
+  //     if ( title === '' ) {
+  //       toast.error( "Enter Title please", { position: toast.POSITION.TOP_RIGHT } );
+  //       dispatch( stopLoading() );
+  //       return
+  //     }
+  //     if ( desc === '' ) {
+  //       toast.error( "Enter Project Overview please", { position: toast.POSITION.TOP_RIGHT } );
+  //       dispatch( stopLoading() );
+  //       return
+  //     }
+  //     if ( cat === '' ) {
+  //       toast.error( "Select Project Category please", { position: toast.POSITION.TOP_RIGHT } );
+  //       dispatch( stopLoading() );
+  //       return
+  //     }
+  //     if ( priority === '' ) {
+  //       toast.error( "Select Project priority please", { position: toast.POSITION.TOP_RIGHT } );
+  //       dispatch( stopLoading() );
+  //       return
+  //     }
+  //     if ( selectedTeamMembersId.length === 0 ) {
+  //       toast.error( "Select Team member please", { position: toast.POSITION.TOP_RIGHT } );
+  //       dispatch( stopLoading() );
+  //       return
+  //     }
+  //     const Form = new FormData()
+  //     Form.append( "title", title )
+  //     Form.append( "description", desc )
+  //     Form.append( "projectType", cat )
+  //     Form.append( "due_date", endDate )
+  //     Form.append( "priority", priority )
+  //     Form.append( "status", "Ongoing" )
+
+
+  //     // if ( fileUpload.length > 0 ) {
+  //     //   Form.append( "files", fileUpload.join( "," ) ); 
+  //     // }
+  //     // Handle file uploads
+  //     if ( files.length > 0 ) {
+  //       const fileUploadPromises = files.map( file => handleUpload( dispatch, file ) );
+
+  //       try {
+  //         // Wait for all file uploads to complete
+  //         const uploadedFiles = await Promise.all( fileUploadPromises );
+
+  //         // Join file URLs with a comma and append to FormData
+  //         const fileUrlsString = uploadedFiles.join( "," );
+  //         Form.append( "files", fileUrlsString );
+  //         // Optionally, update fileUpload state here
+  //         setFileUpload( uploadedFiles );  // If you need to use fileUpload later
+  //       } catch ( uploadError ) {
+  //         console.error( "File upload error: ", uploadError );
+  //         toast.error( "Failed to upload files", { position: toast.POSITION.TOP_RIGHT } );
+  //         return;
+  //       }
+  //     }
+
+  //     for ( let i = 0; i < selectedTeamMembersId.length; i++ ) {
+  //       Form.append( "teams", selectedTeamMembersId[i] );
+  //     }
+
+  //     await dispatch( CreateProject( Form, token, reset ) )
+  //     navigate( -1 );
+
+  //     await dispatch( stopLoading() )
+
+
+  //   } catch ( error ) {
+  //     console.log( "submit Foam error: " + error )
+  //   }
+  // }
+
   const addProject = async () => {
     try {
-      await dispatch( startLoading() )
-      if ( title === '' ) {
-        toast.error( "Enter Title please", { position: toast.POSITION.TOP_RIGHT } );
-        dispatch( stopLoading() );
-        return
-      }
-      if ( desc === '' ) {
-        toast.error( "Enter Project Overview please", { position: toast.POSITION.TOP_RIGHT } );
-        dispatch( stopLoading() );
-        return
-      }
-      if ( cat === '' ) {
-        toast.error( "Select Project Category please", { position: toast.POSITION.TOP_RIGHT } );
-        dispatch( stopLoading() );
-        return
-      }
-      if ( priority === '' ) {
-        toast.error( "Select Project priority please", { position: toast.POSITION.TOP_RIGHT } );
-        dispatch( stopLoading() );
-        return
-      }
-      if ( selectedTeamMembersId.length === 0 ) {
-        toast.error( "Select Team member please", { position: toast.POSITION.TOP_RIGHT } );
-        dispatch( stopLoading() );
-        return
-      }
-      const Form = new FormData()
-      Form.append( "title", title )
-      Form.append( "description", desc )
-      Form.append( "projectType", cat )
-      Form.append( "due_date", endDate )
-      Form.append( "priority", priority )
-      Form.append( "status", "Ongoing" )
 
-
-      // if ( fileUpload.length > 0 ) {
-      //   Form.append( "files", fileUpload.join( "," ) ); 
+  
+      await dispatch(startLoading());
+      
+      // Validate inputs
+      if (title === '') {
+        toast.error("Enter Title please", { position: toast.POSITION.TOP_RIGHT });
+        dispatch(stopLoading());
+        return;
+      }
+      if (desc === '') {
+        toast.error("Enter Project Overview please", { position: toast.POSITION.TOP_RIGHT });
+        dispatch(stopLoading());
+        return;
+      }
+      if (cat === '') {
+        toast.error("Select Project Category please", { position: toast.POSITION.TOP_RIGHT });
+        dispatch(stopLoading());
+        return;
+      }
+      if (priority === '') {
+        toast.error("Select Project priority please", { position: toast.POSITION.TOP_RIGHT });
+        dispatch(stopLoading());
+        return;
+      }
+      if (selectedTeamMembersId.length === 0) {
+        toast.error("Select Team member please", { position: toast.POSITION.TOP_RIGHT });
+        dispatch(stopLoading());
+        return;
+      }
+  
+   
+      // Create FormData
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", desc);
+      formData.append("projectType", cat);
+      formData.append("due_date", endDate);
+      formData.append("priority", priority);
+      formData.append("status", "Ongoing");
+   
+      console.log({files})
+      files.forEach((file) => {
+        formData.append("files", file); // Append each file individually
+      });
+      // for (const pair of formData.entries()) {
+      //   console.log(pair[0], pair[1]);
       // }
-      // Handle file uploads
-      if ( files.length > 0 ) {
-        const fileUploadPromises = files.map( file => handleUpload( dispatch, file ) );
-
-        try {
-          // Wait for all file uploads to complete
-          const uploadedFiles = await Promise.all( fileUploadPromises );
-
-          // Join file URLs with a comma and append to FormData
-          const fileUrlsString = uploadedFiles.join( "," );
-          Form.append( "files", fileUrlsString );
-          // Optionally, update fileUpload state here
-          setFileUpload( uploadedFiles );  // If you need to use fileUpload later
-        } catch ( uploadError ) {
-          console.error( "File upload error: ", uploadError );
-          toast.error( "Failed to upload files", { position: toast.POSITION.TOP_RIGHT } );
-          return;
-        }
+      // if (files && files.length > 0) {
+      //   for (let i = 0; i < files.length; i++) {
+      //     formData.append("files", files[i]);  // Attach multiple files
+      //   }
+      // }
+    //   if (Array.isArray(files)) {
+    //     files.forEach((file) => formData.append("files", file));
+    // } else {
+    //     formData.append("files", files); // Handle single file case
+    // }
+    
+    
+      for (let i = 0; i < selectedTeamMembersId.length; i++) {
+        formData.append("teams", selectedTeamMembersId[i]);
       }
-
-      for ( let i = 0; i < selectedTeamMembersId.length; i++ ) {
-        Form.append( "teams", selectedTeamMembersId[i] );
-      }
-
-      await dispatch( CreateProject( Form, token, reset ) )
-      navigate( -1 );
-
-      await dispatch( stopLoading() )
-
-
-    } catch ( error ) {
-      console.log( "submit Foam error: " + error )
+  
+      // Dispatch the API call
+      await dispatch(CreateProject(formData, token, reset));
+      navigate(-1);
+      dispatch(stopLoading());
+    } catch (error) {
+      console.error("Error submitting form: ", error);
+      dispatch(stopLoading());
     }
-  }
-
-
-
+  };
+  
 
   const { token, user, category, loading, employee } = useSelector(
     ( state ) => ( {
@@ -356,9 +430,8 @@ const ProjectForm = () => {
 
                     <FileUploader
 
-                      // onChange={handleFileChange}
-                      // onFileUpload={handleFileChange}
-                      onFileUpload={( file ) => { setFiles( file ) }}
+                      onFileUpload={( file ) => {       setFiles( file ) }}
+                     
                     />
                   </div>
 

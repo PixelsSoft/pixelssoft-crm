@@ -44,14 +44,16 @@ const ProjectDetail = () => {
     try {
       dispatch( startLoading() )
       const response = await dispatch( GetProjectById( id, token ) );
+
       if ( response && response[0] ) {
         const fetchedProject = response[0];
         setProject( fetchedProject );
-        const docPromises = fetchedProject.projectDocuments.map( file =>
-          getFileDetails( file?.filepath )
-        );
-        const docDetails = await Promise.all( docPromises );
-        setDocuments( docDetails );
+        setDocuments(response[0]?.projectDocuments)
+        // const docPromises = fetchedProject.projectDocuments.map( file =>
+        //   getFileDetails( file?.filepath )
+        // );
+        // const docDetails = await Promise.all( docPromises );
+        // setDocuments( docDetails );
       }
       dispatch( stopLoading() )
 
@@ -73,25 +75,27 @@ const ProjectDetail = () => {
       dispatch( startLoading() )
       const Form = new FormData()
       Form.append( "id", id );
+      files.forEach((file) => {
+        Form.append("files", file); // Append each file individually
+      });
+      // if ( files.length > 0 ) {
+      //   const fileUploadPromises = files.map( file => handleUpload( dispatch, file ) );
 
-      if ( files.length > 0 ) {
-        const fileUploadPromises = files.map( file => handleUpload( dispatch, file ) );
+      //   try {
+      //     // Wait for all file uploads to complete
+      //     const uploadedFiles = await Promise.all( fileUploadPromises );
 
-        try {
-          // Wait for all file uploads to complete
-          const uploadedFiles = await Promise.all( fileUploadPromises );
-
-          // Join file URLs with a comma and append to FormData
-          const fileUrlsString = uploadedFiles.join( "," );
-          Form.append( "files", fileUrlsString );
+      //     // Join file URLs with a comma and append to FormData
+      //     const fileUrlsString = uploadedFiles.join( "," );
+      //     Form.append( "files", fileUrlsString );
 
 
-        } catch ( uploadError ) {
-          console.error( "File upload error: ", uploadError );
-          toast.error( "Failed to upload files", { position: toast.POSITION.TOP_RIGHT } );
-          return;
-        }
-      }
+      //   } catch ( uploadError ) {
+      //     console.error( "File upload error: ", uploadError );
+      //     toast.error( "Failed to upload files", { position: toast.POSITION.TOP_RIGHT } );
+      //     return;
+      //   }
+      // }
       await dispatch( UploadProjectDocuments( Form, token ) )
       await fetchProjectDetails()
 
@@ -231,7 +235,8 @@ const ProjectDetail = () => {
         </Col>
         <Col xl={4} lg={6}>
           <ProgressChart />
-          {documents.length > 0 && <Files documents={documents} uploadDocuments={uploadDocuments} />}
+          {/* {documents.length > 0 && <Files documents={documents} uploadDocuments={uploadDocuments} />} */}
+          <Files documents={documents} uploadDocuments={uploadDocuments} />
         </Col>
 
       </Row>

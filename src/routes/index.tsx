@@ -53,6 +53,9 @@ const Customers = React.lazy(
 const Commissions = React.lazy(
   () => import("../pages/apps/Commissions/Commissions")
 );
+const SingleCommissions = React.lazy(
+  () => import("../pages/apps/Commissions/SingleUserCommissions")
+);
 const AddCustomer = React.lazy(
   () => import("../pages/apps/Customers/CreateCustomer/CreateCustomer")
 );
@@ -286,7 +289,7 @@ const TargetRoutes: RoutesProps = {
   element: <Target />,
   children: [
     {
-      path: "/apps/target/1",
+      path: "/apps/target/:user_id",
       name: "individualTarget",
       element: <IndividualTarget />,
       route: PrivateRoute,
@@ -342,17 +345,12 @@ const commissionRoutes: RoutesProps = {
 
   children: [
     {
-      path: "/apps/customer/addCustomer",
+      path: "/apps/commission/:id",
       name: "Add Customer",
-      element: <AddCustomer />,
+      element: <SingleCommissions />,
       route: PrivateRoute,
     },
-    {
-      path: "/apps/customer/customerProfile/:profileId",
-      name: "Customer Profile",
-      element: <CustomerProfile />,
-      route: PrivateRoute,
-    },
+   
   ],
 };
 //Customer Route

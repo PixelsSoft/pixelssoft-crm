@@ -31,7 +31,7 @@ const FileUploader = ( props ) => {
 
       allFiles = [...selectedFiles];
 
-      allFiles.push( files[0] );
+      allFiles.push(file );
 
       setSelectedFiles( allFiles );
     }
@@ -75,8 +75,8 @@ const FileUploader = ( props ) => {
 
 
         {...props}
-        // onChange={(acceptedFiles) => handleAcceptedFiles(acceptedFiles)}
         onDrop={( acceptedFiles ) => handleAcceptedFiles( acceptedFiles )}
+    
       >
         {( { getRootProps, getInputProps } ) => (
           <div className="dropzone">

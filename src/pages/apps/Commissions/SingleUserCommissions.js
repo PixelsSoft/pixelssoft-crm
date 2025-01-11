@@ -2,21 +2,26 @@
 
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import Table from '../../../components/Table';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
+
 import "react-datepicker/dist/react-datepicker.css";
+
+
 import Spinner from '../../../components/Spinner';
 import PageTitle from '../../../components/PageTitle';
-import { GetCommission } from '../../../redux/Slices/Commission/Commission';
+import { GetSingleCommission } from '../../../redux/Slices/Commission/Commission';
 import moment from 'moment';
 import ReactDatePicker from 'react-datepicker';
 
 const Commissions = () => {
+     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [item, setItem] = useState();
-    const [data, setData] = useState([]);
+    const [data, setData] = useState();
     const [editUserModal, setEditUserModal] = useState(false);
      const [loading, setLoading] = useState(false);
        const [selectedDate, setSelectedDate] = useState(moment().format("yyyy-MM"));
@@ -64,9 +69,9 @@ const Commissions = () => {
          try {
             const formData = new FormData()
             formData.append("month",selectedDate)
-             const response=await dispatch(GetCommission(token,formData))
-             setData(response?.data)
-             
+             const response=await dispatch(GetSingleCommission(token,id,formData))
+             setData(response)
+             console.log("responseresponse===============",response)
          setLoading(false)
              
           
@@ -79,57 +84,31 @@ const Commissions = () => {
         getCommissionByAPiCall()
      }, [selectedDate])
 
-    const ActionColumn = ( {user_id,item} ) => {
-        
-        return (
-            <React.Fragment>
-                <Link to={`/apps/commission/${user_id}`} className="action-icon">
-                    {" "}
-                    <i className="mdi mdi-eye"></i>
-                </Link>
-                
-            </React.Fragment>
-        );
-    };
-
+ 
     const columns = [
         {
             Header: 'ID',
-            accessor: 'user_id',
+            accessor: 'id',
             sort: true,
         },
         {
-            Header: 'Name',
-            accessor: 'name',
+            Header: 'Date',
+            accessor: 'date',
             sort: true,
         },
         {
-            Header: 'Commission',
-            accessor: 'commission',
+            Header: 'Amount',
+            accessor: 'amount',
             sort: true,
         },
         {
-            Header: 'Month',
-            accessor: 'month',
+            Header: 'Project_name',
+            accessor: 'project_name',
             sort: false,
         },
-        {
-            Header: 'Total sales',
-            accessor: 'total_sales',
-            sort: false,
-        },
-        {
-            Header: 'Commission rate',
-            accessor: 'commission_rate',
-            sort: false,
-        },
+   
        
-        {
-            Header: "Action",
-            accessor: "action",
-            sort: false,
-            Cell: ({ row }) => <ActionColumn item={row?.original} user_id={row.original.user_id} />,
-        },
+        
     ];
 
     return loading ? (
@@ -142,7 +121,7 @@ const Commissions = () => {
                 breadCrumbItems={[
                     { label: "Commission", path: "/apps/commission" },
                 ]}
-                title={"Commission"}
+                title={data?.name}
             />
             <Row>
                 <Col>
@@ -189,7 +168,7 @@ const Commissions = () => {
                        
                                 <Table
                                     columns={columns}
-                                    data={data||[]}
+                                    data={data?.sales_details||[]}
                                     pageSize={10}
                                     sizePerPageList={sizePerPageList}
                                     isSortable={true}

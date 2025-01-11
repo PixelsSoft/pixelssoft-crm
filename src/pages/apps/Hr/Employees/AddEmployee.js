@@ -233,7 +233,10 @@ const List = () => {
             .catch( err => {
                 dispatch( stopLoading() );
                 console.log( "err========", err );
-            } );
+            } ).finally(()=>{
+                dispatch( stopLoading() );
+
+            });
         // await dispatch( AddEmployee( params, token ) );
         dispatch( stopLoading() );
     };
@@ -242,9 +245,10 @@ const List = () => {
     const handleProfileFileChange = async ( event ) => {
         if ( event.target.files ) {
             const file = event.target.files[0];
-            await handleUpload( dispatch, file ).then( ( res ) => {
-                setProfilePic( res );
-            } )
+                setProfilePic( file );
+            // await handleUpload( dispatch, file ).then( ( res ) => {
+            //     setProfilePic( res );
+            // } )
         }
     };
 
@@ -270,11 +274,14 @@ const List = () => {
     const handleCNICFileChange = async ( event ) => {
         if ( event.target.files ) {
             const file = event.target.files[0];
-            await handleUpload( dispatch, file ).then( ( res ) => {
-                console.log( "CNIC upload complete", res )
+            console.log(file)
+            setCNIC( file );
 
-                setCNIC( res );
-            } )
+            // await handleUpload( dispatch, file ).then( ( res ) => {
+            //     console.log( "CNIC upload complete", res )
+
+            //     setCNIC( res );
+            // } )
         }
     };
 
@@ -282,21 +289,25 @@ const List = () => {
     const handleCVFileChange = async ( event ) => {
         if ( event.target.files ) {
             const file = event.target.files[0];
-            await handleUpload( dispatch, file ).then( ( res ) => {
-                console.log( "CV upload complete", res )
-                setCV( res );
-            } )
+            setCV( file );
+
+            // await handleUpload( dispatch, file ).then( ( res ) => {
+            //     console.log( "CV upload complete", res )
+            //     setCV( res );
+            // } )
         }
     };
     // Contract picture Upload
     const handleContractFileChange = async ( event ) => {
         if ( event.target.files ) {
             const file = event.target.files[0];
-            await handleUpload( dispatch, file ).then( ( res ) => {
-                console.log( "Contract upload complete", res )
+            setContract( file );
 
-                setContract( res );
-            } )
+            // await handleUpload( dispatch, file ).then( ( res ) => {
+            //     console.log( "Contract upload complete", res )
+
+            //     setContract( res );
+            // } )
 
         }
     };

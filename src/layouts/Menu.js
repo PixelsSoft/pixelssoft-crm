@@ -278,12 +278,12 @@ const AppMenu = ( { menuItems } ) => {
   );
 
 
-  useEffect( () => {
+  useEffect(() => {
     activeMenu();
-    const role = roles[0]?.role?.split( "," );
-    setRole( role||[] )
+    const role = roles?.[0]?.role?.split(",") || [];
+    setRole(role);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roles] );
+  }, [roles]);
 
   // console.log( "roles====", roles[0].role )
 

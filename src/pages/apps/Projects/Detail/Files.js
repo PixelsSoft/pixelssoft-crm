@@ -5,6 +5,7 @@ import { getFileDetails } from "../../../../utils/FileUpload";
 import { useDispatch } from "react-redux";
 import { startLoading, stopLoading } from "../../../../redux/Slices/utiltities/Utiltities";
 import FileUploader from "../../../../components/FileUploader";
+import { CONSTANTS } from "../../../../constants/constant";
 
 const Files = ( { documents, uploadDocuments } ) => {
   const [files, setFiles] = useState( [] )
@@ -22,18 +23,18 @@ const Files = ( { documents, uploadDocuments } ) => {
                 <div className="col-auto">
                   <div className="avatar-sm">
                     <span className="avatar-title badge-soft-primary text-primary rounded">
-                      {file?.fileFormat}
+                      {file?.file_format}
                     </span>
                   </div>
                 </div>
                 <div className="col ps-0">
                   <div className="text-muted fw-bold">
-                    {file?.fileName}
+                    {file?.filename}
                   </div>
-                  <p className="mb-0"> {file?.fileSize} MB</p>
+                  <p className="mb-0"> {file?.filesize} MB</p>
                 </div>
                 <div className="col-auto">
-                  <Link to={file?.url} target="_blank"
+                  <Link to={CONSTANTS.API_URLS.BASE+ file?.filepath} target="_blank"
                     className="btn btn-link btn-lg text-muted"
                   >
                     <i className="dripicons-download"></i>

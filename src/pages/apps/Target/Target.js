@@ -3,9 +3,45 @@ import PageTitle from '../../../components/PageTitle'
 import CountUp from "react-countup";
 import StatisticsWidget2 from '../../../components/StatisticsWidget2'
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { GetTargets } from '../../../redux/Slices/Target/target';
+import Spinner from '../../../components/Spinner';
 
 export default function Target() {
-    return (
+    const [data,setData]=useState([])
+      const [loading, setLoading] = useState(false);
+    
+    const dispatch=useDispatch()
+        const { token, } = useSelector(
+            ( state ) => ( {
+                token: state.Auth.token,
+               
+            } )
+        );
+    const getTargetByAPiCall=async()=>{
+    setLoading(true)
+
+        try {
+            const response=await dispatch(GetTargets(token))
+            setData(response)
+        setLoading(false)
+            
+         
+        } catch (error) {
+            console.log(error)
+        setLoading(false)
+    }
+    }
+    useEffect(() => {
+        getTargetByAPiCall()
+    }, [])
+    
+    return loading?(
+        <div className='d-flex justify-content-center align-items-center vh-100'>
+            <Spinner className="m-2" color={'primary'} />
+        </div>
+    ): (
         <>
             <PageTitle
                 breadCrumbItems={[
@@ -73,44 +109,33 @@ export default function Target() {
                 </Col>
             </Row>
             <Row>
-                <Col lg={3}>
-                    <Link to="/apps/target/1">
-
-
-                        <StatisticsWidget2
-                            variant="blue"
-                            description=""
-                            stats="12145"
-                            icon="fe-aperture"
-                            progress={60}
-                            counterOptions={{
-                                prefix: "$",
-                            }}
-                        />
-                    </Link>
+    {(data || []).map((item, index) => {
+        return (
+            <Col key={index} lg={3} md={4} sm={6} xs={12} className="mb-3">
+                <Link to={`/apps/target/${item?.user_id}`}>
                     <StatisticsWidget2
                         variant="blue"
-                        description="Daniyal"
-                        stats="12145"
+                        description={item?.name}
+                        stats={item?.monthly_sales[item?.monthly_sales.length - 1]?.target}
                         icon="fe-aperture"
-                        progress={60}
+                        progress={
+                            item?.monthly_sales[item?.monthly_sales.length - 1]?.target === 0
+                                ? 0
+                                : (item?.monthly_sales[item?.monthly_sales.length - 1]?.total_achieved /
+                                  item?.monthly_sales[item?.monthly_sales.length - 1]?.target) *
+                                  100
+                        }
                         counterOptions={{
                             prefix: "$",
                         }}
                     />
-                    <StatisticsWidget2
-                        variant="blue"
-                        description=""
-                        stats="12145"
-                        icon="fe-aperture"
-                        progress={60}
-                        counterOptions={{
-                            prefix: "$",
-                        }}
-                    />
-                </Col>
+                </Link>
+            </Col>
+        );
+    })}
+</Row>
 
-            </Row>
+           
         </>
 
     )

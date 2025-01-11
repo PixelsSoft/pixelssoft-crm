@@ -25,6 +25,7 @@ import VendorPayment from './Slices/VendorPayment/VendorPayment';
 import Banks from './Slices/Bank/banks';
 import Mails from './Slices/usermail/UserMail';
 import Emails from './Slices/Emails/Emails';
+import Commission from './Slices/Commission/Commission';
 
 const persistConfig = {
   key: 'root',
@@ -53,7 +54,8 @@ const reducer = combineReducers({
   PortalProjects:PortalProjects,
   Banks:Banks,
   Mails:Mails,
-  Emails:Emails
+  Emails:Emails,
+  Commission:Commission
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
