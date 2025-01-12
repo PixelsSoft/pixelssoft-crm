@@ -21,7 +21,6 @@ import {
 import Spinner from "../../components/Spinner";
 import { toast } from "react-toastify";
 
-
 /* bottom links */
 const BottomLink = () => {
   const { t } = useTranslation();
@@ -31,13 +30,13 @@ const BottomLink = () => {
       <Col className="text-center">
         <p>
           <Link to={"/auth/forget-password"} className="text-white-50 ms-1">
-            {t( "Forgot your password?" )}
+            {t("Forgot your password?")}
           </Link>
         </p>
         <p className="text-white-50">
-          {t( "Don't have an account?" )}{" "}
+          {t("Don't have an account?")}{" "}
           <Link to={"/auth/register"} className="text-white ms-1">
-            <b>{t( "Sign Up" )}</b>
+            <b>{t("Sign Up")}</b>
           </Link>
         </p>
       </Col>
@@ -48,43 +47,43 @@ const BottomLink = () => {
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState( "" );
-  const [password, setPassword] = useState( "" );
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const { token, loading, roles } = useSelector( ( state ) => ( {
+  const { token, loading, roles } = useSelector((state) => ({
     token: state.Auth.user,
     loading: state.utiltities.loading,
     roles: state.Roles.roles,
-  } ) );
-
+  }));
 
   /*
     handle form submission
-    */
+  */
   const onSubmit = async () => {
-    const params = {
-      email: email,
-      password: password,
-    };
-    if ( email === "" || password === "" ) {
-      return toast.error( "Please enter a Valid email or password", { position: toast.POSITION.TOP_RIGHT } );
-
+    if (email === "" || password === "") {
+      return toast.error("Please enter a Valid email or password", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
     }
-    dispatch( startLoading() );
-    await dispatch( login( { email, password } ) )
-      .then( () => {
-        dispatch( stopLoading() );
 
-
-      } )
-      .catch( () => {
-        dispatch( stopLoading() );
-      } );
+    dispatch(startLoading());
+    await dispatch(login({ email, password }))
+      .then(() => {
+        dispatch(stopLoading());
+      })
+      .catch(() => {
+        dispatch(stopLoading());
+      });
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSubmit();
+    }
+  };
+
   const location = useLocation();
-  //
-  // const redirectUrl = location.state && location.state.from ? location.state.from.pathname : '/';
-  const redirectUrl = location?.search?.slice( 6 ) || "/";
+  const redirectUrl = location?.search?.slice(6) || "/";
 
   return (
     <>
@@ -97,15 +96,14 @@ const Login = () => {
         bottomLinks={<BottomLink />}
       >
         <FormInput
-          label={t( "Email" )}
+          label={t("Email")}
           value={email}
-          onChange={( e ) => {
-            setEmail( e.target.value );
-          }}
+          onChange={(e) => setEmail(e.target.value)}
           type="text"
           name="email"
           placeholder="Enter your Username"
           containerClass={"mb-3"}
+          onKeyDown={handleKeyDown}
         />
 
         <FormInput
@@ -113,12 +111,13 @@ const Login = () => {
           type="password"
           value={password}
           name="password"
-          onChange={( e ) => setPassword( e.target.value )}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
           containerClass={"mb-3"}
+          onKeyDown={handleKeyDown}
         ></FormInput>
 
-        <div className="text-center d-grid ">
+        <div className="text-center d-grid">
           {loading ? (
             <div className="text-center d-grid d-flex justify-content-center">
               <Spinner size={"md"} color="blue" />
@@ -127,10 +126,9 @@ const Login = () => {
             <Button
               variant="primary"
               type="submit"
-              // disabled={loading}
               onClick={onSubmit}
             >
-              {t( "Log In" )}
+              {t("Log In")}
             </Button>
           )}
         </div>

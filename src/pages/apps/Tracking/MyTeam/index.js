@@ -2,13 +2,13 @@ import { Card, Col, ProgressBar, Row,Container, Button } from "react-bootstrap";
 
 import CountUp from "react-countup";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PageTitle from "../../../../components/PageTitle";
 
 
 
 export default function index() {
-  const naviage = useNavigate();
+  // const naviage = useNavigate();
   return (
     <>
       <PageTitle
@@ -84,7 +84,7 @@ export default function index() {
                 <div>00:00 Checked-in</div>
                 <div>00h 00m Hours worked</div>
               </div>
-              <Button onClick={() => naviage( `/apps/myteam/5`, )}variant="info" className="w-100 mt-3">Desktop app not installed</Button>
+              {/* <Button onClick={() => naviage( `/apps/myteam/5`, )}variant="info" className="w-100 mt-3">Desktop app not installed</Button> */}
             </Card.Body>
           </Card>
         

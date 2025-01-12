@@ -1,7 +1,7 @@
 export const CONSTANTS = {
     API_URLS: {
        
-        BASE: "https://crm-backend-78e9.onrender.com/",
+        BASE: "https://crm-backend-78e9.onrender.com",
      
         // BASE: "http://127.0.0.1:8000",
         
