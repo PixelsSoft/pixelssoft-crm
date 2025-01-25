@@ -52,16 +52,16 @@ export const login =
           await dispatch(userToken(response?.access_token));
           await dispatch(GetEmployees(response?.access_token));
           await dispatch(GetPlatform(response?.access_token));
-          await dispatch(GetLead(response?.access_token));
+          // await dispatch(GetLead(response?.access_token));
           await dispatch(GetCategory(response?.access_token));
           await dispatch(GetTodayBids(response?.access_token));
           await dispatch(GetMonthBids(response?.access_token));
           await dispatch(GetExpenseCategory(response?.access_token));
           await dispatch(attendance(response?.access_token));
-          await dispatch(GetPortalProject(response?.access_token));
-          await dispatch(GetProject(response?.access_token));
+          // await dispatch(GetPortalProject(response?.access_token));
+          // await dispatch(GetProject(response?.access_token));
           await dispatch(GetBanks(response?.access_token));
-          await dispatch(GetCustomer(response?.access_token));
+          // await dispatch(GetCustomer(response?.access_token));
           await dispatch(GetExpense(response?.access_token));
           await dispatch(GetInvoice(response?.access_token));
 

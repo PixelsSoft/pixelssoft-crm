@@ -96,9 +96,9 @@ const AddPortalProjects = () => {
     }, [employee] );
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
-            <Spinner className="m-2" color={'primary'} />
-        </div>
+         <div className="d-flex justify-content-center align-items-center vh-100">
+              <Spinner className="m-2" color={"primary"} />
+            </div>
     ) : (
         <>
             <PageTitle

@@ -1,11 +1,11 @@
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import Table from '../../../../components/Table';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PageTitle from '../../../../components/PageTitle';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../../../../components/Spinner';
-import { DeleteCustomer } from '../../../../redux/Slices/Customer/customer';
+import { DeleteCustomer, GetCustomer } from '../../../../redux/Slices/Customer/customer';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
 import CustomerEditModal from '../../../../components/CustomerEditModal';
 
@@ -15,15 +15,32 @@ const Customers = () => {
     const [item, setItem] = useState();
     const [editUserModal, setEditUserModal] = useState(false);
 
-    const { customer, loading, token } = useSelector(
+    const { customer, loading, token ,roles} = useSelector(
         (state) => ({
             customer: state.Customer.customer,
             loading: state.utiltities.loading,
             token: state.Auth.token,
+    roles: state.Roles.roles,
+
         })
     );
-
-
+const [hasSuperAdmin, sethasSuperAdmin] = useState(
+    roles[0]?.role
+      .split(",")
+      .some((role) => role === "SuperAdmin" || role === "Sales Manager") || ""
+  );
+const gettingCustomer = async () => {
+    try {
+      dispatch(startLoading());
+      await dispatch(GetCustomer(token));
+      dispatch(stopLoading());
+    } catch (error) {
+      dispatch(stopLoading());
+    }
+  };
+  useEffect(() => {
+    gettingCustomer();
+  }, []);
     const sizePerPageList = [
         {
             text: '5',
@@ -66,7 +83,9 @@ const Customers = () => {
                     {" "}
                     <i className="mdi mdi-eye"></i>
                 </Link>
-                <Link className="action-icon" onClick={() => toggleEditModal(projectId,item)}>
+                {hasSuperAdmin && 
+                <>
+                 <Link className="action-icon" onClick={() => toggleEditModal(projectId,item)}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
@@ -74,6 +93,9 @@ const Customers = () => {
                     {" "}
                     <i className="mdi mdi-delete"></i>
                 </Link>
+                </>
+                }
+               
             </React.Fragment>
         );
     };
@@ -118,8 +140,8 @@ const Customers = () => {
     ];
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
-            <Spinner className="m-2" color={'primary'} />
+     <div className="d-flex justify-content-center align-items-center vh-100">
+          <Spinner className="m-2" color={"primary"} />
         </div>
     ) : (
         <>

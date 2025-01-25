@@ -9,11 +9,10 @@ import {
   ProgressBar,
   OverlayTrigger,
   Tooltip,
-  Spinner,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
-
+import Spinner from '../../../components/Spinner';
 // components
 import PageTitle from "../../../components/PageTitle";
 
@@ -30,54 +29,61 @@ import {
 } from "../../../redux/Slices/Project/Project";
 
 // single project
-const SingleProject = ( props ) => {
+const SingleProject = (props) => {
   const project = props.project || {};
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-
-  const { token } = useSelector( ( state ) => ( {
+  const { token, roles } = useSelector((state) => ({
     token: state.Auth.token,
-  } ) );
+    roles: state.Roles.roles,
+  }));
+
+  const [hasSuperAdmin, sethasSuperAdmin] = useState(
+    roles[0]?.role
+      .split(",")
+      .some((role) => role === "SuperAdmin" || role === "Project Manager") || ""
+  );
 
   const navigate = useNavigate();
   return (
     <Card className="project-box">
       <Card.Body>
-        <Dropdown className="card-widgets" align="end">
-          <Dropdown.Toggle
-            as="a"
-            className="cursor-pointer card-drop p-0 shadow-none"
-          >
-            <i className="mdi mdi-dots-horizontal m-0 text-muted h3"></i>
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            <Dropdown.Item>
-              <i className="mdi mdi-pencil me-1"></i>Edit
-            </Dropdown.Item>
-            <Dropdown.Item
-
-              onClick={async () => {
-                await dispatch( DeleteProject( project?.id, token, navigate ) );
-              }}
+        {hasSuperAdmin && (
+          <Dropdown className="card-widgets" align="end">
+            <Dropdown.Toggle
+              as="a"
+              className="cursor-pointer card-drop p-0 shadow-none"
             >
-              <i className="mdi mdi-delete me-1"></i>Delete
-            </Dropdown.Item>
-            <Dropdown.Item>
+              <i className="mdi mdi-dots-horizontal m-0 text-muted h3"></i>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item>
+                <i className="mdi mdi-pencil me-1"></i>Edit
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={async () => {
+                  await dispatch(DeleteProject(project?.id, token, navigate));
+                }}
+              >
+                <i className="mdi mdi-delete me-1"></i>Delete
+              </Dropdown.Item>
+              {/* <Dropdown.Item>
               <i className="mdi mdi-email-outline me-1"></i>Invite
             </Dropdown.Item>
             <Dropdown.Item>
               <i className="mdi mdi-exit-to-app me-1"></i>Leave
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+            </Dropdown.Item> */}
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
+
         <h4 className="mt-0">
           <Link
             to={{
               pathname: `/apps/projects/${project?.id}/details`,
               state: { project }, // pass project data here
             }}
-
             className="text-dark"
           >
             {project?.title}
@@ -117,7 +123,7 @@ const SingleProject = ( props ) => {
           </span>
         </p>
         <div className="avatar-group mb-3">
-          {( project?.project_Teams || [] ).map( ( member, index ) => {
+          {(project?.project_Teams || []).map((member, index) => {
             return (
               <OverlayTrigger
                 key={index}
@@ -137,7 +143,7 @@ const SingleProject = ( props ) => {
                 </Link>
               </OverlayTrigger>
             );
-          } )}
+          })}
         </div>
         <p className="mb-2 fw-semibold">
           Task completed:
@@ -156,59 +162,34 @@ const SingleProject = ( props ) => {
 };
 
 const Projects = () => {
-  const [projects, setprojects] = useState( [] );
+  const [projects, setprojects] = useState([]);
   const dispatch = useDispatch();
 
-  const { loading, token, project } = useSelector( ( state ) => ( {
+  const { loading, token, project } = useSelector((state) => ({
     loading: state.utiltities.loading,
     token: state.Auth.token,
     project: state.Projects.project,
-  } ) );
-
+  }));
 
   const getProject = async () => {
-    await dispatch( GetProject( token ) );
+    try {
+      dispatch(startLoading());
+
+      await dispatch(GetProject(token));
+      dispatch(stopLoading());
+    } catch (error) {
+      dispatch(stopLoading());
+    }
   };
 
-
-  // const getProject = async () => {
-  //   try {
-
-  //     const requestOptions = {
-  //       method: "GET",
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`
-  //       },
-  //       redirect: "follow"
-  //     };
-  //     await dispatch( startLoading() )
-  //     await fetch( "https://crmupd.pixelssoft.com/api/project", requestOptions )
-  //       .then( ( response ) => response.json() )
-  //       .then( async ( result ) => {
-  //         const res = result
-  //         setprojects( res.data )
-
-  //         await dispatch( stopLoading() )
-  //       }
-  //       )
-  //       .catch( async ( error ) => {
-  //         console.error( error )
-  //         await dispatch( stopLoading() )
-  //       }
-  //       );
-
-  //   } catch ( error ) {
-  //     await dispatch( stopLoading() )
-
-  //     console.log( "failed to get project", error )
-  //   }
-
-  // }
+  useEffect(() => {
+    getProject();
+  }, []);
 
   return loading ? (
-    <div className="d-flex justify-content-center align-items-center">
-      <Spinner className="m-2" color={"primary"} />
-    </div>
+   <div className='d-flex justify-content-center align-items-center vh-100'>
+               <Spinner className="m-2" color={'primary'} />
+           </div>
   ) : (
     <>
       <PageTitle
@@ -253,13 +234,13 @@ const Projects = () => {
       </Row>
 
       <Row>
-        {( project || [] ).map( ( project, i ) => {
+        {(project || []).map((project, i) => {
           return (
             <Col lg={4} key={"proj-" + project.id}>
               <SingleProject project={project} />
             </Col>
           );
-        } )}
+        })}
       </Row>
       <Row>
         <Col>
