@@ -3,8 +3,9 @@ import Chart from "react-apexcharts";
 import { Card } from "react-bootstrap";
 import { ApexOptions } from "apexcharts";
 
-const SalesAnalyticsChart = () => {
-  const apexOpts: ApexOptions = {
+const SalesAnalyticsChart = (props) => {
+  const {data}=props
+  const apexOpts= {
     chart: {
       height: 378,
       type: "line",

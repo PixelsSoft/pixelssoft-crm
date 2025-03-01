@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Button, Modal, Form, Dropdown, DropdownButton } from 'react-bootstrap';
 import PortalProjectsDetailCard from '../../../components/PortalProjectsDetailCard';
 import StatisticsWidget1 from '../../../components/StatisticsWidget1';
@@ -12,6 +12,7 @@ import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Util
 import { toast } from 'react-toastify';
 import EditMilestoneModal from '../../../components/EditMilestoneModal';
 import { CancelMilestone, CreateMilestone, DeleMilestone, GetMilestone, GetPortalProjectById, ReleaseMilestone } from '../../../redux/Slices/PortalProject/PortalProject';
+import classNames from 'classnames';
 
 
 const sizePerPageList = [
@@ -120,6 +121,21 @@ const CustomerProfile = () => {
             setAmount( e.target.value )
         }
     }
+  const StatusColumn = ({ row }) => {
+    return (
+      <React.Fragment>
+        <span
+    
+          className={classNames("badge", {
+            "bg-soft-success text-success": row.original.status === "Release",
+            "bg-soft-warning text-warning": row.original.status === "pending",
+          })}
+        >
+          {row.original.status}
+        </span>
+      </React.Fragment>
+    );
+  };
 
 
 
@@ -146,11 +162,13 @@ const CustomerProfile = () => {
             accessor: 'amount',
             sort: false,
         },
+      
         {
-            Header: 'Status',
-            accessor: 'status',
+            Header: "Status",
+            accessor: "status",
             sort: false,
-        },
+            Cell: StatusColumn,
+          },
         {
             Header: "Actions",
             sort: false,

@@ -10,7 +10,7 @@ import { startLoading, stopLoading } from '../../../redux/Slices/utiltities/Util
 import { toast } from 'react-toastify';
 import ViewLeadModal from '../../../components/ViewLeadModal';
 import utils from '../../../utils/utils';
-import { AddBids } from '../../../redux/Slices/Bids/Bids';
+import { AddBids, GetTodayBids } from '../../../redux/Slices/Bids/Bids';
 
 export default function Bids() {
     const dispatch = useDispatch();
@@ -34,14 +34,24 @@ export default function Bids() {
         } )
     );
 
-    console.log( "TodayBids", MonthBids )
+    
 
     const toggleModal = () => {
         setVisibleModal( !visibleModal );
     };
 
+    const getbids=async()=>{
+        try {
+            dispatch( startLoading() );
+            await dispatch(GetTodayBids(token));
+            dispatch( stopLoading() );
+        } catch (error) {
+            console.log(error)
+        }
+    }
     useEffect( () => {
         dispatch( stopLoading() );
+        getbids()
         setBidsData( TodayBids )
     }, [] )
     useEffect( () => {

@@ -124,9 +124,10 @@ export default function Leads() {
     return (
       <React.Fragment>
         <span
+    
           className={classNames("badge", {
             "bg-soft-success text-success": row.original.status === "Paid",
-            "bg-soft-danger text-danger": row.original.status === "pending",
+            "bg-soft-warning text-warning": row.original.status === "pending",
             "bg-soft-danger text-danger": row.original.status === "inActive",
           })}
         >

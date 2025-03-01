@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import classNames from "classnames";
 import Calendar from '../../../components/Calendar';
 import { attendance } from '../../../redux/Slices/attendance/Attendance';
+import moment from 'moment';
 
 
 
@@ -184,43 +185,43 @@ export default function MyAccount() {
                 <img src={user?.profile_img} style={{ width: "100px", height: "100px", borderRadius: "150px", marginBottom: 20 }} />
                 <Row>
                     <Col lg={6}>
-                        <label className="form-label bold">Name:</label> <br />
+                        <label className="form-label bold"><span className='fw-bold text-dark'> Name:</span> {user?.name}</label> <br />
                     </Col>
                     <Col lg={6}>
-                        <label className="form-label">{user?.name}</label> <br />
+                        <label className="form-label"> <span className='fw-bold text-dark'> Father Name:</span> {user?.father_name}</label> <br />
+                    </Col>
+                </Row>
+                
+                <Row>
+                    <Col lg={6}>
+                        <label className="form-label"><span className='fw-bold text-dark'>  Email:</span> {user?.company_provided_email} </label> <br />
+                    </Col>
+                    <Col lg={6}>
+                        <label className="form-label"> <span className='fw-bold text-dark'> Date of Birth:</span> {moment(user?.dob).format("MMM-Do-YYYY")}</label> <br />
                     </Col>
                 </Row>
                 <Row>
                     <Col lg={6}>
-                        <label className="form-label">Email: </label> <br />
+                        <label className="form-label"> <span className='fw-bold text-dark'> Joining Date:</span> {user?.joining_date}</label> <br />
                     </Col>
                     <Col lg={6}>
-                        <label className="form-label">{user?.company_provided_email}</label> <br />
+                        <label className="form-label"><span className='fw-bold text-dark'>  Designation: </span>{user?.designation}</label> <br />
+                    </Col>
+                   
+                </Row>
+                <Row>
+                    <Col lg={6}>
+                        <label className="form-label"><span className='fw-bold text-dark'> Employment Type: </span>{user?.employmentType}</label> <br />
+                    </Col>
+                    <Col lg={6}>
+                        <label className="form-label"><span className='fw-bold text-dark'> CNIC No:</span> {user?.cnic_no}</label> <br />
                     </Col>
                 </Row>
                 <Row>
                     <Col lg={6}>
-                        <label className="form-label">Joining Date:</label> <br />
+                        <label className="form-label"><span className='fw-bold text-dark'> Phone no:</span> +{user?.phone_no}</label> <br />
                     </Col>
-                    <Col lg={6}>
-                        <label className="form-label">{user?.joining_date}</label> <br />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col lg={6}>
-                        <label className="form-label">Employment Type:</label> <br />
-                    </Col>
-                    <Col lg={6}>
-                        <label className="form-label">{user?.employmentType}</label> <br />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col lg={6}>
-                        <label className="form-label">Phone no:</label> <br />
-                    </Col>
-                    <Col lg={6}>
-                        <label className="form-label">+{user?.phone_no}</label> <br />
-                    </Col>
+                   
                 </Row>
             </Card.Body>
         </Card>

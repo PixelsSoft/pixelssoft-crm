@@ -4,7 +4,12 @@ import { Row, Col } from "react-bootstrap";
 // componets
 import StatisticsWidget from "../../../components/StatisticsWidget";
 
-const Statistics = () => {
+
+
+
+const Statistics = (props) => {
+  const {data}=props
+  console.log({data})
   return (
     <>
       <Row>
@@ -14,27 +19,29 @@ const Statistics = () => {
             counterOptions={{
               prefix: "$",
             }}
-            description="Total Revenue"
-            stats="58947"
+            description="This Month sales"
+            stats={data?.total_this_month_sales||0}
             icon="fe-heart"
           />
         </Col>
         <Col md={6} xl={3}>
           <StatisticsWidget
             variant="success"
+            counterOptions={{
+              prefix: "$",
+            }}
             description="Today's Sales"
-            stats="127"
+            stats={data?.today_sales||0}
             icon="fe-shopping-cart"
           />
         </Col>
         <Col md={6} xl={3}>
           <StatisticsWidget
             variant="info"
-            description="Conversion"
-            stats="0.58"
+            description="Total Active Project"
+            stats={data?.total_running_projects||0}
             counterOptions={{
-              suffix: "%",
-              decimals: 2,
+              prefix:"🚀 ",
             }}
             icon="fe-bar-chart-line-"
           />
@@ -42,8 +49,11 @@ const Statistics = () => {
         <Col md={6} xl={3}>
           <StatisticsWidget
             variant="warning"
-            description="Today's Visits"
-            stats="78412"
+            description="Total Active User"
+            counterOptions={{
+              prefix:"👤 ",
+            }}
+            stats={data?.total_active_users||0}
             icon="fe-eye"
           />
         </Col>

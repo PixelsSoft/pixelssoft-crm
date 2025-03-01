@@ -1,226 +1,258 @@
-import { Button, Card, Col, Row } from 'react-bootstrap';
-import Table from '../../../../components/Table';
-import PageTitle from '../../../../components/PageTitle';
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import classNames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
-import { DeleteInvoice, GetInvoiceById } from '../../../../redux/Slices/Invoices/Invoices';
-import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-import UpdateInvoiceModal from '../../../../components/UpdateInvoiceModal';
-import ViewInvoiceModal from '../../../../components/ViewInvoiceModal';
-import Spinner from '../../../../components/Spinner';
+import { Button, Card, Col, Row } from "react-bootstrap";
+import Table from "../../../../components/Table";
+import PageTitle from "../../../../components/PageTitle";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import classNames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  DeleteInvoice,
+  GetInvoice,
+  GetInvoiceById,
+} from "../../../../redux/Slices/Invoices/Invoices";
+import {
+  startLoading,
+  stopLoading,
+} from "../../../../redux/Slices/utiltities/Utiltities";
+import UpdateInvoiceModal from "../../../../components/UpdateInvoiceModal";
+import ViewInvoiceModal from "../../../../components/ViewInvoiceModal";
+import Spinner from "../../../../components/Spinner";
 
 const Invoices = () => {
-    const { token, invoice, loading, } = useSelector(
-        (state) => ({
-            token: state.Auth.token,
-            invoice: state.Invoices.Invoices,
-            loading: state.utiltities.loading,
-        })
+  const { token, invoice, loading } = useSelector((state) => ({
+    token: state.Auth.token,
+    invoice: state.Invoices.Invoices,
+    loading: state.utiltities.loading,
+  }));
+
+  const fetchInvoice = async () => {
+    try {
+      dispatch(startLoading());
+      await dispatch(GetInvoice(token));
+      dispatch(stopLoading());
+    } catch (error) {}
+  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [previewModal, setPreviewModal] = useState(false);
+  const [show, setShow] = useState(false);
+  const [id, setId] = useState();
+
+
+  useEffect(() => {
+    fetchInvoice()
+  }, [])
+  
+
+
+  const deleteInvoice = async (projectId) => {
+    dispatch(startLoading());
+    await dispatch(DeleteInvoice(projectId, token));
+    dispatch(stopLoading());
+  };
+
+  /* status column render */
+  const StatusColumn = ({ status }) => {
+    return (
+      <React.Fragment>
+        <span
+          className={classNames("badge", {
+            "badge-soft-success": status !== "unPaid",
+            "badge-soft-danger": status === "unPaid",
+          })}
+        >
+          {status}
+        </span>
+      </React.Fragment>
     );
-    
+  };
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [previewModal, setPreviewModal] = useState(false);
-    const [show, setShow] = useState(false);
-    const [id, setId] = useState();
+  /* action column render */
+  const ActionColumn = ({ item, projectId }) => {
+    return (
+      <React.Fragment>
+        <Link
+          to="#"
+          className="action-icon"
+          onClick={() => viewInvoice(projectId)}
+        >
+          {" "}
+          <i className="mdi mdi-eye"></i>
+        </Link>
+        <Link to="#" className="action-icon" onClick={() => toggle(projectId)}>
+          {" "}
+          <i className="mdi mdi-square-edit-outline"></i>
+        </Link>
+        <Link
+          to="#"
+          className="action-icon"
+          onClick={() => deleteInvoice(projectId)}
+        >
+          {" "}
+          <i className="mdi mdi-delete"></i>
+        </Link>
+      </React.Fragment>
+    );
+  };
 
-    const deleteInvoice = async (projectId) => {
-        dispatch(startLoading());
-        await dispatch(DeleteInvoice(projectId, token));
-        dispatch(stopLoading());
-    };
+  const columns = [
+    {
+      Header: "Created Date",
+      accessor: "invoice_date",
+      sort: false,
+    },
+    {
+      Header: "Due Date",
+      accessor: "due_date",
+      sort: false,
+    },
+    {
+      Header: "Creator",
+      accessor: "user.name",
+      sort: false,
+    },
+    {
+      Header: "Client",
+      accessor: "customer.full_name",
+      sort: false,
+    },
+    {
+      Header: "Title",
+      accessor: "title",
+      sort: false,
+    },
 
-    /* status column render */
-    const StatusColumn = ({ status }) => {
-        return (
-            <React.Fragment>
-                <span
-                    className={classNames("badge", {
-                        "badge-soft-success": status !== "unPaid",
-                        "badge-soft-danger": status === "unPaid",
-                    })}
-                >
-                    {status}
-                </span>
-            </React.Fragment>
-        );
-    };
+    {
+      Header: "Quantity",
+      accessor: "quantity",
+      sort: false,
+    },
+    {
+      Header: "Amount",
+      accessor: "price",
+      sort: false,
+    },
 
-    /* action column render */
-    const ActionColumn = ({ item,projectId }) => {
+    {
+      Header: "Status",
+      accessor: "status",
+      sort: true,
+      Cell: ({ row }) => <StatusColumn status={row.original.status} />,
+    },
+    {
+      Header: "Action",
+      accessor: "action",
+      sort: false,
+      Cell: ({ row }) => (
+        <ActionColumn item={row.original} projectId={row.original.invoice_id} />
+      ),
+    },
+  ];
 
-        return (
-            <React.Fragment>
-                <Link to="#" className="action-icon" onClick={() => viewInvoice(projectId)}>
-                    {" "}
-                    <i className="mdi mdi-eye"></i>
-                </Link>
-                <Link to="#" className="action-icon" onClick={() => toggle(projectId)}>
-                    {" "}
-                    <i className="mdi mdi-square-edit-outline"></i>
-                </Link>
-                <Link to="#" className="action-icon" onClick={() => deleteInvoice(projectId)}>
-                    {" "}
-                    <i className="mdi mdi-delete"></i>
-                </Link>
-            </React.Fragment>
-        );
-    };
+  const sizePerPageList = [
+    {
+      text: "10",
+      value: 10,
+    },
+    {
+      text: "20",
+      value: 20,
+    },
+    {
+      text: "35",
+      value: 35,
+    },
+    {
+      text: "All",
+      value: invoice?.length,
+    },
+  ];
 
-    const columns = [
-        {
-            Header: 'Created Date',
-            accessor: 'invoice_date',
-            sort: false,
-        },
-        {
-            Header: 'Due Date',
-            accessor: 'due_date',
-            sort: false,
-        },
-        {
-            Header: 'Creator',
-            accessor: 'user.name',
-            sort: false,
-        },
-        {
-            Header: 'Client',
-            accessor: 'customer.full_name',
-            sort: false,
-        },
-        {
-            Header: 'Title',
-            accessor: 'title',
-            sort: false,
-        },
-       
-        {
-            Header: 'Quantity',
-            accessor: 'quantity',
-            sort: false,
-        },
-        {
-            Header: 'Amount',
-            accessor: 'price',
-            sort: false,
-        },
-        
-        {
-            Header: "Status",
-            accessor: "status",
-            sort: true,
-            Cell: ({ row }) => <StatusColumn status={row.original.status} />,
-        },
-        {
-            Header: "Action",
-            accessor: "action",
-            sort: false,
-            Cell: ({ row }) => <ActionColumn item={row.original} projectId={row.original.invoice_id} />,
-        },
-    ];
+  const viewInvoice = async (projectId) => {
+    dispatch(startLoading());
+    await dispatch(GetInvoiceById(projectId, token));
+    dispatch(stopLoading());
+    setShow(!show);
+  };
 
-    const sizePerPageList = [
-        {
-            text: '10',
-            value: 10,
-        },
-        {
-            text: '20',
-            value: 20,
-        },
-        {
-            text: '35',
-            value: 35,
-        },
-        {
-            text: 'All',
-            value: invoice?.length,
-        },
-    ];
+  const toggle = async (projectId) => {
+    setId(projectId);
+    dispatch(startLoading());
+    await dispatch(GetInvoiceById(projectId, token));
+    dispatch(stopLoading());
+    setPreviewModal(!previewModal);
+  };
 
-    const viewInvoice = async (projectId) => {
-        dispatch(startLoading());
-        await dispatch(GetInvoiceById(projectId, token));
-        dispatch(stopLoading());
-        setShow(!show);
-    }
+  const toggleClose = async () => {
+    setPreviewModal(!previewModal);
+  };
 
-    const toggle = async (projectId) => {
-        setId(projectId);
-        dispatch(startLoading())
-        await dispatch(GetInvoiceById(projectId, token));
-        dispatch(stopLoading())
-        setPreviewModal(!previewModal);
-    };
+  return loading ? (
+         <div className='d-flex justify-content-center align-items-center vh-100'>
+                      <Spinner className="m-2" color={'primary'} />
+                  </div>
 
-    const toggleClose = async () => {
-        setPreviewModal(!previewModal);
-    };
-
-    return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
-            <Spinner className="m-2" color={'primary'} />
-        </div>
-    ) : (
-        <>
-            <PageTitle
-                breadCrumbItems={[
-                    { label: "Invoices", path: "/apps/invoices" },
-                ]}
-                title={"Invoices"}
-            />
-            <Row>
-                <Col>
-                    <Card>
-                        <Card.Body>
-                            <Row>
-                                <Col sm={4}>
-                                    <Button
-                                        onClick={() => {
-                                            navigate("/apps/invoice/createInvoice")
-                                        }}
-                                        className="btn btn-danger mb-2">
-                                        <i className="mdi mdi-plus-circle me-2"></i> Create Invoice
-                                    </Button>
-                                </Col>
-
-                                <Col sm={8}>
-                                    <div className="text-sm-end">
-                                        <Button className="btn btn-success mb-2 me-1">
-                                            <i className="mdi mdi-cog-outline"></i>
-                                        </Button>
-
-                                        <Button className="btn btn-light mb-2 me-1">Import</Button>
-
-                                        <Button className="btn btn-light mb-2">Export</Button>
-                                    </div>
-                                </Col>
-                            </Row>
-                            {invoice !== undefined && invoice !== null ? (
-                                <Table
-                                    columns={columns}
-                                    data={invoice}
-                                    pageSize={10}
-                                    sizePerPageList={sizePerPageList}
-                                    isSortable={true}
-                                    pagination={true}
-                                    isSelectable={true}
-                                    isSearchable={true}
-                                    tableClass="table-striped dt-responsive nowrap w-100"
-                                    searchBoxClass="my-2"
-                                />
-                            ) : null}
-                        </Card.Body>
-                    </Card>
+  ) : (
+    <>
+      <PageTitle
+        breadCrumbItems={[{ label: "Invoices", path: "/apps/invoices" }]}
+        title={"Invoices"}
+      />
+      <Row>
+        <Col>
+          <Card>
+            <Card.Body>
+              <Row>
+                <Col sm={4}>
+                  <Button
+                    onClick={() => {
+                      navigate("/apps/invoice/createInvoice");
+                    }}
+                    className="btn btn-danger mb-2"
+                  >
+                    <i className="mdi mdi-plus-circle me-2"></i> Create Invoice
+                  </Button>
                 </Col>
-            </Row>
-            <UpdateInvoiceModal id={id} previewModal={previewModal} setPreviewModal={setPreviewModal} toggleClose={toggleClose} />
-            <ViewInvoiceModal show={show} setShow={setShow} />
-        </>
-    );
+
+                <Col sm={8}>
+                  <div className="text-sm-end">
+                    <Button className="btn btn-success mb-2 me-1">
+                      <i className="mdi mdi-cog-outline"></i>
+                    </Button>
+
+                    <Button className="btn btn-light mb-2 me-1">Import</Button>
+
+                    <Button className="btn btn-light mb-2">Export</Button>
+                  </div>
+                </Col>
+              </Row>
+              {invoice !== undefined && invoice !== null ? (
+                <Table
+                  columns={columns}
+                  data={invoice}
+                  pageSize={10}
+                  sizePerPageList={sizePerPageList}
+                  isSortable={true}
+                  pagination={true}
+                  isSelectable={true}
+                  isSearchable={true}
+                  tableClass="table-striped dt-responsive nowrap w-100"
+                  searchBoxClass="my-2"
+                />
+              ) : null}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <UpdateInvoiceModal
+        id={id}
+        previewModal={previewModal}
+        setPreviewModal={setPreviewModal}
+        toggleClose={toggleClose}
+      />
+      <ViewInvoiceModal show={show} setShow={setShow} />
+    </>
+  );
 };
 
 export default Invoices;

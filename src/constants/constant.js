@@ -5,6 +5,7 @@ export const CONSTANTS = {
      
         // BASE: "http://127.0.0.1:8000",
         
+        Dashboard: "/dashBoard/",
         LOGIN: "/user/login",
         PROFILE: "/user/profile",
         USER_SEACRH: "/user/search/",
