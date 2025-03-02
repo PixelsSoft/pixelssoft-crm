@@ -21,7 +21,7 @@ import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from 'draftjs-to-html';
 import { convertToRaw } from 'draft-js';
 import TaskItem from "./Task";
-
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 // dummy data
 import { tasks, TaskTypes } from "../../Tasks/Board/data";
 
@@ -32,33 +32,17 @@ import Spinner from "../../../../components/Spinner";
 
 const Tasks = ( props ) => {
   const { data } = props
-  const {  token, Boards } = useSelector( ( state ) => ( {
+  const {  token, Boards,user } = useSelector( ( state ) => ( {
    
     token: state.Auth.token,
     Boards: state.Projects.Boards,
+    user: state.Auth.user,
   } ) );
 
+ 
   const dispatch = useDispatch()
 
-  const [state, setState] = useState( {
-    boards: [
-      {
-        id: "1",
-        title: "Upcoming",
-        tasks: tasks.filter( ( t ) => t.status === "Upcoming" ),
-      },
-      {
-        id: "2",
-        title: "In Progress",
-        tasks: tasks.filter( ( t ) => t.status === "Inprogress" ),
-      },
-      {
-        id: "3",
-        title: "Completed",
-        tasks: tasks.filter( ( t ) => t.status === "Completed" ),
-      },
-    ],
-  } );
+
   const fetchBoard = async () => {
     try {
       await dispatch( GetBoard( data?.id, token ) )
@@ -78,6 +62,7 @@ const Tasks = ( props ) => {
   const [dueDate, setDueDate] = useState( new Date() );
   const [priority, setPriority] = useState( "" );
   const [taskTitle, setTaskTitle] = useState( "" );
+  const [taskDescription, setTaskDescription] = useState( "" );
   const [selectedBoardId, setSelectedBoardId] = useState( "" );
   const [selectedTaskId, setselectedTaskId] = useState( "" );
   const [boardTitle, setBoardTitle] = useState( "" );
@@ -109,6 +94,7 @@ const Tasks = ( props ) => {
 
 
   const handleNewBoard = async () => {
+  
     try {
       setLoading(true)
 
@@ -136,6 +122,7 @@ const Tasks = ( props ) => {
     } catch ( error ) {
       setLoading(false)
 
+      console.log(error)
 
     }
 
@@ -158,6 +145,7 @@ const Tasks = ( props ) => {
   }
   // ================================================================delete board================================================
   const onEditBoard = async ( board ) => {
+  
     try {
       setLoading(true)
 
@@ -206,16 +194,24 @@ const Tasks = ( props ) => {
 
   // ================================================================edit Task================================================
   const onEditTask = async ( task ) => {
-
+console.log(task?.desciption)
     try {
       setLoading(true)
-
-
       setEditTask( true )
       setselectedTaskId( task.id );
       setSelectedBoardId( task?.boards_id )
       setTaskTitle( task?.title )
       setDueDate( new Date() )
+      if (task?.desciption) {
+        const blocksFromHTML = convertFromHTML(task?.desciption);
+        const contentState = ContentState.createFromBlockArray(
+            blocksFromHTML.contentBlocks,
+            blocksFromHTML.entityMap
+        );
+        const newEditorState = EditorState.createWithContent(contentState);
+        setEditorState(newEditorState);
+    }
+      // setTaskDescription(task?.desciption)
       // setEditorState( task?.desciption )
       setPriority( task?.priority )
       toggleNewTaskModal()
@@ -223,6 +219,7 @@ const Tasks = ( props ) => {
 
     } catch ( error ) {
       setLoading(false)
+      console.log(error)
 
     }
   }
@@ -232,15 +229,21 @@ const Tasks = ( props ) => {
   // ================================================================add new task================================================
 
   const handleNewTask = async () => {
+    
     try {
       setLoading(true)
-      const contentState = editorState.getCurrentContent();
-      const rawContent = convertToRaw( contentState );
-      const html = draftToHtml( rawContent );
       const formData = new FormData();
+
+      if(editorState){
+        const contentState = editorState.getCurrentContent();
+        const rawContent = convertToRaw( contentState );
+        const html = draftToHtml( rawContent );
+        formData.append( 'desciption', html ); 
+      }
+     
       formData.append( 'id', selectedBoardId );
       formData.append( 'title', taskTitle );
-      formData.append( 'desciption', html ); // Use HTML here
+   
       formData.append( 'priority', priority );
       formData.append( 'due_Date', dueDate );
       if ( editTask ) {
@@ -263,6 +266,7 @@ const Tasks = ( props ) => {
       setLoading(false)
 
     } catch ( error ) {
+      console.log(error)
       setLoading(false)
 
     }
@@ -313,16 +317,17 @@ const Tasks = ( props ) => {
                 <Col lg={4} ref={provided.innerRef}>
                   <Card>
                     <Card.Body>
+                    {user?.id===board?.user_id && 
                       <Dropdown className="float-end" align="end">
                         <Dropdown.Toggle as="a" className="cursor-pointer">
                           <i className="mdi mdi-dots-vertical m-0 text-muted h3"></i>
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
+                             <Dropdown.Menu>
                           <Dropdown.Item onClick={() => { onEditBoard( board ) }} >Edit</Dropdown.Item>
                           <Dropdown.Item onClick={() => { onDeleteBoard( board?.id ) }}>Delete</Dropdown.Item>
-
                         </Dropdown.Menu>
-                      </Dropdown>
+                   
+                      </Dropdown>}
 
                       <h5 className="header-title">{board.title}</h5>
                       <p className="sub-header">{board.description}</p>
@@ -416,6 +421,7 @@ const Tasks = ( props ) => {
             />
             <label className="form-label">Description</label>{" "}
             <Editor
+       
               className={"md:6"}
               editorState={editorState}
               toolbarClassName="toolbarClassName"
@@ -425,7 +431,8 @@ const Tasks = ( props ) => {
               editorStyle={{
                 minHeight: '200px',
                 border: '1px solid #ccc',
-                marginBottam: 20
+                marginBottam: 20,
+                paddinghorizontal:10
               }}
             />
 

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DeleteEmployee, GetEmployeeById } from '../redux/Slices/employee/Employee';
 import EmployeeEditModal from './EmployeeEditModal';
 import { useNavigate } from 'react-router-dom';
+import { CONSTANTS } from '../constants/constant';
 
 const ContactDetails = ( { contact } ) => {
     const { token } = useSelector( state => state.Auth );
@@ -20,6 +21,10 @@ const ContactDetails = ( { contact } ) => {
     const deleteEmp = async () => {
         dispatch( DeleteEmployee( contact?.id, token ) );
     };
+    const handleImageError = (event) => {
+        // Fallback to the default image URL
+        event.target.src = CONSTANTS.API_URLS.AVATAR_IMAGE_URL;
+    };
     return (
         <>
             <Card>
@@ -34,13 +39,19 @@ const ContactDetails = ( { contact } ) => {
                             <Dropdown.Item onClick={() => naviage( `/apps/hr/viewEmployee/${contact?.id}` )}>View Profile</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <div>
-                        <img
-                            src={contact?.details[0]?.profile_img}
-                            alt="profileImage"
-                            style={{ width: "100px", height: "100px" }}
-                            className="rounded-circle avatar-xl img-thumbnail mb-2"
-                        />
+                    <div >
+                     
+                    <div className='rounded-circle mb-3' style={{ width: '100px', height: '100px', placeSelf:"center" }}>
+            {/* Profile Image */}
+            <img
+                src={contact?.details[0]?.profile_img || "https://cdn-icons-png.flaticon.com/512/3607/3607444.png"}
+                alt="profileImage"
+                style={{ width: '100%', height: '100%', display: 'block' }}
+                className="rounded-circle avatar-xl img-thumbnail mb-2"
+                onError={handleImageError}
+            />
+        </div>
+                       
                         {/* <p className="text-muted font-13 mb-3">{contact.shortDesc}</p> */}
 
                         <div className="text-start">

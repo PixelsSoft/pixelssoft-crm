@@ -46,6 +46,7 @@ const Attendance = React.lazy(
   () => import("../pages/apps/Hr/Attendance/Attendance")
 );
 const Bids = React.lazy(() => import("../pages/apps/bidding/bids"));
+const Sales = React.lazy(() => import("../pages/apps/Sales/Sales"));
 const Leads = React.lazy(() => import("../pages/apps/Leads/Leads"));
 const Customers = React.lazy(
   () => import("../pages/apps/Customers/List/Customers")
@@ -333,6 +334,23 @@ const InvoiceRoutes: RoutesProps = {
       route: PrivateRoute,
     },
   ],
+};
+const SalesRoutes: RoutesProps = {
+  path: "/apps/sales",
+  name: "sales",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  icon: "mail",
+  element: <Sales />,
+  // children: [
+  //   {
+  //     path: "/apps/sales",
+  //     name: "Sales",
+  //     element: <Sales />,
+  //     route: PrivateRoute,
+  //   },
+   
+  // ],
 };
 //Commissions Route
 const commissionRoutes: RoutesProps = {
@@ -816,6 +834,7 @@ const appRoutes = [
   TargetRoutes,
   TrackingRoutes,
   InvoiceRoutes,
+  SalesRoutes,
   commissionRoutes,
   customerRoutes,
   bidsRoutes,

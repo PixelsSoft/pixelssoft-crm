@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetComments, SendComments, SendCommentsReply } from "../../../../redux/Slices/Project/Project";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { CONSTANTS } from "../../../../constants/constant";
 
 const Comments = ( props ) => {
   const { projectId } = props
@@ -18,7 +19,10 @@ const Comments = ( props ) => {
   const [loading, setLoading] = useState( false );
   const [selectedComment, setSelectedComment] = useState( '' );
   const [isReply, setIsReply] = useState( false );
-
+ const handleImageError = (event) => {
+    // Fallback to the default image URL
+    event.target.src = CONSTANTS.API_URLS.AVATAR_IMAGE_URL;
+};
   const dispatch = useDispatch()
   const { token, commnents } = useSelector( ( state ) => ( {
     token: state.Auth.token,
@@ -109,6 +113,7 @@ const Comments = ( props ) => {
                         className="me-2 avatar-sm rounded-circle"
                         src={item?.userDetails?.profile_img}
                         alt=""
+                        onError={handleImageError}
                       />
                       <div className="w-100">
                         <h5 className="mt-0 ">
@@ -135,6 +140,7 @@ const Comments = ( props ) => {
                                     src={item?.userDetails?.profile_img}
                                     className="avatar-sm rounded-circle"
                                     alt=""
+                                    onError={handleImageError}
                                   />
                                 </Link>
                                 <div className="w-100">

@@ -38,6 +38,7 @@ export const DeleteCustomer = (id, token, navigate) => async (dispatch) => {
             return;
         };
     } catch (error) {
+        toast.error(error.detail, { position: toast.POSITION.TOP_RIGHT });
         console.log("error===========>", error?.detail)
     };
 };

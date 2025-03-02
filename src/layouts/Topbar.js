@@ -85,13 +85,9 @@ const ProfileMenus = [
   {
     label: "My Account",
     icon: "fe-user",
-    redirectTo: "#",
+    redirectTo: "/apps/myaccount",
   },
-  {
-    label: "Settings",
-    icon: "fe-settings",
-    redirectTo: "#",
-  },
+  
   {
     label: "Lock Screen",
     icon: "fe-lock",

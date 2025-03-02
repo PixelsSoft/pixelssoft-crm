@@ -28,6 +28,11 @@ export default function SinglePersonTarget() {
       sort: true,
     },
     {
+      Header: "Project name",
+      accessor: "Project",
+      sort: false,
+    },
+    {
       Header: "Date",
       accessor: "date",
       sort: false,
@@ -38,10 +43,11 @@ export default function SinglePersonTarget() {
       sort: false,
     },
     {
-      Header: "Project name",
-      accessor: "Project",
+      Header: "Recevied Amount",
+      accessor: "recevied_Amount",
       sort: false,
     },
+    
 
     // {
     //     Header: "Action",

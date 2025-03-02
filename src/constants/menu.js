@@ -71,7 +71,7 @@ const MENU_ITEMS = [
     label: "Target",
     isTitle: false,
     roles: ["SuperAdmin", "Sale"],
-    icon: "dollar-sign",
+    icon: "target",
     url: "/apps/target",
   },
   {
@@ -97,11 +97,20 @@ const MENU_ITEMS = [
     ],
   },
   {
+    key: "sales",
+    label: "Sales",
+    isTitle: false,
+    roles: ["SuperAdmin"],
+    icon: "dollar-sign",
+    url: "/apps/sales",
+ 
+  },
+  {
     key: "commission",
     label: "Commissions",
     isTitle: false,
     roles: ["SuperAdmin", "Sales"],
-    icon: "database",
+    icon: "percent",
     url: "/apps/commission",
  
   },
@@ -109,7 +118,7 @@ const MENU_ITEMS = [
     key: "customers",
     label: "Customers",
     isTitle: false,
-    icon: "database",
+    icon: "users",
     roles: ["SuperAdmin", "Sales"],
     url: "/apps/customers",
   },
@@ -118,7 +127,7 @@ const MENU_ITEMS = [
     label: "biding",
     isTitle: false,
     roles: ["SuperAdmin", "Sales"],
-    icon: "database",
+    icon: "briefcase",
     url: "/apps/biding",
   },
   {
@@ -158,7 +167,7 @@ const MENU_ITEMS = [
     label: "Projects",
     isTitle: false,
     roles: ["SuperAdmin", "Sales", "Developer"],
-    icon: "clipboard",
+    icon: "trello",
     url: "/apps/projects/list",
 
   },
@@ -2255,7 +2264,7 @@ const TWO_COl_MENU_ITEMS = [
         label: "Sales",
         isTitle: false,
         icon: "calendar",
-        url: "/apps/Sales",
+        url: "/apps/sales",
       },
       {
         key: "target",

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import classNames from "classnames";
 import moment from "moment";
 import { Dropdown } from "react-bootstrap";
+import { CONSTANTS } from "../../../../constants/constant";
+import { useSelector } from "react-redux";
 
 
 
@@ -10,19 +12,27 @@ import { Dropdown } from "react-bootstrap";
 // task item
 const TaskItem = ( props ) => {
   const task = props.task || {};
+const handleImageError = (event) => {
+    // Fallback to the default image URL
+    event.target.src = CONSTANTS.API_URLS.AVATAR_IMAGE_URL;
+};
+  const {  user } = useSelector((state) => ({
+    user: state.Auth.user,
+  }));
 
   return (
     <>
+    {user?.id==task?.user_id && 
       <Dropdown className="float-end" align="end">
         <Dropdown.Toggle as="a" className="cursor-pointer">
           <i className="mdi mdi-dots-vertical m-0 text-muted h3"></i>
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item onClick={() => { props.onEdit( task ) }}>Edit</Dropdown.Item>
-          <Dropdown.Item onClick={() => { props.onDelete( task?.id ) }}>Delete</Dropdown.Item>
+         <Dropdown.Item onClick={() => { props.onDelete( task?.id ) }}>Delete</Dropdown.Item>
 
         </Dropdown.Menu>
-      </Dropdown>
+      </Dropdown>}
       <span
         className={classNames( "badge", "float-end", {
           "bg-soft-danger text-danger": task.priority === "High",
@@ -69,12 +79,15 @@ const TaskItem = ( props ) => {
                 </Link>
               );
             } )} */}
+            
             <Link to="#" className="text-muted">
               <img
+                  onError={handleImageError}
                 src={task?.userDetails?.profile_img}
                 alt={task?.userDetails?.name}
                 className="avatar-sm img-thumbnail rounded-circle"
               />
+           
             </Link>
           </div>
         </div>

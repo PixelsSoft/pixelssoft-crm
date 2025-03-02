@@ -11,6 +11,7 @@ import { users, ChatUser } from "./data";
 import profilePic from "../../../assets/images/users/user-1.jpg";
 import { useSelector } from "react-redux";
 import { database } from "../../../firebase/firebase";
+import { CONSTANTS } from "../../../constants/constant";
 
 
 // ChatUsers
@@ -80,18 +81,22 @@ const ChatUsers = ({ onUserSelect,onNewChat }) => {
       onUserSelect(user);
     }
   };
-
+  const handleImageError = (event) => {
+    // Fallback to the default image URL
+    event.target.src = CONSTANTS.API_URLS.AVATAR_IMAGE_URL;
+};
   return (
     <>
       <Card>
         <Card.Body>
           <div className="d-flex align-items-start mb-3">
             <img
-              src={profile?.user?.profile_img}
+              src={profile?.user?.profile_img||"https://cdn-icons-png.flaticon.com/512/3607/3607444.png"}
               className="me-2 rounded-circle"
               height="42"
               width="42" // Added this line to ensure a square aspect ratio
               style={{ borderRadius: "50%" }}
+              onError={handleImageError}
               alt=""
             />
             <div className="w-100">
@@ -168,8 +173,10 @@ const ChatUsers = ({ onUserSelect,onNewChat }) => {
                         <img
                           src={user?.profile_img}
                           className="me-2 rounded-circle"
-                          height="42"
-                          width="42"
+                          height="40"
+                          width="40"
+                          
+                          onError={handleImageError}
                           alt={user.name}
                         />
 

@@ -6,6 +6,7 @@ import classNames from "classnames";
 import Calendar from '../../../components/Calendar';
 import { attendance } from '../../../redux/Slices/attendance/Attendance';
 import moment from 'moment';
+import { CONSTANTS } from '../../../constants/constant';
 
 
 
@@ -23,7 +24,10 @@ export default function MyAccount() {
     useEffect( () => {
         dispatch( attendance( token ) )
     }, [] )
-
+    const handleImageError = (event) => {
+        // Fallback to the default image URL
+        event.target.src = CONSTANTS.API_URLS.AVATAR_IMAGE_URL;
+    };
     const defaultEvents = [
         {
             id: "1",
@@ -182,7 +186,9 @@ export default function MyAccount() {
         />
         <Card>
             <Card.Body>
-                <img src={user?.profile_img} style={{ width: "100px", height: "100px", borderRadius: "150px", marginBottom: 20 }} />
+                <img
+                  onError={handleImageError}
+                src={user?.profile_img} style={{ width: "100px", height: "100px", borderRadius: "150px", marginBottom: 20 }} />
                 <Row>
                     <Col lg={6}>
                         <label className="form-label bold"><span className='fw-bold text-dark'> Name:</span> {user?.name}</label> <br />

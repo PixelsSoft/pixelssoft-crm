@@ -2,23 +2,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import classNames from "classnames";
+import { CONSTANTS } from "../constants/constant";
 
-interface ProfileMenuItem {
-  label: string;
-  icon: string;
-  redirectTo: string;
-}
 
-interface ProfileDropdownProps {
-  menuItems: Array<ProfileMenuItem>;
-  profilePic?: string;
-  username: string;
-  userTitle?: string;
-}
 
-const ProfileDropdown = (props: ProfileDropdownProps) => {
+
+const ProfileDropdown = (props) => {
   const profilePic = props["profilePic"] || null;
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   /*
    * toggle profile-dropdown
@@ -27,6 +18,10 @@ const ProfileDropdown = (props: ProfileDropdownProps) => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const handleImageError = (event) => {
+    // Fallback to the default image URL
+    event.target.src = CONSTANTS.API_URLS.AVATAR_IMAGE_URL;
+};
   return (
     <Dropdown show={dropdownOpen} onToggle={toggleDropdown}>
       <Dropdown.Toggle
@@ -38,7 +33,9 @@ const ProfileDropdown = (props: ProfileDropdownProps) => {
           { show: dropdownOpen }
         )}
       >
-        <img src={profilePic!} className="rounded-circle" alt="" />
+        <img
+         onError={handleImageError}
+        src={profilePic} className="rounded-circle" alt="" />
         <span className="pro-user-name ms-1">
           {props["username"]} <i className="mdi mdi-chevron-down"></i>
         </span>
