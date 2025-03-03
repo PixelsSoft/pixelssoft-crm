@@ -12,22 +12,22 @@ export const AddVenCat = (data, token, reset) => async (dispatch) => {
         if (response.status === 200) {
             reset();
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
-            dispatch(GetVenCat(token));
+           await dispatch(GetVenCat(token));
         } else {
-            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
+            toast.error(response?.detail, { position: toast.POSITION.TOP_RIGHT });
             toast.error(response?.message, { position: toast.POSITION.TOP_RIGHT });
         };
         return response;
     } catch (error) {
-        toast.error('Something went wrong', { position: toast.POSITION.TOP_RIGHT });
+        toast.error(error?.detail, { position: toast.POSITION.TOP_RIGHT });
         console.log("error===========>", error)
     };
 };
 
-export const GetVenCat = (data, token) => async (dispatch) => {
+export const GetVenCat = (token) => async (dispatch) => {
     try {
-        const response = await VendorCategoryServices.GetVendorCategoryServices(data, token);
-        dispatch(VenCat(response));
+        const response = await VendorCategoryServices.GetVendorCategoryServices( token);
+        dispatch(VenCat(response?.data));
     } catch (error) {
         toast.error('Something went wrong', { position: toast.POSITION.TOP_RIGHT });
         console.log("error===========>", error)
@@ -49,19 +49,19 @@ export const DeleVenCat = (id, token) => async (dispatch) => {
     };
 };
 
-export const UpdateVenCat = (id, data, token, reset) => async (dispatch) => {
+export const UpdateVenCat = ( data, token, reset) => async (dispatch) => {
     try {
-        const response = await VendorCategoryServices.UpdateVenCat(id, data, token);
+        const response = await VendorCategoryServices.UpdateVenCat(data, token);
         if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             dispatch(GetVenCat(token));
             reset();
         } else {
-            toast.error(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            toast.error(response?.detail, { position: toast.POSITION.TOP_RIGHT });
         };
     } catch (error) {
         console.log("error===========>", error)
-        toast.error(error, { position: toast.POSITION.TOP_RIGHT });
+        toast.error(error?.detail, { position: toast.POSITION.TOP_RIGHT });
     };
 };
 

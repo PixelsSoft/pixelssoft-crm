@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { FormInput } from '../../../../components';
 import PageTitle from '../../../../components/PageTitle'
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../../../../components/Spinner';
 import { toast } from 'react-toastify';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
-import { AddVenCat, DeleVenCat, UpdateVenCat } from '../../../../redux/Slices/VendorCategory/VendorCategory';
+import { AddVenCat, DeleVenCat, GetVenCat, UpdateVenCat } from '../../../../redux/Slices/VendorCategory/VendorCategory';
 import { Link } from 'react-router-dom';
 
 
@@ -30,25 +30,44 @@ export default function VendorCategory() {
         setId();
         setEdit( false );
     };
+const fetchVendorCategory=async()=>{
+    try {
+        dispatch( startLoading() );
+        await dispatch(GetVenCat(token));
+        dispatch( stopLoading() );
+        
+    } catch (error) {
+        dispatch( stopLoading() );
+        
+    }
+}
+useEffect(() => {
+    fetchVendorCategory()
+}, [])
+
+
 
     const addVendorCategory = async () => {
-        const data = {
-            name: title,
-            description: Des
-        };
+        // const data = {
+        //     title : title,
+        //     description  : Des
+        // };
+        const formdata = new FormData()
+        formdata.append( "title", title )
+        formdata.append( "description", Des )
         if ( title === '' || Des === '' ) {
             return toast.error( 'Enter all fields', { position: toast.POSITION.TOP_RIGHT } );
         };
         dispatch( startLoading() );
-        await dispatch( AddVenCat( data, token, reset ) );
+        await dispatch( AddVenCat( formdata, token, reset ) );
         dispatch( stopLoading() );
     };
 
     const ActionColumn = ( { data } ) => {
-        const { name, description, id } = data;
+        const { title, description, id } = data;
         return (
             <React.Fragment>
-                <Link className="action-icon" onClick={() => editFunc( name, description, id )}>
+                <Link className="action-icon" onClick={() => editFunc( title, description, id )}>
                     {" "}
                     <i className="mdi mdi-square-edit-outline"></i>
                 </Link>
@@ -76,7 +95,7 @@ export default function VendorCategory() {
     const columns = [
         {
             Header: 'Title',
-            accessor: 'name',
+            accessor: 'title',
             sort: false,
         },
         {
@@ -109,15 +128,15 @@ export default function VendorCategory() {
     ];
 
     const update = async () => {
-        const data = {
-            name: title,
-            description: Des
-        };
+        const formdata = new FormData()
+        formdata.append( "id", id )
+        formdata.append( "title", title )
+        formdata.append( "description", Des )
         if ( title === '' || Des === '' ) {
             return toast.error( 'Enter all fields', { position: toast.POSITION.TOP_RIGHT } );
         };
         dispatch( startLoading() )
-        await dispatch( UpdateVenCat( id, data, token, reset ) )
+        await dispatch( UpdateVenCat( formdata, token, reset ) )
         dispatch( stopLoading() );
     }
 
@@ -197,7 +216,7 @@ export default function VendorCategory() {
 
                             <Table
                                 columns={columns}
-                                data={vendorCategory}
+                                data={vendorCategory||[]}
                                 pageSize={10}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}

@@ -14,12 +14,12 @@ export const AddVendor = (data, token, reset) => async (dispatch) => {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             dispatch(GetVendor(token));
         } else {
-            toast.error(response?.message[0], { position: toast.POSITION.TOP_RIGHT });
-            toast.error(response?.message, { position: toast.POSITION.TOP_RIGHT });
+            toast.error(response?.detail, { position: toast.POSITION.TOP_RIGHT });
+            
         };
         return response;
     } catch (error) {
-        toast.error('Something went wrong', { position: toast.POSITION.TOP_RIGHT });
+        toast.error(error?.detail, { position: toast.POSITION.TOP_RIGHT });
         console.log("error===========>", error)
     };
 };
@@ -34,9 +34,9 @@ export const GetVendor = (token) => async (dispatch) => {
     };
 };
 
-export const UpdateVendor = (id, data, token, reset) => async (dispatch) => {
+export const UpdateVendor = ( data, token, reset) => async (dispatch) => {
     try {
-        const response = await VendorServices.UpdateVendor(id, data, token);
+        const response = await VendorServices.UpdateVendor(data, token);
         if (response?.status === 200) {
             toast.success(response?.message, { position: toast.POSITION.TOP_RIGHT });
             dispatch(GetVendor(token));

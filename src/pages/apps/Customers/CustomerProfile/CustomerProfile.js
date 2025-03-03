@@ -1,71 +1,16 @@
-import { Row, Col, Card, Table } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 import StatisticsWidget1 from '../../../../components/StatisticsWidget1';
 import { records as data } from './data';
-// import Table from '../../../../components/Table';
+import Table from '../../../../components/Table';
 import CustomerDetailCard from '../../../../components/CustomerDetailCard';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetSingleCustomer } from '../../../../redux/Slices/Customer/customer';
 import Spinner from '../../../../components/Spinner';
 import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import classNames from 'classnames';
 
-const columns = [
-    {
-        Header: 'ID',
-        accessor: 'id',
-        sort: true,
-    },
-    {
-        Header: 'Status',
-        accessor: 'status',
-        sort: false,
-    },
-    {
-        Header: 'Invoice #',
-        accessor: 'invoiceNumber',
-        sort: false,
-    },
-    {
-        Header: 'Due Date',
-        accessor: 'dueDate',
-        sort: false,
-    },
-    {
-        Header: 'Amount',
-        accessor: 'amount',
-        sort: false,
-    },
-    {
-        Header: 'Pending Amount',
-        accessor: 'pending',
-        sort: false,
-    },
-    {
-        Header: 'Category',
-        accessor: 'category',
-        sort: false,
-    },
-];
-
-const sizePerPageList = [
-    {
-        text: '5',
-        value: 5,
-    },
-    {
-        text: '10',
-        value: 10,
-    },
-    {
-        text: '25',
-        value: 25,
-    },
-    {
-        text: 'All',
-        value: data.length,
-    },
-];
 
 const CustomerProfile = () => {
     const { profileId } = useParams();
@@ -78,6 +23,75 @@ const CustomerProfile = () => {
             SingleCustomer: state.Customer.singleCustomer
         } )
     );
+      const StatusColumn = ({ row }) => {
+        return (
+          <React.Fragment>
+            <span
+        
+              className={classNames("badge", {
+                "bg-soft-success text-success": row.original.status === "Paid",
+                "bg-soft-danger text-danger": row.original.status === "unPaid",
+              })}
+            >
+              {row.original.status}
+            </span>
+          </React.Fragment>
+        );
+      };
+    const columns = [
+        {
+            Header: 'ID',
+            accessor: 'id',
+            sort: true,
+        },
+        {
+            Header: 'Currency',
+            accessor: 'currency',
+            sort: false,
+        },
+        {
+            Header: 'Invoice Date',
+            accessor: 'invoice_Date',
+            sort: false,
+        },
+        {
+            Header: 'Due Date',
+            accessor: 'due_Date',
+            sort: false,
+        },
+        {
+            Header: 'Amount',
+            accessor: 'price',
+            sort: false,
+        },
+      
+        {
+            Header: 'Status',
+            accessor: 'status',
+            sort: false,
+            Cell: StatusColumn,
+        },
+    ];
+    
+    const sizePerPageList = [
+        {
+            text: '5',
+            value: 5,
+        },
+        {
+            text: '10',
+            value: 10,
+        },
+        {
+            text: '25',
+            value: 25,
+        },
+        {
+            text: 'All',
+            value: data.length,
+        },
+    ];
+    
 
     const getSingleProfile = async () => {
         dispatch( startLoading() );
@@ -104,8 +118,8 @@ const CustomerProfile = () => {
                                     <CustomerDetailCard
                                         contact={{
                                             // avatar: avatar,
-                                            Detail: SingleCustomer?.platform,
-                                            fullName: SingleCustomer?.name,
+                                            // Detail: SingleCustomer?.platform,
+                                            fullName: SingleCustomer?.full_name,
                                             phoneNumber: SingleCustomer?.phone,
                                             email: SingleCustomer?.email,
                                             Address: SingleCustomer?.address,
@@ -117,18 +131,19 @@ const CustomerProfile = () => {
                                 </Col>
                                 <Col sm={6}>
                                     <StatisticsWidget1
-                                        title="Total Paid Invoice"
+                                        title="Total Paid Amount"
                                         color={'#10c469'}
-                                        data={100}
-                                        stats={10}
-                                        subTitle="Paid today"
+                                        data={SingleCustomer?.invoices?.paid?.total}
+                                        stats={SingleCustomer?.invoices?.paid?.details?.length||0}
+                                        subTitle="Paid Invoices"
                                     />
                                     <StatisticsWidget1
-                                        title="Total Upaid Invoice"
+                                        title="Total unPaid Amount"
                                         color={'#f05050'}
-                                        data={0}
-                                        stats={0}
-                                        subTitle="Unpaid today"
+                                        data={SingleCustomer?.invoices?.unpaid?.total}
+                                        stats={SingleCustomer?.invoices?.unpaid?.details?.length||0}
+                                       
+                                        subTitle="Unpaid Invoices"
                                     />
                                 </Col>
                             </Row>
@@ -137,12 +152,13 @@ const CustomerProfile = () => {
                                 <h1 className="my-3">Purchase History</h1>
                                 <Table
                                     columns={columns}
-                                    data={SingleCustomer?.invoices}
+                                    data={SingleCustomer?.All_invoices}
                                     pageSize={5}
                                     sizePerPageList={sizePerPageList}
                                     isSortable={true}
                                     pagination={true}
                                     isSearchable={true}
+                                     
                                 />
                             </Row>
                         </Card.Body>

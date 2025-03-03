@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Form, Modal, Row } from "react-bootstrap";
 import { FormInput } from "../../../../components";
 import PageTitle from "../../../../components/PageTitle";
@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import EditExpenseModal from "../../../../components/EditExpenseModal";
 import { CONSTANTS } from "../../../../constants/constant";
 import ViewExpense from "../../../../components/ViewExpense";
+import { GetExpenseCategory } from "../../../../redux/Slices/ExpenseCategory/expenseCategory";
 
 export default function Expenses() {
   const { expenseCategory, loading, token, expenses, banks } = useSelector(
@@ -49,13 +50,29 @@ export default function Expenses() {
   const [bankId, setBankId] = useState("");
   const [bankName, setBankName] = useState("");
   const [ExpCatName, setExpCatName] = useState("");
-  const [pay, setPay] = useState("");
+  const [pay, setPay] = useState("Cash");
 
   const [selectedId, setSelectedId] = useState("");
 
   const toggleModal = () => {
     setVisibleModal(!visibleModal);
   };
+
+  const fetchExpense = async () => {
+    try {
+      dispatch(startLoading());
+
+      await dispatch(GetExpense(token));
+      await dispatch(GetExpenseCategory(token));
+      dispatch(stopLoading());
+    } catch (error) {
+      dispatch(stopLoading());
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchExpense();
+  }, []);
 
   /* action column render */
   const ActionColumn = ({ item }) => {
@@ -106,7 +123,7 @@ export default function Expenses() {
     formData.append("file", file);
     formData.append("expense_id", catId);
     formData.append("banks_id", bankId);
-    await dispatch(EditExpense(selectedId, formData,token));
+    await dispatch(EditExpense(selectedId, formData, token));
     dispatch(stopLoading());
     setExModal(!exModal);
   };
@@ -207,16 +224,16 @@ export default function Expenses() {
   };
 
   const reset = () => {
-    setInDate('');
-    setTitle('');
-    setDescription("")
-    setAmount('');
-    setCatId('');
-    setBankName('');
-    setExpCatName('');
-    setBankId('');
-    setPay('');
-    setFile('');
+    setInDate("");
+    setTitle("");
+    setDescription("");
+    setAmount("");
+    setCatId("");
+    setBankName("");
+    setExpCatName("");
+    setBankId("");
+    setPay("");
+    setFile("");
   };
 
   return loading ? (
@@ -453,7 +470,7 @@ export default function Expenses() {
         size="lg"
         show={openView}
         onHide={() => {
-          reset()
+          reset();
           setOpenView(false);
         }}
       >
@@ -519,9 +536,15 @@ export default function Expenses() {
           </Row>
         </Modal.Body>
       </Modal>
-     {/* ========================= Edit Expense Modal============ */}
-     <Modal size="lg" show={exModal} onHide={()=>{setExModal(false)    
-        reset()}}>
+      {/* ========================= Edit Expense Modal============ */}
+      <Modal
+        size="lg"
+        show={exModal}
+        onHide={() => {
+          setExModal(false);
+          reset();
+        }}
+      >
         <Modal.Header closeButton>
           <h4 className="modal-title">Edit Expense</h4>
         </Modal.Header>
@@ -645,9 +668,9 @@ export default function Expenses() {
           <Button
             type="button"
             className="btn btn-secondary waves-effect"
-            onClick={()=>{
-              setExModal(false)
-              reset()
+            onClick={() => {
+              setExModal(false);
+              reset();
             }}
           >
             Close
@@ -662,7 +685,6 @@ export default function Expenses() {
           </Button>
         </Modal.Footer>
       </Modal>
-  
     </>
   );
 }

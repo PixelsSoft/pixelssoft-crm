@@ -1,27 +1,44 @@
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../../../components/PageTitle';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormInput } from '../../../../components';
 import ContactDetails from '../../../../components/ContactDetails';
 import Spinner from '../../../../components/Spinner';
+import { GetEmployees } from '../../../../redux/Slices/employee/Employee';
+import { startLoading, stopLoading } from '../../../../redux/Slices/utiltities/Utiltities';
+import { useEffect } from 'react';
 
 
 const List = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch();
 
-    const { loading, employee } = useSelector(
+    const { loading, employee ,token} = useSelector(
         ( state ) => ( {
             loading: state.utiltities.loading,
             employee: state.Employees.employees,
+            token: state.Auth.token,
         } )
     );
+const fetchEmployees=async()=>{
+    try {
+              dispatch(startLoading());
+         await dispatch(GetEmployees(token));
+          dispatch(stopLoading());
+    } catch (error) {
+     console.log("error on fetching employee",error)   
+    }
+}
+useEffect(() => {
+    fetchEmployees()
+}, [])
 
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
-            <Spinner className="m-2" color={'primary'} />
-        </div>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+             <Spinner className="m-2" color={"primary"} />
+           </div>
     ) : (
         <>
             <PageTitle

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap'
 import { FormInput } from '../../../../components';
 import PageTitle from '../../../../components/PageTitle'
@@ -12,9 +12,10 @@ import { Link } from 'react-router-dom';
 import EditExpenseModal from '../../../../components/EditExpenseModal';
 import { CONSTANTS } from '../../../../constants/constant';
 import ViewExpense from '../../../../components/ViewExpense';
-import { AddBank, DeleteBank, EditBank } from '../../../../redux/Slices/Bank/banks';
+import { AddBank, DeleteBank, EditBank, GetBanks } from '../../../../redux/Slices/Bank/banks';
 
 export default function BankAccount() {
+    const dispatch = useDispatch();
     const {  token,  loading, banks } = useSelector(
         ( state ) => ( {
             token: state.Auth.token,
@@ -23,6 +24,19 @@ export default function BankAccount() {
             banks: state.Banks.banks,
         } )
     );
+
+ const fetchAccounts=async()=>{
+    try {  dispatch(startLoading());
+          await dispatch(GetBanks(token));
+          dispatch(stopLoading());
+    } catch (error) {
+        console.log(error)
+    }
+ }   
+useEffect(() => {
+    fetchAccounts()
+}, [])
+
 
 
 const Currency=[
@@ -1403,7 +1417,7 @@ const type=[
         title:"Saving"
     },
 ]
-    const dispatch = useDispatch();
+   
     const [visibleModal, setVisibleModal] = useState( false );
    
     const [openView, setOpenView] = useState( false );
