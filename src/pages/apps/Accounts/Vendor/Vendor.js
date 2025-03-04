@@ -38,7 +38,7 @@ export default function Vendor() {
 
 
 
-  console.log({vendors})
+
 
   const [detail, setDetail] = useState();
 

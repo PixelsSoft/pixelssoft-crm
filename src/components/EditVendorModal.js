@@ -42,11 +42,7 @@ const EditVendorModal = ({ detail, editModal, closeEdit }) => {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
-    const data = {
-      name: name,
-      email: email,
-      phone: phone,
-    };
+
     const formdata = new FormData();
     formdata.append("id", detail?.id);
     formdata.append("name", name);

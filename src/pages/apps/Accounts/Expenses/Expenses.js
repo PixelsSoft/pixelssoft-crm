@@ -22,6 +22,7 @@ import EditExpenseModal from "../../../../components/EditExpenseModal";
 import { CONSTANTS } from "../../../../constants/constant";
 import ViewExpense from "../../../../components/ViewExpense";
 import { GetExpenseCategory } from "../../../../redux/Slices/ExpenseCategory/expenseCategory";
+import { GetBanks } from "../../../../redux/Slices/Bank/banks";
 
 export default function Expenses() {
   const { expenseCategory, loading, token, expenses, banks } = useSelector(
@@ -63,6 +64,7 @@ export default function Expenses() {
       dispatch(startLoading());
 
       await dispatch(GetExpense(token));
+      await dispatch(GetBanks(token));
       await dispatch(GetExpenseCategory(token));
       dispatch(stopLoading());
     } catch (error) {
