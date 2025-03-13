@@ -44,7 +44,7 @@ const getSingleTarget = async ( id,token , month) => {
             'Authorization': `Bearer ${token}`
         },
     };
-console.log(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.target+id+"/monthly/"+month)
+
     return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.target+id+"/monthly/"+month, options )
         .then( ( response ) => {
             if ( !response.ok ) {

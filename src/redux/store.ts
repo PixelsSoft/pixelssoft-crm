@@ -27,6 +27,7 @@ import Mails from './Slices/usermail/UserMail';
 import Emails from './Slices/Emails/Emails';
 import Commission from './Slices/Commission/Commission';
 import Sales from './Slices/sales/Sales';
+import Report from './Slices/Report/report';
 
 const persistConfig = {
   key: 'root',
@@ -57,7 +58,8 @@ const reducer = combineReducers({
   Mails:Mails,
   Emails:Emails,
   Sales:Sales,
-  Commission:Commission
+  Commission:Commission,
+  Report:Report
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
