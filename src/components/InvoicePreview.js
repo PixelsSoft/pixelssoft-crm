@@ -2,10 +2,10 @@ import { Button, Col, Modal, Row } from 'react-bootstrap';
 import PSLogo from '../assets/images/logo-dark.png';
 import { useReactToPrint } from 'react-to-print';
 
-export default function InvoicePreview({ previewModal, toggle, componentRef, details }) {
-    const handlePrint = useReactToPrint({
+export default function InvoicePreview( { previewModal, toggle, componentRef, details } ) {
+    const handlePrint = useReactToPrint( {
         content: () => componentRef.current,
-    });
+    } );
 
     return (
         <Modal show={previewModal} onHide={toggle} dialogClassName="" size="lg" scrollable={false}>
@@ -51,7 +51,7 @@ export default function InvoicePreview({ previewModal, toggle, componentRef, det
                         <div className="d-flex justify-content-end">
                             <strong>Invoice #:</strong>
                             <span style={{ marginLeft: 5 }}>
-                                {/* {details.invoiceNumber ? details?.invoiceNumber.data : '0000'} */}
+                                {details.id}
                             </span>
                         </div>
                         <div className="d-flex justify-content-end">

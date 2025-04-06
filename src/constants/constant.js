@@ -1,11 +1,11 @@
 export const CONSTANTS = {
     API_URLS: {
-        AVATAR_IMAGE_URL:"https://cdn-icons-png.flaticon.com/512/3607/3607444.png",
-       
+        AVATAR_IMAGE_URL: "https://cdn-icons-png.flaticon.com/512/3607/3607444.png",
+
         // BASE: "https://crm-backend-78e9.onrender.com",
-     
+
         BASE: "http://127.0.0.1:8000",
-        
+
         Dashboard: "/dashBoard/",
         SALES: "/sales/",
         LOGIN: "/user/login",
@@ -19,8 +19,8 @@ export const CONSTANTS = {
         role: "/role",
         getInvoice: '/invoice/',
         getCategory: '/category',
-        target:"/target/",
-        comission:"/comission/",
+        target: "/target/",
+        comission: "/comission/",
         customer: '/customer/',
         platform: '/platform/add',
         UpdatePlatform: '/platform/update',
@@ -50,7 +50,7 @@ export const CONSTANTS = {
         deleteLead: '/lead/delete',
         expenseCategory: '/expense/category',
         AddExpense: '/expense/add',
-        getReport:"/report/",
+        getReport: "/report/",
         UpdateExpense: '/expense/update/',
         GetExpense: '/expense/',
         DeleteExpense: '/expense/delete/',
@@ -62,9 +62,9 @@ export const CONSTANTS = {
         attendancePerMonth: '/attendance/month',
         UserMailAdd: '/userMails/add',
         UserMail: '/userMails/',
-        GetEmail:"/MailServices/emails/",
-        GetSendEmail:"/MailServices/emails/sent/",
-        SendEmail:"/MailServices/send-email/"
+        GetEmail: "/MailServices/emails/",
+        GetSendEmail: "/MailServices/emails/sent/",
+        SendEmail: "/MailServices/send-email/"
 
     }
 } 
