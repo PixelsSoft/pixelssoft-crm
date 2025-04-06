@@ -34,7 +34,7 @@ const Files = ( { documents, uploadDocuments } ) => {
                   <p className="mb-0"> {file?.filesize} MB</p>
                 </div>
                 <div className="col-auto">
-                  <Link to={CONSTANTS.API_URLS.BASE+ file?.filepath} target="_blank"
+                  <Link to={ file?.filepath} target="_blank"
                     className="btn btn-link btn-lg text-muted"
                   >
                     <i className="dripicons-download"></i>
