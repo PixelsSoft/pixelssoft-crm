@@ -71,6 +71,7 @@ const Tasks = ( props ) => {
   const [newBoardModal, setNewBoardModal] = useState( false );
   const [editTask, setEditTask] = useState( false );
   const [editBoard, setEditBoard] = useState( false );
+  const [file, setFile] = useState( null );
   const [loading, setLoading] = useState( false );
 
 
@@ -194,7 +195,6 @@ const Tasks = ( props ) => {
 
   // ================================================================edit Task================================================
   const onEditTask = async ( task ) => {
-console.log(task?.desciption)
     try {
       setLoading(true)
       setEditTask( true )
@@ -243,6 +243,7 @@ console.log(task?.desciption)
      
       formData.append( 'id', selectedBoardId );
       formData.append( 'title', taskTitle );
+      // formData.append( 'file', file );
    
       formData.append( 'priority', priority );
       formData.append( 'due_Date', dueDate );
@@ -272,6 +273,13 @@ console.log(task?.desciption)
     }
 
   };
+  const handleFileUpload = async ( event ) => {
+    if ( event.target.files ) {
+        const file = event.target.files[0];
+
+        setFile( file );
+    }
+};
 
   // ================================================================delete Task================================================
   const onDeleteTask = async ( id ) => {
@@ -435,6 +443,15 @@ console.log(task?.desciption)
                 paddinghorizontal:10
               }}
             />
+             <FormInput
+                                                        label="File Upload"
+                                                        type="file"
+                                                        name="file"
+                                                        
+                                                        containerClass={'mb-3'}
+                                                        key="file"
+                                                        onChange={handleFileUpload}
+                                                    />
 
             <Row>
               <Col md={6}>

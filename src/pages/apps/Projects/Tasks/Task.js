@@ -2,48 +2,56 @@ import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import moment from "moment";
-import { Dropdown } from "react-bootstrap";
+import { Card, Col, Dropdown, Row } from "react-bootstrap";
 import { CONSTANTS } from "../../../../constants/constant";
 import { useSelector } from "react-redux";
 
-
-
-
 // task item
-const TaskItem = ( props ) => {
+const TaskItem = (props) => {
   const task = props.task || {};
-const handleImageError = (event) => {
+  console.log(task?.file );
+  const handleImageError = (event) => {
     // Fallback to the default image URL
     event.target.src = CONSTANTS.API_URLS.AVATAR_IMAGE_URL;
-};
-  const {  user } = useSelector((state) => ({
+  };
+  const { user } = useSelector((state) => ({
     user: state.Auth.user,
   }));
 
   return (
     <>
-    {user?.id==task?.user_id && 
-      <Dropdown className="float-end" align="end">
-        <Dropdown.Toggle as="a" className="cursor-pointer">
-          <i className="mdi mdi-dots-vertical m-0 text-muted h3"></i>
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={() => { props.onEdit( task ) }}>Edit</Dropdown.Item>
-         <Dropdown.Item onClick={() => { props.onDelete( task?.id ) }}>Delete</Dropdown.Item>
-
-        </Dropdown.Menu>
-      </Dropdown>}
+      {user?.id == task?.user_id && (
+        <Dropdown className="float-end" align="end">
+          <Dropdown.Toggle as="a" className="cursor-pointer">
+            <i className="mdi mdi-dots-vertical m-0 text-muted h3"></i>
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item
+              onClick={() => {
+                props.onEdit(task);
+              }}
+            >
+              Edit
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                props.onDelete(task?.id);
+              }}
+            >
+              Delete
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      )}
       <span
-        className={classNames( "badge", "float-end", {
+        className={classNames("badge", "float-end", {
           "bg-soft-danger text-danger": task.priority === "High",
           "bg-soft-secondary text-secondary": task.priority === "Medium",
           "bg-soft-success text-success": task.priority === "Low",
-        } )}
+        })}
       >
         {task.priority}
-
       </span>
-
 
       <h5 className="mt-0">
         <Link to="#" className="text-dark">
@@ -62,8 +70,37 @@ const handleImageError = (event) => {
 
       <div className="row">
         <div className="col">
+          {task?.file !== null && (
+            <Card className="m-1 shadow-none border">
+              <div className="p-2">
+                <Row className="align-items-center">
+                  <Col className="col-auto pe-0">
+                    <div className="avatar-sm">
+                      <span className="avatar-title bg-light text-secondary rounded">
+                        <i className={"mdi mdi-folder-zip font-18"}></i>
+                      </span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <Link
+                      target="_blank"
+                      to={task?.file}
+                      className="text-muted fw-bold"
+                    >
+                      {"File"}
+                    </Link>
+                  </Col>
+                </Row>
+              </div>
+            </Card>
+          )}
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
           <p className="font-13 mt-2 mb-0">
-            <i className="mdi mdi-calendar"></i>{moment( task?.due_Date ).format( "DD-MM-YYYY" )}
+            <i className="mdi mdi-calendar"></i>
+            {moment(task?.due_Date).format("DD-MM-YYYY")}
           </p>
         </div>
         <div className="col-auto">
@@ -79,15 +116,14 @@ const handleImageError = (event) => {
                 </Link>
               );
             } )} */}
-            
+
             <Link to="#" className="text-muted">
               <img
-                  onError={handleImageError}
+                onError={handleImageError}
                 src={task?.userDetails?.profile_img}
                 alt={task?.userDetails?.name}
                 className="avatar-sm img-thumbnail rounded-circle"
               />
-           
             </Link>
           </div>
         </div>
