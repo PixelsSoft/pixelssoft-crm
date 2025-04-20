@@ -68,7 +68,9 @@ const ProjectDetail = () => {
   }, [fetchProjectDetails] );
 
   if ( !project ) {
-    return <div>Loading...</div>;
+    return ( <div className='d-flex justify-content-center align-items-center  vh-100'>
+        <Spinner className="m-2" color={'primary'} />
+      </div> );
   }
   const uploadDocuments = async ( files ) => {
     try {

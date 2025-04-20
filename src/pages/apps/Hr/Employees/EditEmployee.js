@@ -11,12 +11,13 @@ import { CONSTANTS } from '../../../../constants/constant';
 import { toast } from 'react-toastify';
 import Spinner from '../../../../components/Spinner';
 import Select from "react-select";
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import QuickAccess from '../../FileManager/QuickAccess';
 
 const EditEmployee = () => {
     const { employeeId } = useParams();
     const location = useLocation();
+        const navigate = useNavigate();
     
 
 
@@ -33,6 +34,7 @@ const EditEmployee = () => {
             employee: state.Employees.singleEmployee
         } )
     );
+    console.log({employee})
     const [fullName, setFullName] = useState( employee?.details[0]?.name );
     const [fatherName, setFatherName] = useState( employee?.details[0]?.father_name );
     const [email, setEmail] = useState( employee?.email );
@@ -153,6 +155,7 @@ const EditEmployee = () => {
 
 
         await dispatch( UpdateEmployee( employeeId, params, token ) )
+        navigate(-1);
         // await fetch( CONSTANTS.API_URLS.BASE + 'user/update/' + employeeId, options )
         //     .then( response => response.json() )
         //     .then( e => {

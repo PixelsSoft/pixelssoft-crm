@@ -71,7 +71,7 @@ const Tasks = ( props ) => {
   const [newBoardModal, setNewBoardModal] = useState( false );
   const [editTask, setEditTask] = useState( false );
   const [editBoard, setEditBoard] = useState( false );
-  const [file, setFile] = useState( null );
+  const [file, setFile] = useState( "" );
   const [loading, setLoading] = useState( false );
 
 
@@ -243,7 +243,7 @@ const Tasks = ( props ) => {
      
       formData.append( 'id', selectedBoardId );
       formData.append( 'title', taskTitle );
-      // formData.append( 'file', file );
+      formData.append( 'file', file );
    
       formData.append( 'priority', priority );
       formData.append( 'due_Date', dueDate );

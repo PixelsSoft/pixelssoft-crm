@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 // task item
 const TaskItem = (props) => {
   const task = props.task || {};
-  console.log(task?.file );
+  
   const handleImageError = (event) => {
     // Fallback to the default image URL
     event.target.src = CONSTANTS.API_URLS.AVATAR_IMAGE_URL;
@@ -70,7 +70,7 @@ const TaskItem = (props) => {
 
       <div className="row">
         <div className="col">
-          {task?.file !== null && (
+          {task?.file && (
             <Card className="m-1 shadow-none border">
               <div className="p-2">
                 <Row className="align-items-center">

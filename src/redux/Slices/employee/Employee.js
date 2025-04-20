@@ -64,6 +64,7 @@ export const DeleteEmployee = ( id, token ) => async ( dispatch ) => {
 export const GetEmployeeById = ( id, token ) => async ( dispatch ) => {
     try {
         await EmployeeService.GetEmployeeId( id, token ).then( async ( response ) => {
+            
             await EmployeeService.getEmployee( token ).then( ( response ) => {
                 dispatch( Employee( response?.user_details ) );
             } ).catch( ( err ) => {
@@ -85,6 +86,7 @@ export const GetEmployeeById = ( id, token ) => async ( dispatch ) => {
 export const UpdateEmployee = ( id, data, token, reset ) => async ( dispatch ) => {
     try {
         const response = await EmployeeService.UpdateEmployee( id, data, token );
+       
         toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
 
         await EmployeeService.getEmployee( token ).then( ( response ) => {
