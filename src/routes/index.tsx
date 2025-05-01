@@ -26,8 +26,8 @@ const Landing = React.lazy(() => import("../pages/landing/"));
 
 // dashboard
 const Dashboard1 = React.lazy(() => import("../pages/dashboard/Dashboard1/"));
-const TrackingMyteam = React.lazy(() => import("../pages/apps/Tracking/MyTeam/index"));
-const TrackingMember = React.lazy(() => import("../pages/apps/Tracking/Member/index"));
+const TrackingMyteam = React.lazy(() => import("../pages/apps/Tracking/MyTeam/Tracking"));
+const TrackingMember = React.lazy(() => import("../pages/apps/Tracking/MemberActivity/MemberActivity"));
 
 // apps
 const Invoice = React.lazy(

@@ -2,9 +2,9 @@ export const CONSTANTS = {
     API_URLS: {
         AVATAR_IMAGE_URL: "https://cdn-icons-png.flaticon.com/512/3607/3607444.png",
 
-        BASE: "https://crm-backend-78e9.onrender.com",
+        // BASE: "https://crm-backend-78e9.onrender.com",
 
-        // BASE: "http://127.0.0.1:8000",
+        BASE: "http://127.0.0.1:8000",
 
         Dashboard: "/dashBoard/",
         SALES: "/sales/",
@@ -20,6 +20,7 @@ export const CONSTANTS = {
         getInvoice: '/invoice/',
         getCategory: '/category',
         target: "/target/",
+        Gettarget: "/tracking/get",
         comission: "/comission/",
         customer: '/customer/',
         platform: '/platform/add',

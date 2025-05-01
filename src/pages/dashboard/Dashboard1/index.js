@@ -63,7 +63,7 @@ const Dashboard1 = () => {
           return response.json();
         })
         .then(async(response) => {
-          console.log("respons e=======", response);
+          
           if (response?.status === 403) {
             getQoute()
             setAdmin(false);
