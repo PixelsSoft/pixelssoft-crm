@@ -28,6 +28,35 @@ const AddEmployee = async ( params, token ) => {
 
 };
 
+const resetPassword = async ( id, token ) => {
+    console.log(id)
+    const onSuccess = ( data ) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Accept': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+        },
+        // body: {user_id:id}
+    };
+
+    return await fetch( `${CONSTANTS.API_URLS.BASE}${CONSTANTS.API_URLS.Reset_password}?user_id=${id}`, options )
+        .then( response => {
+            console.log( 'response', response );
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
+
+};
+
 const getEmployeeRoles = async ( token ) => {
     const onSuccess = ( data ) => {
         return data.data;
@@ -173,6 +202,7 @@ const EmployeeService = {
     getEmployee,
     getEmployeeRoles,
     AddEmployee,
+    resetPassword
 };
 
 export default EmployeeService;

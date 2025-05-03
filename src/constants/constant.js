@@ -12,6 +12,7 @@ export const CONSTANTS = {
         PROFILE: "/user/profile",
         USER_SEACRH: "/user/search/",
         ADD_Employeee: "/user/register",
+        Reset_password: "/user/reset-password",
         getEmployee: '/user/users',
         UPDATE_EMPLOYEE: "/user/update",
         getEmployeeByid: '/user/user',

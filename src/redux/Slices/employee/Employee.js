@@ -47,6 +47,21 @@ export const GetEmployees = ( token ) => async ( dispatch ) => {
         dispatch( stopLoading() )
     }
 }
+export const ResetPassword = (id, token ) => async ( dispatch ) => {
+    try {
+        await EmployeeService.resetPassword(id, token ).then( ( response ) => {
+        dispatch( GetEmployees( token ) );
+        toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
+         
+        } ).catch( ( err ) => {
+            console.log( "error===========>", err )
+        } )
+
+
+    } catch ( error ) {
+        dispatch( stopLoading() )
+    }
+}
 
 export const DeleteEmployee = ( id, token ) => async ( dispatch ) => {
     try {

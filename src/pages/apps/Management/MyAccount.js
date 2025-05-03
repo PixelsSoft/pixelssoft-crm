@@ -231,22 +231,22 @@ export default function MyAccount() {
                 </Row>
             </Card.Body>
         </Card>
-        <PageTitle
+        {/* <PageTitle
             title={"Attendance"}
-        />
-        <Row>
+        /> */}
+        {/* <Row>
             <Col>
                 <Card>
                     <Card.Body>
                         <Row>
                             <Col lg={3}>
-                                {/* add events */}
+                               
 
 
                                 <SidePanel />
                             </Col>
                             <Col lg={9}>
-                                {/* fullcalendar control */}
+                              
                                 <Calendar
                                     onDateClick={onDateClick}
                                     onEventClick={onEventClick}
@@ -260,7 +260,7 @@ export default function MyAccount() {
                     </Card.Body>
                 </Card>
             </Col>
-        </Row>
+        </Row> */}
 
     </>
 

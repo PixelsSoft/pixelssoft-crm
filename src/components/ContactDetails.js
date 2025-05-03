@@ -1,127 +1,163 @@
-import { Card, Col, Dropdown, Row } from 'react-bootstrap';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { DeleteEmployee, GetEmployeeById } from '../redux/Slices/employee/Employee';
-import EmployeeEditModal from './EmployeeEditModal';
-import { useNavigate } from 'react-router-dom';
-import { CONSTANTS } from '../constants/constant';
-
-const ContactDetails = ( { contact } ) => {
-    const { token } = useSelector( state => state.Auth );
-    const naviage = useNavigate();
-    const dispatch = useDispatch();
-    const [editUserModal, setEditUserModal] = useState( false );
+import { Card, Col, Dropdown, Row } from "react-bootstrap";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  DeleteEmployee,
+  GetEmployeeById,
+  ResetPassword,
+} from "../redux/Slices/employee/Employee";
+import EmployeeEditModal from "./EmployeeEditModal";
+import { useNavigate } from "react-router-dom";
+import { CONSTANTS } from "../constants/constant";
 
 
-    const toggleEditModal = () => {
-        setEditUserModal( !editUserModal );
-        dispatch( GetEmployeeById( contact?.id, token ) );
-    };
+const ContactDetails = ({ contact }) => {
+  const { token } = useSelector((state) => state.Auth);
+  const naviage = useNavigate();
+  const dispatch = useDispatch();
+  const [editUserModal, setEditUserModal] = useState(false);
 
-    const deleteEmp = async () => {
-        dispatch( DeleteEmployee( contact?.id, token ) );
-    };
-    const handleImageError = (event) => {
-        // Fallback to the default image URL
-        event.target.src = CONSTANTS.API_URLS.AVATAR_IMAGE_URL;
-    };
-    return (
-        <>
-            <Card>
-                <Card.Body className="text-center" >
-                    <Dropdown className="float-end" align="end">
-                        <Dropdown.Toggle as="a" className="cursor-pointer card-drop">
-                            <i className="mdi mdi-dots-vertical"></i>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => naviage( `/apps/hr/editEmployee/${contact?.id}`, )}>Edit</Dropdown.Item>
-                            <Dropdown.Item onClick={deleteEmp}>Delete</Dropdown.Item>
-                            <Dropdown.Item onClick={() => naviage( `/apps/hr/viewEmployee/${contact?.id}` )}>View Profile</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <div >
-                     
-                    <div className='rounded-circle mb-3' style={{ width: '100px', height: '100px', placeSelf:"center" }}>
-            {/* Profile Image */}
-            <img
-                src={contact?.details[0]?.profile_img || "https://cdn-icons-png.flaticon.com/512/3607/3607444.png"}
+  const toggleEditModal = () => {
+    setEditUserModal(!editUserModal);
+    dispatch(GetEmployeeById(contact?.id, token));
+  };
+
+  const deleteEmp = async () => {
+    
+
+    dispatch(DeleteEmployee(contact?.id, token));
+ 
+  };
+  const ResetPasswordEmp = async () => {
+
+    dispatch(ResetPassword(contact?.id, token));
+   
+  };
+  const handleImageError = (event) => {
+    // Fallback to the default image URL
+    event.target.src = CONSTANTS.API_URLS.AVATAR_IMAGE_URL;
+  };
+  return (
+    <>
+      <Card>
+        <Card.Body className="text-center">
+          <Dropdown className="float-end" align="end">
+            <Dropdown.Toggle as="a" className="cursor-pointer card-drop">
+              <i className="mdi mdi-dots-vertical"></i>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item
+                onClick={() => naviage(`/apps/hr/editEmployee/${contact?.id}`)}
+              >
+                Edit
+              </Dropdown.Item>
+              <Dropdown.Item onClick={deleteEmp}>Delete</Dropdown.Item>
+              <Dropdown.Item onClick={ResetPasswordEmp}>Reset Password</Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => naviage(`/apps/hr/viewEmployee/${contact?.id}`)}
+              >
+                View Profile
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <div>
+            <div
+              className="rounded-circle mb-3"
+              style={{ width: "100px", height: "100px", placeSelf: "center" }}
+            >
+              {/* Profile Image */}
+              <img
+                src={
+                  contact?.details[0]?.profile_img ||
+                  "https://cdn-icons-png.flaticon.com/512/3607/3607444.png"
+                }
                 alt="profileImage"
-                style={{ width: '100%', height: '100%', display: 'block' }}
+                style={{ width: "100%", height: "100%", display: "block" }}
                 className="rounded-circle avatar-xl img-thumbnail mb-2"
                 onError={handleImageError}
-            />
-        </div>
-                       
-                        {/* <p className="text-muted font-13 mb-3">{contact.shortDesc}</p> */}
+              />
+            </div>
 
-                        <div className="text-start">
-                            <Row>
-                                <Col lg={6}>
-                                    <p className="text-muted font-13" >
-                                        <strong>Full Name :</strong> <span className="ms-2">{contact?.name}</span>
-                                    </p>
-                                </Col>
-                                <Col lg={6}>
-                                    <p className="text-muted font-13" >
-                                        <strong>Email :</strong> <span className="ms-2">{contact?.details[0]?.personal_email}</span>
-                                    </p>
-                                </Col>
+            {/* <p className="text-muted font-13 mb-3">{contact.shortDesc}</p> */}
 
-
-                            </Row>
-                            <Row>
-                                <Col lg={6}>
-                                    <p className="text-muted font-13" >
-                                        <strong>Company Provided email :</strong> <span className="ms-2">{contact?.details[0]?.company_provided_email}</span>
-                                    </p>
-                                </Col>
-                                <Col lg={6}>
-                                    <p className="text-muted font-13" >
-                                        <strong>Department :</strong> <span className="ms-2">{"hr"}</span>
-                                    </p>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg={6}>
-                                    <p className="text-muted font-13" >
-                                        <strong>CNIC :</strong> <span className="ms-2">{contact?.details[0]?.cnic_no}</span>
-                                    </p>
-                                </Col>
-                                <Col lg={6}>
-                                    <p className="text-muted font-13" >
-                                        <strong>Designation : </strong>
-                                        <span>
-                                            {contact?.details[0]?.designation}
-                                        </span>
-                                        {/* {contact?.roles.map( ( e, index ) => {
+            <div className="text-start">
+              <Row>
+                <Col lg={6}>
+                  <p className="text-muted font-13">
+                    <strong>Full Name :</strong>{" "}
+                    <span className="ms-2">{contact?.name}</span>
+                  </p>
+                </Col>
+                <Col lg={6}>
+                  <p className="text-muted font-13">
+                    <strong>Email :</strong>{" "}
+                    <span className="ms-2">
+                      {contact?.details[0]?.personal_email}
+                    </span>
+                  </p>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={6}>
+                  <p className="text-muted font-13">
+                    <strong>Company Provided email :</strong>{" "}
+                    <span className="ms-2">
+                      {contact?.details[0]?.company_provided_email}
+                    </span>
+                  </p>
+                </Col>
+                <Col lg={6}>
+                  <p className="text-muted font-13">
+                    <strong>Department :</strong>{" "}
+                    <span className="ms-2">{"hr"}</span>
+                  </p>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={6}>
+                  <p className="text-muted font-13">
+                    <strong>CNIC :</strong>{" "}
+                    <span className="ms-2">{contact?.details[0]?.cnic_no}</span>
+                  </p>
+                </Col>
+                <Col lg={6}>
+                  <p className="text-muted font-13">
+                    <strong>Designation : </strong>
+                    <span>{contact?.details[0]?.designation}</span>
+                    {/* {contact?.roles.map( ( e, index ) => {
                                             console.log( "role kia hy akhir====>".e.names )
                                             return (
                                                 <span key={index} className="ms-2">{e?.name}</span>
                                             )
                                         } )} */}
-                                    </p>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col lg={6}>
-                                    <p className="text-muted font-13" >
-                                        <strong>Mobile no :</strong> <span className="ms-2">{contact?.details[0]?.phone_no}</span>
-                                    </p>
-                                </Col>
-                                <Col lg={6}>
-                                    <p className="text-muted font-13" >
-                                        <strong>Joining Date :</strong> <span className="ms-2">{contact?.details[0]?.joining_date}</span>
-                                    </p>
-                                </Col>
-                            </Row>
-                        </div>
-
-                    </div>
-                </Card.Body>
-            </Card>
-            {/* <EmployeeEditModal editUserModal={editUserModal} toggleEditModal={toggleEditModal} /> */}
-        </>
-    );
+                  </p>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={6}>
+                  <p className="text-muted font-13">
+                    <strong>Mobile no :</strong>{" "}
+                    <span className="ms-2">
+                      {contact?.details[0]?.phone_no}
+                    </span>
+                  </p>
+                </Col>
+                <Col lg={6}>
+                  <p className="text-muted font-13">
+                    <strong>Joining Date :</strong>{" "}
+                    <span className="ms-2">
+                      {contact?.details[0]?.joining_date}
+                    </span>
+                  </p>
+                </Col>
+              </Row>
+            </div>
+          </div>
+        </Card.Body>
+      </Card>
+      {/* <EmployeeEditModal editUserModal={editUserModal} toggleEditModal={toggleEditModal} /> */}
+    </>
+  );
 };
 
 export default ContactDetails;
