@@ -171,6 +171,7 @@ const List = () => {
         params.append( "emergency_phone_no", emergencyPhoneNumber );
         params.append( "emergency_phone_no_2", emergencyPhoneNumber2 );
         params.append( "designation", designation );
+        params.append( "department", department );
         params.append( "joining_date", joiningDate );
         if ( CNIC !== null ) {
             params.append( "cnic_img", CNIC );
@@ -227,7 +228,7 @@ const List = () => {
                     toast.error( e?.detail, { position: toast.POSITION.TOP_RIGHT } );
                 }
                 dispatch( stopLoading() );
-                reset()
+                // reset()
             } )
             .catch( err => {
                 dispatch( stopLoading() );
