@@ -106,14 +106,14 @@ const MENU_ITEMS = [
     icon: "cast",
     url: "/apps/portalProjects",
   },
-  {
-    key: "leadProject",
-    label: "Lead Projects",
-    isTitle: false,
-    icon: "server",
-    roles: ["SuperAdmin", "Sales"],
-    url: "/apps/leadProjects",
-  },
+  // {
+  //   key: "leadProject",
+  //   label: "Lead Projects",
+  //   isTitle: false,
+  //   icon: "server",
+  //   roles: ["SuperAdmin", "Sales"],
+  //   url: "/apps/leadProjects",
+  // },
   {
     key: "ClientCard",
     label: "Client Card",
