@@ -50,7 +50,7 @@ export const login =
         .login({ email, password })
         .then(async (response) => {
           await dispatch(userToken(response?.access_token));
-          // await dispatch(GetEmployees(response?.access_token));
+          await dispatch(GetEmployees(response?.access_token));
           await dispatch(GetPlatform(response?.access_token));
           // await dispatch(GetLead(response?.access_token));
           await dispatch(GetCategory(response?.access_token));
