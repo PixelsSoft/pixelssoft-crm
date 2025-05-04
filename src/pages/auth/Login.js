@@ -47,8 +47,8 @@ const BottomLink = () => {
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("Taimoorkhan311@gmail.com");
-  const [password, setPassword] = useState("Taimoor123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const { token, loading, roles } = useSelector((state) => ({
     token: state.Auth.user,
