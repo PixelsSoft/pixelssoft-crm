@@ -1,4 +1,5 @@
 
+import { json } from "react-router-dom";
 import { CONSTANTS } from "../../constants/constant";
 
 const AddProject = async ( data, token ) => {
@@ -530,6 +531,62 @@ const SendCommentReply = async ( data, token ) => {
         .then( onSuccess )
         .catch( onFailure )
 };
+const AddTeamMembers = async ( data, token ) => {
+
+    const onSuccess = ( data ) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+    const options = {
+        method: 'POST',
+        headers: {
+
+            'Authorization': `Bearer ${token}`
+        },
+        body: data,
+        redirect: "follow"
+    };
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.AddTeamMembers, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
+};
+const RemoveTeamMember = async ( data, token ) => {
+
+    const onSuccess = ( data ) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+    const options = {
+        method: 'DELETE',
+        headers: {
+
+            'Authorization': `Bearer ${token}`
+        },
+        body: data,
+        redirect: "follow"
+    };
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.RemoveTeamMember, options )
+        .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
+        .then( onSuccess )
+        .catch( onFailure )
+};
 const ProjectService = {
     UpdateProject,
     DeletProject,
@@ -548,7 +605,9 @@ const ProjectService = {
     EditProjectById,
     GetComments,
     SendComments,
-    SendCommentReply
+    SendCommentReply,
+    AddTeamMembers,
+    RemoveTeamMember
 
 };
 

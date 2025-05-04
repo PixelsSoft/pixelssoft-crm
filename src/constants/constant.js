@@ -38,6 +38,8 @@ export const CONSTANTS = {
         editProject: '/project/editProject',
         sendComments: '/project/comments',
         sendCommentsReply: '/project/comments/replies/',
+        AddTeamMembers:"/project/add-team-members",
+        RemoveTeamMember:"/project/remove-team-member",
         Droptask: '/project/DropTask',
         GetBoard: '/project/board/',
         portal: '/portal',

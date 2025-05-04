@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import classNames from "classnames";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { EditProjectById, GetProjectById, UploadProjectDocuments } from "../../../../redux/Slices/Project/Project";
+import { addTeamMembers, EditProjectById, GetProjectById, removeTeamMember, UploadProjectDocuments } from "../../../../redux/Slices/Project/Project";
 
 // components
 import PageTitle from "../../../../components/PageTitle";
@@ -28,9 +28,10 @@ import Spinner from "../../../../components/Spinner";
 const ProjectDetail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { token, loading } = useSelector( ( state ) => ( {
+  const { token, loading,employee } = useSelector( ( state ) => ( {
     token: state.Auth.token,
     loading: state.utiltities.loading,
+    employee: state.Employees.employees,
   } ) );
 
 
@@ -49,11 +50,7 @@ const ProjectDetail = () => {
         const fetchedProject = response[0];
         setProject( fetchedProject );
         setDocuments(response[0]?.projectDocuments)
-        // const docPromises = fetchedProject.projectDocuments.map( file =>
-        //   getFileDetails( file?.filepath )
-        // );
-        // const docDetails = await Promise.all( docPromises );
-        // setDocuments( docDetails );
+    
       }
       dispatch( stopLoading() )
 
@@ -80,24 +77,7 @@ const ProjectDetail = () => {
       files.forEach((file) => {
         Form.append("files", file); // Append each file individually
       });
-      // if ( files.length > 0 ) {
-      //   const fileUploadPromises = files.map( file => handleUpload( dispatch, file ) );
-
-      //   try {
-      //     // Wait for all file uploads to complete
-      //     const uploadedFiles = await Promise.all( fileUploadPromises );
-
-      //     // Join file URLs with a comma and append to FormData
-      //     const fileUrlsString = uploadedFiles.join( "," );
-      //     Form.append( "files", fileUrlsString );
-
-
-      //   } catch ( uploadError ) {
-      //     console.error( "File upload error: ", uploadError );
-      //     toast.error( "Failed to upload files", { position: toast.POSITION.TOP_RIGHT } );
-      //     return;
-      //   }
-      // }
+     
       await dispatch( UploadProjectDocuments( Form, token ) )
       await fetchProjectDetails()
 
@@ -126,7 +106,47 @@ const ProjectDetail = () => {
       dispatch( stopLoading() )
     }
   }
+  // ================================================================Add team Members-================================================================
 
+  const onAdd = async ( selectedTeamMembers ) => {
+    try {  
+      dispatch( startLoading() )
+      const Form = new FormData()
+      Form.append( "project_id", id );
+      selectedTeamMembers.forEach((member) => {
+        Form.append("user_ids", member?.id); 
+      });
+      await dispatch( addTeamMembers( Form, token ) )
+      await fetchProjectDetails()
+
+      dispatch( stopLoading() )
+
+    } catch (error) {
+      console.error("Error adding team members:", error);
+      dispatch( stopLoading() )
+      
+    }
+  }
+
+  // ================================================================Remove team Members-================================================================
+  const onRemove = async ( user_id ) => {
+    try {
+      dispatch( startLoading() )
+      const Form = new FormData()
+      Form.append( "project_id", id );
+      Form.append( "user_id", user_id );
+
+      await dispatch( removeTeamMember( Form, token ) )
+      await fetchProjectDetails()
+
+      dispatch( stopLoading() )
+      
+    } catch (error) {
+      console.error("Error removing team members:", error);
+      dispatch( stopLoading() )
+      
+    }
+  }
 
 
   const RenderDetail = () => (
@@ -230,7 +250,7 @@ const ProjectDetail = () => {
                   </div>
                 </Col>
               </Row>
-              <TeamMembers teamMembers={project.project_Teams} />
+              <TeamMembers teamMembers={project.project_Teams} employee={employee} onAdd={onAdd}  onRemove={onRemove}/>
             </Card.Body>
           </Card>
           <Comments projectId={id} />
@@ -271,12 +291,12 @@ const ProjectDetail = () => {
       icon: "mdi mdi-account-circle",
       component: <Tasks data={project} />,
     },
-    {
-      id: 3,
-      title: "Testing",
-      icon: "mdi mdi-account-circle",
-      component: <RenderTest />,
-    },
+    // {
+    //   id: 3,
+    //   title: "Testing",
+    //   icon: "mdi mdi-account-circle",
+    //   component: <RenderTest />,
+    // },
   ];
 
   return loading ? ( <div className='d-flex justify-content-center align-items-center  vh-100'>

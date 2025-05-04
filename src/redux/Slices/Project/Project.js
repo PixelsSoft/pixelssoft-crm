@@ -242,6 +242,40 @@ export const UploadProjectDocuments = ( data, token ) => async ( dispatch ) => {
         console.log( "error===========>", error )
     };
 };
+
+export const addTeamMembers = ( data, token ) => async ( dispatch ) => {
+    try {
+        const response = await ProjectService.AddTeamMembers( data, token );
+
+        if ( response?.status === 200 ) {
+            toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
+
+        } else {
+            toast.error( response?.detail, { position: toast.POSITION.TOP_RIGHT } );
+            console.warn( "error", response )
+        };
+    } catch ( error ) {
+        console.log( "error===========>", error )
+    };
+};
+export const removeTeamMember = ( data, token ) => async ( dispatch ) => {
+    try {
+        const response = await ProjectService.RemoveTeamMember( data, token );
+
+        if ( response?.status === 200 ) {
+            toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
+
+        } else {
+            toast.error( response?.detail, { position: toast.POSITION.TOP_RIGHT } );
+            console.warn( "error", response )
+        };
+    } catch ( error ) {
+        console.log( "error===========>", error )
+    };
+};
+
+
+
 export const GetComments = ( id, token ) => async ( dispatch ) => {
     try {
         const response = await ProjectService.GetComments( id, token );

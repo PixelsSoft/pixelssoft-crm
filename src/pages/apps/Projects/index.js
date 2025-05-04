@@ -165,11 +165,19 @@ const Projects = () => {
   const [projects, setprojects] = useState([]);
   const dispatch = useDispatch();
 
-  const { loading, token, project } = useSelector((state) => ({
+
+
+  const { loading, token, project,roles } = useSelector((state) => ({
     loading: state.utiltities.loading,
     token: state.Auth.token,
     project: state.Projects.project,
+    roles: state.Roles.roles,
   }));
+  const [hasSuperAdmin, sethasSuperAdmin] = useState(
+    roles[0]?.role
+      .split(",")
+      .some((role) => role === "SuperAdmin" || role === "Project Manager" || role === "Sales") || ""
+  );
 
   const getProject = async () => {
     try {
@@ -201,14 +209,16 @@ const Projects = () => {
       />
 
       <Row className="mb-2">
+        {hasSuperAdmin&&
         <Col sm={4}>
-          <Link
-            to="/apps/projects/create"
-            className="btn btn-danger rounded-pill waves-effect waves-light mb-3"
-          >
-            <i className="mdi mdi-plus"></i> Create Project
-          </Link>
-        </Col>
+        <Link
+          to="/apps/projects/create"
+          className="btn btn-danger rounded-pill waves-effect waves-light mb-3"
+        >
+          <i className="mdi mdi-plus"></i> Create Project
+        </Link>
+      </Col> }
+        
         <Col sm={8}>
           <div className="text-sm-end">
             <div className="btn-group mb-3">
@@ -232,8 +242,24 @@ const Projects = () => {
           </div>
         </Col>
       </Row>
+{project.length !== 0 ? (
+  <Row>
+    {(project || []).map((project, i) => {
+      return (
+        <Col lg={4} key={"proj-" + project.id}>
+          <SingleProject project={project} />
+        </Col>
+      );
+    })}
+  </Row>
+) : (
+  <div className="text-center mt-5">
+    <h4>No Projects Found</h4>
 
-      <Row>
+  </div>
+)
+}
+      {/* <Row>
         {(project || []).map((project, i) => {
           return (
             <Col lg={4} key={"proj-" + project.id}>
@@ -241,16 +267,8 @@ const Projects = () => {
             </Col>
           );
         })}
-      </Row>
-      <Row>
-        <Col>
-          <div className="text-center mb-3">
-            <Link to="#" className="text-danger">
-              <i className="mdi mdi-spin mdi-loading me-1"></i> Load more{" "}
-            </Link>
-          </div>
-        </Col>
-      </Row>
+      </Row> */}
+     
     </>
   );
 };

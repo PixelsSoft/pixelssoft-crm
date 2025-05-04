@@ -109,7 +109,7 @@ const ContactDetails = ({ contact }) => {
                 <Col lg={6}>
                   <p className="text-muted font-13">
                     <strong>Department :</strong>{" "}
-                    <span className="ms-2">{"hr"}</span>
+                    <span className="ms-2">{contact?.details[0]?.department}</span>
                   </p>
                 </Col>
               </Row>

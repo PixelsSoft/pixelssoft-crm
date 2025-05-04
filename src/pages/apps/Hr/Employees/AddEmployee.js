@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import MaskedInput from 'react-text-mask';
@@ -113,11 +112,11 @@ const List = () => {
             dispatch( stopLoading() );
             return
         }
-        if ( !utils.validateEmail( refEmail ) ) {
-            toast.error( "Enter correct reference email", { position: toast.POSITION.TOP_RIGHT } );
-            dispatch( stopLoading() );
-            return
-        }
+        // if ( !utils.validateEmail( refEmail ) ) {
+        //     toast.error( "Enter correct reference email", { position: toast.POSITION.TOP_RIGHT } );
+        //     dispatch( stopLoading() );
+        //     return
+        // }
         if ( !utils.validateEmail( companyProvideEmail ) ) {
             toast.error( "Enter correct company email", { position: toast.POSITION.TOP_RIGHT } );
             dispatch( stopLoading() );
@@ -222,7 +221,7 @@ const List = () => {
                 if ( e.status === 200 ) {
                     dispatch( GetEmployees( token ) );
                     toast.success( e?.message, { position: toast.POSITION.TOP_RIGHT } );
-                    // reset();
+                    reset();
                 } else {
                     console.log( e );
                     toast.error( e?.detail, { position: toast.POSITION.TOP_RIGHT } );
@@ -329,9 +328,9 @@ const List = () => {
     }
 
     return loading ? (
-        <div className='d-flex justify-content-center align-items-center'>
-            <Spinner className="m-2" color={'primary'} />
-        </div>
+      <div className='d-flex justify-content-center align-items-center vh-100'>
+                            <Spinner className="m-2" color={'primary'} />
+                        </div>
     ) : (
         <>
             <PageTitle
