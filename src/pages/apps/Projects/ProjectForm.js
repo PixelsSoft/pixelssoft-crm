@@ -19,7 +19,8 @@ import PageTitle from "../../../components/PageTitle";
 import HyperDatepicker from "../../../components/Datepicker";
 import FileUploader from "../../../components/FileUploader";
 import { FormInput } from "../../../components";
-
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateProject } from "../../../redux/Slices/Project/Project";
 import { startLoading, stopLoading } from "../../../redux/Slices/utiltities/Utiltities";
@@ -27,20 +28,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { getFileDetails, handleUpload } from "../../../utils/FileUpload";
 import Spinner from "../../../components/Spinner";
 import { toast } from "react-toastify";
-
-// interface MemberTypes {
-//   value: string;
-//   name: string;
-//   image: string;
-// }
-
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from 'draftjs-to-html';
+import { convertToRaw } from 'draft-js';
 const ProjectForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [endDate, setEndDate] = useState( new Date() );
   const [title, setTitle] = useState( '' );
-  const [desc, setDesc] = useState( '' );
+  const [desc, setDesc] = useState("");
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  
   const [priority, setPriority] = useState( '' );
   const [cat, setCat] = useState( '' );
 
@@ -87,84 +86,11 @@ const ProjectForm = () => {
     setFiles( [] )
 
   }
-  // const addProject = async () => {
-  //   try {
-  //     await dispatch( startLoading() )
-  //     if ( title === '' ) {
-  //       toast.error( "Enter Title please", { position: toast.POSITION.TOP_RIGHT } );
-  //       dispatch( stopLoading() );
-  //       return
-  //     }
-  //     if ( desc === '' ) {
-  //       toast.error( "Enter Project Overview please", { position: toast.POSITION.TOP_RIGHT } );
-  //       dispatch( stopLoading() );
-  //       return
-  //     }
-  //     if ( cat === '' ) {
-  //       toast.error( "Select Project Category please", { position: toast.POSITION.TOP_RIGHT } );
-  //       dispatch( stopLoading() );
-  //       return
-  //     }
-  //     if ( priority === '' ) {
-  //       toast.error( "Select Project priority please", { position: toast.POSITION.TOP_RIGHT } );
-  //       dispatch( stopLoading() );
-  //       return
-  //     }
-  //     if ( selectedTeamMembersId.length === 0 ) {
-  //       toast.error( "Select Team member please", { position: toast.POSITION.TOP_RIGHT } );
-  //       dispatch( stopLoading() );
-  //       return
-  //     }
-  //     const Form = new FormData()
-  //     Form.append( "title", title )
-  //     Form.append( "description", desc )
-  //     Form.append( "projectType", cat )
-  //     Form.append( "due_date", endDate )
-  //     Form.append( "priority", priority )
-  //     Form.append( "status", "Ongoing" )
-
-
-  //     // if ( fileUpload.length > 0 ) {
-  //     //   Form.append( "files", fileUpload.join( "," ) ); 
-  //     // }
-  //     // Handle file uploads
-  //     if ( files.length > 0 ) {
-  //       const fileUploadPromises = files.map( file => handleUpload( dispatch, file ) );
-
-  //       try {
-  //         // Wait for all file uploads to complete
-  //         const uploadedFiles = await Promise.all( fileUploadPromises );
-
-  //         // Join file URLs with a comma and append to FormData
-  //         const fileUrlsString = uploadedFiles.join( "," );
-  //         Form.append( "files", fileUrlsString );
-  //         // Optionally, update fileUpload state here
-  //         setFileUpload( uploadedFiles );  // If you need to use fileUpload later
-  //       } catch ( uploadError ) {
-  //         console.error( "File upload error: ", uploadError );
-  //         toast.error( "Failed to upload files", { position: toast.POSITION.TOP_RIGHT } );
-  //         return;
-  //       }
-  //     }
-
-  //     for ( let i = 0; i < selectedTeamMembersId.length; i++ ) {
-  //       Form.append( "teams", selectedTeamMembersId[i] );
-  //     }
-
-  //     await dispatch( CreateProject( Form, token, reset ) )
-  //     navigate( -1 );
-
-  //     await dispatch( stopLoading() )
-
-
-  //   } catch ( error ) {
-  //     console.log( "submit Foam error: " + error )
-  //   }
-  // }
-
+  
   const addProject = async () => {
     try {
 
+      const formData = new FormData();
   
       await dispatch(startLoading());
       
@@ -194,12 +120,17 @@ const ProjectForm = () => {
         dispatch(stopLoading());
         return;
       }
-  
+      if(desc){
+        const contentState = desc.getCurrentContent();
+        const rawContent = convertToRaw( contentState );
+        const html = draftToHtml( rawContent );
+        formData.append( 'description', html ); 
+      }
+     
    
       // Create FormData
-      const formData = new FormData();
       formData.append("title", title);
-      formData.append("description", desc);
+      // formData.append("description", desc);
       formData.append("projectType", cat);
       formData.append("due_date", endDate);
       formData.append("priority", priority);
@@ -341,7 +272,7 @@ const ProjectForm = () => {
 
                   />
 
-                  <FormInput
+                  {/* <FormInput
                     name="overview"
                     label="Project Overview"
                     placeholder="Enter some brief about project.."
@@ -353,9 +284,26 @@ const ProjectForm = () => {
                     onChange={( e ) => setDesc( e.target.value )}
                     key="overview"
 
-                  />
+                  /> */}
+                   <label className="form-label">Project Overview</label>
+                   <Editor
+                         
+                                className={"p-4"}
+                                editorState={desc}
+                                toolbarClassName="toolbarClassName"
+                                wrapperClassName="wrapperClassName"
+                                editorClassName="editorClassName"
+                                onEditorStateChange={setDesc}
+                                editorStyle={{
+                                  // marginBottam: "10px",
+                                  minHeight: '200px',
+                                  border: '1px solid #ccc',
+                                  marginBottam: 20,
+                                  paddinghorizontal:100
+                                }}
+                              />
 
-                  <div className="mb-3">
+                  <div className="mb-3 mt-2">
                     <label className="form-label">Project Category</label>
                     <br />
                     {category !== null && category !== undefined

@@ -235,7 +235,8 @@ const ProjectDetail = () => {
                 {project.status}
               </div>
               <h5>Project Overview:</h5>
-              <p className="text-muted mb-2">{project.description}</p>
+              {/* <p className="text-muted mb-2">{project.description}</p> */}
+              <p className="text-muted mb-2" dangerouslySetInnerHTML={{ __html: project.description }}></p>
               <Row>
                 <Col md={4}>
                   <div className="mb-4">

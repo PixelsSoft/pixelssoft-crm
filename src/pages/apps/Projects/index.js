@@ -89,10 +89,11 @@ const SingleProject = (props) => {
             {project?.title}
           </Link>
         </h4>
-        <p className="text-muted text-uppercase">
+        {/* <p className="text-muted text-uppercase">
           <i className="mdi mdi-account-circle"></i>{" "}
           <small>{project?.description}</small>
-        </p>
+          
+        </p> */}
         <div
           className={classNames(
             "badge",
@@ -105,12 +106,13 @@ const SingleProject = (props) => {
         >
           {project?.status}
         </div>
+        {/* <p className="text-muted mb-2" dangerouslySetInnerHTML={{ __html: project.description }}></p> */}
 
-        <p className="text-muted font-13 mb-3 sp-line-2">
-          {project?.description}...
-          <Link to="#" className="fw-bold text-muted">
+        <p className="text-muted font-13 mb-3 sp-line-2" dangerouslySetInnerHTML={{ __html: project.description }}>
+      
+          {/* <Link to="#" className="fw-bold text-muted">
             view more
-          </Link>
+          </Link> */}
         </p>
         <p className="mb-1">
           <span className="pe-2 text-nowrap mb-2 d-inline-block">
