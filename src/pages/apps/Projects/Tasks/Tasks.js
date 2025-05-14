@@ -243,7 +243,9 @@ const Tasks = ( props ) => {
      
       formData.append( 'id', selectedBoardId );
       formData.append( 'title', taskTitle );
-      formData.append( 'file', file );
+     if (file) {
+      formData.append('file', file);  // file is a File object here
+    }
    
       formData.append( 'priority', priority );
       formData.append( 'due_Date', dueDate );
