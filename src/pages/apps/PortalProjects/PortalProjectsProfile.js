@@ -54,7 +54,8 @@ const CustomerProfile = () => {
             loading: state.utiltities.loading,
         } )
     );
-
+ 
+console.log(milestones)
     const reset = () => {
         setTitle( '' )
         setAmount( '' )
@@ -128,7 +129,8 @@ const CustomerProfile = () => {
     
           className={classNames("badge", {
             "bg-soft-success text-success": row.original.status === "Release",
-            "bg-soft-warning text-warning": row.original.status === "pending",
+            "bg-soft-danger text-danger": row.original.status === "Cancel",
+            "bg-soft-warning text-warning": row.original.status === "Pending",
           })}
         >
           {row.original.status}
