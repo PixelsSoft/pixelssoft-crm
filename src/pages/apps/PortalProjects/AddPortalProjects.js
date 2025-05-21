@@ -13,6 +13,8 @@ const AddPortalProjects = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [data, setData] = useState( [] );
+      const [currency, setCurrency] = useState("USD");
+    
     const [perName, setPerName] = useState( '' );
     const [platId, setPlatId] = useState();
     const [selectCat, setSelectCat] = useState();
@@ -53,6 +55,7 @@ const AddPortalProjects = () => {
         formData.append( "amount", total )
         formData.append( "platform_id", platId )
         formData.append( "category_id", selectCat )
+        formData.append( "currency", currency )
 
         if (
             perName === 'Choose...' ||
@@ -185,6 +188,20 @@ const AddPortalProjects = () => {
                                             } )}
                                         </Form.Select>
                                     </Form.Group>
+                                      <Form.Group as={Col} controlId="formGridState">
+                    <Form.Label>Currency</Form.Label>
+                    <Form.Select
+                      value={currency}
+                      onChange={(e) => setCurrency(e.target.value)}
+                    >
+                      <option value={undefined}>Choose...</option>
+                      <option value="PKR">Pakistani Rupee (PKR)</option>
+                      <option value="GBP">UK Pound (GBP)</option>
+                      <option value="USD">US Dollars (USD)</option>
+                      <option value="EUR">Europe EURO (EUR)</option>
+                      <option value="CAD">Canadian Dollars (CAD)</option>
+                    </Form.Select>
+                  </Form.Group>
                                 </Row>
                                 <Row className="mb-3">
                                     <FormInput

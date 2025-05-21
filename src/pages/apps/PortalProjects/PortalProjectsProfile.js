@@ -55,7 +55,6 @@ const CustomerProfile = () => {
         } )
     );
  
-console.log(milestones)
     const reset = () => {
         setTitle( '' )
         setAmount( '' )
@@ -65,31 +64,19 @@ console.log(milestones)
         dispatch( startLoading() );
         await dispatch( GetPortalProjectById( projectId, token ) );
         await dispatch( GetMilestone( projectId, token ) );
-        let countRelease = 0;
-        let totalAmount = 0;
-        let countPending = 0;
-        let untotalAmount = 0;
-        milestones.forEach( item => {
-            // Check if status is "Release"
-            if ( item.status === "Release" ) {
-                // Increment count of "Release"
-                countRelease++;
-                setTotalPaiAmount( countRelease )
-
-                // Add amount to totalAmount (assuming amount is a string and needs conversion to number)
-                totalAmount += parseFloat( item.amount );
-                setPaiAmount( totalAmount )
-            }
-            if ( item.status === "Pending" ) {
-                // Increment count of "Release"
-                countPending++;
-                setTotalUnPaiAmount( countPending )
-
-                // Add amount to totalAmount (assuming amount is a string and needs conversion to number)
-                untotalAmount += parseFloat( item.amount );
-                setUnPaiAmount( untotalAmount )
-            }
-        } );
+    //     let countRelease = 0;
+    //     let totalAmount = 0;
+    //     let countPending = 0;
+    //     let untotalAmount = 0;
+    //     milestones.forEach(item => {
+    //     if (item.status === "Release") {
+    //         countRelease++;
+    //         totalAmount += parseFloat(item.amount || 0);
+    //     } else if (item.status === "Pending") {
+    //         countPending++;
+    //         untotalAmount += parseFloat(item.amount || 0);
+    //     }
+    // });
         dispatch( stopLoading() );
     };
 
@@ -111,6 +98,37 @@ console.log(milestones)
         getProject();
 
     }, [] );
+
+    useEffect(() => {
+    if (!milestones || milestones.length === 0) {
+        setTotalPaiAmount(0);
+        setPaiAmount(0);
+        setTotalUnPaiAmount(0);
+        setUnPaiAmount(0);
+        return;
+    }
+
+    let countRelease = 0;
+    let totalAmount = 0;
+    let countPending = 0;
+    let untotalAmount = 0;
+
+    milestones.forEach(item => {
+        if (item.status === "Release") {
+            countRelease++;
+            totalAmount += parseFloat(item.amount || 0);
+        } else if (item.status === "Pending") {
+            countPending++;
+            untotalAmount += parseFloat(item.amount || 0);
+        }
+    });
+
+    setTotalPaiAmount(countRelease);
+    setPaiAmount(totalAmount);
+    setTotalUnPaiAmount(countPending);
+    setUnPaiAmount(untotalAmount);
+
+}, [milestones]);
 
     const toggleModal = () => {
         setStandard( !standard );

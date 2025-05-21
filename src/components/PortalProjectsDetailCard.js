@@ -5,6 +5,7 @@ import { startLoading, stopLoading } from '../redux/Slices/utiltities/Utiltities
 import EditPortalProject from './EditPortalProject';
 import { DeleteProject } from '../redux/Slices/Project/Project';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 const PortalProjectsDetailCard = ( { contact } ) => {
     const { token, } = useSelector(
@@ -69,7 +70,7 @@ const PortalProjectsDetailCard = ( { contact } ) => {
                                 <strong>Amount  :</strong> <span className="ms-2">{contact.amount}</span>
                             </p>
                             <p className="text-muted font-13">
-                                <strong>Created at :</strong> <span className="ms-2">{contact._createdAt}</span>
+                                <strong>Created at :</strong> <span className="ms-2">{moment(contact._createdAt).format("MMMM Do YYYY")}</span>
                             </p>
 
                             <p className="text-muted font-13">

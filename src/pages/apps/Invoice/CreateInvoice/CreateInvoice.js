@@ -276,6 +276,7 @@ const CreateInvoice = () => {
                       })}
                     </Form.Select>
                   </Form.Group>
+                  
                   <Form.Group as={Col} controlId="formGridState">
                     <Form.Label>Currency</Form.Label>
                     <Form.Select
