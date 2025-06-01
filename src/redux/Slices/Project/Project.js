@@ -42,7 +42,7 @@ export const GetProjectById = ( projectId, token ) => async ( dispatch ) => {
         if ( projectId ) {
             const response = await ProjectService.GetProjectById( projectId, token );
 
-            dispatch( SingleProject( response ) );
+            dispatch( SingleProject( response?.data ) );
             dispatch( GetComments( projectId, token ) )
 
             return response

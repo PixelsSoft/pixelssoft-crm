@@ -58,9 +58,9 @@ const SingleProject = (props) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item>
+              {/* <Dropdown.Item>
                 <i className="mdi mdi-pencil me-1"></i>Edit
-              </Dropdown.Item>
+              </Dropdown.Item> */}
               <Dropdown.Item
                 onClick={async () => {
                   await dispatch(DeleteProject(project?.id, token, navigate));

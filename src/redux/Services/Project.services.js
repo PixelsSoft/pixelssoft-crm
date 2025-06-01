@@ -66,7 +66,7 @@ const GetProjects = async ( token ) => {
 
 const GetProjectById = async ( projectId, token ) => {
     const onSuccess = ( data ) => {
-        return data.data;
+        return data;
     };
 
     const onFailure = error => {

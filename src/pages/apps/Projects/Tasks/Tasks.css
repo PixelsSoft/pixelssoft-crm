@@ -1,0 +1,16 @@
+.board-scroll-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1rem; /* optional: spacing between boards */
+  padding-bottom: 1rem;
+}
+
+.board-scroll-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.board-scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}

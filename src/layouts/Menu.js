@@ -78,7 +78,7 @@ const MenuItemWithChildren = ( {
         {item?.label==="Email" ?
         
                       <>
-                {Mails.map((item,child)=>{
+                {/* {Mails.map((item,child)=>{
                   return(
                     <MailItem
                     item={item}
@@ -92,17 +92,18 @@ const MenuItemWithChildren = ( {
                     }
                   />
                   )
-                })}
+                })} */}
                     
                       </>
-        :<>
+        :
+        <>
           <ul className={classNames( subMenuClassNames )}>
             {( item.children || [] ).map( ( child, i ) => {
               return (
                 <React.Fragment key={i}>
                   {child.children ? (
                     <>
-                      {/* parent */}
+        
                       <MenuItemWithChildren
                         item={child}
                         linkClassName={
