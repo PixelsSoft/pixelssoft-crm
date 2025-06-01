@@ -14,6 +14,7 @@ import {
   DeletePortalProject,
   GetPortalProject,
 } from "../../../redux/Slices/PortalProject/PortalProject";
+import classNames from "classnames";
 
 const sizePerPageList = [
   {
@@ -95,6 +96,21 @@ export default function PortalProjects() {
     );
   };
 
+    const StatusColumn = ({ status }) => {
+    
+      return (
+        <React.Fragment>
+          <span
+            className={classNames("badge", {
+              "badge-soft-success": status === "open",
+              "badge-soft-danger": status === "close",
+            })}
+          >
+            {status}
+          </span>
+        </React.Fragment>
+      );
+    };
   const toggleEditModal = (id) => {
     setId(id);
     setEditUserModal(!editUserModal);
@@ -120,10 +136,16 @@ export default function PortalProjects() {
       accessor: "amount",
       sort: false,
     },
-    {
+    // {
+    //   Header: "Status",
+    //   accessor: "status",
+    //   sort: false,
+    // },
+     {
       Header: "Status",
       accessor: "status",
-      sort: false,
+      sort: true,
+      Cell: ({ row }) => <StatusColumn status={row.original.status} />,
     },
     {
       Header: "Action",

@@ -41,15 +41,15 @@ const CustomerProfile = () => {
     const [totalunPaidamount, setTotalUnPaiAmount] = useState( 0 );
     const [unPaidamount, setUnPaiAmount] = useState( 0 );
     const [standard, setStandard] = useState( false );
+    const [project, setProject] = useState( false );
 
     const [data, setData] = useState();
     const [edit, setEdit] = useState( false );
 
-    const { token, project, loading, milestones } = useSelector(
+    const { token, loading, milestones } = useSelector(
         ( state ) => ( {
             token: state.Auth.token,
             category: state.Category.category,
-            project: state.PortalProjects.proectById,
             milestones: state.PortalProjects.milestones,
             loading: state.utiltities.loading,
         } )
@@ -62,7 +62,8 @@ const CustomerProfile = () => {
 
     const getProject = async () => {
         dispatch( startLoading() );
-        await dispatch( GetPortalProjectById( projectId, token ) );
+        const projectData = await dispatch( GetPortalProjectById( projectId, token ) );
+        setProject( projectData );
         await dispatch( GetMilestone( projectId, token ) );
     //     let countRelease = 0;
     //     let totalAmount = 0;

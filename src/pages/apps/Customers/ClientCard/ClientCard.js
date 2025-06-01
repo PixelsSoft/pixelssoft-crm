@@ -1,11 +1,32 @@
 import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
 import Table from '../../../../components/Table';
 import PageTitle from '../../../../components/PageTitle';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FormInput } from '../../../../components';
+import CardService from '../../../../redux/Services/card.services';
+import { useSelector } from 'react-redux';
+import { set } from 'firebase/database';
 export default function ClientCard() {
+    const [data, setData] = useState([]);
+    const {  token } = useSelector((state) => ({
+       
+        token: state.Auth.token,
+      
+      }));
+    const fetchData =async () => {
+        try {
+            const data = await CardService.getCards(token)
+            console.log( "data", data);
+            setData(data);
+        } catch (error) {
+            console.log("Error fetching data:", error);
+        }
+    }
+useEffect(() => {
+  fetchData()
+}, [])
 
     /* action column render */
     const ActionColumn = () => {
@@ -35,30 +56,41 @@ export default function ClientCard() {
         },
         {
             Header: 'Name',
-            accessor: 'invoiceNumberq',
+            accessor: 'card_holder_name',
             sort: false,
         },
         {
             Header: 'Card Number',
-            accessor: 'invoiceNumber2',
+            accessor: 'card_number',
             sort: false,
         },
+      
         {
             Header: 'Expire',
-            accessor: 'invoiceNumber',
+            accessor: 'expire',
             sort: false,
         },
         {
             Header: 'CVC',
-            accessor: 'dueDate',
+            accessor: 'cvv',
             sort: false,
         },
         {
-            Header: "Action",
-            accessor: "action",
+            Header: 'Email',
+            accessor: 'email',
             sort: false,
-            Cell: ActionColumn,
         },
+        {
+            Header: 'Phone No',
+            accessor: 'phoneNo',
+            sort: false,
+        },
+        // {
+        //     Header: "Action",
+        //     accessor: "action",
+        //     sort: false,
+        //     Cell: ActionColumn,
+        // },
     ];
 
     const sizePerPageList = [
@@ -108,7 +140,7 @@ export default function ClientCard() {
 
                             <Table
                                 columns={columns}
-                                data={[]}
+                                data={data||[]}
                                 pageSize={10}
                                 sizePerPageList={sizePerPageList}
                                 isSortable={true}

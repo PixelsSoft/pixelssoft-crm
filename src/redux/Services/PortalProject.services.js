@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { CONSTANTS } from "../../constants/constant";
 
 const AddProject = async ( data, token ) => {
@@ -327,7 +327,7 @@ const DeletProject = async ( projectId, token ) => {
         .catch( onFailure )
 };
 
-const UpdateProject = async ( projectId, data, token ) => {
+const UpdateProject = async (  data, token ) => {
     const onSuccess = ( data ) => {
         return data;
     };
@@ -339,15 +339,20 @@ const UpdateProject = async ( projectId, data, token ) => {
     const options = {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+            // 'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify( data )
+        body: data 
     };
 
-    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.project + '/' + projectId, options )
-        .then( response => response.json() )
+    return await fetch( CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.portal , options )
+    .then( ( response ) => {
+            if ( !response.ok ) {
+                return response.json().then( onFailure );
+            }
+            return response.json();
+        } )
         .then( onSuccess )
         .catch( onFailure )
 };

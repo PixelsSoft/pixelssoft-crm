@@ -11,7 +11,7 @@ const ViewInvoiceModal = ( { show, setShow, componentRef } ) => {
         } )
     );
 
-    console.log( { singleInvoice } )
+ 
 
     return loading ? (
         <div className='d-flex justify-content-center vh-100'>

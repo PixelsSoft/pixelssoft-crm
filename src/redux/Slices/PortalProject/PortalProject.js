@@ -45,8 +45,8 @@ export const GetPortalProject = ( token ) => async ( dispatch ) => {
 export const GetPortalProjectById = ( projectId, token ) => async ( dispatch ) => {
     try {
         if ( projectId ) {
-            const response = await ProtalProjectService.GetProjectById( projectId, token );
-            dispatch( SingleProject( response ) );
+            const response = await ProtalProjectService.GetProjectById( projectId, token );  
+            return response
         }
     } catch ( error ) {
         console.log( "error===========>", error )
@@ -186,9 +186,9 @@ export const DeletePortalProject = ( projectId, token, navigate, lead ) => async
     };
 };
 
-export const UpdateProject = ( projectId, data, token, toggleEditModal ) => async ( dispatch ) => {
+export const UpdateProject = (  data, token, toggleEditModal ) => async ( dispatch ) => {
     try {
-        const response = await ProtalProjectService.UpdateProject( projectId, data, token );
+        const response = await ProtalProjectService.UpdateProject(  data, token );
         if ( response?.status === 200 ) {
             toast.success( response?.message, { position: toast.POSITION.TOP_RIGHT } );
             toggleEditModal();
