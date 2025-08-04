@@ -17,7 +17,6 @@ export default function RolesPermissions() {
     const [name, setName] = useState('');
     const [openView, setOpenView] = useState(false);
     const [viewName, setViewName] = useState('');
-
     const { roles, token, loading } = useSelector(
         (state) => ({
             roles: state.Roles.roles,
@@ -25,6 +24,8 @@ export default function RolesPermissions() {
             loading: state.utiltities.loading,
         })
     );
+
+
 
     /**
      * Show/hide the modal
@@ -81,8 +82,8 @@ export default function RolesPermissions() {
             sort: true,
         },
         {
-            Header: 'Name',
-            accessor: 'name',
+            Header: 'Role',
+            accessor: 'role',
             sort: false,
         },
         {

@@ -16,10 +16,9 @@ export default function EmailSetup() {
     employee: state.Employees.employees,
     Mails: state.Mails.Mails,
   }));
-  
+  console.log({employee})
   /* action column render */
   const ActionColumn = ({ employeeId }) => {
-    console.log("projectId",employeeId)
     return (
       <React.Fragment>
         <Link
@@ -47,7 +46,7 @@ export default function EmailSetup() {
     },
     {
       Header: "Designation",
-      accessor: "details?.company_provided_email",
+      accessor: "details[0].designation",
       sort: false,
     },
     {
